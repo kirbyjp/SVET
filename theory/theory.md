@@ -215,11 +215,22 @@ The upper bound $\eta = 1$ represents the microphysical saturation ceiling, corr
 Because excitation is bounded, all local physical quantities derived from excitation—such as strain $S_{ij}$, bias $B_a$, and coherence cost $C(x,v)$—inherit finite upper limits. These bounds prevent ultraviolet divergences and ensure that all local update behavior remains well-defined.
 
 ### 3.2 Finite Update Cadence (τ_eff)
-*TODO: Provide the functional form of cadence slowdown, e.g.:*
-$$
-\tau_{\text{eff}} = \tau_0\left(1 + \left(\frac{S}{B}\right)^\beta\right)
-$$
-*TODO: Explain parameter β and physical consequences.*
+
+The effective cadence $\tau_{\text{eff}}$ of a pattern reflects the local difficulty of resolving its coherent update demand. As strain increases relative to the available budget, the local resolution latency grows. A minimal phenomenological form capturing this slowdown is:
+
+$$\tau_{\text{eff}} = \tau_0 \left(1 + \left(\frac{S}{B}\right)^\beta\right)$$
+
+where:
+- $\tau_0$ is the baseline cadence in the low-strain limit,
+- $S$ is the local coherent strain,
+- $B$ is the available update budget,
+- $\beta$ is a dimensionless exponent controlling how sharply cadence increases under load.
+
+Larger values of $\beta$ correspond to more abrupt cadence penalties, while smaller values produce smoother slowdowns. Regardless of the specific form, all admissible cadence functions must satisfy:
+- $\tau_{\text{eff}} \to \tau_0$ as $S/B \to 0$,
+- $\tau_{\text{eff}} \to \infty$ as $S/B \to \infty$.
+
+As established in the Section 3.7 Axiom 5 ontology, this cadence collapse is strictly a pattern-level phenomenon. The underlying nodes in the node set continue to update at the invariant propagation speed $c$ (one adjacency hop per tick); what collapses under load is the ability of extended coherent structures to exploit that raw capacity. This ensures that cadence slowdown remains finite under normal conditions and diverges asymptotically only when the pattern's coherent update demand fully saturates the local node capacity.
 
 ### 3.3 Why Divergences Cannot Occur
 *TODO: Demonstrate how UV divergences are prevented by hard capacity limits and discrete update accounting. Provide a sketch proof or argument.*
