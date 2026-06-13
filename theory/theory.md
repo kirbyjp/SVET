@@ -481,19 +481,19 @@ Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab 
 ### 13.5 Decoherence‑Rate Predictions
 *TODO: Provide quantitative decoherence rates for mesoscopic systems and suggest laboratory tests.*
 
-### 12.6 The Yield Ramp Test
+### 13.6 The Yield Ramp Test
 *Simulation:* Locally increase update demand ($S_p$) at a node ensemble and measure the critical $S/B$ ratio where coherent amplitude collapses into the H-channel.
 *Target:* This test uses a reference pattern with $\Gamma_p = 1$ under slow loading to isolate the universal constant $\kappa_{\text{yield}}$.
 
-### 12.7 Loop Integrity and Confinement
+### 13.7 Loop Integrity and Confinement
 *Simulation:* Model a coherent loop (particle) under increasing external strain. 
 *Target:* Verify if a loop yield event produces energy-conserving pair excitations. For high $\Gamma_p$ patterns, yield events are irreversible, providing a node-network explanation for quark confinement.
 
-### 12.8 Measurement Statistics (Born Rule Emergence)
+### 13.8 Measurement Statistics (Born Rule Emergence)
 *Simulation:* Model a detector as a localized strain source. 
 *Target:* Demonstrate that "Wavefunction Collapse" statistics emerge from the yield event of the wave pattern, converging to Born-rule frequencies over repeated trials.
 
-### 12.9 Coherence Recovery Test
+### 13.9 Coherence Recovery Test
 *Simulation:* After a near-yield ramp, reduce $S_p$ and observe whether the pattern re-establishes coherence. 
 *Target:* Robust patterns (high $\Gamma_p$) should recover; fragile patterns may not. Record hysteresis and recovery times to distinguish reversible vs. irreversible yield.
 
