@@ -452,7 +452,13 @@ Log fields listed in Section 4.5 Simulation Logging Checklist for reproducible r
 
 *TODO: Provide notes on timestep selection, stability criteria, and convergence tests.*
 
+### TODO: Archive and Integrate Early Toy Model Documentation (See `SVET_issues_list.xls` — Tab “SVET Onboarding v0.02–0.03”)
 
+The early SVET onboarding narrative (v0.02–v0.03) has been reviewed and triaged. Its content describes the initial lattice toy model, diagnostics, CSV logging, and the three redshift experiments. These items are engineering artifacts and will be incorporated into the Appendix as historical context once the computational layer is finalized.
+
+---
+
+## 13. Predictions and Falsifiable Tests
 
 ---
 
