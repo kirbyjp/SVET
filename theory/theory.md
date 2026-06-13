@@ -205,8 +205,14 @@ Any global structure is valid, provided it preserves fixed local adjacency and a
 
 ## 3. Capacity Limits and Divergence‑Free Behavior
 
-### 3.1 Finite Excitation Capacity (η_max)
-*TODO: Define the maximum excitation per node and how it constrains local field amplitudes.*
+### 3.1 Finite Excitation Capacity
+
+Each node in the SVET node set supports a finite excitation capacity, expressed by the dimensionless excitation norm (as defined in Section 3.7, Axiom 1):
+$$0 \le \eta(x) \le 1$$
+
+The upper bound $\eta = 1$ represents the microphysical saturation ceiling, corresponding to the maximum coherent update demand that a node can process within a single tick. This ceiling is enforced by the Margolus–Levitin bound on state-change rates (Section 3.7, Axiom 2) and ensures that no node can host arbitrarily large field amplitudes or arbitrarily high-frequency excitations.
+
+Because excitation is bounded, all local physical quantities derived from excitation—such as strain $S_{ij}$, bias $B_a$, and coherence cost $C(x,v)$—inherit finite upper limits. These bounds prevent ultraviolet divergences and ensure that all local update behavior remains well-defined.
 
 ### 3.2 Finite Update Cadence (τ_eff)
 *TODO: Provide the functional form of cadence slowdown, e.g.:*
