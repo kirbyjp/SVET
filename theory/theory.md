@@ -70,8 +70,25 @@ Within the node network, physical entities are not independent objects placed â€
 *TODO: Provide relative scale scaling factors to contextualize coherence confinement. Address the spatial volume ratios of these distinct physical domains, emphasizing that the spatial profile of the electron orbital spans five orders of magnitude relative to the proton core, while the nuclear confinement radius restricts multi-nucleon configurations to a narrow spatial volume relative to the outer electron cloud boundary. These scaling ratios will be mapped to formal coherence-geometry descriptions in later sections.*
 
 ### 2.2 Minimal Local Rules and Assumptions
-*TODO: List the minimal rule set governing local updates (causality, adjacency, budget accounting, update resolution order). State assumptions and scope.*
 
+The node set operates under a minimal set of local rules that govern all coherent and incoherent update behavior. These rules define the structural constraints from which space, time, and physical propagation emerge.
+
+**1. Locality and Adjacency**  
+Each node interacts only with its immediate neighbors. All propagation, strain exchange, and ledger reconciliation occur across adjacency links; no long-range or nonlocal updates are permitted.
+
+**2. Causality and Update Ordering**  
+Updates occur in a fixed, globally consistent tick order. A node may only incorporate information from the previous tick of its neighbors, ensuring strict causal structure and preventing retroactive modification of prior states.
+
+**3. Budget Accounting**  
+Each node maintains a finite update budget that constrains how much coherent routing it can support per tick. Competing demands for propagation are resolved by comparing local strain, bias, and available budget.
+
+**4. Resolution of Competing Flux**  
+When multiple coherent demands attempt to traverse the same adjacency, the node resolves them according to least-cost routing preferences derived from local strain and bias. Excess demand is diverted into the incoherent channel.
+
+**5. No Node Motion or Deformation**  
+Nodes do not move, stretch, or rearrange. All geometric behavior arises from routing preferences and cadence variations, not from changes in the underlying node-set structure.
+
+These minimal rules define the operational node-set foundation from which coherent patterns, propagation geometry, and causal structure emerge.
 #### 2.2.1 Interpretive Rules
 **The Principle of Node Inertia:**  
 The node network never strains, never moves, and never resists. All energy belongs exclusively to the pattern. All difficulty in motion arises from the patternâ€™s requirement to maintain internal coherence under the fixed update rule. If a demanded configuration cannot be self-consistently re-instantiated across adjacent nodes, the pattern destabilizes and collapses into simpler, incoherent excitations.
