@@ -41,16 +41,12 @@ The vacuum node network supports waves rather than point-like particles. What ex
 ### 2.0 Ontology of the Vacuum Overview
 This chapter details the fundamental ontology of the physical vacuum within the SVET framework. We establish the node network as the primary, static, non-coordinate system of discrete update sites, from which space, time, and coherent matter emerge. By analyzing localized coherence configurations and their local rules, we formalize the boundary between coherent propagation and incoherent dissipation, defining the structural limits of physical patterns.
 
-### 2.0.1 Coherence Manifold Postulate
-
-**Postulate:** Wave patterns generate strain; local strain induces bias in local update preferences; bias determines least-cost coherence routing; and least-cost routing is the emergent geometry we mistake for spacetime.
-
-Under this postulate, the node network remains static and non-coordinate; nodes do not shift, stretch, or bend. Spacetime is not a fundamental grid or field, but rather the "shape of the routing problem." Because every physical pattern experiences the identical local routing preferences of the network, they inhabit a shared, emergent routing map—the coherence manifold. 
-
-From within the coherence manifold, local update latencies look like curvature, localized gradient responses look like forces, and the boundaries of budget exhaustion look like physical horizons. Physics became historically stalled because it attempted to quantize the emergent manifold (quantizing spacetime curvature in General Relativity or continuous fields in Quantum Field Theory) rather than quantizing the underlying coherence-strain rules of the network itself.
-
 ### 2.1 The Planck‑Scale Physical Vacuum
-*TODO: Define the vacuum as a capacity‑limited, rule‑governed entity. Explain why we treat the vacuum as a network of nodes rather than a continuous field.*
+
+The SVET vacuum is a static, Lorentz-invariant node network whose local states fluctuate near their minima without bulk motion or a preferred reference frame. Lorentz symmetry emerges naturally from the isotropic symmetry of the local node update rules; macroscopic physical excitations are coherent wave patterns propagated by the node network rather than independent, self-contained ontological objects. The invariant causal speed limit $c$ arises from the absolute, structural one-adjacency-hop-per-tick propagation limit of the network.
+
+#### 2.1.1 Quantitative Scale Structure of the Vacuum
+
 *TODO: Provide quantitative scale comparisons to illustrate why the node network must support coherence across many orders of magnitude. Include the following reference values:*
 
 - *Electron cloud radius (1s orbital): ~0.05–0.1 nm ($50,000\text{--}100,000\text{ fm}$)*  
@@ -60,14 +56,17 @@ From within the coherence manifold, local update latencies look like curvature, 
 - *Planck length: ~$10^{-20}\text{ fm}$*
 
 *These scales imply that a single node must support coherent behavior across at least five orders of magnitude, and potentially up to nineteen orders of magnitude when comparing quark-scale structure to the Planck length.*
+
 *TODO: Note the theoretical upper bound on update frequency: the Planck frequency, defined as*  
 
 $$f_{\text{Planck}} = \frac{1}{t_{\text{Planck}}} \approx 10^{43}\text{ Hz}$$
 
 *This establishes the maximum conceivable cadence for any physical update process and constrains the upper bound of node network timing behavior.*
 
-#### 2.1.1 Patterns as Particles
+### 2.1.2 Patterns as Particles
+
 Within the node network, physical entities are not independent objects placed “into” space. Instead, particles are localized, self-maintaining coherence-patterns. Their discrete particle-like features emerge because their internal coherence structure is tightly bounded and continuously preserved by the local update rules of the network.
+
 *TODO: Provide relative scale scaling factors to contextualize coherence confinement. Address the spatial volume ratios of these distinct physical domains, emphasizing that the spatial profile of the electron orbital spans five orders of magnitude relative to the proton core, while the nuclear confinement radius restricts multi-nucleon configurations to a narrow spatial volume relative to the outer electron cloud boundary. These scaling ratios will be mapped to formal coherence-geometry descriptions in later sections.*
 
 ### 2.2 Minimal Local Rules and Assumptions
