@@ -112,7 +112,16 @@ CaBS is the mechanism by which node cadence and adjacency determine coherence ca
 *TODO: Define units, ranges, and physical interpretation for each variable. Provide canonical initial conditions and normalization conventions.*
 
 ### 2.4 Directional Phase Encoding
-*TODO: Explain how orientation of coherent update demand encodes phase information without invoking complex amplitudes. Provide a minimal example showing phase shift via cadence delay.*
+
+In SVET, phase is not represented through complex amplitudes but through the orientation and timing of coherent update demand. A pattern’s local phase is encoded in the directional alignment of its flux vectors and the cadence delays accumulated during propagation.
+
+**Directional Encoding of Phase**  
+The orientation of coherent flux across adjacency links determines the instantaneous phase of a propagating pattern. Two patterns with identical amplitudes but differing flux orientations represent distinct phase states.
+
+**Cadence Delay as Phase Shift**  
+Local variations in effective cadence $\tau_{\text{eff}}$ introduce timing offsets that act as phase shifts. A delay of one tick corresponds to a discrete phase increment, and accumulated delays reproduce continuous phase evolution in the long-wavelength limit.
+
+This directional-timing encoding reproduces the interference behavior associated with complex phase factors while remaining fully grounded in local, real-valued update rules.
 
 ### 2.5 Dual‑Channel Propagation
 *TODO: Define the coherent (pattern‑preserving) channel and the incoherent (heat/ledger) channel. Explain how energy/exaction partitions between them and how this implements decoherence.*
