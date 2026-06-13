@@ -96,6 +96,7 @@ $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 When a pattern moves through regions of high utilization, its degradation proceeds through two discrete stages:
 *   **Coherence-Strain ($S$):** The accumulation of coherent update demand on the local node network. As the incoming load ($S$) increases relative to the available budget ($B$), the local resolution latency increases.
 *   **Coherence-Shedding ($\Delta H$):** When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable exactions are rejected and fall out of the coherent ledger, collapsing into incoherent excitations ($\Delta H$), observed macroscopically as heat.
+*TODO: Elaborate on the relationship between induced potential energy within a coherence‑pattern and the progressive loss of pattern integrity as strain increases. Clarify how accumulated internal tension contributes to the onset of coherence‑shedding and eventual collapse into the incoherent channel (H).*
 
 #### 2.6.3 Physical Nature and Manifestations of H
 In SVET, **H** denotes *incoherent energy* — energy that has left the coherent propagation channel and no longer carries directional phase information. Heat is one possible macroscopic manifestation of H, but H is a node network-level category that can produce multiple physical outcomes depending on the local material and boundary physics.
@@ -177,43 +178,32 @@ To maintain operations without divergence, we define a non-zero **Floor Budget (
 
 ### 4.4 The Node Ledger (Conservation of Energy)
 
-**Statement (operational):** Conservation of energy in SVET is a bookkeeping identity of the node‑network update. Local update demand is partitioned at each node according to the success or failure of the pattern‑dependent yield criterion and the local CaBS dynamics.
+**Statement (operational):** Conservation of energy in SVET is a bookkeeping identity of the node-network update. Local update demand is partitioned at each node according to the success or failure of the pattern-dependent yield criterion and the local CaBS dynamics.
 
 **Partition identity (node level):**
 
-
-\[
-I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H
-\]
-
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$$
 
 Equivalently, in normalized form:
 
-
-\[
-R + T + H = 100\%
-\]
-
-
+$$R + T + H = 100\%$$
 
 **Component definitions and locality**
-- **\(I_{\text{refl}}\) (Coherent Rejection / Reflection):** a *surface* event. Occurs when a neighbor node (or interface) cannot accept the incoming coherent demand; the rejected portion remains coherent and carries phase information away from the boundary.  
-- **\(I_{\text{trans}}\) (Coherent Propagation / Transmission):** the coherent portion successfully accepted by the neighbor and available for further coherent propagation.  
-- **\(\Delta H\) (Incoherent Energy / H):** a *bulk* event. Energy diverted into the incoherent channel when the pattern‑dependent yield criterion is met (coherence → incoherence). \(\Delta H\) is the local increment of incoherent energy that may later manifest as heat, photochemistry, fluorescence, photoemission, mechanical damage, etc.
+- **$I_{\text{refl}}$ (Coherent Rejection / Reflection):** a *surface* event. Occurs when a neighbor node (or interface) cannot accept the incoming coherent demand; the rejected portion remains coherent and carries phase information away from the boundary.  
+- **$I_{\text{trans}}$ (Coherent Propagation / Transmission):** the coherent portion successfully accepted by the neighbor and available for further coherent propagation.  
+- **$\Delta H$ (Incoherent Energy / H):** a *bulk* event. Energy diverted into the incoherent channel when the pattern-dependent yield criterion is met (coherence $\to$ incoherence). $\Delta H$ is the local increment of incoherent energy that may later manifest as heat, photochemistry, fluorescence, photoemission, mechanical damage, etc.
 
 **Link to yield and CaBS dynamics**  
-The partition depends on the local budget \(B\), pattern demand \(S_p\), pattern stability \(\Gamma_p\), and dynamic loading (CaBS) factors. In compact form:
+The partition depends on the local budget $B$, pattern demand $S_p$, pattern stability $\Gamma_p$, and dynamic loading (CaBS) factors. In compact form:
 
+$$
+\text{Yield if}\quad \frac{S_p}{B}\,\Gamma_p\,\Phi(\dot S_p,\tau_{\text{eff}}) \ge \kappa_{\text{yield}}
+$$
 
-\[
-\text{Yield if}\quad \frac{S_p}{B}\,\Gamma_p\,\Phi(\dot S_p,\tau_{\text{eff}}) \ge \kappa_{\text{yield}},
-\]
-
-
-where \(\Phi(\dot S_p,\tau_{\text{eff}})\) encodes rate/cadence dependence. If the yield condition is met at the node, the accepted coherent propagation fails and the corresponding energy is diverted into \(\Delta H\); otherwise the ledger partitions into reflection and transmission according to local acceptance rules.
+where $\Phi(\dot S_p,\tau_{\text{eff}})$ encodes rate/cadence dependence. If the yield condition is met at the node, the accepted coherent propagation fails and the corresponding energy is diverted into $\Delta H$; otherwise the ledger partitions into reflection and transmission according to local acceptance rules.
 
 **Practical notes**
-- **Surface vs bulk:** Always preserve the distinction in derivations and experiments: reflection is a boundary accounting event; H production is a bulk, post‑acceptance event.  
+- **Surface vs bulk:** Always preserve the distinction in derivations and experiments: reflection is a boundary accounting event; H production is a bulk, post-acceptance event.  
 - **Conservation semantics:** This identity is bookkeeping — energy is redistributed between coherent and incoherent channels; no external creation or destruction is invoked.  
 - **Cross references:** See Sec. 2.6 (Incoherent Channel and Yield), Sec. 4.5 (Boundary Ledger and Tests), Sec. 11 (Computational Implementation) for logging and simulation protocols, and Sec. 13 (Predictions) for experimental tests.
 
@@ -221,7 +211,7 @@ where \(\Phi(\dot S_p,\tau_{\text{eff}})\) encodes rate/cadence dependence. If t
 
 
 ### 4.5 Boundary Ledger and Tests
-**Note:** Boundary partitioning depends on the pattern‑dependent yield criterion defined in Sec. 2.6 Incoherent Channel (H). See Sec. 4.4 The Node Ledger for the node‑level partition identity and Sec. 11 Computational Implementation Layer for the simulation logging checklist used to validate boundary predictions.
+**Note:** Boundary partitioning depends on the pattern-dependent yield criterion defined in Sec. 2.6 Incoherent Channel (H). See Sec. 4.4 The Node Ledger for the node-level partition identity and Sec. 11 Computational Implementation Layer for the simulation logging checklist used to validate boundary predictions.
 
 **Summary**  
 In SVET, boundary interactions are governed by local CaBS accounting. Incident coherent flux is partitioned at the surface into coherent reflection, coherent transmission, and incoherent bulk loss. Reflection is a surface accounting shock (coherent rejection), not a primary decoherence event. Decoherence (H) occurs only after coherent flux is accepted into the medium and then loses directional coherence.
@@ -229,67 +219,55 @@ In SVET, boundary interactions are governed by local CaBS accounting. Incident c
 **Boundary Ledger Identity**  
 The local energy ledger at a boundary node satisfies:
 
-
-\[
-I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + I_{\text{heat}}
-\]
-
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + I_{\text{heat}}$$
 
 where:
-- \(I_{\text{refl}}\) is **coherent reflection** (surface event),  
-- \(I_{\text{trans}}\) is **coherent transmission** (accepted flux),  
-- \(I_{\text{heat}}\) is **incoherent bulk loss** (H channel).
+- $I_{\text{refl}}$ is **coherent reflection** (surface event),  
+- $I_{\text{trans}}$ is **coherent transmission** (accepted flux),  
+- $I_{\text{heat}}$ is **incoherent bulk loss** (H channel).
 
 **Local Acceptance Rule**  
-For a boundary node with Budget \(B\) and local Strain \(S\), the instantaneous transmission fraction may be expressed as:
+For a boundary node with Budget $B$ and local Strain $S$, the instantaneous transmission fraction may be expressed as:
 
-
-\[
-T \equiv \frac{I_{\text{trans}}}{I_{\text{in}}} \approx \frac{B}{B + S}
-\]
-
+$$T \equiv \frac{I_{\text{trans}}}{I_{\text{in}}} \approx \frac{B}{B + S}$$
 
 and the effective cadence (delay per update) is:
 
+$$\tau_{\text{eff}} = \tau_0\left(1 + \left(\frac{S}{B}\right)^\beta\right)$$
 
-\[
-\tau_{\text{eff}} = \tau_0\left(1 + \left(\frac{S}{B}\right)^\beta\right)
-\]
-
-
-These relations fix reflection and absorption once \(B\) and \(S\) are specified for the interface and bulk.
+These relations fix reflection and absorption once $B$ and $S$ are specified for the interface and bulk.
 
 **Experimental Slab Test Specification (Normal Incidence)**
 
 1. **Setup**  
-   - Monochromatic source with known incident intensity \(I_{\text{in}}\).  
-   - Thin slab of material with well‑characterized surface and bulk CaBS parameters \(B_{\text{surf}}, S_{\text{surf}}, B_{\text{bulk}}, S_{\text{bulk}}\).  
-   - Instruments: calibrated photodetectors for reflected and transmitted coherent intensity; calorimeter or bolometer for bulk heating \(H\).
+   - Monochromatic source with known incident intensity $I_{\text{in}}$.  
+   - Thin slab of material with well-characterized surface and bulk CaBS parameters $B_{\text{surf}}, S_{\text{surf}}, B_{\text{bulk}}, S_{\text{bulk}}$.  
+   - Instruments: calibrated photodetectors for reflected and transmitted coherent intensity; calorimeter or bolometer for bulk heating $H$.
 
 2. **Measurements**  
-   - Measure \(R = I_{\text{refl}}\), \(T = I_{\text{trans}}\), and \(H\) (energy deposited as incoherent channel).  
-   - Verify ledger identity \(R + T + H \approx I_{\text{in}}\) within experimental error.
+   - Measure $R = I_{\text{refl}}$, $T = I_{\text{trans}}$, and $H$ (energy deposited as incoherent channel).  
+   - Verify ledger identity $R + T + H \approx I_{\text{in}}$ within experimental error.
 
 3. **Predictions to test**  
-   - Vary surface \(B_{\text{surf}}\) (e.g., by coating) and observe predicted change in \(R\) with \(T\) and \(H\) constrained by CaBS accounting.  
-   - Under intense pumping, measure change in \(S\) and resulting shifts in \(T\) and \(\tau_{\text{eff}}\) (pump‑induced refractive index shifts).
+   - Vary surface $B_{\text{surf}}$ (e.g., by coating) and observe predicted change in $R$ with $T$ and $H$ constrained by CaBS accounting.  
+   - Under intense pumping, measure change in $S$ and resulting shifts in $T$ and $\tau_{\text{eff}}$ (pump-induced refractive index shifts).
 
 4. **Controls**  
    - Use nonabsorbing reference (e.g., fused silica) to validate coherent reflection baseline.  
-   - Use pump‑probe to separate instantaneous coherent rejection from slower incoherent absorption dynamics.
+   - Use pump-probe to separate instantaneous coherent rejection from slower incoherent absorption dynamics.
 
 **Simulation Logging Checklist**  
 Record per node and per timestep:
 - **Coherent flux vector** (magnitude and orientation)  
-- **Local B, S, τ_eff**  
-- **I_refl, I_trans, ΔH** (energy moved into incoherent channel)  
+- **Local B, S, \tau_eff**  
+- **I_refl, I_trans, \Delta H** (energy moved into incoherent channel)  
 - **Phase coherence metric** (e.g., vector alignment index)  
 - **Boundary ledger reconciliation events** (rejection vs acceptance)
 
-**Cross‑references**  
-- Cross‑reference this subsection in **Section 5 (Emergent Wave Mechanics)** for interference consequences.  
-- Cross‑reference in **Section 10 (Material Response & Dispersion)** for mapping H to material observables.  
-- Cross‑reference in **Section 12 (Predictions)** for experimental claims.  
+**Cross-references**  
+- Cross-reference this subsection in **Section 5 (Emergent Wave Mechanics)** for interference consequences.  
+- Cross-reference in **Section 10 (Material Response & Dispersion)** for mapping H to material observables.  
+- Cross-reference in **Section 12 (Predictions)** for experimental claims.  
 - Refer to **Section 11 (Computational Implementation)** for logging and simulation details.
 
 
@@ -374,6 +352,7 @@ While gravity is geometrically described by spatial gradients of the cadence fie
 *   **Time Dilation ($\Delta \tau$):** As a pattern enters a high-strain region, its internal update processes slow down. The resolution latency ($\Delta \tau$) required to complete a single internal update cycle increases relative to distant, unstrained nodes.
 *   **Stability under Strain ($\Gamma_p$):** A pattern can only maintain its structural coherence if the local strain-to-budget ratio ($S/B$) remains below its intrinsic stability threshold ($\Gamma_p$). If this threshold is crossed, the pattern reaches its physical limit and undergoes structural yield, fracturing into incoherent energy within the $H$-channel.
 *   **Tidal Gradient Response:** In regions with steep cadence gradients ($\nabla \tau_{\text{eff}}$)—such as near a high-excitation core—different parts of an extended coherence-pattern experience uneven latency. The leading edge of the pattern updates at a different rate than the trailing edge, stretching its internal node bindings. This spatial discrepancy destabilizes the pattern's structural integrity, triggering a localized $\Gamma_p$ collapse into simpler, incoherent excitations.
+*TODO: Describe the structural incompatibility between a pattern’s internal wave‑geometry and the propagation geometry demanded as its effective velocity approaches the adjacency‑hop limit (c). Explain how this geometric mismatch increases Δτ, elevates strain, and drives the pattern toward Γₚ‑limited collapse.*
 
 ---
 
@@ -391,6 +370,7 @@ While gravity is geometrically described by spatial gradients of the cadence fie
 ---
 
 ## 10. Measurement and Decoherence
+*TODO: Clarify the observational criterion for pattern integrity: a pattern remains operationally intact as long as an observer can receive coherent signals from it. Define the boundary between detectable coherence, partial decoherence, and full collapse into the incoherent channel (H).*
 
 ### 10.1 Detectors as Active Strain Injectors
 *TODO: Model detectors as active nodes that inject strain and alter local budgets during measurement.*
