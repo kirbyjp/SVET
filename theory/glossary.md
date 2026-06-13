@@ -66,6 +66,7 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** Number of global ticks required for a pattern to re-establish its adjacency-coherent state.  
 **Logic:** Derived from $\tau, S, B, \Gamma_p,$ and CaBS.  
 **Forensic Role:** Physical mechanism behind time dilation and refractive index.
+*   **Emergent Interpretation:** Spatial variations in $\Delta\tau$ produce the timing gradients historically described as "ground-state tilt," giving rise to gravitational redshift, lensing, and time dilation.
 
 ### $\tau_{eff}$ — "tau-eff"
 **Type:** Derived  
@@ -123,6 +124,7 @@ This document serves as the authoritative notation and terminology reference for
 **Type:** Metric  
 **Definition:** Pattern Stability Factor; robustness of a pattern's coherence under strain.  
 **Forensic Role:** Determines if a pattern is a "Robust Loop" (particle) or a "Fragile Wave."
+*   **Emergent Interpretation:** Historically referred to as "pattern rigidity." When the ratio $S_p/B$ exceeds $\kappa_{\text{yield}}\Gamma_p$, the pattern undergoes structural failure ("coherence catastrophe") and sheds energy into the incoherent channel ($H$).
 
 ### $\ell_{adj}$ — "ell-adj"
 **Type:** Metric  
