@@ -130,9 +130,82 @@ R + T + H = 100\%
 $$
 *TODO: Derive this identity from the node update algorithm and show how it enforces global conservation without invoking a separate conservation law.*
 
+### 4.5 Boundary Ledger and Tests
+
+**Summary**  
+In SVET, boundary interactions are governed by local CaBS accounting. Incident coherent flux is partitioned at the surface into coherent reflection, coherent transmission, and incoherent bulk loss. Reflection is a surface accounting shock (coherent rejection), not a primary decoherence event. Decoherence (H) occurs only after coherent flux is accepted into the medium and then loses directional coherence.
+
+**Boundary Ledger Identity**  
+The local energy ledger at a boundary node satisfies:
+
+
+\[
+I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + I_{\text{heat}}
+\]
+
+
+where:
+- \(I_{\text{refl}}\) is **coherent reflection** (surface event),  
+- \(I_{\text{trans}}\) is **coherent transmission** (accepted flux),  
+- \(I_{\text{heat}}\) is **incoherent bulk loss** (H channel).
+
+**Local Acceptance Rule**  
+For a boundary node with Budget \(B\) and local Strain \(S\), the instantaneous transmission fraction may be expressed as:
+
+
+\[
+T \equiv \frac{I_{\text{trans}}}{I_{\text{in}}} \approx \frac{B}{B + S}
+\]
+
+
+and the effective cadence (delay per update) is:
+
+
+\[
+\tau_{\text{eff}} = \tau_0\left(1 + \left(\frac{S}{B}\right)^\beta\right)
+\]
+
+
+These relations fix reflection and absorption once \(B\) and \(S\) are specified for the interface and bulk.
+
+**Experimental Slab Test Specification (Normal Incidence)**
+
+1. **Setup**  
+   - Monochromatic source with known incident intensity \(I_{\text{in}}\).  
+   - Thin slab of material with well‑characterized surface and bulk CaBS parameters \(B_{\text{surf}}, S_{\text{surf}}, B_{\text{bulk}}, S_{\text{bulk}}\).  
+   - Instruments: calibrated photodetectors for reflected and transmitted coherent intensity; calorimeter or bolometer for bulk heating \(H\).
+
+2. **Measurements**  
+   - Measure \(R = I_{\text{refl}}\), \(T = I_{\text{trans}}\), and \(H\) (energy deposited as incoherent channel).  
+   - Verify ledger identity \(R + T + H \approx I_{\text{in}}\) within experimental error.
+
+3. **Predictions to test**  
+   - Vary surface \(B_{\text{surf}}\) (e.g., by coating) and observe predicted change in \(R\) with \(T\) and \(H\) constrained by CaBS accounting.  
+   - Under intense pumping, measure change in \(S\) and resulting shifts in \(T\) and \(\tau_{\text{eff}}\) (pump‑induced refractive index shifts).
+
+4. **Controls**  
+   - Use nonabsorbing reference (e.g., fused silica) to validate coherent reflection baseline.  
+   - Use pump‑probe to separate instantaneous coherent rejection from slower incoherent absorption dynamics.
+
+**Simulation Logging Checklist**  
+Record per node and per timestep:
+- **Coherent flux vector** (magnitude and orientation)  
+- **Local B, S, τ_eff**  
+- **I_refl, I_trans, ΔH** (energy moved into incoherent channel)  
+- **Phase coherence metric** (e.g., vector alignment index)  
+- **Boundary ledger reconciliation events** (rejection vs acceptance)
+
+**Cross‑references**  
+- Cross‑reference this subsection in **Section 5 (Emergent Wave Mechanics)** for interference consequences.  
+- Cross‑reference in **Section 10 (Material Response & Dispersion)** for mapping H to material observables.  
+- Cross‑reference in **Section 12 (Predictions)** for experimental claims.  
+- Refer to **Section 11 (Computational Implementation)** for logging and simulation details.
+
+
 ---
 
 ## 5. Emergent Wave Mechanics
+See Section 4.5 (Boundary Ledger and Tests) for the local ledger that determines surface reflection vs transmission.
 
 ### 5.1 Local Update → Discrete Wave Equation
 *TODO: Derive the discrete wave equation that emerges from repeated local updates. Provide the continuum limit and show correspondence to standard wave PDEs.*
@@ -229,6 +302,7 @@ $$
 ---
 
 ## 11. Material Response & Dispersion
+Map H (incoherent flux) from Section 4.5 to material sinks (phonons, fluorescence, photoemission)
 
 ### 11.1 Effective Index \(n_{\text{SVET}}(\omega)\)
 *TODO: Define and derive the effective refractive index as a function of local state variables.*
@@ -257,6 +331,7 @@ $$
 
 ### 12.3 Boundary Conditions and Heat Channel
 *TODO: Define boundary conditions used in simulations and the implementation of the heat sink.*
+Log fields listed in Section 4.5 Simulation Logging Checklist for reproducible runs.
 
 ### 12.4 Numerical Stability and Convergence
 *TODO: Provide notes on timestep selection, stability criteria, and convergence tests.*
@@ -264,6 +339,7 @@ $$
 ---
 
 ## 13. Predictions and Falsifiable Tests
+Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab test described in Section 4.5 provides a direct falsifiable test of SVET partitioning.
 
 ### 13.1 Pump‑Induced Refractive Index Shifts
 *TODO: Quantify predicted index shifts under intense pumping and propose pump‑probe experimental setups.*
