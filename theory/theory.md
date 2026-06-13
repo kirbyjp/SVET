@@ -507,6 +507,33 @@ This predictive test maps standard nuclear stability and decay profiles to the d
 
 **Experimental Target:** Map the specific mass numbers of known islands of stability and correlate them with localized node-network resonance windows, predicting decay rates based on the available local budget-to-strain ratios.
 
+### 13.11 QED-Regime Budget Tests
+
+Once the budget equation is defined explicitly, SVET predictions can be mapped to laboratory observables. The governing relation is:
+
+$$B(r) = \frac{1}{1 + \eta(r)} \quad \text{or more generally} \quad B(r) = \frac{1}{1 + f(\eta(r))}$$
+
+Here, $\eta(r)$ represents local strain-to-demand ratio, and $B(r) \to 0$ marks the onset of coherence collapse. This limit corresponds to the Schwinger threshold expressed in SVET language.
+
+**Observable consequences of budget exhaustion:**
+
+*   **Pair production rate** — $B \to 0$ $\to$ vacuum breakdown $\to$ measurable electron-positron pairs.  
+*   **High-order harmonic cutoff** — budget depletion $\to$ nonlinear refractive index $\to$ spectral shifts.  
+*   **Vacuum birefringence** — anisotropic strain $\to$ polarization rotation.  
+*   **Pulse steepening / self-compression** — budget bottleneck $\to$ effective dispersion $\to$ measurable in plasma-mirror experiments.
+
+These effects provide direct experimental handles for testing SVET’s coherence-budget formalism against strong-field QED data.
+
+### TODO: Supporting Artifacts for QED-Regime Budget Tests (See `SVET_issues_list.xls` — Tab “SVET QED Maths”)
+
+The following supporting materials will be generated after correspondence calibration:
+
+*   **Lab-Test Checklist** — defines measurable observables and experimental setups for validating SVET’s budget-collapse predictions.  
+*   **Budget-Sweep Simulation Pseudocode** — outlines parameter sweeps for $B(r)$ across strain and cadence gradients.  
+*   **QED-Math Triage Summary** — consolidates mappings between SVET variables and standard QED quantities for cross-comparison.
+
+These placeholders ensure that the QED-testability framework remains visible and will be revisited once the correspondence layer and experimental calibration are complete.
+
 ---
 
 ## 14. Emergent Continuum
