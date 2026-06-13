@@ -152,11 +152,17 @@ We introduce a dimensionless pattern stability factor $\Gamma_p$ that quantifies
 A node collapses into the incoherent energy channel (H) when the pattern-specific update demand ($S_p$) relative to the local budget ($B$) exceeds the network's yield constant ($\kappa_{\text{yield}}$) scaled by the pattern's stability:
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 
-#### 2.6.2 Coherence-Strain and Coherence-Shedding
+### 2.6.2 Coherence‑Strain and Coherence‑Shedding
+
 When a pattern moves through regions of high utilization, its degradation proceeds through two discrete stages:
-*   **Coherence-Strain ($S$):** The accumulation of coherent update demand on the local node network. As the incoming load ($S$) increases relative to the available budget ($B$), the local resolution latency increases.
-*   **Coherence-Shedding ($\Delta H$):** When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable exactions are rejected and fall out of the coherent ledger, collapsing into incoherent excitations ($\Delta H$), observed macroscopically as heat.
-*TODO: Elaborate on the relationship between induced potential energy within a coherence‑pattern and the progressive loss of pattern integrity as strain increases. Clarify how accumulated internal tension contributes to the onset of coherence‑shedding and eventual collapse into the incoherent channel (H).*
+
+**• Coherence‑Strain ($S$):**  
+The accumulation of coherent update demand on the local node set. As the incoming load $S$ increases relative to the available budget $B$, the local resolution latency rises and the pattern accumulates internal strain energy. This strain energy reflects the mismatch between the pattern’s preferred propagation geometry and the cadence‑limited routing permitted by the surrounding node set.
+
+**• Coherence‑Shedding ($\Delta H$):**  
+When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable update demand is rejected and diverted out of the coherent ledger, collapsing into incoherent excitations $\Delta H$, observed macroscopically as heat.
+
+As internal strain energy accumulates, the pattern’s coherence integrity progressively weakens. The rising tension between its internal wave‑geometry and the cadence‑limited routing environment eventually triggers coherence‑shedding, leading to partial or complete collapse into the incoherent channel (H).
 
 #### 2.6.3 Physical Nature and Manifestations of H
 In SVET, **H** denotes *incoherent energy* — energy that has left the coherent propagation channel and no longer carries directional phase information. Heat is one possible macroscopic manifestation of H, but H is a node network-level category that can produce multiple physical outcomes depending on the local material and boundary physics.
