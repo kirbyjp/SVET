@@ -16,3 +16,23 @@ The v0.07.3 baseline-preservation protocol, pull request (PR) workflow, protecte
 *   Validate the emergent least-cost paths against active grid runs and implement logging for the following active diagnostics:
     *   `nodes_biased_count`: The count of nodes per update step where utilization exceeds the background floor ($U(r) > U_{\text{floor}}$).
     *   `nodes_skipped_count`: The count of nodes bypassed per iteration when local update latency ($\tau_{\text{eff}}$) exceeds maximum processing limits.
+
+---
+
+### TODO: Universal Horizon Axis Selector and Universality Scoring Suite (See `SVET_issues_list.xls` — Tab “Coherence Manifold”)
+
+*   Implement an interactive selector row in the monitor interface to toggle the horizontal plotting axis ($x$-axis) between the following six candidate universal variables:
+    1.  **Normalized Radius:** $r / r_{\text{hor}}$ (Proximity to the Schwarzschild horizon)
+    2.  **Dimensionless Potential:** $\Phi = \frac{GM}{r c^2}$ (Local gravitational well depth)
+    3.  **Normalized Excitation:** $S_{\text{norm}} = \frac{\eta}{\eta_{\text{max}}}$ (Local node network strain)
+    4.  **Cosmic Coherence:** $C = \tau_{\text{eff}} H_0$ (Cosmic expansion suppression factor)
+    5.  **Composite Axis:** A user-weighted, parameterized blend of the above candidate variables.
+    6.  **Null Option:** Raw physical radius ($r$) and raw parameter dials.
+*   Develop the **Universality Scoring Algorithm** to calculate and report the following real-time metrics for each selected plotting axis across mass sweeps (proton $\to$ Sun $\to$ Neutron Star $\to$ Black Hole):
+    *   **Curve Collapse Score:** Quantifies the mathematical convergence (overlay tightness) of different mass curves on the active axis.
+    *   **Monotonicity and Smoothness Scores:** Detects and penalizes any step-function jumps or non-monotonic behavior along the active axis.
+    *   **GR Compatibility Score:** Measures the deviation between the SVET curve and classical GR in the weak-field regime ($U \to 0$), ensuring the axis correctly aligns the trusted classical tails.
+    *   **QG Compatibility Score:** Evaluates whether the SVET curves consistently peel away from GR to approach flat-line saturation ($U \to 1$) in the strong-field quantum regime.
+*   Validate the emergent least-cost paths against active grid runs and implement logging for the following active diagnostics:
+    *   `nodes_biased_count`: The count of nodes per update step where utilization exceeds the background floor ($U(r) > U_{\text{floor}}$).
+    *   `nodes_skipped_count`: The count of nodes bypassed per iteration when local update latency ($\tau_{\text{eff}}$) exceeds maximum processing limits.
