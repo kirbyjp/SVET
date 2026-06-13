@@ -402,7 +402,18 @@ Because flux vectors possess explicit physical orientations across adjacency lin
 This vector-based subtraction replaces the standard wave mechanics requirement for complex probability amplitudes with real-valued, directional conservation bookkeeping.
 
 ### 4.3 Propagation, Reflection, and Refraction
-*TODO: State local update rules that produce propagation, reflection, and refraction. Include boundary interaction rules and examples.*
+
+The spatial paths of coherent update demands are governed by local capacity negotiations and routing preferences across the node set. This interaction produces the discrete behaviors of transmission, reflection, and refractive bending.
+
+**1. Coherent Transmission**  
+Coherent propagation occurs when adjacent node $j$ has sufficient available budget $B_j$ to accept the incoming coherent demand $F_{i\to j}^{\text{eff}}$. The successfully transmitted fraction continues along its trajectory.
+
+**2. Coherent Rejection (Reflection)**  
+Reflection is a surface-level accounting shock. When the incoming effective flux exceeds the target node's available budget, the target node rejects the excess coherent demand. The unresolved portion remains coherent and is reflected back into the adjacency:
+$$F_{i\to j}^{\text{refl}} = F_{i\to j}^{\text{eff}} - B_j \qquad \big(\text{when } F_{i\to j}^{\text{eff}} > B_j\big)$$
+
+**3. Coherence Refraction**  
+When propagating across regions of varying node strain, the trajectory of a wave-front is deflected. Because the local coherence cost $C(x,v)$ varies with the strain-induced bias $B_a(x)$, the pattern-level wave-front naturally bends toward directions of lower propagation cost. This discrete refraction reproduces Snell-like behavior in the continuum limit, serving as the local origin of emergent gravitational geodesics.
 
 ### 4.4 The Node Ledger (Conservation of Energy)
 
