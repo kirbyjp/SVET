@@ -226,7 +226,46 @@ Future tasks:
 *   Verify via numerical simulation if these local rules naturally yield emergent geodesic paths.  
 *   Validate the resulting propagation velocities against standard lattice simulations and audit configurations.
 
-### 3.7 Coherence Manifold Mapping
+### 3.7 Operational Range of the Node Network
+
+SVET dynamics operate within a finite, dimensionless excitation range that constrains all local update behavior, cadence scaling, and horizon formation. These bounds define the physically admissible region for node-level activity.
+
+#### Axiom 1 — Excitation Norm
+Define the local excitation as the dimensionless ratio:
+$$\eta(x) = \frac{\rho_{\text{local}}(x)}{\rho_{\text{ref}}}$$
+where the reference density $\rho_{\text{ref}}$ is taken as the Planck energy density. The admissible range is bounded as:
+$$0 \le \eta \le 1$$
+In its idle ground state, the network's resting baseline satisfies $\eta_{\text{vac}} \sim 10^{-122}$.
+
+#### Axiom 2 — Finite Update Capacity
+Each node possesses a maximum update rate $u_{\text{node,max}}$ at Planck saturation ($\eta = 1$), physically constrained by the Margolus-Levitin speed limit:
+$$u_{\text{node,max}} \sim \frac{2 E_{\text{ref}}}{\pi \hbar}$$
+where $E_{\text{ref}}$ is the energy in a reference node at saturation. The effective update rate scales linearly with local excitation:
+$$u(\eta) = \eta\,u_{\text{node,max}}$$
+This expresses the capacity-limited nature of the node network, directly linking local energy density to the local update cadence.
+
+#### Axiom 3 — Collapse Bound for Extended Regions
+While individual nodes may approach local saturation ($\eta \to 1$), extended regions cannot sustain uniform saturation. For a given region of radius $R$ containing $N$ nodes, the coarse-grained average excitation is defined as:
+$$\bar{\eta} = \frac{1}{N}\sum_{i=1}^{N} \eta_i$$
+There exists a critical excitation level $\eta_{\text{BH}}(R) \le 1$ such that if the average excitation exceeds this threshold, the region undergoes gravitational collapse, forming a local horizon:
+$$\bar{\eta} > \eta_{\text{BH}}(R) \quad \Rightarrow \quad \text{horizon formation}$$
+This bound distinguishes the microphysical saturation ceiling ($\eta = 1$) from the macroscopic, geometric boundary of black hole formation.
+
+#### Axiom 4 — Tick Constraint (Nyquist Bound)
+The discrete update tick $\Delta t$ must be short enough to resolve the highest physically relevant angular frequency $\omega_{\max}$ to prevent aliasing:
+$$\Delta t \lesssim \frac{\pi}{\omega_{\max}}$$
+If the Planck scale is taken as fundamental, the physical update rate cannot exceed the Planck time $t_P$, establishing the absolute limit:
+$$t_P \le \Delta t \le \frac{\pi}{\omega_{\max}}$$
+The tick selection governs representational resolution, while the local excitation $u(\eta)$ governs realized processing capacity; the two quantities are coupled but distinct.
+
+#### Axiom 5 — Asymptotic Cadence Collapse
+The node network never reaches a state of absolute, literal cessation of updates (literal zero-tick, or $\tau_{\text{eff}} = \infty$). Instead, as the local excitation approaches saturation ($\eta \to 1$), the effective cadence ($\tau_{\text{eff}}$) diverges asymptotically:
+$$\lim_{\eta \to 1} \tau_{\text{eff}}(\eta) = \infty$$
+Each incremental decimal increase in $\eta$ (e.g., $0.9 \to 0.99 \to 0.999$) requires exponentially higher local excitation densities, producing exponentially larger slowdowns in the local update cadence. This is a purely capacity-limited boundary condition: just as Special Relativity prevents massive particles from reaching $c$ through an exponential divergence of kinetic energy, SVET prevents the node network from reaching absolute temporal freezing through an exponential divergence of $\tau_{\text{eff}}$.
+
+*Note on the Two-Layer Ontology:* Cadence collapse is strictly a pattern-level phenomenon. The underlying node network (the physical hardware) continues to respect the absolute, structural propagation limit $c$ (exactly one adjacency hop per network tick). What collapses under extreme excitation and routing cost is the capacity of extended, coherent patterns (the software) to exploit that raw network capacity. As local excitation approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$.
+
+### 3.8 Coherence Manifold Mapping
 
 The mapping from physical wave patterns to emergent metric geometry proceeds through a five-stage processing pipeline:
 
@@ -433,8 +472,22 @@ The equivalence principle is naturally recovered as a local kinematic property o
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
 
-### 8.4 Finite‑Core Black Holes
-*TODO: Describe finite‑core black hole structure, internal state, and how singularities are replaced by high‑strain cores.*
+### 8.4 Finite‑Core Black Holes and Horizon Formation
+
+In SVET, black holes arise when extended regions exceed the collapse excitation threshold $\eta_{\text{BH}}(R)$. Unlike General Relativity, the interior of a collapsed region is not forced into a coordinate or physical singularity. Instead, the node network experiences **Cadence Collapse**, asymptotically approaching its finite excitation ceiling without reaching literal zero-tick.
+
+#### The Asymptotically Frozen Interior
+As the excitation approaches saturation ($\eta \to 1$) within the interior, the effective cadence diverges asymptotically: each incremental increase in $\eta$ produces exponentially larger slowdowns in $\tau_{\text{eff}}$, analogous to how approaching the speed of light requires exponentially increasing energy. 
+
+The underlying node network continues to propagate update states at the absolute, structural propagation limit $c$ (one adjacency hop per tick) to maintain the local transmission of strain fields. What collapses is the ability of the extended, coherent pattern to exploit that raw network capacity. The interior never reaches a state of literal zero-tick or total cessation of updates; rather, it approaches this frozen state asymptotically. Because the local excitation cannot exceed the absolute microphysical ceiling ($\eta_{\max} = 1$), the interior is preserved as a finite, non-singular, and stable domain of highly latent state updates.
+
+#### Coherence Horizon
+A horizon forms where outward coherence routing becomes impossible because the local update costs exceed any possible local coherence budget:
+$$\eta(r) \to \eta_{\text{BH}} \quad \Rightarrow \quad \text{coherence horizon}$$
+This boundary is a localized routing limit, not a geometric or spatial tear in the network. Because the horizon blocks pattern-level propagation while allowing background node bookkeeping to continue normally, gravity waves and strain information propagate past the boundary without violating causality.
+
+#### Universality Across Scales
+The identical physical mechanism governs stellar-mass black holes, supermassive black holes, and micro-black holes formed by Planck-scale probes. All share the same fundamental features: a finite, saturated interior governed by asymptotic cadence collapse, and a coherence horizon defined by the limit of the local update budget.
 
 ### 8.5 Hill vs Hole Duality
 *TODO: Present the Hill vs Hole duality: GR's negative potential well vs SVET's positive excitation hill. Show how weak‑field observables coincide while mechanisms differ.*
@@ -482,6 +535,23 @@ These items are tracked in `SVET_issues_list.xls`, Tab **“SVET Blackhole”**,
 
 ### 9.3 Emergent Lorentz Symmetry
 *TODO: Provide arguments and calculations showing how Lorentz symmetry emerges in the long‑wavelength limit from cadence and adjacency constraints.*
+
+### 9.4 The Double-Walled Universe: Cosmic and Quantum Boundaries
+
+The SVET framework unifies the microscopic and macroscopic limits of the cosmos, showing that the physical universe is bounded by two symmetric, non-singular causal walls. Both boundaries are emergent manifestations of the identical physical phenomenon: asymptotic **Cadence Collapse** at opposite ends of the scale axis.
+
+#### 1. The Quantum Wall (Small-Scale Boundary)
+At the microscopic limit, attempting to probe scales smaller than the Planck length requires concentrating high-energy density into an increasingly localized region. When a Planck-scale probe focuses energy into a volume smaller than its local coherence horizon, the local excitation is driven toward saturation ($\eta \to 1$). 
+
+Through the mechanism of cadence collapse, the local update delays diverge asymptotically. The resulting frozen state prevents further coordinate probing or deeper information extraction, establishing an absolute, non-singular lower boundary on physical measurements. Throughout this transition, the underlying nodes continue to tick normally at the hardware limit $c$; only the pattern-level resolution latency diverges.
+
+#### 2. The Cosmic Wall (Large-Scale Boundary)
+At the macroscopic limit, the cosmological expansion of the universe outruns the maximum coherent update propagation rate ($c = 1$ node per tick). At this boundary, the effective local cadence of the distant node network slows asymptotically relative to a local observer, triggering a cosmic-scale cadence collapse that forms the Hubble coherence horizon. 
+
+Beyond this boundary, the budget required for coherent propagation diverges, preventing further coherent information from reaching the observer.
+
+#### Ontological Unification
+These two boundaries—the Planck-scale quantum wall and the Hubble-scale cosmic wall—are symmetric limits of the same underlying capacity constraint. At both scales, the network's update budget undergoes asymptotic cadence collapse, establishing a finite, non-singular "soft box" within which all physical patterns must propagate.
 
 ---
 
