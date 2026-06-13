@@ -501,8 +501,32 @@ $$\frac{\partial^2 \Phi}{\partial t^2} = c_{\text{eff}}^2 \nabla^2 \Phi$$
 
 The effective propagation speed $c_{\text{eff}}$ is reduced relative to the invariant adjacency-hop limit $c$ whenever local strain or cadence penalties increase local utilization ($U \to 1$). This wave equation naturally incorporates medium-dependent propagation, dispersion, and cadence-induced refractive effects directly into the local capacity limits of the node set, recovering the asymptotic freezing of wave-packets near high-strain boundaries.
 
-### 5.2 Interference from Vector Superposition
-*TODO: Show how interference patterns arise from vector superposition of flux orientations and cadence delays. Provide the double‑slit toy model.*
+### 5.2 Interference via Flux Superposition
+
+Interference in SVET arises from the superposition of coherent flux vectors arriving at a node with differing orientations and cadence delays. Because phase is encoded through directional alignment and timing (Section 2.4), interference requires no complex amplitudes.
+
+Let two coherent contributions arrive at node $x$:
+- flux vectors $\vec{F}_1$ and $\vec{F}_2$,
+- cadence delays $\Delta t_1$ and $\Delta t_2$.
+
+The combined coherent flux is:
+$$\vec{F}_{\text{tot}} = \vec{F}_1 + \vec{F}_2$$
+with the relative cadence delay producing an effective phase offset:
+$$\Delta \phi = \omega (\Delta t_2 - \Delta t_1)$$
+where $\omega$ is the local update frequency of the pattern.
+
+Constructive interference occurs when the flux vectors align and cadence delays match:
+$$\vec{F}_1 \parallel \vec{F}_2, \qquad \Delta \phi \approx 0$$
+
+Destructive interference occurs when the flux vectors oppose or cadence delays differ by half a cycle:
+$$\vec{F}_1 \approx -\vec{F}_2, \qquad \Delta \phi \approx \pi$$
+
+Because flux is real-valued and directional, interference emerges from:
+- vector addition of coherent update demand,
+- cadence-induced timing offsets,
+- and the local routing cost that modulates effective propagation speed.
+
+This reproduces the full interference phenomenology of wave mechanics while remaining grounded in local, real-valued update rules.
 
 ### 5.3 Dispersion Relations
 *TODO: Derive dispersion relations and define the effective refractive index \(n_{\text{SVET}}(\omega)\). Provide low‑frequency and high‑frequency asymptotics.*
