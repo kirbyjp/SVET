@@ -483,8 +483,23 @@ Record per node and per timestep:
 ## 5. Emergent Wave Mechanics
 See Section 4.5 (Boundary Ledger and Tests) for the local ledger that determines surface reflection vs transmission.
 
-### 5.1 Local Update → Discrete Wave Equation
-*TODO: Derive the discrete wave equation that emerges from repeated local updates. Provide the continuum limit and show correspondence to standard wave PDEs.*
+### 5.1 Discrete Wave Equation
+
+Wave-like behavior in SVET arises from repeated coherent updates across adjacency links in the node set. Each tick, a node exchanges directional flux with its neighbors according to local strain, bias, and cadence constraints. In the low-strain, low-latency regime, these local exchanges produce a discrete second-order update rule.
+
+Let $\Phi(x,t)$ denote the coherent flux amplitude at node $x$ and tick $t$. The adjacency-based update rule takes the form:
+$$\Phi(x,t+\Delta t) = 2\Phi(x,t) - \Phi(x,t-\Delta t) + c_{\text{eff}}^2 \sum_{x' \in \text{Adj}(x)} \left[\Phi(x',t) - \Phi(x,t)\right]$$
+
+where:
+- $\text{Adj}(x)$ is the set of nodes adjacent to $x$,
+- $c_{\text{eff}}(x)$ is the effective propagation coefficient, which scales inversely with the local dilation factor $\alpha(x)$ and remaining budget $B(x) = 1 - U(x)$ (as established in Section 3.6):
+  $$c_{\text{eff}}(x) = c_0 B(x) = c_0 \big(1 - U(x)\big)$$
+  where $c_0$ is the baseline propagation speed in the unstrained vacuum.
+
+In the long-wavelength limit, where variations across adjacent nodes are small, this discrete rule converges to the continuum wave equation:
+$$\frac{\partial^2 \Phi}{\partial t^2} = c_{\text{eff}}^2 \nabla^2 \Phi$$
+
+The effective propagation speed $c_{\text{eff}}$ is reduced relative to the invariant adjacency-hop limit $c$ whenever local strain or cadence penalties increase local utilization ($U \to 1$). This wave equation naturally incorporates medium-dependent propagation, dispersion, and cadence-induced refractive effects directly into the local capacity limits of the node set, recovering the asymptotic freezing of wave-packets near high-strain boundaries.
 
 ### 5.2 Interference from Vector Superposition
 *TODO: Show how interference patterns arise from vector superposition of flux orientations and cadence delays. Provide the double‑slit toy model.*
