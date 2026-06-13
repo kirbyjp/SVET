@@ -41,6 +41,14 @@ The vacuum node network supports waves rather than point-like particles. What ex
 ### 2.0 Ontology of the Vacuum Overview
 This chapter details the fundamental ontology of the physical vacuum within the SVET framework. We establish the node network as the primary, static, non-coordinate system of discrete update sites, from which space, time, and coherent matter emerge. By analyzing localized coherence configurations and their local rules, we formalize the boundary between coherent propagation and incoherent dissipation, defining the structural limits of physical patterns.
 
+### 2.0.1 Coherence Manifold Postulate
+
+**Postulate:** Wave patterns generate strain; local strain induces bias in local update preferences; bias determines least-cost coherence routing; and least-cost routing is the emergent geometry we mistake for spacetime.
+
+Under this postulate, the node network remains static and non-coordinate; nodes do not shift, stretch, or bend. Spacetime is not a fundamental grid or field, but rather the "shape of the routing problem." Because every physical pattern experiences the identical local routing preferences of the network, they inhabit a shared, emergent routing map—the coherence manifold. 
+
+From within the coherence manifold, local update latencies look like curvature, localized gradient responses look like forces, and the boundaries of budget exhaustion look like physical horizons. Physics became historically stalled because it attempted to quantize the emergent manifold (quantizing spacetime curvature in General Relativity or continuous fields in Quantum Field Theory) rather than quantizing the underlying coherence-strain rules of the network itself.
+
 ### 2.1 The Planck‑Scale Physical Vacuum
 *TODO: Define the vacuum as a capacity‑limited, rule‑governed entity. Explain why we treat the vacuum as a network of nodes rather than a continuous field.*
 *TODO: Provide quantitative scale comparisons to illustrate why the node network must support coherence across many orders of magnitude. Include the following reference values:*
@@ -217,6 +225,35 @@ Future tasks:
 *   Define explicit localized update rules for pattern motion, branching, stalling, and decay under CaBS dynamics.  
 *   Verify via numerical simulation if these local rules naturally yield emergent geodesic paths.  
 *   Validate the resulting propagation velocities against standard lattice simulations and audit configurations.
+
+### 3.7 Coherence Manifold Mapping
+
+The mapping from physical wave patterns to emergent metric geometry proceeds through a five-stage processing pipeline:
+
+**1. Patterns to Strain**
+Let the pattern be effectively represented as a local field $P(x)$ at macroscopic scales, which may consist of the wave function $\Psi(x)$ or a bundle of quantum fields. The strain tensor $S_{ij}(x)$ is an effective continuum representation of how the pattern stresses the local node network:
+$$S_{ij}(x) = \mathcal{F}_{ij}\big[P(x), \partial_i P(x), \dots\big]$$
+where the functional $\mathcal{F}_{ij}$ represents how the pattern's spatial profile stresses the local node network. Different components of $S_{ij}$ correspond to distinct physical channels (such as mass-like, charge-like, or spin-like strain). Under this mapping, $\Psi$ is placed as an input to the geometry-generation pipeline rather than being placed "inside" a pre-existing spacetime.
+
+**2. Strain to Bias**
+The accumulated strain tensor is mapped to a local bias field $B_a(x)$ defining the network's directional update preferences:
+$$B_a(x) = \mathcal{G}_a\big[S_{ij}(x)\big]$$
+The functional $\mathcal{G}_a$ determines local update bias, representing the network-level origin of gravitational potentials, frame-dragging, and background biases ($B_0$).
+
+**3. Bias to Local Coherence Cost**
+The update bias defines a directional coherence cost density $C(x,v)$ for a pattern propagating through point $x$ with local direction vector $v$:
+$$C(x,v) = \mathcal{H}\big(B_a(x), v\big)$$
+This represents the local metric weight, defining how expensive it is in coherence terms to propagate a pattern along a given trajectory.
+
+**4. Least-Cost Routing (Variational Principle)**
+The trajectory $\gamma$ of a propagating pattern minimizes the total coherence action $A[\gamma]$:
+$$A[\gamma] = \int_\gamma C(x, \dot{x})\,ds, \qquad \delta A[\gamma] = 0$$
+Least-cost coherence routing paths are the geodesics of this cost functional.
+
+**5. Metric Emergence**
+If the cost function $C(x,v)$ is homogeneous of degree one in the velocity vector $v$, it can be modeled as a Finsler metric. Under isotropic assumptions, this reduces to a Riemannian metric tensor $g_{\mu\nu}(x)$ such that:
+$$C(x,v) = \sqrt{g_{\mu\nu}(x)\,v^\mu v^\nu}$$
+The emergent coherence manifold is $(M, g_{\mu\nu})$, where horizons and ergospheres represent critical, capacity-limited boundaries of the metric.
 
 ---
 
@@ -411,6 +448,13 @@ While gravity is geometrically described by spatial gradients of the cadence fie
 
 *TODO: Describe the structural incompatibility between a pattern’s internal wave-geometry and the propagation geometry demanded as its effective velocity approaches the adjacency-hop limit ($c$). Explain how this geometric mismatch increases $\Delta\tau$, elevates strain, and drives the pattern toward $\Gamma_p$-limited collapse.*
 
+### 8.7 Coherence Manifold GR Correspondence
+
+When the directional cost function $C(x,v)$ admits a quadratic velocity form, the effective metric $g_{\mu\nu}(x)$ governs macroscopic propagation. Under this mapping, spatial update preferences define the geometry:
+*   **Radial Update Bias:** High radial strain biases the node network toward inward updates, producing the emergent metric effect of gravitational attraction.
+*   **Tangential Update Bias:** High tangential strain biases the network toward sideways updates, producing the macroscopic equivalent of frame-dragging.
+*   **Boundary Horizons:** Critical cost boundaries arise where outward propagation costs exceed any possible local coherence budget ($B \to 0$), creating one-way routing surfaces where outward geodesics terminate.
+
 ### TODO: Black Hole Correspondence Integration (See `SVET_issues_list.xls` — Tab “SVET Blackhole”)
 
 A full integration of SVET’s black hole modeling framework is postponed pending completion of the GR and QFT correspondence layers. The following items have been reviewed and triaged for structured incorporation:
@@ -508,6 +552,12 @@ Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab 
 
 ### 13.1 Pump‑Induced Refractive Index Shifts
 *TODO: Quantify predicted index shifts under intense pumping and propose pump‑probe experimental setups.*
+
+### 13.12 Coherence Manifold Predictions
+
+*   **Horizon Boundary Routing:** Horizon surfaces are predicted to block coherent pattern propagation due to budget exhaustion ($B \to 0$) while allowing background node bookkeeping to continue normally, preserving local causality and preventing any coordinate or physical singularities.
+*   **Asymmetric Wavefront Arrival:** Tangential update bias regions (ergospheres) are predicted to produce measurable, direction-dependent propagation time delays in coherent wave packets.
+*   **Inspiral Frequency Saturation:** Binary inspiral frequencies are predicted to reach a hard ceiling where localized utilization $U(r)$ forces a routing collapse, providing a signature in high-precision wave spectra.
 
 ### 13.2 Finite‑Core Black Hole Signatures
 *TODO: List observational signatures (e.g., modified ringdown, core emission spectra) that distinguish finite‑core black holes from classical singularities.*
@@ -646,6 +696,26 @@ These placeholders ensure that the QED-testability framework remains visible and
 
 ### Appendix D: Notation and Conventions
 *TODO: Table of symbols, units, index conventions, and shorthand used throughout the document.*
+
+## Appendix E: Coherence Manifold Toy Formulations
+
+*The following forms are phenomenological toy models, not proposed as fundamental SVET laws; they are used to explore how utilization-driven metrics might reproduce GR-like behavior.*
+
+### 1. Minimal Toy Formulations
+We express the pattern-to-strain mapping tensor $\mathcal{F}_{ij}$, the strain-to-bias mapping $\mathcal{G}_a$, and the directional coherence cost density $\mathcal{H}$ as:
+$$\mathcal{F}_{ij}[P] = \lambda_1 P \partial_i\partial_j P + \lambda_2 \partial_i P \partial_j P$$
+$$\mathcal{G}_a[S] = \beta_a \mathrm{tr}(S) + \gamma_a S_{a}^{\;\;b}n_b$$
+$$\mathcal{H}(B, v) = \kappa(B)\|v\|^2 + \mu(B)(v \cdot \hat{b})^2$$
+where $\hat{b}$ is the local unit vector of update bias, and the scaling coefficients are defined relative to the localized processing budget:
+$$\kappa(B) = \frac{\kappa_0}{1 + B}, \qquad \mu(B) = \mu_0 B$$
+
+### 2. Parametric 2D Radial Metric Mapping
+For a 2D polar slice ($r, \theta$) under a localized radial utilization field $U(r)$, the remaining budget is $B(r) = 1 - U(r)$. Setting the local bias magnitude $\kappa(B) = \kappa_0 / (2 - U(r))$ yields the emergent radial metric components:
+$$g_{rr}(r) = 1 + \kappa(B) = 1 + \frac{\kappa_0}{2 - U(r)}$$
+$$g_{\theta\theta}(r) = r^2 \big(1 + \mu(B)\big) = r^2 \big(1 + \mu_0 (1 - U(r))\big)$$
+This defines a continuous, non-singular metric space where local utilization directly scales the spatial components, reproducing Schwarzschild-like deflection fields in the weak-limit.
+
+### 3. Discrete Grid Solver Pseudocode ($\delta A = 0$)
 
 ---
 
