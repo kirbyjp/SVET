@@ -386,7 +386,20 @@ This joint limit ensures that flux propagation remains bounded by the microphysi
 Coherent flux is processed locally as an active accounting request. It does not exist independently of the node set; rather, it is a record of state-change requirements negotiated dynamically between adjacent nodes.
 
 ### 4.2 Flux Addition and Cancellation
-*TODO: Formalize vector addition rules for flux, including cancellation, superposition, and normalization constraints.*
+
+Superposition in SVET is governed by the vector addition and normalization of real-valued, directional coherent flux. Because phase is encoded purely through directional orientation and local cadence delays, wave interference behavior emerges directly from real-valued vector superposition.
+
+**The Superposition Operator**  
+When multiple flux demands $F_k$ converge on a single node, the resultant combined flux is resolved via a capacity-limiting normalization operator $\mathcal{N}$:
+$$\vec{F}_{\text{tot}} = \mathcal{N}\left(\sum_{k} \vec{F}_k\right)$$
+where $\mathcal{N}$ enforces that the total resultant flux remains within the local node's budget bounds.
+
+**Directional Cancellation**  
+Because flux vectors possess explicit physical orientations across adjacency links, cancellation occurs when opposing demands converge:
+*   **Alignment (Constructive):** If $\vec{F}_1$ and $\vec{F}_2$ are parallel, their update demands reinforce each other, maximizing the transferred coherent amplitude.
+*   **Opposition (Destructive):** If $\vec{F}_1 \approx -\vec{F}_2$, the opposing update demands cancel within the local ledger. The remaining unresolved energy is diverted into the incoherent channel ($H$).
+
+This vector-based subtraction replaces the standard wave mechanics requirement for complex probability amplitudes with real-valued, directional conservation bookkeeping.
 
 ### 4.3 Propagation, Reflection, and Refraction
 *TODO: State local update rules that produce propagation, reflection, and refraction. Include boundary interaction rules and examples.*
