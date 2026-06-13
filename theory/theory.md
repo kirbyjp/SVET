@@ -50,6 +50,26 @@ header-includes:
 
 ### 2.5 Dual‑Channel Propagation
 *TODO: Define the coherent (pattern‑preserving) channel and the incoherent (heat/ledger) channel. Explain how energy/exaction partitions between them and how this implements decoherence.*
+
+### 2.6 The Incoherent Channel (H): Pattern-Dependent Yield and Collapse
+*Hypothesis: Coherence is a finite resource. A node network undergoes a yield event when the update demand relative to local capacity, scaled by the pattern's intrinsic stability, exceeds a critical threshold.*
+
+**Pattern Stability Factor ($\Gamma_p$):**
+We introduce a dimensionless pattern stability factor $\Gamma_p$ that quantifies a pattern's ability to maintain directional coherence under applied update demand. $\Gamma_p$ encodes adjacency reinforcement and cadence coupling—how well the pattern's topology and update timing preserve phase alignment. 
+*   $\Gamma_p > 1$: Robust patterns (e.g., tightly bound loops, high-density lattices).
+*   $\Gamma_p < 1$: Fragile patterns (e.g., loosely bound waves).
+
+**The Yield Criterion (Static Form):**
+A node collapses into the incoherent energy channel (H) when the pattern-specific update demand ($S_p$) relative to the local budget ($B$) exceeds the network's yield constant ($\kappa_{\text{yield}}$) scaled by the pattern's stability:
+$$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
+
+**H-Density and Entropy:**
+Incoherent energy is modeled as a local density field $\rho_H$. Thermodynamic entropy ($S_{\text{cg}}$) emerges as the coarse-grained statistical summary of this accumulated "accounting debris":
+$$\rho_H(x,t) \equiv \frac{\Delta E_{\text{incoh}}(x,t)}{\Delta V}$$
+$$S_{\text{cg}} \sim \int \rho_H \ln \rho_H \, dV$$
+
+**Cross references:** See Sec. 4.4 The Node Ledger for the local partition identity; Sec. 4.5 Boundary Ledger and Tests for interface experiments; Sec. 11 Computational Implementation Layer for logging and simulation protocols; Sec. 13 Predictions and Falsifiable Tests for experimental calibration plans.
+
 ### 2.7 Incoherent Channel (H) — Definition and Manifestations
 
 **Statement (SVET):**  
@@ -107,8 +127,11 @@ $$
 ### 3.3 Why Divergences Cannot Occur
 *TODO: Demonstrate how UV divergences are prevented by hard capacity limits and discrete update accounting. Provide a sketch proof or argument.*
 
-### 3.4 Critical Threshold & Phase Transition ⭐
-*TODO: Define the critical threshold (the "Redline") where \(B \to 0\). Describe the substrate phase transition (e.g., pair production, reconfiguration) that replaces singular behavior. Relate to Schwinger pair production qualitatively and quantitatively where possible.*
+### 3.4 Critical Threshold and Phase Transition
+The "Redline" of the vacuum is defined by the approach to $B \to 0$. As the budget is exhausted, the pattern-dependent yield criterion is triggered:
+$$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
+
+Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in update demand more likely to trigger a collapse into H. In this regime, the node ensemble can no longer sustain the coherent update demand of the primary pattern. To prevent a geometric singularity, the node network undergoes a **Phase Transition**, reconfiguring local node states into new, simpler patterns (e.g., Pair Production). This mechanism replaces the mathematical "shambles" of the GR singularity with a physically finite, high-strain core.
 
 ---
 
@@ -123,14 +146,53 @@ $$
 ### 4.3 Propagation, Reflection, and Refraction
 *TODO: State local update rules that produce propagation, reflection, and refraction. Include boundary interaction rules and examples.*
 
-### 4.4 The Substrate Ledger (Conservation of Exaction) ⭐
-**Statement:** Conservation is a bookkeeping identity of the node update: the outgoing coherent portion, reflected portion, and dissipated heat sum to the node's available exaction.  
-$$
+### 4.4 The Node Ledger (Conservation of Energy)
+
+**Statement (operational):** Conservation of energy in SVET is a bookkeeping identity of the node‑network update. Local update demand is partitioned at each node according to the success or failure of the pattern‑dependent yield criterion and the local CaBS dynamics.
+
+**Partition identity (node level):**
+
+
+\[
+I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H
+\]
+
+
+Equivalently, in normalized form:
+
+
+\[
 R + T + H = 100\%
-$$
-*TODO: Derive this identity from the node update algorithm and show how it enforces global conservation without invoking a separate conservation law.*
+\]
+
+
+
+**Component definitions and locality**
+- **\(I_{\text{refl}}\) (Coherent Rejection / Reflection):** a *surface* event. Occurs when a neighbor node (or interface) cannot accept the incoming coherent demand; the rejected portion remains coherent and carries phase information away from the boundary.  
+- **\(I_{\text{trans}}\) (Coherent Propagation / Transmission):** the coherent portion successfully accepted by the neighbor and available for further coherent propagation.  
+- **\(\Delta H\) (Incoherent Energy / H):** a *bulk* event. Energy diverted into the incoherent channel when the pattern‑dependent yield criterion is met (coherence → incoherence). \(\Delta H\) is the local increment of incoherent energy that may later manifest as heat, photochemistry, fluorescence, photoemission, mechanical damage, etc.
+
+**Link to yield and CaBS dynamics**  
+The partition depends on the local budget \(B\), pattern demand \(S_p\), pattern stability \(\Gamma_p\), and dynamic loading (CaBS) factors. In compact form:
+
+
+\[
+\text{Yield if}\quad \frac{S_p}{B}\,\Gamma_p\,\Phi(\dot S_p,\tau_{\text{eff}}) \ge \kappa_{\text{yield}},
+\]
+
+
+where \(\Phi(\dot S_p,\tau_{\text{eff}})\) encodes rate/cadence dependence. If the yield condition is met at the node, the accepted coherent propagation fails and the corresponding energy is diverted into \(\Delta H\); otherwise the ledger partitions into reflection and transmission according to local acceptance rules.
+
+**Practical notes**
+- **Surface vs bulk:** Always preserve the distinction in derivations and experiments: reflection is a boundary accounting event; H production is a bulk, post‑acceptance event.  
+- **Conservation semantics:** This identity is bookkeeping — energy is redistributed between coherent and incoherent channels; no external creation or destruction is invoked.  
+- **Cross references:** See Sec. 2.6 (Incoherent Channel and Yield), Sec. 4.5 (Boundary Ledger and Tests), Sec. 11 (Computational Implementation) for logging and simulation protocols, and Sec. 13 (Predictions) for experimental tests.
+
+*TODO:* Derive the partition identity from the node update algorithm and show how global conservation follows from local ledger reconciliation.
+
 
 ### 4.5 Boundary Ledger and Tests
+**Note:** Boundary partitioning depends on the pattern‑dependent yield criterion defined in Sec. 2.6 Incoherent Channel (H). See Sec. 4.4 The Node Ledger for the node‑level partition identity and Sec. 11 Computational Implementation Layer for the simulation logging checklist used to validate boundary predictions.
 
 **Summary**  
 In SVET, boundary interactions are governed by local CaBS accounting. Incident coherent flux is partitioned at the surface into coherent reflection, coherent transmission, and incoherent bulk loss. Reflection is a surface accounting shock (coherent rejection), not a primary decoherence event. Decoherence (H) occurs only after coherent flux is accepted into the medium and then loses directional coherence.
@@ -334,12 +396,17 @@ Map H (incoherent flux) from Section 4.5 to material sinks (phonons, fluorescenc
 Log fields listed in Section 4.5 Simulation Logging Checklist for reproducible runs.
 
 ### 12.4 Numerical Stability and Convergence
+**Simulation cross‑references:** Implement the logging fields required to validate Sec. 2.6 (pattern stability Γ_p and yield events) and Sec. 4.5 (boundary ledger tests). See Sec. 2.6 Incoherent Channel (H) for definitions of S_p, B, Γ_p and Sec. 13 Predictions and Falsifiable Tests for the calibration experiments to reproduce in simulation.
+
 *TODO: Provide notes on timestep selection, stability criteria, and convergence tests.*
+
+
 
 ---
 
 ## 13. Predictions and Falsifiable Tests
 Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab test described in Section 4.5 provides a direct falsifiable test of SVET partitioning.
+**Experimental dependencies:** The predictions below assume the pattern‑dependent yield formalism of Sec. 2.6 Incoherent Channel (H) and the node partition identity of Sec. 4.4 The Node Ledger. Simulation protocols in Sec. 11 Computational Implementation Layer provide the reproducible logging required to compare measured R, T, and H against SVET predictions.
 
 ### 13.1 Pump‑Induced Refractive Index Shifts
 *TODO: Quantify predicted index shifts under intense pumping and propose pump‑probe experimental setups.*
@@ -355,6 +422,22 @@ Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab 
 
 ### 13.5 Decoherence‑Rate Predictions
 *TODO: Provide quantitative decoherence rates for mesoscopic systems and suggest laboratory tests.*
+
+### 12.6 The Yield Ramp Test
+*Simulation:* Locally increase update demand ($S_p$) at a node ensemble and measure the critical $S/B$ ratio where coherent amplitude collapses into the H-channel.
+*Target:* This test uses a reference pattern with $\Gamma_p = 1$ under slow loading to isolate the universal constant $\kappa_{\text{yield}}$.
+
+### 12.7 Loop Integrity and Confinement
+*Simulation:* Model a coherent loop (particle) under increasing external strain. 
+*Target:* Verify if a loop yield event produces energy-conserving pair excitations. For high $\Gamma_p$ patterns, yield events are irreversible, providing a node-network explanation for quark confinement.
+
+### 12.8 Measurement Statistics (Born Rule Emergence)
+*Simulation:* Model a detector as a localized strain source. 
+*Target:* Demonstrate that "Wavefunction Collapse" statistics emerge from the yield event of the wave pattern, converging to Born-rule frequencies over repeated trials.
+
+### 12.9 Coherence Recovery Test
+*Simulation:* After a near-yield ramp, reduce $S_p$ and observe whether the pattern re-establishes coherence. 
+*Target:* Robust patterns (high $\Gamma_p$) should recover; fragile patterns may not. Record hysteresis and recovery times to distinguish reversible vs. irreversible yield.
 
 ---
 
