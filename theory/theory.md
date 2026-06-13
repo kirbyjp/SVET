@@ -368,7 +368,23 @@ While gravity is geometrically described by spatial gradients of the cadence fie
 *   **Time Dilation ($\Delta \tau$):** As a pattern enters a high-strain region, its internal update processes slow down. The resolution latency ($\Delta \tau$) required to complete a single internal update cycle increases relative to distant, unstrained nodes.
 *   **Stability under Strain ($\Gamma_p$):** A pattern can only maintain its structural coherence if the local strain-to-budget ratio ($S/B$) remains below its intrinsic stability threshold ($\Gamma_p$). If this threshold is crossed, the pattern reaches its physical limit and undergoes structural yield, fracturing into incoherent energy within the $H$-channel.
 *   **Tidal Gradient Response:** In regions with steep cadence gradients ($\nabla \tau_{\text{eff}}$)—such as near a high-excitation core—different parts of an extended coherence-pattern experience uneven latency. The leading edge of the pattern updates at a different rate than the trailing edge, stretching its internal node bindings. This spatial discrepancy destabilizes the pattern's structural integrity, triggering a localized $\Gamma_p$ collapse into simpler, incoherent excitations.
-*TODO: Describe the structural incompatibility between a pattern’s internal wave‑geometry and the propagation geometry demanded as its effective velocity approaches the adjacency‑hop limit (c). Explain how this geometric mismatch increases Δτ, elevates strain, and drives the pattern toward Γₚ‑limited collapse.*
+
+*TODO: Describe the structural incompatibility between a pattern’s internal wave-geometry and the propagation geometry demanded as its effective velocity approaches the adjacency-hop limit ($c$). Explain how this geometric mismatch increases $\Delta\tau$, elevates strain, and drives the pattern toward $\Gamma_p$-limited collapse.*
+
+### TODO: Black Hole Correspondence Integration (See `SVET_issues_list.xls` — Tab “SVET Blackhole”)
+
+A full integration of SVET’s black hole modeling framework is postponed pending completion of the GR and QFT correspondence layers. The following items have been reviewed and triaged for structured incorporation:
+
+* Horizon formation as a coherence-budget limit  
+* Ergosphere as mandatory azimuthal-update region  
+* Spin and charge as distinct strain channels  
+* Redshift as cadence mapping and coherence-throughput reweighting  
+* Cold-interior interpretation (local vs. asymptotic update rates)  
+* Toy budget equation: $B(r) = C_{\text{max}}(r) - (S_r^2 + S_{\theta}^2 + S_Q^2)$  
+* Inspiral frequency ceiling and ringdown deltas  
+* Interior pattern-class reconstruction from exterior observables  
+
+These items are tracked in `SVET_issues_list.xls`, Tab **“SVET Blackhole”**, and will be integrated once the correspondence scaffolding is finalized.
 
 ---
 
