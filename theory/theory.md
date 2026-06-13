@@ -233,7 +233,20 @@ Larger values of $\beta$ correspond to more abrupt cadence penalties, while smal
 As established in the Section 3.7 Axiom 5 ontology, this cadence collapse is strictly a pattern-level phenomenon. The underlying nodes in the node set continue to update at the invariant propagation speed $c$ (one adjacency hop per tick); what collapses under load is the ability of extended coherent structures to exploit that raw capacity. This ensures that cadence slowdown remains finite under normal conditions and diverges asymptotically only when the pattern's coherent update demand fully saturates the local node capacity.
 
 ### 3.3 Why Divergences Cannot Occur
-*TODO: Demonstrate how UV divergences are prevented by hard capacity limits and discrete update accounting. Provide a sketch proof or argument.*
+
+SVET forbids ultraviolet divergences because all local update behavior is governed by finite, capacity-limited quantities. Three structural constraints enforce this:
+
+1. **Finite Excitation:**  
+   The excitation norm satisfies $0 \le \eta \le 1$, preventing unbounded field amplitudes.
+
+2. **Finite Update Capacity:**  
+   Each node’s update rate is bounded by the Margolus–Levitin limit:
+   $$u(\eta) \le u_{\text{node,max}}$$
+
+3. **Finite Cadence Response:**  
+   The effective cadence $\tau_{\text{eff}}$ diverges only when coherent demand exceeds the available budget, ensuring that no physical process can demand infinite update throughput.
+
+Because all local quantities—excitation, strain, bias, cadence, and ledger updates—are bounded, no SVET process can produce the infinities that plague continuum field theories. Divergences are replaced by well-defined capacity ceilings and pattern-level cadence collapse.
 
 ### 3.4 Critical Threshold and Phase Transition
 The "Redline" of the vacuum is defined by the approach to $B \to 0$. As the budget is exhausted, the pattern-dependent yield criterion is triggered:
