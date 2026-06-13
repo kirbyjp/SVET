@@ -285,6 +285,7 @@ Record per node and per timestep:
 - Cross-reference in **Section 12 (Predictions)** for experimental claims.  
 - Refer to **Section 11 (Computational Implementation)** for logging and simulation details.
 
+*TODO: Establish a qualitative definition for a strain-cost functional. This functional will assign a numerical cost to a pattern’s attempt to propagate across a node and its adjacent neighbors based on local update demands. Rather than prematurely committing to a specific variational mathematical form, this placeholder serves to develop how spatial-temporal propagation paths (geodesics) minimize total network-level strain.*
 
 ---
 
@@ -350,7 +351,7 @@ Physical trajectories are deflected toward these slower-updating regions because
 *TODO: Define the mapping between metric curvature and spatial gradients in \(\tau_{\text{eff}}(x)\). Provide leading‑order correspondence.*
 
 ### 8.2 Geodesics as Least‑Delay Paths
-*TODO: Show that particle trajectories follow least‑delay (least‑cadence) paths and derive the geodesic equation analog.*
+The equivalence principle is naturally recovered as a local kinematic property of the node network. In SVET, gravitational acceleration is not a force, but the result of a spatial gradient of cadence ($\nabla \tau_{\text{eff}}$). A propagating wave pattern in free fall simply rides this local cadence tilt. Because the pattern's internal update cycles are uniformly adapted to the local latency, this gradient remains locally undetectable to the pattern itself—the tilt is locally invisible. Measurable physical effects only manifest as tidal strain gradients, where non-uniform variations in the cadence gradient across an extended pattern create differential update latencies that cannot be locally adapted out.
 
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
@@ -473,6 +474,16 @@ Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab 
 ### 13.9 Coherence Recovery Test
 *Simulation:* After a near-yield ramp, reduce $S_p$ and observe whether the pattern re-establishes coherence. 
 *Target:* Robust patterns (high $\Gamma_p$) should recover; fragile patterns may not. Record hysteresis and recovery times to distinguish reversible vs. irreversible yield.
+
+### 13.10 Nuclear Resonance Windows as SVET Coherence Modes
+This predictive test maps standard nuclear stability and decay profiles to the discrete geometric resonance modes of the node network. Rather than relying on independent field-mediated interactions, we re-interpret nuclear configurations as localized, high-density coherence-patterns:
+
+*   **Coulomb Repulsion:** Modeled as localized coherence-strain ($S$) arising from overlapping update demands.
+*   **Strong Interaction:** Modeled as "coherence locking," where adjacent nodes coordinate their phase states to minimize overall update cost.
+*   **Nuclear Shell Model:** Modeled as discrete, allowed spatial resonance modes that fit the local node horizon geometry.
+*   **Instability & Decay (Coherence Catastrophe):** Heavy nuclei undergo structural yield and fall apart when the total coherence-strain ($S$) required to sustain their internal wave-geometry exceeds the available local budget ($B$) of the node network.
+
+**Experimental Target:** Map the specific mass numbers of known islands of stability and correlate them with localized node-network resonance windows, predicting decay rates based on the available local budget-to-strain ratios.
 
 ---
 
