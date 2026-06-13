@@ -43,9 +43,24 @@ This chapter details the fundamental ontology of the physical vacuum within the 
 
 ### 2.1 The Planck‑Scale Physical Vacuum
 *TODO: Define the vacuum as a capacity‑limited, rule‑governed entity. Explain why we treat the vacuum as a network of nodes rather than a continuous field.*
+*TODO: Provide quantitative scale comparisons to illustrate why the node network must support coherence across many orders of magnitude. Include the following reference values:*
+
+- *Electron cloud radius (1s orbital): ~0.05–0.1 nm ($50,000\text{--}100,000\text{ fm}$)*  
+- *Nucleus radius: ~1–5 fm ($100,000\times$ smaller than the electron cloud)*  
+- *Proton radius: ~0.84 fm*  
+- *Quark confinement region: ~0.3 fm*  
+- *Planck length: ~$10^{-20}\text{ fm}$*
+
+*These scales imply that a single node must support coherent behavior across at least five orders of magnitude, and potentially up to nineteen orders of magnitude when comparing quark-scale structure to the Planck length.*
+*TODO: Note the theoretical upper bound on update frequency: the Planck frequency, defined as*  
+
+$$f_{\text{Planck}} = \frac{1}{t_{\text{Planck}}} \approx 10^{43}\text{ Hz}$$
+
+*This establishes the maximum conceivable cadence for any physical update process and constrains the upper bound of node network timing behavior.*
 
 #### 2.1.1 Patterns as Particles
 Within the node network, physical entities are not independent objects placed “into” space. Instead, particles are localized, self-maintaining coherence-patterns. Their discrete particle-like features emerge because their internal coherence structure is tightly bounded and continuously preserved by the local update rules of the network.
+*TODO: Provide relative scale scaling factors to contextualize coherence confinement. Address the spatial volume ratios of these distinct physical domains, emphasizing that the spatial profile of the electron orbital spans five orders of magnitude relative to the proton core, while the nuclear confinement radius restricts multi-nucleon configurations to a narrow spatial volume relative to the outer electron cloud boundary. These scaling ratios will be mapped to formal coherence-geometry descriptions in later sections.*
 
 ### 2.2 Minimal Local Rules and Assumptions
 *TODO: List the minimal rule set governing local updates (causality, adjacency, budget accounting, update resolution order). State assumptions and scope.*
