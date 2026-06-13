@@ -383,7 +383,7 @@ $$0 \le F_{i\to j} \le \min\big(B_i, u(\eta_i)\big)$$
 This joint limit ensures that flux propagation remains bounded by the microphysical constraints of the local node set, preventing the build-up of unresolvable state demands.
 
 **The Routing Request**  
-Coherent flux is processed locally as an active accounting request. It does not exist independently of the node set; rather, it is a record of state-change requirements negotiated dynamically between adjacent nodes.
+Coherent flux is processed locally as an active accounting request. It does not exist independently of the node set; rather, it is a record of state-change requirements resolved locally through adjacency‑based ledger accounting between adjacent nodes.
 
 ### 4.2 Flux Addition and Cancellation
 
