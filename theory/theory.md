@@ -543,10 +543,6 @@ The early SVET onboarding narrative (v0.02–v0.03) has been reviewed and triage
 ---
 
 ## 13. Predictions and Falsifiable Tests
-
----
-
-## 13. Predictions and Falsifiable Tests
 Possible 13.6 Reflectivity, Decoherence, Plastic deformation. Experimental slab test described in Section 4.5 provides a direct falsifiable test of SVET partitioning.
 **Experimental dependencies:** The predictions below assume the pattern‑dependent yield formalism of Sec. 2.6 Incoherent Channel (H) and the node partition identity of Sec. 4.4 The Node Ledger. Simulation protocols in Sec. 11 Computational Implementation Layer provide the reproducible logging required to compare measured R, T, and H against SVET predictions.
 
