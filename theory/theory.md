@@ -543,7 +543,7 @@ The SVET framework unifies the microscopic and macroscopic limits of the cosmos,
 #### 1. The Quantum Wall (Small-Scale Boundary)
 At the microscopic limit, attempting to probe scales smaller than the Planck length requires concentrating high-energy density into an increasingly localized region. When a Planck-scale probe focuses energy into a volume smaller than its local coherence horizon, the local excitation is driven toward saturation ($\eta \to 1$). 
 
-Through the mechanism of cadence collapse, the local update delays diverge asymptotically. The resulting frozen state prevents further coordinate probing or deeper information extraction, establishing an absolute, non-singular lower boundary on physical measurements. Throughout this transition, the underlying nodes continue to tick normally at the hardware limit $c$; only the pattern-level resolution latency diverges.
+Through the mechanism of cadence collapse, the local update delays diverge asymptotically. The resulting frozen state prevents further coordinate probing or deeper information extraction, establishing an absolute, non-singular lower boundary on physical measurements. Throughout this transition, the underlying nodes continue to tick normally at the hardware limit $c$; only the pattern-level resolution latency diverges. At the quantum wall, the local excitation approaches the collapse threshold $\eta_{\text{BH}}(R)$, forcing the coherence cost $C(x,v)$ to diverge and driving $\tau_{\text{eff}}$ toward its asymptotic limit.
 
 #### 2. The Cosmic Wall (Large-Scale Boundary)
 At the macroscopic limit, the cosmological expansion of the universe outruns the maximum coherent update propagation rate ($c = 1$ node per tick). At this boundary, the effective local cadence of the distant node network slows asymptotically relative to a local observer, triggering a cosmic-scale cadence collapse that forms the Hubble coherence horizon. 
@@ -552,6 +552,8 @@ Beyond this boundary, the budget required for coherent propagation diverges, pre
 
 #### Ontological Unification
 These two boundaries—the Planck-scale quantum wall and the Hubble-scale cosmic wall—are symmetric limits of the same underlying capacity constraint. At both scales, the network's update budget undergoes asymptotic cadence collapse, establishing a finite, non-singular "soft box" within which all physical patterns must propagate.
+
+Because both the Quantum Wall and the Cosmic Wall arise when excitation approaches its collapse threshold and the effective cadence diverges, any universal horizon variable $U$ must be a monotonic function of $\eta$ and $\tau_{\text{eff}}$, saturating near the quantum wall ($U \to 1$) and vanishing near the cosmic wall ($U \to 0$). This constraint ensures that $U$ serves as the universal axis along which GR-like, SVET-like, and QG-like regimes align, enabling mass-independent curve collapse and forming the mathematical backbone of the Universality Scoring System.
 
 ---
 
