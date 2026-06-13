@@ -1,135 +1,80 @@
-## Γₚ — "Gamma‑pee"
-**Pattern Stability Factor.**  
-A derived measure of how robust a pattern’s adjacency‑coherent structure is under strain.  
-Appears in yield, stability, particle‑like loops, lattice behavior.
+This is the finalized **SVET Master Glossary v1.2.4**, formatted in clean Markdown with MathJax support. This document is ready to be committed to your `docs/` folder or appended to the `theory.md` file.
 
-## Δτ — "Delta‑tau"
-**Resolution Latency.**  
-Derived number of ticks required for a pattern to re‑establish its adjacency‑coherent state before it can propagate.  
-Appears in motion, refraction, time dilation, complex pattern behavior.
+***
 
-## τ — "tau"
-**Local Cadence.**  
-Primitive update timing of a node.  
-Appears everywhere cadence matters.
+# SVET Master Glossary v1.2.4
 
-## τ₀ — "tau‑naught"
-**Vacuum Cadence.**  
-Baseline cadence in vacuum.  
-Appears when comparing vacuum vs medium behavior.
+This document serves as the authoritative notation reference for **Static Vacuum Excitation Theory (SVET)**. It defines the primitives of the node network and the derived quantities that emerge as classical physical observables.
 
-## τ_eff — "tau‑eff"
-**Effective Cadence.**  
-Derived cadence under medium or load.  
-Appears in refraction, slowing, phase lag.
+## 1. Notation Table
 
-## B — "Budget"
-**Node Capacity.**  
-Primitive maximum coherent update capacity per tick.  
-Appears in yield, reflection, transmission.
+| Symbol | Name | Type | Forensic Role |
+| :--- | :--- | :--- | :--- |
+| $B$ | **Budget** | Primitive | Maximum coherent update capacity per node per tick. |
+| $S$ | **Strain** | Primitive | Incoming coherent update demand (load). **Invariant: $S \ge 0$.** |
+| $\tau$ | **Local Cadence** | Primitive | Fundamental update timing of a node. |
+| $\Xi$ | **Exaction** | Primitive | Residual continuity requirement imposed on neighbors. |
+| $H$ | **H-channel** | Primitive | Ledger for collapsed/incoherent energy (heat, debris). |
+| $B_0$ | **Floor Budget** | Primitive | Minimum coherent-processing capacity in the absence of load. |
+| $c$ | **Max Prop. Rate** | Constant | One adjacency hop per substrate tick in vacuum. |
+| $\tau_0$ | **Vacuum Cadence** | Constant | Baseline update timing in a zero-strain vacuum. |
+| $\kappa_{yield}$ | **Yield Constant** | Constant | Threshold where demand exceeds pattern stability. |
+| $\Delta\tau$ | **Resolution Latency** | Derived | Ticks required for a pattern to rebuild its coherent state. |
+| $\tau_{eff}$ | **Effective Cadence** | Derived | Realized update timing under load or medium. |
+| $m$ | **Mass** | Derived | Totality of node and adjacency complexity. |
+| $E$ | **Energy** | Derived | Total update-budget required to maintain a pattern. |
+| $v$ | **Velocity** | Derived | Adjacency hops per tick, constrained by $\Delta\tau$. |
+| $a$ | **Acceleration** | Derived | Change in hops per tick as $\Delta\tau$ varies across space. |
+| $U$ | **Utilization** | Ratio | Capacity utilization ratio ($U = S/B$). |
+| $n$ | **Refractive Index** | Ratio | Ratio of $\tau_{eff} / \tau_0$. |
+| $\eta$ | **Efficiency** | Ratio | Fraction of demand that becomes flux rather than $H$. |
+| $\Gamma_p$ | **Pattern Stability** | Metric | Robustness of a pattern's coherence under strain. |
+| $\ell_{adj}$ | **Adjacency Length** | Metric | Number of adjacency hops in a pattern’s footprint. |
+| $\rho_{adj}$ | **Adjacency Density** | Metric | Adjacency constraints per unit pattern. |
+| $\Omega_p$ | **Pattern Frequency** | Metric | Ticks per internal oscillation of a pattern. |
+| $\Lambda$ | **Coherence Length** | Metric | Hops a pattern can propagate before decohering. |
+| $\chi$ | **Excitation** | Config | Localized perturbations/disturbances in the network. |
+| $\Phi$ | **Flux Count** | Config | Discrete count of coherent updates crossing an adjacency. |
+| $\psi$ | **Pattern State** | Config | Full adjacency-coherent configuration at a specific tick. |
 
-## S — "Strain"
-**Incoming Coherent Demand.**  
-Primitive load placed on a node.  
-Appears in yield, CaBS, overload.
+---
 
-## CaBS — "Cabs"
-**Cadence‑based Strain.**  
-Dynamic loading factor lowering effective yield threshold when demand changes rapidly.  
-Appears in shocks, rapid changes in S.
+## 2. Detailed Definitions
 
-## H — "H‑channel"
-**Incoherent Energy Ledger.**  
-Primitive ledger for collapsed coherent demand.  
-Appears in heating, fluorescence, fracture, absorption.
+### **B₀ — Floor Budget (Primitive)**
+The minimum coherent-processing capacity a node possesses in the absence of strain or pattern load. 
+*   **Note:** This is not a reservoir or "energy" source; it is a hardware permission that enables nodes to accept and retransmit coherent demand even when not already carrying a pattern.
 
-## I_in — "I‑in"
-**Incoming Coherent Flux.**  
-Total coherent demand arriving at a node.  
-Appears in boundary interactions.
+### **U — Utilization (Ratio)**
+The capacity utilization ratio, defined as $U = S/B$. It represents how much of a node’s capacity is currently consumed relative to its available budget. This is the primary diagnostic for redline detection and hardware/software audits.
 
-## I_refl — "I‑refl"
-**Reflected Coherent Flux.**  
-Coherent demand rejected due to insufficient neighbor budget.  
-Appears in reflection, boundary rejection.
+### **Δτ — Resolution Latency (Derived)**
+The measured number of global ticks required for a pattern to re-establish its adjacency-coherent state before it can propagate to the next node. $\Delta\tau$ is the physical mechanism behind time dilation and the refractive index.
 
-## I_trans — "I‑trans"
-**Transmitted Coherent Flux.**  
-Coherent demand successfully propagated across adjacency.  
-Appears in transmission, refraction.
+### **χ — Chi (Config)**
+Represents small, localized perturbations or disturbances in the node network that do not yet constitute a coherent update demand. Used for stress monitoring and local disturbance analysis.
 
-## ΔH — "Delta‑H"
-**Incoherent Gain.**  
-Increase in H due to collapse.  
-Appears in yield, absorption, decoherence.
+### **Φ — Phi (Config)**
+A discrete count of coherent update events successfully crossing an adjacency per tick. In SVET, $\Phi$ is strictly a count of events and is **not** related to gravitational potential.
 
-## Φ — "Phi"
-**Flux Count.**  
-Discrete count of coherent update events crossing an adjacency per tick.  
-Appears in propagation, interference, wave behavior.
+### **a — Acceleration (Derived)**
+The change in propagation rate (adjacency hops per tick) as Resolution Latency ($\Delta\tau$) varies across space. A pattern "accelerates" when it moves into a region where the node network can resolve its complexity in fewer ticks.
 
-## Ξ — "Xi"
-**Exaction.**  
-Primitive residual continuity requirement a node imposes on neighbors after its own update.  
-Appears in continuity, forward propagation.
+### **m — Mass (Derived)**
+The derived totality of Node and Adjacency complexity. It accounts for the pattern's footprint ($\ell_{adj}$), its stability ($\Gamma_p$), and its required resolution time ($\Delta\tau$).
 
-## κ_yield — "kappa‑yield"
-**Yield Threshold Constant.**  
-Constant defining when scaled demand exceeds stability.  
-Appears in fracture, collapse, overload.
+### **η — Efficiency (Ratio)**
+The fraction of coherent update demand that successfully becomes flux rather than collapsing into the H-channel.
 
-## ℓ_adj — "ell‑adj"
-**Adjacency Length.**  
-Number of adjacency hops in a pattern’s structure.  
-Appears in mass mapping, complexity, inertia.
+---
 
-## m — "mass"
-**Derived Mass.**  
-Adjacency complexity + Γₚ stability + Δτ behavior under motion.  
-Appears in classical mapping, inertia, E = mc² analog.
+## 3. Rule-Level Mechanics (Accounting)
 
-## E — "energy"
-**Derived Energy.**  
-Total coherent update‑budget required per tick to maintain adjacency‑coherent structure.  
-Appears in rest energy, kinetic analogs, H‑channel transitions.
+*   **Coherent Rejection:** A surface-level failure to accept update demand due to insufficient neighbor budget ($B$). This is the mechanism of reflection.
+*   **Yield Event:** When the ratio of update demand to capacity ($S/B$) exceeds the pattern's stability ($\Gamma_p$), causing a collapse into the incoherent energy ledger ($H$).
+*   **The Node Ledger:** The fundamental conservation identity:
+    $$I_{in} = I_{refl} + I_{trans} + \Delta H = 100\%$$
 
-## c — "c"
-**Max Propagation Rate.**  
-One adjacency hop per tick in vacuum.  
-Appears in photon behavior, E = mc² mapping.
+---
 
-## v — "v"
-**Velocity (Derived).**  
-Adjacency hops per tick, constrained by Δτ.  
-Appears in motion, refraction, classical mapping.
-
-## a — "a"
-**Acceleration (Derived).**  
-Change in adjacency hops per tick, constrained by exaction and Δτ.  
-Appears in inertia mapping, force analogs.
-
-## ρ_adj — "rho‑adj"
-**Adjacency Density.**  
-Adjacency constraints per unit pattern.  
-Appears in mass mapping, stability, inertia.
-
-## Ω_p — "Omega‑p"
-**Pattern Frequency.**  
-Ticks per internal oscillation of a pattern.  
-Appears in wave patterns, resonance, interference.
-
-## ψ — "psi"
-**Pattern State.**  
-Full adjacency‑coherent configuration of a pattern at a tick.  
-Appears in state transitions, decoherence, collapse.
-
-## Λ — "Lambda"
-**Coherence Length.**  
-Number of adjacency hops a pattern can propagate before decohering.  
-Appears in wave propagation, attenuation.
-
-## η — "eta"
-**Efficiency.**  
-Fraction of coherent demand that becomes flux rather than H.  
-Appears in transmission, absorption, scattering.
-
+© 2026 John Kirby. Licensed under the MIT License.
