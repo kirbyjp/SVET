@@ -37,24 +37,29 @@ The vacuum node network supports waves rather than point-like particles. What ex
 ---
 
 ## 2. Ontology of the Vacuum
-### 2.0 Ontology of the Vacuum
-The node network is the vacuum—the same vacuum studied in quantum field theory, cosmology, and high-energy physics. SVET does not introduce an additional medium; it reinterprets the existing vacuum as a static network of update sites whose localized, discrete excitations manifest as physical patterns.
 
-The vacuum node network supports waves rather than point-like particles. What experimental physics registers as “particles” are localized, self-maintaining coherence-patterns whose tightly confined structure produces particle-like behavior.
+### 2.0 Ontology of the Vacuum Overview
+This chapter details the fundamental ontology of the physical vacuum within the SVET framework. We establish the node network as the primary, static, non-coordinate system of discrete update sites, from which space, time, and coherent matter emerge. By analyzing localized coherence configurations and their local rules, we formalize the boundary between coherent propagation and incoherent dissipation, defining the structural limits of physical patterns.
 
 ### 2.1 The Planck‑Scale Physical Vacuum
 *TODO: Define the vacuum as a capacity‑limited, rule‑governed entity. Explain why we treat the vacuum as a network of nodes rather than a continuous field.*
 
-### 2.1 Patterns as Particles
+#### 2.1.1 Patterns as Particles
 Within the node network, physical entities are not independent objects placed “into” space. Instead, particles are localized, self-maintaining coherence-patterns. Their discrete particle-like features emerge because their internal coherence structure is tightly bounded and continuously preserved by the local update rules of the network.
 
 ### 2.2 Minimal Local Rules and Assumptions
 *TODO: List the minimal rule set governing local updates (causality, adjacency, budget accounting, update resolution order). State assumptions and scope.*
 
-### 2.2 Interpretive Rules
+#### 2.2.1 Interpretive Rules
 **The Principle of Node Inertia:**  
 The node network never strains, never moves, and never resists. All energy belongs exclusively to the pattern. All difficulty in motion arises from the pattern’s requirement to maintain internal coherence under the fixed update rule. If a demanded configuration cannot be self-consistently re-instantiated across adjacent nodes, the pattern destabilizes and collapses into simpler, incoherent excitations.
 
+#### 2.2.2 Update Mechanics
+To clarify the mechanics of the spatial-temporal step, we distinguish two complementary perspectives of a single network event:
+* **Re-instantiation:** The temporal update of the pattern. Each tick, the node network recalculates and re-instantiates the pattern according to its fixed local transition rules.
+* **Re-embedding:** The spatial placement of the pattern. This describes how the updated coherence-structure is placed back into the physical node layout.
+
+Re-instantiation and re-embedding occur simultaneously; they represent the temporal and spatial dimensions of the same update step.
 
 ### 2.3 The Node State Bundle
 **Cadence‑based Strain (CaBS)**  
@@ -63,7 +68,7 @@ CaBS is the mechanism by which node cadence and adjacency determine coherence ca
 - **B** — capacity (node budget)  
 - **S** — strain (current load)  
 - **B₀** — baseline capacity (resting budget)  
-- **τ₀** — base tick (substrate fundamental tick)  
+- **τ₀** — base tick (node network fundamental tick)  
 - **τ_eff** — effective cadence (local update delay)  
 *TODO: Define units, ranges, and physical interpretation for each variable. Provide canonical initial conditions and normalization conventions.*
 
@@ -73,8 +78,10 @@ CaBS is the mechanism by which node cadence and adjacency determine coherence ca
 ### 2.5 Dual‑Channel Propagation
 *TODO: Define the coherent (pattern‑preserving) channel and the incoherent (heat/ledger) channel. Explain how energy/exaction partitions between them and how this implements decoherence.*
 
-### 2.6 The Incoherent Channel (H): Pattern-Dependent Yield and Collapse
-*Hypothesis: Coherence is a finite resource. A node network undergoes a yield event when the update demand relative to local capacity, scaled by the pattern's intrinsic stability, exceeds a critical threshold.*
+### 2.6 The Incoherent Channel (H): Definitions, Yield, and Manifestations
+
+#### 2.6.1 Core Definitions and the Yield Criterion
+Coherence is a finite resource. A node network undergoes a yield event when the update demand relative to local capacity, scaled by the pattern's intrinsic stability, exceeds a critical threshold.
 
 **Pattern Stability Factor ($\Gamma_p$):**
 We introduce a dimensionless pattern stability factor $\Gamma_p$ that quantifies a pattern's ability to maintain directional coherence under applied update demand. $\Gamma_p$ encodes adjacency reinforcement and cadence coupling—how well the pattern's topology and update timing preserve phase alignment. 
@@ -85,6 +92,31 @@ We introduce a dimensionless pattern stability factor $\Gamma_p$ that quantifies
 A node collapses into the incoherent energy channel (H) when the pattern-specific update demand ($S_p$) relative to the local budget ($B$) exceeds the network's yield constant ($\kappa_{\text{yield}}$) scaled by the pattern's stability:
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 
+#### 2.6.2 Coherence-Strain and Coherence-Shedding
+When a pattern moves through regions of high utilization, its degradation proceeds through two discrete stages:
+*   **Coherence-Strain ($S$):** The accumulation of coherent update demand on the local node network. As the incoming load ($S$) increases relative to the available budget ($B$), the local resolution latency increases.
+*   **Coherence-Shedding ($\Delta H$):** When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable exactions are rejected and fall out of the coherent ledger, collapsing into incoherent excitations ($\Delta H$), observed macroscopically as heat.
+
+#### 2.6.3 Physical Nature and Manifestations of H
+In SVET, **H** denotes *incoherent energy* — energy that has left the coherent propagation channel and no longer carries directional phase information. Heat is one possible macroscopic manifestation of H, but H is a node network-level category that can produce multiple physical outcomes depending on the local material and boundary physics.
+
+Formally, a coherence $\to$ incoherence transition occurs when the local load and cadence demand exceed adjacency’s capacity to maintain phase alignment:
+$$\text{If}\quad \text{Strain} \; \lor \; \text{CaBS demand} \;>\; \text{Adjacency coherence capacity} \quad\Rightarrow\quad \text{Coherent}\;\to\;\text{Incoherent (H)}$$
+
+Macroscopic manifestations of H include:
+*   **Thermal phonons (heating)** — incoherent energy couples to lattice vibrations.  
+*   **Photochemistry / UV curing** — incoherent energy drives chemical bond rearrangements.  
+*   **Fluorescence / radiative decay** — incoherent excitations re‑emit photons at shifted energies.  
+*   **Photoelectric emission** — incoherent energy ejects electrons from material.  
+*   **Structural failure (plastic deformation, fracture)** — coherent stress patterns collapse into incoherent modes that manifest as mechanical damage.  
+*   **Other sinks** — any process that accepts incoherent energy (e.g., metastable trapping, nonradiative decay).
+
+#### 2.6.4 Analytical Advantages & Experimental Integration
+*   **Unified mechanism:** Optical decoherence, heating, chemical reactions, and mechanical failure are all instances of the same node network event: loss of coherence.  
+*   **Predictive accounting:** The CaBS ledger predicts how much energy remains coherent vs. how much becomes H; the material properties determine the final sink.  
+*   **Falsifiable signatures:** The partitioning ratio (coherent : incoherent) at interfaces and under pump conditions yields measurable predictions (e.g., reflected fraction, fluorescence yield, temperature rise).
+*   **Simulation Tracking:** Track coherent flux and H accumulation separately in simulations. Report H as an energy flux into the incoherent channel, then map H to specific observables using material response models (phonon coupling constants, reaction cross sections, etc.).
+
 **H-Density and Entropy:**
 Incoherent energy is modeled as a local density field $\rho_H$. Thermodynamic entropy ($S_{\text{cg}}$) emerges as the coarse-grained statistical summary of this accumulated "accounting debris":
 $$\rho_H(x,t) \equiv \frac{\Delta E_{\text{incoh}}(x,t)}{\Delta V}$$
@@ -92,54 +124,8 @@ $$S_{\text{cg}} \sim \int \rho_H \ln \rho_H \, dV$$
 
 **Cross references:** See Sec. 4.4 The Node Ledger for the local partition identity; Sec. 4.5 Boundary Ledger and Tests for interface experiments; Sec. 11 Computational Implementation Layer for logging and simulation protocols; Sec. 13 Predictions and Falsifiable Tests for experimental calibration plans.
 
-### 2.7 Incoherent Channel (H) — Definition and Manifestations
-### 2.71 Coherence-Strain and Coherence-Shedding
-When a pattern moves through regions of high utilization, its degradation proceeds through two stages:
-
-* **Coherence-Strain ($S$):** The accumulation of coherent update demand on the local node network. As the incoming load ($S$) increases relative to the available budget ($B$), the local resolution latency increases.
-* **Coherence-Shedding ($\Delta H$):** When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable exactions are rejected and fall out of the coherent ledger, collapsing into incoherent excitations ($\Delta H$), observed macroscopically as heat.
-
-**Statement (SVET):**  
-In SVET, **H** denotes *incoherent energy* — energy that has left the coherent propagation channel and no longer carries directional phase information. Heat is one possible macroscopic manifestation of H, but H is a substrate‑level category that can produce multiple physical outcomes depending on the local material and boundary physics.
-
-**Definition:**  
-- **H (incoherent flux)** = coherent flux that has lost directional consistency due to cadence mismatch, strain overload, budget exhaustion, or internal scattering.  
-- Formally, a coherence → incoherence transition occurs when the local load and cadence demand exceed adjacency’s capacity to maintain phase alignment:
-
-
-\[
-\text{If}\quad \text{Strain} \; \lor \; \text{CaBS demand} \;>\; \text{Adjacency coherence capacity} \quad\Rightarrow\quad \text{Coherent}\;\to\;\text{Incoherent (H)}
-\]
-
-
-**Possible macroscopic manifestations of H:**  
-- **Thermal phonons (heating)** — incoherent energy couples to lattice vibrations.  
-- **Photochemistry / UV curing** — incoherent energy drives chemical bond rearrangements.  
-- **Fluorescence / radiative decay** — incoherent excitations re‑emit photons at shifted energies.  
-- **Photoelectric emission** — incoherent energy ejects electrons from material.  
-- **Structural failure (plastic deformation, fracture)** — coherent stress patterns collapse into incoherent modes that manifest as mechanical damage.  
-- **Other sinks** — any process that accepts incoherent energy (e.g., metastable trapping, nonradiative decay).
-
-**Why this distinction matters (SVET advantages):**  
-- **Unified mechanism:** Optical decoherence, heating, chemical reactions, and mechanical failure are all instances of the same substrate event: loss of coherence.  
-- **Predictive accounting:** CaBS ledger predicts how much energy remains coherent vs. how much becomes H; the material determines the sink.  
-- **Falsifiable signatures:** The partitioning ratio (coherent : incoherent) at interfaces and under pump conditions yields measurable predictions (e.g., reflected fraction, fluorescence yield, temperature rise).
-
-**Practical mapping for experiments and simulations:**  
-- Track **coherent flux** and **H accumulation** separately in simulations.  
-- Report H as an energy flux into the incoherent channel; then map H to specific observables using material response models (phonon coupling constants, cross sections for photoemission, reaction rates, etc.).  
-- Use pump‑probe and calorimetric experiments to measure the coherent/incoherent partition and validate CaBS predictions.
-
-**Suggested placement in theory.md:**  
-- Add this subsection as **2.7** (Ontology) and cross‑reference in Sections **4 (Flux Algebra)**, **5 (Emergent Wave Mechanics)**, **10 (Material Response & Dispersion)**, and **12 (Predictions)**.  
-- Use the phrase **“H = incoherent (decohered) flux”** consistently throughout the document; reserve the word “heat” for specific thermodynamic outcomes of H.
-
-**Concise summary line (for tables/Excel):**  
-`H = incoherent flux (decohered energy); heat is one manifestation; other sinks include photochemistry, fluorescence, photoelectric emission, and mechanical failure.`
-
 ### 2.8 Topology of the Node Network
 Because the update rules rely solely on fixed local adjacency, the global topology of the node network remains unconstrained. Permissible configurations include:
-
 * A torus or hypertorus  
 * A finite bubble  
 * A compact manifold  
@@ -148,18 +134,9 @@ Because the update rules rely solely on fixed local adjacency, the global topolo
 
 Any global structure is valid, provided it preserves fixed local adjacency and a uniform update rule across all nodes.
 
-
 ---
 
 ## 3. Capacity Limits and Divergence‑Free Behavior
-### 3.0 Update Mechanics
-To clarify the mechanics of the spatial-temporal step, we distinguish two complementary perspectives of a single network event:
-
-* **Re-instantiation:** The temporal update of the pattern. Each tick, the node network recalculates and re-instantiates the pattern according to its fixed local transition rules.
-* **Re-embedding:** The spatial placement of the pattern. This describes how the updated coherence-structure is placed back into the physical node layout.
-
-Re-instantiation and re-embedding occur simultaneously; they represent the temporal and spatial dimensions of the same update step.
-
 
 ### 3.1 Finite Excitation Capacity (η_max)
 *TODO: Define the maximum excitation per node and how it constrains local field amplitudes.*
@@ -178,7 +155,7 @@ $$
 The "Redline" of the vacuum is defined by the approach to $B \to 0$. As the budget is exhausted, the pattern-dependent yield criterion is triggered:
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 
-Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in update demand more likely to trigger a collapse into H. In this regime, the node ensemble can no longer sustain the coherent update demand of the primary pattern. To prevent a geometric singularity, the node network undergoes a **Phase Transition**, reconfiguring local node states into new, simpler patterns (e.g., Pair Production). This mechanism replaces the mathematical "shambles" of the GR singularity with a physically finite, high-strain core.
+Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in update demand more likely to trigger a collapse into H. In this regime, the node ensemble can no longer sustain the coherent update demand of the primary pattern. To prevent a geometric singularity, the node network undergoes a **Phase Transition**, reconfiguring local node states into new, simpler patterns (e.g., Pair Production). This mechanism replaces the mathematical singularity of General Relativity with a physically finite, high-strain core.
 
 ### 3.5 The Netzero Energy Principle
 SVET adopts a **Netzero** energy interpretation rather than the quantum field theory concept of zero-point energy. The node network itself possesses zero net energy in its idle state. All physical energy is an accounting of active, coherent patterns moving through the network.
@@ -373,12 +350,10 @@ See Section 4.5 (Boundary Ledger and Tests) for the local ledger that determines
 ## 8. GR Correspondence Layer
 
 ### 8.1 Curvature as Cadence Gradient
-### 8.1 Relativistic Latency and Stability Limits
-Relativistic effects emerge from local processing constraints. When a pattern experiences high strain ($S$) relative to the available budget ($B$), the network requires additional ticks to resolve the pattern’s adjacency constraints.
+Spacetime curvature is not an active physical manifold; rather, it is the macroscopic manifestation of spatial gradients of the cadence field ($\nabla \tau_{\text{eff}}$) across the node network. Where localized excitations ($\chi$) are present, the effective update cadence slows down. 
 
-* **Time Dilation ($\Delta \tau$):** Resolution latency increases as the effective cadence ($\tau_{\text{eff}}$) slows in high-strain regions.
-* **Stability under Strain ($\Gamma_p$):** If the strain-to-budget ratio exceeds the pattern’s stability threshold ($\Gamma_p$), the pattern reaches its limit and fractures.
-* **Tidal Gradient Response:** In regions with steep spatial gradients of cadence ($\nabla \tau_{\text{eff}}$) or extreme $S/B$ variation, different parts of an extended pattern experience uneven latency. This destabilizes the internal structure, stretching it until localized $\Gamma_p$ collapse occurs.
+Physical trajectories are deflected toward these slower-updating regions because wave-front propagation naturally bends toward nodes experiencing higher local latency. The macroscopic metric tensor $g_{\mu\nu}$ emerges as a statistical description of these underlying update delays.
+
 *TODO: Define the mapping between metric curvature and spatial gradients in \(\tau_{\text{eff}}(x)\). Provide leading‑order correspondence.*
 
 ### 8.2 Geodesics as Least‑Delay Paths
@@ -390,8 +365,15 @@ Relativistic effects emerge from local processing constraints. When a pattern ex
 ### 8.4 Finite‑Core Black Holes
 *TODO: Describe finite‑core black hole structure, internal state, and how singularities are replaced by high‑strain cores.*
 
-### 8.5 Hill vs Hole Duality ⭐
+### 8.5 Hill vs Hole Duality
 *TODO: Present the Hill vs Hole duality: GR's negative potential well vs SVET's positive excitation hill. Show how weak‑field observables coincide while mechanisms differ.*
+
+### 8.6 Relativistic Stability Limits and Tidal Fracture
+While gravity is geometrically described by spatial gradients of the cadence field ($\nabla \tau_{\text{eff}}$), the physical entities propagating through these fields are finite, extended coherence-patterns. Under extreme conditions, these patterns experience structural degradation:
+
+*   **Time Dilation ($\Delta \tau$):** As a pattern enters a high-strain region, its internal update processes slow down. The resolution latency ($\Delta \tau$) required to complete a single internal update cycle increases relative to distant, unstrained nodes.
+*   **Stability under Strain ($\Gamma_p$):** A pattern can only maintain its structural coherence if the local strain-to-budget ratio ($S/B$) remains below its intrinsic stability threshold ($\Gamma_p$). If this threshold is crossed, the pattern reaches its physical limit and undergoes structural yield, fracturing into incoherent energy within the $H$-channel.
+*   **Tidal Gradient Response:** In regions with steep cadence gradients ($\nabla \tau_{\text{eff}}$)—such as near a high-excitation core—different parts of an extended coherence-pattern experience uneven latency. The leading edge of the pattern updates at a different rate than the trailing edge, stretching its internal node bindings. This spatial discrepancy destabilizes the pattern's structural integrity, triggering a localized $\Gamma_p$ collapse into simpler, incoherent excitations.
 
 ---
 
