@@ -38,6 +38,9 @@ header-includes:
 *TODO: List the minimal rule set governing local updates (causality, adjacency, budget accounting, update resolution order). State assumptions and scope.*
 
 ### 2.3 The Node State Bundle
+**Cadence‑based Strain (CaBS)**  
+CaBS is the mechanism by which node cadence and adjacency determine coherence capacity. Define CaBS once, then use the component symbols **B** (Budget), **S** (Strain), and **τ** (effective cadence) in all equations, simulations, and logs. CaBS is referenced in prose when describing the mechanism; the symbols are used in math.
+
 - **B** — capacity (node budget)  
 - **S** — strain (current load)  
 - **B₀** — baseline capacity (resting budget)  
