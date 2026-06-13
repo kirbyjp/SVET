@@ -124,7 +124,19 @@ Local variations in effective cadence $\tau_{\text{eff}}$ introduce timing offse
 This directional-timing encoding reproduces the interference behavior associated with complex phase factors while remaining fully grounded in local, real-valued update rules.
 
 ### 2.5 Dual‑Channel Propagation
-*TODO: Define the coherent (pattern‑preserving) channel and the incoherent (heat/ledger) channel. Explain how energy/exaction partitions between them and how this implements decoherence.*
+
+Propagation across the node set occurs through two distinct channels: a coherent channel that preserves pattern structure and an incoherent channel that records excess update demand as heat.
+
+**1. Coherent Channel (Pattern-Preserving)**  
+The coherent channel carries directional flux that maintains the internal structure of a pattern. As long as local budget constraints are satisfied, coherent flux propagates according to least-cost routing preferences determined by strain and bias.
+
+**2. Incoherent Channel (Heat / Ledger Channel)**  
+When coherent update demand exceeds the available local budget, the excess is diverted into the incoherent channel. This channel records non-directional update activity that cannot contribute to pattern maintenance. It represents the local dissipation of coherence.
+
+**3. Decoherence as Budget Overflow**  
+A pattern decoheres when a sufficient fraction of its update demand is forced into the incoherent channel. This process is irreversible: once directional coherence is lost, the pattern cannot reconstruct its original structure from heat-channel activity.
+
+The dual-channel structure provides a natural mechanism for decoherence, dissipation, and the emergence of classical behavior from coherent propagation.
 
 ### 2.6 The Incoherent Channel (H): Definitions, Yield, and Manifestations
 
