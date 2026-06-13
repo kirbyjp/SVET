@@ -24,18 +24,37 @@ header-includes:
 ---
 
 ## 1. Introduction
+### Preface: Etymological Context
+The acronym SVET (Static Vacuum Excitation Theory) also mirrors the word for "world" and "light" in several European languages. This dual meaning reflects the model’s purpose: to describe the fundamental structure of the cosmos (the world) and the propagation of coherent excitations (light) through a unified, capacity-limited node network.
+
+### 1.1 What the Node Network Is
+The node network is the vacuum—the same vacuum studied in quantum field theory, cosmology, and high-energy physics. SVET does not introduce an additional medium; it reinterprets the existing vacuum as a static network of update sites whose localized, discrete excitations manifest as physical patterns.
+
+The vacuum node network supports waves rather than point-like particles. What experimental physics registers as “particles” are localized, self-maintaining coherence-patterns whose tightly confined structure produces particle-like behavior.
 
 *TODO: Describe the motivation for SVET — resolving GR singularities and QFT divergences through a finite substrate. Provide a concise roadmap of the paper and summarize the main claims and predictions.*
 
 ---
 
 ## 2. Ontology of the Vacuum
+### 2.0 Ontology of the Vacuum
+The node network is the vacuum—the same vacuum studied in quantum field theory, cosmology, and high-energy physics. SVET does not introduce an additional medium; it reinterprets the existing vacuum as a static network of update sites whose localized, discrete excitations manifest as physical patterns.
+
+The vacuum node network supports waves rather than point-like particles. What experimental physics registers as “particles” are localized, self-maintaining coherence-patterns whose tightly confined structure produces particle-like behavior.
 
 ### 2.1 The Planck‑Scale Physical Vacuum
 *TODO: Define the vacuum as a capacity‑limited, rule‑governed entity. Explain why we treat the vacuum as a network of nodes rather than a continuous field.*
 
+### 2.1 Patterns as Particles
+Within the node network, physical entities are not independent objects placed “into” space. Instead, particles are localized, self-maintaining coherence-patterns. Their discrete particle-like features emerge because their internal coherence structure is tightly bounded and continuously preserved by the local update rules of the network.
+
 ### 2.2 Minimal Local Rules and Assumptions
 *TODO: List the minimal rule set governing local updates (causality, adjacency, budget accounting, update resolution order). State assumptions and scope.*
+
+### 2.2 Interpretive Rules
+**The Principle of Node Inertia:**  
+The node network never strains, never moves, and never resists. All energy belongs exclusively to the pattern. All difficulty in motion arises from the pattern’s requirement to maintain internal coherence under the fixed update rule. If a demanded configuration cannot be self-consistently re-instantiated across adjacent nodes, the pattern destabilizes and collapses into simpler, incoherent excitations.
+
 
 ### 2.3 The Node State Bundle
 **Cadence‑based Strain (CaBS)**  
@@ -74,6 +93,11 @@ $$S_{\text{cg}} \sim \int \rho_H \ln \rho_H \, dV$$
 **Cross references:** See Sec. 4.4 The Node Ledger for the local partition identity; Sec. 4.5 Boundary Ledger and Tests for interface experiments; Sec. 11 Computational Implementation Layer for logging and simulation protocols; Sec. 13 Predictions and Falsifiable Tests for experimental calibration plans.
 
 ### 2.7 Incoherent Channel (H) — Definition and Manifestations
+### 2.71 Coherence-Strain and Coherence-Shedding
+When a pattern moves through regions of high utilization, its degradation proceeds through two stages:
+
+* **Coherence-Strain ($S$):** The accumulation of coherent update demand on the local node network. As the incoming load ($S$) increases relative to the available budget ($B$), the local resolution latency increases.
+* **Coherence-Shedding ($\Delta H$):** When the local processing capacity is exceeded, the pattern undergoes a shedding event. Unresolvable exactions are rejected and fall out of the coherent ledger, collapsing into incoherent excitations ($\Delta H$), observed macroscopically as heat.
 
 **Statement (SVET):**  
 In SVET, **H** denotes *incoherent energy* — energy that has left the coherent propagation channel and no longer carries directional phase information. Heat is one possible macroscopic manifestation of H, but H is a substrate‑level category that can produce multiple physical outcomes depending on the local material and boundary physics.
@@ -113,9 +137,29 @@ In SVET, **H** denotes *incoherent energy* — energy that has left the coherent
 **Concise summary line (for tables/Excel):**  
 `H = incoherent flux (decohered energy); heat is one manifestation; other sinks include photochemistry, fluorescence, photoelectric emission, and mechanical failure.`
 
+### 2.8 Topology of the Node Network
+Because the update rules rely solely on fixed local adjacency, the global topology of the node network remains unconstrained. Permissible configurations include:
+
+* A torus or hypertorus  
+* A finite bubble  
+* A compact manifold  
+* A multiply connected space  
+* A closed but boundaryless topology  
+
+Any global structure is valid, provided it preserves fixed local adjacency and a uniform update rule across all nodes.
+
+
 ---
 
 ## 3. Capacity Limits and Divergence‑Free Behavior
+### 3.0 Update Mechanics
+To clarify the mechanics of the spatial-temporal step, we distinguish two complementary perspectives of a single network event:
+
+* **Re-instantiation:** The temporal update of the pattern. Each tick, the node network recalculates and re-instantiates the pattern according to its fixed local transition rules.
+* **Re-embedding:** The spatial placement of the pattern. This describes how the updated coherence-structure is placed back into the physical node layout.
+
+Re-instantiation and re-embedding occur simultaneously; they represent the temporal and spatial dimensions of the same update step.
+
 
 ### 3.1 Finite Excitation Capacity (η_max)
 *TODO: Define the maximum excitation per node and how it constrains local field amplitudes.*
@@ -135,6 +179,11 @@ The "Redline" of the vacuum is defined by the approach to $B \to 0$. As the budg
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 
 Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in update demand more likely to trigger a collapse into H. In this regime, the node ensemble can no longer sustain the coherent update demand of the primary pattern. To prevent a geometric singularity, the node network undergoes a **Phase Transition**, reconfiguring local node states into new, simpler patterns (e.g., Pair Production). This mechanism replaces the mathematical "shambles" of the GR singularity with a physically finite, high-strain core.
+
+### 3.5 The Netzero Energy Principle
+SVET adopts a **Netzero** energy interpretation rather than the quantum field theory concept of zero-point energy. The node network itself possesses zero net energy in its idle state. All physical energy is an accounting of active, coherent patterns moving through the network.
+
+To maintain operations without divergence, we define a non-zero **Floor Budget ($B_0$)**—the baseline coherent-processing capacity of idle nodes. This is a structural threshold of the network, not stored energy, vacuum energy, or dark energy.
 
 ---
 
@@ -324,6 +373,12 @@ See Section 4.5 (Boundary Ledger and Tests) for the local ledger that determines
 ## 8. GR Correspondence Layer
 
 ### 8.1 Curvature as Cadence Gradient
+### 8.1 Relativistic Latency and Stability Limits
+Relativistic effects emerge from local processing constraints. When a pattern experiences high strain ($S$) relative to the available budget ($B$), the network requires additional ticks to resolve the pattern’s adjacency constraints.
+
+* **Time Dilation ($\Delta \tau$):** Resolution latency increases as the effective cadence ($\tau_{\text{eff}}$) slows in high-strain regions.
+* **Stability under Strain ($\Gamma_p$):** If the strain-to-budget ratio exceeds the pattern’s stability threshold ($\Gamma_p$), the pattern reaches its limit and fractures.
+* **Tidal Gradient Response:** In regions with steep spatial gradients of cadence ($\nabla \tau_{\text{eff}}$) or extreme $S/B$ variation, different parts of an extended pattern experience uneven latency. This destabilizes the internal structure, stretching it until localized $\Gamma_p$ collapse occurs.
 *TODO: Define the mapping between metric curvature and spatial gradients in \(\tau_{\text{eff}}(x)\). Provide leading‑order correspondence.*
 
 ### 8.2 Geodesics as Least‑Delay Paths
