@@ -374,7 +374,16 @@ The emergent coherence manifold is $(M, g_{\mu\nu})$, where horizons and ergosph
 ## 4. Flux Algebra
 
 ### 4.1 Flux as Directional Coherent Update Demand
-*TODO: Provide the SVET definition of flux: the directional component of coherent exaction attempting to propagate across adjacency. Clarify notation and units.*
+
+In SVET, flux is not a field amplitude, probability wave, or abstract force carrier; rather, it is a **directional coherent update demand** propagated across the adjacent links of the node set. It represents a capacity-limited routing request from node $i$ to adjacent node $j$, tracking the transfer of coherent exaction states.
+
+**Capacity Bounds**  
+At any given tick, the coherent flux $F_{i\to j}$ from node $i$ to node $j$ is strictly bounded by both the available local budget headroom $B_i$ and the absolute physical update capacity $u(\eta_i)$ of the source node:
+$$0 \le F_{i\to j} \le \min\big(B_i, u(\eta_i)\big)$$
+This joint limit ensures that flux propagation remains bounded by the microphysical constraints of the local node set, preventing the build-up of unresolvable state demands.
+
+**The Routing Request**  
+Coherent flux is processed locally as an active accounting request. It does not exist independently of the node set; rather, it is a record of state-change requirements negotiated dynamically between adjacent nodes.
 
 ### 4.2 Flux Addition and Cancellation
 *TODO: Formalize vector addition rules for flux, including cancellation, superposition, and normalization constraints.*
