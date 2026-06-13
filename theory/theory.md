@@ -178,6 +178,46 @@ SVET adopts a **Netzero** energy interpretation rather than the quantum field th
 
 To maintain operations without divergence, we define a non-zero **Floor Budget ($B_0$)**—the baseline coherent-processing capacity of idle nodes. This is a structural threshold of the network, not stored energy, vacuum energy, or dark energy.
 
+### 3.6 CaBS Primitive Rules (Cadence–Budget–Strain)
+
+The Cadence-Budget-Strain (CaBS) framework defines the node network's localized update engine. It formalizes how local strain, available processing budget, and temporal dilation interact to govern pattern propagation.
+
+#### Core Definitions
+*   **Strain ($S$):** The localized update load on the node network, representing the density of coherence demands that must be resolved per tick.  
+*   **Budget ($B$):** The remaining coherent processing headroom of a node, representing the fraction of update capacity not yet consumed by localized strain.  
+*   **Dilation ($\alpha$):** The dimensionless dilation factor, defining the scaling of local update delays relative to the baseline cadence $\tau_0$.
+
+#### Fundamental Relations
+
+**1. Budget vs. Utilization**
+The remaining budget $B(r)$ is inversely related to the local network utilization $U(r)$:
+$$B(r) = 1 - U(r)$$
+where $U(r)$ is the normalized node utilization ($U \to 0$ in flat, unstrained regions; $U \to 1$ at the limit of capacity saturation).
+
+**2. Dimensionless Dilation**
+The local dilation factor $\alpha(r)$ scales inversely with the remaining processing headroom:
+$$\alpha(r) = \frac{1}{B(r)} = \frac{1}{1 - U(r)}$$
+As utilization increases, the dilation factor diverges toward infinity, slowing down the rate of local state transitions.
+
+**3. Dimensional Cadence**
+The physical time interval $dt(r)$ required to complete a local node update is the product of the fundamental baseline tick $\tau_0$ and the local dilation factor:
+$$dt(r) = \tau_0 \alpha(r) = \tau_0 \frac{1}{1 - U(r)}$$
+
+#### The Unified Regime
+Across all modeled scales, the local update timing is governed by the unified relation:
+$$\alpha(r) = \frac{1}{1 - U(r)}, \quad dt(r) = \tau_0 \alpha(r)$$
+This relation ensures that utilization $U(r)$ smoothly spans from quantum scale dynamics through the macroscopic gravitational transition, preventing mathematical divergences or step-function singularities across decades of distance.
+
+#### The CaBS Action Principle
+Physical wave patterns propagate through the node network along trajectories that extremize a functional of local dilation and processing budget under local strain constraints. This principle represents the network-level origin of least-action behavior, serving as the discrete foundation from which continuous geodesics and minimal-path principles emerge.
+
+### TODO: Pattern-Rule Integration (See `SVET_issues_list.xls` — Tab “CaBS Rules”)
+
+Future tasks:
+*   Define explicit localized update rules for pattern motion, branching, stalling, and decay under CaBS dynamics.  
+*   Verify via numerical simulation if these local rules naturally yield emergent geodesic paths.  
+*   Validate the resulting propagation velocities against standard lattice simulations and audit configurations.
+
 ---
 
 ## 4. Flux Algebra
