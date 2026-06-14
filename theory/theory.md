@@ -397,7 +397,7 @@ where $\mathcal{N}$ enforces that the total resultant flux remains within the lo
 **Directional Cancellation**  
 Because flux vectors possess explicit physical orientations across adjacency links, cancellation occurs when opposing demands converge:
 *   **Alignment (Constructive):** If $\vec{F}_1$ and $\vec{F}_2$ are parallel, their update demands reinforce each other, maximizing the resolved coherent flux.
-*   **Opposition (Destructive):** If $\vec{F}_1 \approx -\vec{F}_2$, the opposing update demands cancel within the local ledger. The remaining unresolved energy is diverted into the incoherent channel ($H$).
+*   **Opposition (Destructive):** If $\vec{F}_1 \approx -\vec{F}_2$, the opposing update demands cancel within the local ledger. The remaining unresolved portion of coherent update demand is diverted into the incoherent channel ($H$).
 
 This vector-based subtraction replaces the standard wave mechanics requirement for complex probability amplitudes with real-valued, directional conservation bookkeeping.
 
