@@ -103,7 +103,7 @@ This document serves as the authoritative notation and terminology reference for
 ### $\chi$ — "Chi"
 **Type:** Derived  
 **Definition:** Localized perturbations or disturbances that do not yet constitute coherent demand.  
-**Forensic Role:** Monitors small-scale substrate jitter and stress.  
+**Forensic Role:** Monitors small-scale node set jitter and stress.  
 **Clarification:** **Not** a demand channel; does **not** contribute to $S$.
 
 ---
