@@ -409,7 +409,7 @@ The spatial paths of coherent update demands are governed by local capacity nego
 Coherent propagation occurs when adjacent node $j$ has sufficient available budget $B_j$ to accept the incoming coherent demand $F_{i\to j}^{\text{eff}}$. The successfully transmitted fraction continues along its trajectory.
 
 **2. Coherent Rejection (Reflection)**  
-Reflection is a surface-level accounting shock. When the incoming effective flux exceeds the target node's available budget, the target node rejects the excess coherent demand. The unresolved portion remains coherent and is reflected back into the adjacency:
+Reflection is a local ledger‑level rejection event. When the incoming effective flux exceeds the target node's available budget, the target node rejects the excess coherent demand. The unresolved portion remains coherent and is reflected back into the adjacency:
 $$F_{i\to j}^{\text{refl}} = F_{i\to j}^{\text{eff}} - B_j \qquad \big(\text{when } F_{i\to j}^{\text{eff}} > B_j\big)$$
 
 **3. Coherence Refraction**  
