@@ -568,14 +568,57 @@ This reproduces the full interference phenomenology of wave mechanics while rema
 
 ## 6. Hilbert‑Space Correspondence
 
-### 6.1 Coherence ↔ Amplitude
-*TODO: Map coherent pattern amplitude to quantum amplitude analogs.*
+### 6.1 Amplitude as Coherent Flux Density
 
-### 6.2 Flux Orientation ↔ Phase
-*TODO: Show how orientation and cadence produce phase behavior equivalent to complex phase factors.*
+In SVET, amplitude is not a complex-valued field quantity but a real-valued measure of coherent flux density across the node set. For a pattern occupying a region $\Omega$ of nodes, the local amplitude $A(x)$ is defined as the magnitude of coherent flux arriving at node $x$ during a tick:
 
-### 6.3 Node Ledger ↔ Probability Density
-*TODO: Explain how the node ledger and normalized flux distributions correspond to probability densities in measurement statistics.*
+$$A(x) = \left\lVert F_{\text{coh}}(x) \right\rVert$$
+
+This quantity reflects how strongly the pattern’s coherent structure is represented at that location. Because flux is capacity-limited (Sections 3.1–3.3), amplitude inherits strict upper bounds:
+
+$$0 \le A(x) \le \min(B_x, u(\eta_x))$$
+
+Amplitude in SVET therefore corresponds to the *locally realized coherent update density* rather than a continuous field amplitude. This mapping provides the bridge to Hilbert-space norms: higher coherent flux density corresponds to higher quantum amplitude in the continuum limit.
+
+Amplitude is always ledger-tracked and pattern-level; it does not modify the underlying node-level update cadence or the invariant propagation limit $c$.
+
+### 6.2 Phase from Orientation and Cadence
+
+SVET encodes phase through two real-valued, locally defined quantities:
+
+**1. Directional Orientation**  
+The orientation of coherent flux across adjacency links determines the instantaneous phase direction of a pattern. Two patterns with identical amplitudes but differing flux orientations represent distinct phase states.
+
+**2. Cadence Delay**  
+Local variations in effective cadence $\tau_{\text{eff}}$ introduce timing offsets that act as discrete phase shifts. A delay of one tick corresponds to a fixed phase increment, and accumulated delays reproduce continuous phase evolution in the long-wavelength limit.
+
+The effective phase at node $x$ is therefore:
+
+$$\phi(x) = \phi_0 + \omega\,\Delta t(x)$$
+
+where $\Delta t(x)$ is the accumulated cadence delay relative to a reference tick.
+
+Because phase is encoded through orientation and timing rather than complex numbers, SVET reproduces interference, superposition, and phase evolution using only real-valued, locally computable quantities. This ensures that phase behavior remains grounded in the node set’s adjacency structure and cadence constraints.
+
+### 6.3 Probability Density from Ledger Normalization
+
+In SVET, probability density arises from the normalized distribution of coherent flux across the node set. Let $A(x)$ denote the coherent amplitude at node $x$ (Section 6.1). The total coherent amplitude of a pattern is:
+
+$$A_{\text{tot}} = \sum_{x \in \Omega} A(x)$$
+
+The probability density associated with node $x$ is then:
+
+$$P(x) = \frac{A(x)}{A_{\text{tot}}}$$
+
+This mapping reflects the fraction of the pattern’s coherent update demand realized at each node. Because amplitude is bounded and ledger-tracked, the normalization condition
+
+$$\sum_x P(x) = 1$$
+
+is automatically satisfied under the local ledger conservation algebra (Section 4.4).
+
+Decoherence corresponds to the irreversible transfer of amplitude into the incoherent channel (Section 2.5). When coherent flux is shed into the $H$-channel, the corresponding probability weight is removed from the coherent distribution, reproducing the collapse-like behavior observed in measurement scenarios.
+
+Thus, probability density in SVET is not an abstract postulate but a direct consequence of coherent flux distribution and ledger normalization.
 
 ### 6.4 Decoherence ↔ Heat Channel
 *TODO: Formalize decoherence as irreversible transfer from coherent channel to heat channel and derive decoherence timescales.*
