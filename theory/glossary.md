@@ -6,6 +6,11 @@ This document serves as the authoritative notation and terminology reference for
 
 ## 1. Primitives (The Substrate "Hardware")
 
+### Node Set
+**Type:** Primitive  
+**Definition:** The fundamental, static ensemble of discrete update sites (nodes) with fixed adjacency relations and local update rules.  
+**Forensic Role:** Serves as the primary, non-coordinate space of the universe. It completely replaces legacy mechanical terms ("substrate") and wired computational terms ("network"). Emergent spacetime, continuous geometry, and fields are represented as dynamic routing configurations across this static set.
+
 ### $B$ — "Budget"
 **Type:** Primitive  
 **Definition:** Maximum coherent update capacity of a node per tick.  
@@ -20,7 +25,7 @@ This document serves as the authoritative notation and terminology reference for
 ### $\tau$ — "tau"
 **Type:** Primitive  
 **Definition:** Local update timing (heartbeat) of a node.  
-**Forensic Role:** The fundamental clock speed of the substrate at a specific site.
+**Forensic Role:** The fundamental clock speed of the node set at a specific site.
 
 ### $\Xi$ — "Xi"
 **Type:** Primitive  
@@ -40,12 +45,12 @@ This document serves as the authoritative notation and terminology reference for
 
 ---
 
-## 2. Constants (The Substrate "Laws")
+## 2. Constants (Structural Invariants)
 
 ### $c$ — "c"
 **Type:** Constant  
-**Definition:** Maximum propagation rate; exactly one adjacency hop per substrate tick in vacuum.  
-**Forensic Role:** Universal speed limit of the hardware.
+**Definition:** The invariant adjacency‑hop rate of the node space; the maximum rate at which coherent influence, strain, or routing information can propagate between adjacent nodes.  
+**Forensic Role:** Structural causal ceiling of the node space; defines the maximum propagation rate of coherent updates and establishes the causal ordering of all pattern‑level dynamics.
 
 ### $\tau_0$ — "tau-naught"
 **Type:** Constant  
