@@ -134,7 +134,7 @@ This document serves as the authoritative notation and terminology reference for
 ### $\ell_{adj}$ — "ell-adj"
 **Type:** Metric  
 **Definition:** Adjacency Length; number of hops in a pattern's spatial footprint.  
-**Forensic Role:** Defines the "Size" of a pattern in the node network.
+**Forensic Role:** Defines the "Size" of a pattern in the node sets.
 
 ### $\Omega_p$ — "Omega-p"
 **Type:** Metric  
