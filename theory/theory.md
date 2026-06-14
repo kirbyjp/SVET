@@ -309,14 +309,14 @@ Define the local excitation as the dimensionless ratio:
 $$\eta(x) = \frac{\rho_{\text{local}}(x)}{\rho_{\text{ref}}}$$
 where the reference density $\rho_{\text{ref}}$ is taken as the Planck energy density. The admissible range is bounded as:
 $$0 \le \eta \le 1$$
-In its idle ground state, the network's resting baseline satisfies $\eta_{\text{vac}} \sim 10^{-122}$.
+In its idle ground state, the node set's resting baseline satisfies $\eta_{\text{vac}} \sim 10^{-122}$.
 
 #### Axiom 2 — Finite Update Capacity
-Each node possesses a maximum update rate $u_{\text{node,max}}$ at Planck saturation ($\eta = 1$), physically constrained by the Margolus-Levitin speed limit:
-$$u_{\text{node,max}} \sim \frac{2 E_{\text{ref}}}{\pi \hbar}$$
+Each node possesses a maximum update capacity $u_{\text{node,max}}$ defining the maximum number of coherent updates allowed per tick duration $\Delta t$ at Planck saturation ($\eta = 1$), constrained by the Margolus–Levitin limit:
+$$u_{\text{node,max}} \sim \frac{2 E_{\text{ref}}\,\Delta t}{\pi \hbar}$$
 where $E_{\text{ref}}$ is the energy in a reference node at saturation. The effective update rate scales linearly with local excitation:
 $$u(\eta) = \eta\,u_{\text{node,max}}$$
-This expresses the capacity-limited nature of the node network, directly linking local energy density to the local update cadence.
+This expresses the capacity-limited nature of the node set, directly linking local energy density, the update budget, and the discrete tick duration.
 
 #### Axiom 3 — Collapse Bound for Extended Regions
 While individual nodes may approach local saturation ($\eta \to 1$), extended regions cannot sustain uniform saturation. For a given region of radius $R$ containing $N$ nodes, the coarse-grained average excitation is defined as:
@@ -333,13 +333,13 @@ $$t_P \le \Delta t \le \frac{\pi}{\omega_{\max}}$$
 The tick selection governs representational resolution, while the local excitation $u(\eta)$ governs realized processing capacity; the two quantities are coupled but distinct.
 
 #### Axiom 5 — Asymptotic Cadence Collapse
-The node network never reaches a state of absolute, literal cessation of updates (literal zero-tick, or $\tau_{\text{eff}} = \infty$). Instead, as the local excitation approaches saturation ($\eta \to 1$), the effective cadence ($\tau_{\text{eff}}$) diverges asymptotically:
+The node set never reaches a state of absolute, literal cessation of updates (literal zero-tick, or $\tau_{\text{eff}} = \infty$). Instead, as the local excitation approaches saturation ($\eta \to 1$), the effective cadence ($\tau_{\text{eff}}$) diverges asymptotically:
 $$\lim_{\eta \to 1} \tau_{\text{eff}}(\eta) = \infty$$
-Each incremental decimal increase in $\eta$ (e.g., $0.9 \to 0.99 \to 0.999$) requires exponentially higher local excitation densities, producing exponentially larger slowdowns in the local update cadence. This is a purely capacity-limited boundary condition: just as Special Relativity prevents massive particles from reaching $c$ through an exponential divergence of kinetic energy, SVET prevents the node network from reaching absolute temporal freezing through an exponential divergence of $\tau_{\text{eff}}$.
+Each incremental decimal increase in $\eta$ (e.g., $0.9 \to 0.99 \to 0.999$) requires exponentially higher local excitation densities, producing exponentially larger slowdowns in the local update cadence. This is a purely capacity-limited boundary condition: just as Special Relativity prevents massive particles from reaching $c$ through an exponential divergence of kinetic energy, SVET prevents the node set from reaching absolute temporal freezing through an exponential divergence of $\tau_{\text{eff}}$.
 
-*Note on the Two-Layer Ontology:* Cadence collapse is strictly a pattern-level phenomenon. The underlying node network (the physical hardware) continues to respect the absolute, structural propagation limit $c$ (exactly one adjacency hop per network tick). What collapses under extreme excitation and routing cost is the capacity of extended, coherent patterns (the software) to exploit that raw network capacity. As local excitation approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$. In the weak-field limit, variations in $\tau_{\text{eff}}$ reproduce the gravitational redshift and time dilation of General Relativity, with $\tau_{\text{eff}}$ serving as the SVET analogue of the GR lapse function $g_{00}$, not as a dynamical metric component but as a pattern-level cadence field emerging from excitation [1]. This establishes the direct correspondence between SVET cadence and the GR lapse function $g_{00}$, ensuring that gravitational redshift emerges naturally from the excitation–cadence structure.
+*Note on the Two-Layer Ontology:* Cadence collapse is strictly a pattern-level phenomenon. The underlying node set (the physical hardware) continues to respect the absolute, structural propagation limit $c$ (exactly one adjacency hop per network tick). What collapses under extreme excitation and routing cost is the capacity of extended, coherent patterns (the software) to exploit that raw network capacity. As local excitation approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$. In the weak-field limit, variations in $\tau_{\text{eff}}$ reproduce the gravitational redshift and time dilation of General Relativity, with $\tau_{\text{eff}}$ serving as the SVET analogue of the GR lapse function $g_{00}$, not as a dynamical metric component but as a pattern-level cadence field emerging from excitation. This establishes the direct correspondence between SVET cadence and the GR lapse function $g_{00}$, ensuring that gravitational redshift emerges naturally from the excitation–cadence structure.
 
-Local excitation $\eta(x)$ is the primary driver of strain $S_{ij}(x)$, which in turn determines the local bias $B_a(x)$, the coherence cost $C(x,v)$, and ultimately the emergent metric $g_{\mu\nu}(x)$. Because the emergent metric $g_{\mu\nu}(x)$ determines routing cost $C(x,v)$ and local cadence, the excitation field $\eta(x)$ participates in a self-consistent routing cycle that shapes both geometry and propagation [1].
+Local excitation $\eta(x)$ is the primary driver of strain $S_{ij}(x)$, which in turn determines the local bias $B_a(x)$, the coherence cost $C(x,v)$, and ultimately the emergent metric $g_{\mu\nu}(x)$. Because the emergent metric $g_{\mu\nu}(x)$ determines routing cost $C(x,v)$ and local cadence, the excitation field $\eta(x)$ participates in a self-consistent routing cycle that shapes both geometry and propagation.
 
 ### 3.8 Coherence Manifold Mapping
 
