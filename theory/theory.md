@@ -346,14 +346,14 @@ Local excitation $\eta(x)$ is the primary driver of strain $S_{ij}(x)$, which in
 The mapping from physical wave patterns to emergent metric geometry proceeds through a five-stage processing pipeline:
 
 **1. Patterns to Strain**
-Let the pattern be effectively represented as a local field $P(x)$ at macroscopic scales, which may consist of the wave function $\Psi(x)$ or a bundle of quantum fields. The strain tensor $S_{ij}(x)$ is an effective continuum representation of how the pattern stresses the local node network:
+Let the pattern be effectively represented as a local field $P(x)$ at macroscopic scales, which may consist of the wave function $\Psi(x)$ or a bundle of quantum fields. The strain tensor $S_{ij}(x)$ is an effective continuum representation of how the pattern stresses the local node set:
 $$S_{ij}(x) = \mathcal{F}_{ij}\big[P(x), \partial_i P(x), \dots\big]$$
-where the functional $\mathcal{F}_{ij}$ represents how the pattern's spatial profile stresses the local node network. Different components of $S_{ij}$ correspond to distinct physical channels (such as mass-like, charge-like, or spin-like strain). Under this mapping, $\Psi$ is placed as an input to the geometry-generation pipeline rather than being placed "inside" a pre-existing spacetime.
+where the functional $\mathcal{F}_{ij}$ represents how the pattern's spatial profile stresses the local node set. Different components of $S_{ij}$ correspond to distinct physical channels (such as mass-like, charge-like, or spin-like strain). Under this mapping, $\Psi$ is placed as an input to the geometry-generation pipeline rather than being placed "inside" a pre-existing spacetime.
 
 **2. Strain to Bias**
-The accumulated strain tensor is mapped to a local bias field $B_a(x)$ defining the network's directional update preferences:
+The accumulated strain tensor is mapped to a local bias field $B_a(x)$ defining the node set's directional update preferences:
 $$B_a(x) = \mathcal{G}_a\big[S_{ij}(x)\big]$$
-The functional $\mathcal{G}_a$ determines local update bias, representing the network-level origin of gravitational potentials, frame-dragging, and background biases ($B_0$).
+The functional $\mathcal{G}_a$ determines local update bias, representing the node-set-level origin of gravitational potentials, frame-dragging, and background biases ($B_0$).
 
 **3. Bias to Local Coherence Cost**
 The update bias defines a directional coherence cost density $C(x,v)$ for a pattern propagating through point $x$ with local direction vector $v$:
@@ -369,7 +369,6 @@ Least-cost coherence routing paths are the geodesics of this cost functional.
 If the cost function $C(x,v)$ is homogeneous of degree one in the velocity vector $v$, it can be modeled as a Finsler metric. Under isotropic assumptions, this reduces to a Riemannian metric tensor $g_{\mu\nu}(x)$ such that:
 $$C(x,v) = \sqrt{g_{\mu\nu}(x)\,v^\mu v^\nu}$$
 The emergent coherence manifold is $(M, g_{\mu\nu})$, where horizons and ergospheres represent critical, capacity-limited boundaries of the metric.
-
 ---
 
 ## 4. Flux Algebra
