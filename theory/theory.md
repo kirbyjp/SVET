@@ -28,11 +28,12 @@ header-includes:
 The acronym SVET (Static Vacuum Excitation Theory) also mirrors the word for "world" and "light" in several European languages. This dual meaning reflects the model’s purpose: to describe the fundamental structure of the cosmos (the world) and the propagation of coherent excitations (light) through a unified, capacity-limited node network.
 
 ### 1.1 What the Node Space Is
-The node network is the vacuum—the same vacuum studied in quantum field theory, cosmology, and high-energy physics. SVET does not introduce an additional medium; it reinterprets the existing vacuum as a static network of update sites whose localized, discrete excitations manifest as physical patterns.
 
-The vacuum node network supports waves rather than point-like particles. What experimental physics registers as “particles” are localized, self-maintaining coherence-patterns whose tightly confined structure produces particle-like behavior.
+The node space is the vacuum—the same physical vacuum studied in quantum field theory, cosmology, and high‑energy physics. SVET does not introduce an additional medium; it reinterprets the existing vacuum as a static set of update sites whose localized, discrete excitations manifest as physical patterns.
 
-*TODO: Describe the motivation for SVET — resolving GR singularities and QFT divergences through a finite substrate. Provide a concise roadmap of the paper and summarize the main claims and predictions.*
+The node space supports waves rather than point‑like particles. What experimental physics registers as “particles” are localized, self‑maintaining coherence‑patterns whose tightly confined structure produces particle‑like behavior.
+
+*TODO: Describe the motivation for SVET — resolving GR singularities and QFT divergences through a finite, capacity‑limited node space. Provide a concise roadmap of the paper and summarize the main claims and predictions.*
 
 ---
 
