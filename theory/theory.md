@@ -630,20 +630,97 @@ Thus, probability density in SVET is not an abstract postulate but a direct cons
 
 ## 7. QFT Correspondence Layer
 
+The SVET framework reproduces the calculational structure of quantum field theory while replacing its continuum ontology with discrete, capacity-limited update rules. Fields, particles, propagators, and renormalization emerge as coarse-grained summaries of node-level dynamics rather than fundamental entities.
+
 ### 7.1 Fields as Statistical Summaries
-*TODO: Explain how continuum fields arise as statistical summaries of node states over coarse‑grained volumes.*
+
+Continuum fields arise in SVET as **statistical summaries** of node-level quantities over coarse-grained regions. For a region $\Omega$ containing many nodes, define the coarse-grained scalar, vector, or tensor field:
+
+$$\Phi(x) = \frac{1}{\lvert\Omega\rvert} \sum_{i \in \Omega} q(i)$$
+
+where $q(i)$ is the relevant node-level quantity (excitation, flux direction, strain component, etc.).
+
+*   Scalar fields correspond to averaged excitation.
+*   Vector fields correspond to averaged directional flux.
+*   Tensor fields correspond to averaged strain.
+
+Fields are not ontological primitives; they are **coarse-grained aggregates** of discrete update behavior. In the long-wavelength limit, these aggregates reproduce the continuum fields of QFT.
+
+---
 
 ### 7.2 Excitations as Coherent Flux Packets
-*TODO: Define particle‑like excitations as localized coherent flux packets and discuss dispersion, group velocity, and stability.*
+
+Particle-like excitations correspond to **localized, self-maintaining packets of coherent flux**. A coherent packet is defined by:
+
+*   a stable flux orientation,
+*   a bounded spatial support,
+*   a cadence profile that maintains internal phase relationships.
+
+The group velocity $v_g$ of a packet is determined by the **routing-cost gradient**:
+
+$$v_g = \frac{\partial \omega}{\partial k}$$
+
+where $\omega$ is the local cadence and $k$ is the effective spatial frequency.
+
+Dispersion arises when different components of the packet experience different routing costs due to strain or excitation gradients. Stability requires that internal flux reinforcement exceeds incoherent shedding into the incoherent channel ($H$).
+
+This reproduces the stability and propagation behavior of particle-like excitations in QFT.
+
+---
 
 ### 7.3 Mass as Cadence Penalty
-*TODO: Present the mapping where effective inertial mass emerges from cadence penalties or local budget taxation.*
+
+In SVET, inertial mass emerges from **cadence penalties** imposed by local excitation and routing cost. A pattern with higher internal excitation requires more update budget to maintain coherence, reducing its effective cadence:
+
+$$\tau_{\text{eff}} = \tau_0 + \Delta \tau(\eta)$$
+
+This cadence delay reduces the pattern’s ability to change its routing direction, producing inertial behavior.
+
+*   Mass corresponds to resistance to cadence change.
+*   Inertia corresponds to routing latency.
+*   Relativistic mass increase corresponds to cadence slowdown under high excitation.
+*   Relativistic momentum corresponds to **directional routing-cost accumulation**.
+
+This mapping reproduces $E = mc^2$ as the cost of maintaining a coherent pattern.
+
+---
 
 ### 7.4 Interactions as Local Strain Coupling
-*TODO: Show how interactions arise from local strain coupling and budget negotiation between overlapping patterns.*
+
+Interactions arise when overlapping coherent patterns modify each other’s **local strain field** and **update cost**. When two patterns overlap:
+
+*   their strain fields superpose,
+*   their routing costs shift,
+*   their cadence profiles adjust,
+*   their flux orientations redistribute.
+
+The Node Rule resolves these competing demands by redistributing coherent flux, phase, momentum, and **orientation-like degrees of freedom**.
+
+This redistribution is the SVET analogue of the interaction term in a Lagrangian. In the correspondence layer, **gauge interactions map to orientation-preserving flux constraints**, reflecting how certain flux orientations must be preserved under local update rules.
+
+Thus:
+
+*   QFT interactions $\leftrightarrow$ local strain coupling,
+*   coupling constants $\leftrightarrow$ sensitivity of routing cost to strain,
+*   gauge structure $\leftrightarrow$ orientation-preserving constraints in the correspondence layer.
+
+---
 
 ### 7.5 Why Renormalization Disappears
-*TODO: Argue that renormalization is unnecessary because the substrate enforces finite cutoffs and capacity limits; provide examples.*
+
+Perturbation theory in QFT expands interactions into infinite series of virtual processes. In SVET, these “virtual particles” are not physical entities; they are **bookkeeping artifacts** of expanding the Node Rule into a series.
+
+When patterns overlap, the adjacency structure must reconcile multiple update demands. The combinatorics of these reconciliations correspond exactly to the diagrammatic expansions of QFT.
+
+Renormalization arises in continuum QFT because the underlying discrete update structure is replaced by integrals over unbounded momenta. SVET avoids these divergences because:
+
+*   update capacity is finite,
+*   excitation is bounded,
+*   routing cost is finite,
+*   cadence collapse prevents infinite frequencies,
+*   the node-level update rule is discrete.
+
+Thus, renormalization becomes **scale-dependent coarse-graining of update cost**, not a cure for infinities. The infinities of continuum QFT are replaced by finite, capacity-limited routing behavior in SVET.
 
 ---
 
