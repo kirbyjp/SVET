@@ -760,6 +760,18 @@ Physical trajectories are deflected toward these slower-updating regions because
 ### 8.2 Geodesics as Least‑Delay Paths
 The equivalence principle is naturally recovered as a local kinematic property of the node network. In SVET, gravitational acceleration is not a force, but the result of a spatial gradient of cadence ($\nabla \tau_{\text{eff}}$). A propagating wave pattern in free fall simply rides this local cadence tilt. Because the pattern's internal update cycles are uniformly adapted to the local latency, this gradient remains locally undetectable to the pattern itself—the tilt is locally invisible. Measurable physical effects only manifest as tidal strain gradients, where non-uniform variations in the cadence gradient across an extended pattern create differential update latencies that cannot be locally adapted out.
 
+### 8.21 Excitation Propagation, Motion, and the Meaning of Gravity
+
+In SVET, excitations propagate through local updates across adjacency links. Waves—not point particles—carry interactions, because interactions are local reconfigurations of coherent patterns. Motion is therefore not the translation of a material object but the redistribution of coherent flux across nodes.
+
+Translation consumes update budget. A pattern that moves must allocate part of its finite update capacity to maintaining directional coherence. This creates a local bias in the update rule—a coherence-strain—that influences how subsequent updates propagate. Patterns follow paths that minimize accumulated update cost. These coherence-minimal paths are the SVET analogue of geodesics.
+
+Mass and energy correspond to baseline and dynamic update demand. The rest-frame update cost is the budget required to maintain a coherent pattern when not translating. Additional excitation or strain increases the local cadence penalty, slowing internal cycles and producing relativistic time dilation.
+
+Changes in excitation distribution modify the local cadence field. These modifications propagate outward at the invariant hop rate $c$, appearing macroscopically as gravitational influence. In the continuum limit, these propagating cadence-bias adjustments reproduce the tidal and radiative phenomena attributed to curvature in General Relativity.
+
+Under this interpretation, gravity is not a force and not a geometric property of a manifold. It is the macroscopic expression of how coherent patterns negotiate finite update budgets in a discrete, capacity-limited system. Horizons and singularities correspond to limits of pattern coherence, not literal infinities in spacetime geometry.
+
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
 
