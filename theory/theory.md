@@ -1,11 +1,11 @@
 ---
-title: "Static Vacuum Excitation Theory (SVET)"
+title: "Static Vacuum Exaction Theory (SVET)"
 subtitle: "A capacity-limited Planck-scale physical vacuum as a unified foundation for General Relativity and Quantum Gravity"
 author: 
   - John Kirby
 date: "June 2026"
 abstract: |
-  This document presents Static Vacuum Excitation Theory (SVET), a discrete resource-accounting model of the physical vacuum. SVET models the vacuum as a network of Planck-scale nodes with finite update budgets and local update rules. From these primitives we derive emergent wave mechanics, a divergence-free account of quantum excitations, finite-core black holes, and a cadence-based mapping to gravitational phenomena. The framework is written as a living Markdown document (MathJax/LaTeX compatible) intended for iterative development, Pandoc conversion, and eventual arXiv/journal submission.
+  This document presents Static Vacuum Exaction Theory (SVET), a discrete resource-accounting model of the physical vacuum. SVET models the vacuum as a network of Planck-scale nodes with finite update budgets and local update rules. From these primitives we derive emergent wave mechanics, a divergence-free account of quantum excitations, finite-core black holes, and a cadence-based mapping to gravitational phenomena. The framework is written as a living Markdown document (MathJax/LaTeX compatible) intended for iterative development, Pandoc conversion, and eventual arXiv/journal submission.
 keywords: [Quantum Gravity, General Relativity, Substrate Physics, Discrete Vacuum, Singularities, CaBS]
 geometry: margin=1in
 fontsize: 11pt
@@ -13,7 +13,7 @@ header-includes:
   - \usepackage{amsmath}
 ---
 
-# Static Vacuum Excitation Theory (SVET)  
+# Static Vacuum Exaction Theory (SVET)  
 ### A capacity‑limited Planck‑scale physical vacuum as a unified foundation for GR and QG
 
 ---
@@ -25,7 +25,7 @@ header-includes:
 
 ## 1. Introduction
 ### Preface: Etymological Context
-The acronym SVET (Static Vacuum Excitation Theory) also mirrors the word for "world" and "light" in several European languages. This dual meaning reflects the model’s purpose: to describe the fundamental structure of the cosmos (the world) and the propagation of coherent excitations (light) through a unified, capacity-limited node network.
+The acronym SVET (Static Vacuum Exaction Theory) also mirrors the word for "world" and "light" in several European languages. This dual meaning reflects the model’s purpose: to describe the fundamental structure of the cosmos (the world) and the propagation of coherent excitations (light) through a unified, capacity-limited node network.
 
 ### 1.1 What the Node Space Is
 
