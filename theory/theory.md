@@ -726,6 +726,30 @@ Thus, renormalization becomes **scale-dependent coarse-graining of update cost**
 
 ## 8. GR Correspondence Layer
 
+### 8.0 Discrete Time, Update Budget, and Relativistic Behavior
+
+SVET models time as an ordered sequence of global ticks. At each tick, every node in the node set updates its state based solely on its own values and those of a finite set of adjacent neighbors. This discrete update structure replaces the continuum notion of time with a tick-indexed causal ordering.
+
+Each node carries local quantities such as:
+*   coherent flux amplitude,
+*   phase,
+*   orientation-like degrees of freedom,
+*   local excitation,
+*   local momentum-like routing bias.
+
+Adjacency defines a finite propagation rate: exactly one hop per tick. This invariant hop rate corresponds to the causal ceiling identified with $c$.
+
+In this framework, **energy corresponds to update demand**—the amount of local update work a pattern requires per tick. Patterns with higher excitation require more update budget to maintain coherence. When a pattern translates rapidly or must maintain coherence under strain, a larger fraction of the local update budget is spent on translation or coherence maintenance, leaving less available for internal cycles.
+
+This produces:
+*   **relativistic time dilation** as local pattern-level cadence slowdown,
+*   **inertia** as resistance to changes in routing direction,
+*   **rest energy** as the cost of maintaining internal coherence.
+
+Tunneling arises naturally as **low-probability coherent leakage** across regions where the routing cost is high. In classically forbidden regions, the local update budget cannot support full propagation, but small-amplitude leakage persists due to the finite, discrete update rule. This reproduces quantum tunneling as a consequence of **capacity-limited update behavior**, not as a literal traversal of a potential barrier.
+
+This discrete, capacity-limited update picture forms the foundation for the GR correspondence layer. Spatial gradients in the effective cadence field $\tau_{\text{eff}}(x)$ produce the macroscopic phenomena interpreted as curvature, geodesic motion, and horizon formation.
+
 ### 8.1 Curvature as Cadence Gradient
 Spacetime curvature is not an active physical manifold; rather, it is the macroscopic manifestation of spatial gradients of the cadence field ($\nabla \tau_{\text{eff}}$) across the node network. Where localized excitations ($\chi$) are present, the effective update cadence slows down. 
 
