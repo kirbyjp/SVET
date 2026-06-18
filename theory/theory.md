@@ -524,6 +524,23 @@ Record per node and per timestep:
 
 *TODO: Establish a qualitative definition for a strain-cost functional. This functional will assign a numerical cost to a pattern’s attempt to propagate across a node and its adjacent neighbors based on local update demands. Rather than prematurely committing to a specific variational mathematical form, this placeholder serves to develop how spatial-temporal propagation paths (geodesics) minimize total network-level strain.*
 
+### 4.6 Energy as Update Demand
+
+In the SVET framework, energy is not an independent physical substance, a continuous field excitation, or a conserved quantity stored within material objects. Instead, energy $E$ is the measure of the localized update demand—the operating cost—that a coherent pattern imposes on the static node set. Every physical entity is a localized coherence-structure that must be re-instantiated at each node tick. The more complex, highly oscillatory, or structurally directional a pattern's coherence is, the greater the expending of available update capacity required to maintain it. Energy is the node-set-level accounting of this operational expenditure.
+
+The node set does not perform background updates; it simply exists as static structure (adjacency + tick-budget). When a pattern's exaction demands instantiation, the node set expends its available local capacity to honor that demand. A pattern requiring higher internal oscillation or more intricate adjacency coordinates does not carry its own energy; rather, it exacts the node set to expend more of its finite available update budget per tick.
+
+This framework reinterprets the classical division of kinetic and potential energy:
+
+*   **Kinetic Energy ($E_k$):** The increased update demand generated when a pattern allocates a portion of its finite available update budget to maintain directional coherence and propagation velocity ($v$) across the node set. The tighter and more spatially persistent this directional flux is, the more the pattern must be re-instantiated in a manner that preserves its propagation vector, increasing its total operational cost per tick.
+*   **Potential Energy ($E_p$):** The modified update demand associated with a pattern's position within a cadence gradient ($\nabla \tau_{\text{eff}}$). A pattern located in a region of altered update latency must maintain additional internal and directional coherence to remain structurally compatible with the localized delay profile, reallocating its local update budget to satisfy its boundary constraints.
+
+Because the node set does not possess or store energy independently, the conservation of energy is fundamentally the conservation of local coherence constraints. When patterns interact, their combined coherence structures must reconcile their update demands across the adjacent node set into a new, self-consistent configuration. No physical energy is transferred; instead, the underlying exaction-driven coherence constraints are redistributed according to what we may think of as the local ledger conservation identity:
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
+Thus, energy conservation is not an arbitrary physical law imposed on the universe, but the exact mathematical consequence of preserving pattern identity across discrete temporal ticks.
+
+In this view, energy is not an ontological thing, but a processing constraint. Patterns with higher update demands behave macroscopically as if they possess more energy, but this is simply the static node set performing the identical local update rules on a more complex, capacity-demanding configuration. Energy is the localized cost of coherence.
+
 ---
 
 ## 5. Emergent Wave Mechanics
