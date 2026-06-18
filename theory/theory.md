@@ -264,10 +264,12 @@ The node set does not perform background updates in empty space. The tick budget
 
 No exaction means no expenditure of budget.
 
-#### The Floor Budget ($B_0$)
-To participate in the vacuum of adjacency, we define a non-zero **Floor Budget ($B_0$)**:
-$$B_0 > 0$$
-The Floor Budget is the minimum available tick-budget a node must expend to exist as a structural element of adjacency. It represents the unavoidable structural existence cost of a node—not stored energy, active background work, or a dark energy reservoir. 
+#### The Local Floor Budget ($B_0(x)$)
+The Floor Budget is a localized structural quantity defining the minimum available tick-budget a node must expend to exist as a structural element of adjacency:
+$$B_0(x) > 0$$
+Because distant pattern exactions propagate across adjacency, the cumulative background exaction density varies across the cosmos. Thus, $B_0(x)$ is minimal in deep voids, higher in regions of moderate mass density, and reaches extreme values near gravatar boundaries. 
+
+The Local Floor Budget $B_0(x)$ is not an independent vacuum reservoir or background energy field; it is the local structural floor induced entirely by the collective pattern exactions of the universe.
 
 Because the node set does not possess or store energy independently, the conservation of energy is the exact conservation of local coherence constraints. When patterns interact, their combined coherence structures must reconcile their update demands across the adjacent node set into a new, self-consistent configuration. No physical energy is transferred; instead, the underlying exaction-driven coherence constraints are redistributed according to what we may think of as the local ledger conservation identity:
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
