@@ -256,9 +256,22 @@ $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
 Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in update demand more likely to trigger a collapse into H. In this regime, the node ensemble can no longer sustain the coherent update demand of the primary pattern. To prevent a geometric singularity, the node network undergoes a **Phase Transition**, reconfiguring local node states into new, simpler patterns (e.g., Pair Production). This mechanism replaces the mathematical singularity of General Relativity with a physically finite, high-strain core.
 
 ### 3.5 The Netzero Energy Principle
-SVET adopts a **Netzero** energy interpretation rather than the quantum field theory concept of zero-point energy. The node network itself possesses zero net energy in its idle state. All physical energy is an accounting of active, coherent patterns moving through the network.
 
-To maintain operations without divergence, we define a non-zero **Floor Budget ($B_0$)**—the baseline coherent-processing capacity of idle nodes. This is a structural threshold of the network, not stored energy, vacuum energy, or dark energy.
+SVET adopts a **Netzero** energy interpretation rather than the traditional quantum field theory concept of zero-point energy. The node set itself possesses zero net energy in its static configuration. All physical energy is a ledger accounting of active, coherent pattern exactions compelling the node set to spend its available local update budgets.
+
+#### The Static Vacuum and Budget Availability
+The node set does not perform background updates in empty space. The tick budget is a finite capacity that remains available until pattern exactions require expenditure. In empty space, nodes do not perform updates other than to maintain their node bias. Updates occur only when active patterns demand instantiation.
+
+No exaction means no expenditure of budget.
+
+#### The Floor Budget ($B_0$)
+To participate in the vacuum of adjacency, we define a non-zero **Floor Budget ($B_0$)**:
+$$B_0 > 0$$
+The Floor Budget is the minimum available tick-budget a node must expend to exist as a structural element of adjacency. It represents the unavoidable structural existence cost of a node—not stored energy, active background work, or a dark energy reservoir. 
+
+Because the node set does not possess or store energy independently, the conservation of energy is the exact conservation of local coherence constraints. When patterns interact, their combined coherence structures must reconcile their update demands across the adjacent node set into a new, self-consistent configuration. No physical energy is transferred; instead, the underlying exaction-driven coherence constraints are redistributed according to what we may think of as the local ledger conservation identity:
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
+Thus, energy conservation is not an arbitrary physical law imposed on the universe, but the exact mathematical consequence of preserving pattern identity across discrete temporal ticks.
 
 ### 3.6 CaBS Primitive Rules (Cadence–Budget–Strain)
 
