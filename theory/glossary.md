@@ -298,7 +298,7 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 
 ---
 
-## 1. Primitives (The Vacuum "Hardware")
+## 1. Primitives (The Node-Set "Hardware")
 
 ### Node Set
 **Type:** Primitive  
@@ -312,9 +312,9 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 
 ### $S$ — "Strain"
 **Type:** Primitive  
-**Definition:** Incoming coherent update demand (load).  
-**Invariant:** $S \ge 0$.  
-**Forensic Role:** Represents the "work" currently placed on a node.
+**Definition:** How much of a node's tick-budget is consumed instantiating exactions from patterns on that node and its adjacency [1].  
+**Invariant:** $S \ge 0$ [1].  
+**Forensic Role:** Represents the local update load currently placed on a node by propagating coherent patterns [1]. Both node-local and adjacency-local exactions contribute directly to strain, which represents active budget utilization rather than an independent field [1].
 
 ### $H$ — "Incoherent Channel" (or H-channel)
 **Type:** Primitive (Dissipation Ledger)  
@@ -326,31 +326,10 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 **Definition:** Local update timing (heartbeat) of a node.  
 **Forensic Role:** The fundamental clock speed of the node set at a specific site.
 
-### $\Xi$ — "Xi"
-**Type:** Primitive  
-**Definition:** Residual continuity requirement a node imposes on neighbors after its own update.  
-**Forensic Role:** Mechanism of forward propagation and temporal continuity.
-
-### $H$ — "H-channel"
-**Type:** Primitive  
-**Definition:** Incoherent energy ledger for collapsed update demand.  
-**Forensic Role:** Captures "accounting debris" such as heat, fluorescence, and fracture.
-
 ### $\Xi$ — "Xi" (Residual Continuity Requirement)
 **Type:** Primitive Parameter  
 **Definition:** The adjacency-continuity requirement a node imposes on its neighbors after its own update to ensure forward reconstruction of a propagating pattern [1].  
 **Forensic Role:** Serves as the minimal continuity condition for adjacency-coherent propagation [1]. If the neighboring nodes cannot satisfy this requirement during their next tick-indexed update, the pattern fails to reconstruct and collapses into incoherent $H$-channel deviation ($\Delta H$) [1].
-
-### $\Gamma_p$ — "Gamma-p" (Pattern Stability Factor)
-**Type:** Derived Metric  
-**Definition:** A dimensionless stability factor characterizing a pattern’s tolerance to strain, derived from its adjacency-reinforcement structure and cadence-coupling behavior [1].  
-**Forensic Role:**  
-*   **Yield Threshold:** A pattern reaches its yield limit when the applied local strain ratio satisfies:  
-    $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
-    A higher $\Gamma_p$ raises this threshold, meaning more stable patterns require proportionally greater strain to trigger coherence collapse [1].  
-*   **Dissipation Behavior:** Once the yield limit is breached, the rate of localized degradation and incoherent energy generation ($\Delta H$) scales **inversely** with $\Gamma_p$ [1]. Robust patterns dissipate slowly under failure, while fragile patterns dissipate rapidly [1].  
-
-This dual specification prevents inversion errors in simulation implementations: $\Gamma_p$ increases the collapse threshold, but decreases the dissipation rate once collapse occurs [1].
 
 ---
 
@@ -358,34 +337,18 @@ This dual specification prevents inversion errors in simulation implementations:
 
 ### $c$ — "c"
 **Type:** Constant  
-**Definition:** The invariant adjacency‑hop rate of the node space; the maximum rate at which coherent influence, strain, or routing information can propagate between adjacent nodes.  
-**Forensic Role:** Structural causal ceiling of the node space; defines the maximum propagation rate of coherent updates and establishes the causal ordering of all pattern‑level dynamics.
-
-### $S$ — "Strain"
-**Type:** Primitive  
-**Definition:** How much of a node's tick-budget is consumed instantiating exactions from patterns on that node and its adjacency [1].  
-**Invariant:** $S \ge 0$ [1].  
-**Forensic Role:** Represents the local update load currently placed on a node by propagating coherent patterns [1]. Both node-local and adjacency-local exactions contribute directly to strain, which represents active budget utilization rather than an independent field [1].
+**Definition:** The invariant adjacency-hop rate of the node space; the maximum rate at which coherent influence or routing information can propagate between adjacent nodes (exactly one adjacency hop per tick).  
+**Forensic Role:** Structural causal ceiling of the node space; defines the maximum propagation rate of coherent updates and establishes the causal ordering of all pattern-level dynamics.
 
 ### $\tau_0$ — "tau-naught"
 **Type:** Constant  
 **Definition:** Baseline update timing in a zero-strain vacuum.  
 **Forensic Role:** Reference "heartbeat" for velocity and dilation calculations.
 
-### $\kappa_{yield}$ — "kappa-yield"
+### $\kappa_{\text{yield}}$ — "kappa-yield"
 **Type:** Constant  
 **Definition:** Threshold constant defining when scaled demand exceeds pattern stability.  
-**Forensic Role:** The "Redline" where a coherent pattern must fracture into the H-channel.
-
-### $\tau_{\text{eff}}$ — "tau-eff" (Effective Cadence)
-**Type:** Derived Quantity  
-**Definition:** The realized reconstruction cadence of a pattern under local strain or exaction [1].  
-**Forensic Role:** Measures the pattern-level slowdown in reconstruction timing, representing the delayed propagation behavior observed in regions of high exaction density [1].
-
-### $\nabla \tau_{\text{eff}}(x)$ — "Cadence Gradient"
-**Type:** Derived Metric  
-**Definition:** The adjacency-indexed variation in effective local cadence across neighboring nodes [1].  
-**Forensic Role:** Produces routing bias for propagating patterns: adjacency paths leading through regions of higher effective latency are preferentially selected, yielding the macroscopic propagation behavior interpreted as gravitational curvature [1].
+**Forensic Role:** The "Redline" where a coherent pattern must fracture into the $H$-channel.
 
 ---
 
@@ -398,10 +361,15 @@ This dual specification prevents inversion errors in simulation implementations:
 **Forensic Role:** Physical mechanism behind time dilation and refractive index.
 *   **Emergent Interpretation:** Spatial variations in $\Delta\tau$ produce the timing gradients historically described as "ground-state tilt," giving rise to gravitational redshift, lensing, and time dilation.
 
-### $\tau_{eff}$ — "tau-eff"
-**Type:** Derived  
-**Definition:** Realized update timing of a node under medium or load.  
-**Forensic Role:** The "Slowed Heartbeat" observed in gravity wells or glass.
+### $\tau_{\text{eff}}$ — "tau-eff" (Effective Cadence)
+**Type:** Derived Quantity  
+**Definition:** The realized reconstruction cadence of a pattern under local strain or exaction [1].  
+**Forensic Role:** Measures the pattern-level slowdown in reconstruction timing, representing the delayed propagation behavior observed in regions of high exaction density [1].
+
+### $\nabla \tau_{\text{eff}}(x)$ — "Cadence Gradient"
+**Type:** Derived Metric  
+**Definition:** The adjacency-indexed variation in effective local cadence across neighboring nodes [1].  
+**Forensic Role:** Produces routing bias for propagating patterns: adjacency paths leading through regions of higher effective latency are preferentially selected, yielding the macroscopic propagation behavior interpreted as gravitational curvature [1].
 
 ### $a$ — "a"
 **Type:** Derived  
@@ -417,7 +385,7 @@ This dual specification prevents inversion errors in simulation implementations:
 ### $m$ — "mass"
 **Type:** Derived  
 **Definition:** Totality of Node and Adjacency complexity.  
-**Logic:** $m = f(\ell_{adj}, \Gamma_p, \Delta\tau)$.  
+**Logic:** $m = f(\ell_{\text{adj}}, \Gamma_p, \Delta\tau)$.  
 **Forensic Role:** Explains inertia as the "paperwork" required to move a complex pattern.
 
 ### $E$ — "energy"
@@ -441,6 +409,12 @@ This dual specification prevents inversion errors in simulation implementations:
 **Definition:** The portion of coherent update demand that a node cannot instantiate and therefore rejects and diverts out of the coherent ledger when local exaction exceeds the available processing budget.  
 **Forensic Role:** Represents the local increment of incoherent output recorded when adjacency‑coherent reconstruction fails. See H‑channel.
 
+### $\mathcal{U}$ — "Universal Horizon Variable"
+**Type:** Derived Universal Axis  
+**Definition:** A candidate universal parameter that unifies horizon behavior across mass scales by collapsing local exaction, cadence, and routing behavior into a single monotonic variable [1]:  
+$$\mathcal{U} \in [0, 1]$$  
+**Forensic Role:** Serves as the axis along which the simulation tool evaluates curve collapse, GR agreement, quantum saturation behavior, and cosmic compatibility, vanishing near the cosmic wall ($\mathcal{U} \to 0$) and saturating near the quantum wall ($\mathcal{U} \to 1$) [1].
+
 ---
 
 ## 4. Ratios & Metrics (The "Diagnostics")
@@ -452,7 +426,7 @@ This dual specification prevents inversion errors in simulation implementations:
 
 ### $n$ — "Refractive Index"
 **Type:** Ratio  
-**Definition:** $n = \tau_{eff} / \tau_0$.  
+**Definition:** $n = \tau_{\text{eff}} / \tau_0$.  
 **Forensic Role:** Measures the "Lag" of light in a medium compared to vacuum.
 
 ### $\eta$ — "eta"
@@ -460,16 +434,21 @@ This dual specification prevents inversion errors in simulation implementations:
 **Definition:** Efficiency; fraction of coherent demand that becomes flux rather than $H$.  
 **Forensic Role:** Measures the "Tax" or "Leakage" of an update.
 
-### $\Gamma_p$ — "Gamma-p"
-**Type:** Metric  
-**Definition:** Pattern Stability Factor; robustness of a pattern's coherence under strain.  
-**Forensic Role:** Determines if a pattern is a "Robust Loop" (particle) or a "Fragile Wave."
-*   **Emergent Interpretation:** Historically referred to as "pattern rigidity." When the ratio $S_p/B$ exceeds $\kappa_{\text{yield}}\Gamma_p$, the pattern undergoes structural failure ("coherence catastrophe") and sheds energy into the incoherent channel ($H$).
+### $\Gamma_p$ — "Gamma-p" (Pattern Stability Factor)
+**Type:** Derived Metric  
+**Definition:** A dimensionless stability factor characterizing a pattern’s tolerance to strain, derived from its adjacency-reinforcement structure and cadence-coupling behavior [1].  
+**Forensic Role:**  
+*   **Yield Threshold:** A pattern reaches its yield limit when the applied local strain ratio satisfies:  
+    $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$  
+    A higher $\Gamma_p$ raises this threshold, meaning more stable patterns require proportionally greater strain to trigger coherence collapse [1].  
+*   **Dissipation Behavior:** Once the yield limit is breached, the rate of localized degradation and incoherent energy generation ($\Delta H$) scales **inversely** with $\Gamma_p$ [1]. Robust patterns dissipate slowly under failure, while fragile patterns dissipate rapidly [1].  
 
-### $\ell_{adj}$ — "ell-adj"
+This dual specification prevents inversion errors in simulation implementations: $\Gamma_p$ increases the collapse threshold, but decreases the dissipation rate once collapse occurs [1].
+
+### $\ell_{\text{adj}}$ — "ell-adj"
 **Type:** Metric  
 **Definition:** Adjacency Length; number of hops in a pattern's spatial footprint.  
-**Forensic Role:** Defines the "Size" of a pattern in the node sets.
+**Forensic Role:** Defines the "Size" of a pattern in the node set.
 
 ### $\Omega_p$ — "Omega-p"
 **Type:** Metric  
@@ -480,6 +459,11 @@ This dual specification prevents inversion errors in simulation implementations:
 **Type:** Metric  
 **Definition:** Coherence Length; hops a pattern can propagate before decohering into $H$.  
 **Forensic Role:** Measures the "Life Expectancy" of a coherent signal.
+
+### $C(x,v)$ — "Coherence Cost Density"
+**Type:** Derived Metric  
+**Definition:** The cost assigned by a node at position $x$ for resolving directional exaction along direction $v$ [1].  
+**Forensic Role:** Forms the basis of least-cost routing and coherence-minimal path emergence.
 
 ---
 
@@ -500,7 +484,7 @@ This dual specification prevents inversion errors in simulation implementations:
 **Type:** Accounting Identity  
 **Definition:** Conservation of exaction:  
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
-**Forensic Role:** Represents the absolute mathematical requirement that all incoming exaction must be accounted for at the node level, partitioning into reflection ($I_{\text{refl}}$), transmission ($I_{\text{trans}}$), or incoherent deviation ($\Delta H$).
+**Forensic Role:** Represents the absolute mathematical requirement that all incoming exaction must be accounted for at the node level, partitioning into reflection ($I_{\text{refl}}$), transmission ($I_{\text{trans}}$), or incoherent deviation.
 
 ### Coherence-Shedding Rate
 **Type:** Derived Metric  
@@ -511,7 +495,25 @@ $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 **Type:** Operational Metric  
 **Definition:** The capacity-limited threshold governing the onset of coherence collapse:  
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$  
-**Forensic Role:** Determines when a node must divert exaction into the incoherent channel because coherent pattern propagation cannot be maintained.
+**Forensic Role:** Determines when a node must divert exaction into the incoherent channel because coherent propagation cannot be maintained.
+
+### Coherence-Minimal Path Functional
+**Type:** Routing Functional  
+**Definition:** The accumulated coherence cost along a candidate adjacency path $\gamma$ [1]:  
+$$A[\gamma] = \sum_{(x,v)\in\gamma} C(x,v)$$  
+**Forensic Role:** The coherence-minimal path minimizes the functional $A[\gamma]$ [1].
+
+### Horizon Condition
+**Type:** Boundary Condition  
+**Definition:** A coherence horizon forms when outward reconstruction cannot be instantiated:  
+$$\tau_{\text{eff}} \to \infty \quad \text{for outward adjacency}$$  
+**Forensic Role:** Marks the causal boundary where outward propagation fails.
+
+### Saturation Ceiling
+**Type:** Capacity Limit  
+**Definition:** The microphysical upper bound on excitation:  
+$$\eta \le 1$$  
+**Forensic Role:** Ensures that cadence collapse is asymptotic and prevents divergence of update demand.
 
 ---
 
