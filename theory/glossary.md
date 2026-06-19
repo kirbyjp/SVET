@@ -257,6 +257,11 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 **Invariant:** $S \ge 0$.  
 **Forensic Role:** Represents the "work" currently placed on a node.
 
+### $H$ — "Incoherent Channel" (or H-channel)
+**Type:** Primitive (Dissipation Ledger)  
+**Definition:** The non-coherent update pathway that receives diverted exaction when a node cannot satisfy a pattern’s adjacency-coherent reconstruction request [1].  
+**Forensic Role:** Tracks all non-coherent ledger outcomes, including heat-like dissipation, fluorescence-like events, and other incoherent outputs.
+
 ### $\tau$ — "tau"
 **Type:** Primitive  
 **Definition:** Local update timing (heartbeat) of a node.  
@@ -372,6 +377,11 @@ This dual specification prevents inversion errors in simulation implementations:
 **Definition:** The minimum available tick-budget a node at coordinate $x$ must expend to participate in the vacuum of adjacency (to exist as a structural element of adjacency and tick-budget) [1].  
 **Forensic Role:** Serves as the baseline structural existence cost of a node [1]. It represents pure, localized network structure induced entirely by the cumulative background exaction environment of the universe, rather than an independent energy reservoir or background field [1].
 
+### $\Delta H$ — "Coherence‑Shedding"
+**Type:** Derived Quantity (Bookkeeping Outcome)  
+**Definition:** The portion of coherent update demand that a node cannot instantiate and therefore rejects and diverts out of the coherent ledger when local exaction exceeds the available processing budget.  
+**Forensic Role:** Represents the local increment of incoherent output recorded when adjacency‑coherent reconstruction fails. See H‑channel.
+
 ---
 
 ## 4. Ratios & Metrics (The "Diagnostics")
@@ -427,10 +437,22 @@ This dual specification prevents inversion errors in simulation implementations:
 **Note:** Not gravitational potential.  
 **Forensic Role:** Measures the "Traffic" of coherent information.
 
-### The Node Ledger
+### Node Ledger Identity
 **Type:** Accounting Identity  
 **Definition:** Conservation of exaction:  
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
+**Forensic Role:** Represents the absolute mathematical requirement that all incoming exaction must be accounted for at the node level, partitioning into reflection ($I_{\text{refl}}$), transmission ($I_{\text{trans}}$), or incoherent deviation ($\Delta H$).
+
+### Coherence-Shedding Rate
+**Type:** Derived Metric  
+**Definition:** The rate of localized pattern degradation under failure: once the yield limit is breached, the local rate of incoherent energy generation ($\Delta H$) scales inversely with pattern stability ($\Gamma_p$) [1].  
+**Forensic Role:** Ensures that robust patterns ($\Gamma_p > 1$) dissipate slowly under failure, while fragile patterns ($\Gamma_p < 1$) collapse rapidly [1].
+
+### Yield Criterion
+**Type:** Operational Metric  
+**Definition:** The capacity-limited threshold governing the onset of coherence collapse:  
+$$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$  
+**Forensic Role:** Determines when a node must divert exaction into the incoherent channel because coherent pattern propagation cannot be maintained.
 
 ---
 
