@@ -9,6 +9,135 @@ This document serves as the authoritative notation and terminology reference for
 ## Vocabulary
 *This section serves as the centralized repository for the structural terms, local transaction mechanics, and environmental definitions unique to Static Vacuum Exaction Theory (SVET).*
 
+### Category 1: Node Set & Vacuum
+
+#### Node / Node Space
+**Type:** Primitive  
+**Definition:** A discrete, scalable unit of relational description used to partition the operational ledger of the physical vacuum. A node is not a spatial cell and carries no geometric size or physical volume; it is a non-geometric update site defined entirely by its adjacency links. At the finest functional granularity, a single node resolves only a minute fractional component of an extended pattern’s exaction per local tick. At macroscopic scales, nodes can be mathematically coarse-grained into arbitrarily large sets or clusters to evaluate the collective budget and cadence behavior of massive systems (e.g., gravatars or galactic domains) without altering the underlying local transition rules of the node set.  
+**Forensic Role:** Serves as the minimal structural participant in the vacuum of adjacency. Provides the atomic (SVET sense) ledger site on which tick-budget, bias, and exaction loads are recorded and resolved, enabling all higher-level pattern dynamics without introducing geometric assumptions or background spatial structure.
+
+#### Node Set
+**Type:** Primitive  
+**Definition:** The fundamental, static ensemble of nodes with fixed adjacency relations and local update rules.  
+**Forensic Role:** Serves as the primary, non-coordinate structure of the universe. Emergent spacetime and field-like behaviors arise strictly as pattern-level routing configurations across this static set.
+
+#### Adjacency
+**Type:** Primitive  
+**Definition:** The static set-theoretic relations defining which nodes are connected.  
+**Forensic Role:** Dictates the discrete pathways along which coherent pattern influence propagates.
+
+#### Adjacency Topology
+**Type:** Structural Property  
+**Definition:** The global connectivity structure defined by adjacency relations.  
+**Forensic Role:** Establishes the coordinate-free structural configuration of the node set.
+
+#### Adjacency Degree
+**Type:** Structural Property  
+**Definition:** The number of adjacency connections linked to a single node within the node set.  
+**Forensic Role:** Determines the maximum number of simultaneous routing pathways available to a node, constraining local flux resolution.
+
+#### Adjacency Neighborhood
+**Type:** Structural Property  
+**Definition:** The set of all nodes directly linked to a specific target node by a single adjacency hop.  
+**Forensic Role:** Defines the local boundary of causal interaction; a node can only resolve exaction load and local parameters available within its adjacency neighborhood.
+
+#### Tick
+**Type:** Primitive  
+**Definition:** The discrete, uniform local update interval of each node in the absence of strain.  
+**Forensic Role:** The local structural cadence of a node; not globally synchronized.
+
+#### Tick-Budget
+**Type:** Primitive Parameter  
+**Definition:** The finite processing capacity available to a node per tick.  
+**Forensic Role:** Sets the upper bound on exaction updates a node can resolve.
+
+#### Local Tick-Budget
+**Type:** Primitive Parameter  
+**Definition:** The instantaneous available tick-budget of a node at coordinate $x$.  
+**Forensic Role:** Determines the node’s ability to satisfy active exactions under local and adjacency load.
+
+#### Local Cadence ($\tau$)
+**Type:** Primitive Parameter  
+**Definition:** The local update timing of an individual node under zero strain.  
+**Forensic Role:** Serves as the fundamental timing parameter of the node set at a specific site.
+
+#### Structural Capacity
+**Type:** Structural Constant  
+**Definition:** The invariant baseline processing capacity of a node determined solely by its adjacency structure.  
+**Forensic Role:** Defines the non-reducible structural limit of the node set.
+
+#### Static Vacuum
+**Type:** Ontological Primitive  
+**Definition:** A locality of node adjacency and tick-budget with no active pattern exactions.  
+**Forensic Role:** Represents the node set in its minimally loaded structural state.
+
+#### Vacuum of Adjacency
+**Type:** Ontological Primitive  
+**Definition:** The discrete structural framework formed by nodes and their adjacency relations.  
+**Forensic Role:** Provides the topological backdrop across which patterns propagate.
+
+#### Node Parameters
+**Type:** Primitive Property  
+**Definition:** The local variables associated with a node, including tick-budget, local tick-budget, local cadence, and adjacency list.  
+**Forensic Role:** Serves as the structural ledger updated each tick based on incoming and adjacency exactions.
+
+#### Node Identity
+**Type:** Primitive Property  
+**Definition:** The unique, non-geometric set-theoretic identifier assigned to a specific node within the node set.  
+**Forensic Role:** Uniquely identifies the node on the ledger, enabling precise tracking of localized budgets and exaction loads without requiring geometric coordinates.
+
+#### Propagation Limit ($c$)
+**Type:** Constant  
+**Definition:** The invariant adjacency-hop rate of the node space; the maximum rate at which coherent influence or routing information can propagate between adjacent nodes (exactly one adjacency hop per tick).  
+**Forensic Role:** Structural causal ceiling of the node space; defines the maximum propagation rate of coherent updates and establishes the causal ordering of all pattern-level dynamics.
+
+#### Local Update Rules
+**Type:** Primitive  
+**Definition:** The local transition rules governing how each node updates its parameters based on its own values and those of adjacent nodes.  
+**Forensic Role:** The microscopic boundary conditions from which causality and propagation emerge.
+
+#### Two-Layer Ontology
+**Type:** Ontological Framework  
+**Definition:** The division between the static node set and the dynamic, pattern-level constructs that experience strain, dilation, and cadence collapse.  
+**Forensic Role:** Prevents misinterpreting pattern-level latencies as modifications of node-set invariants.
+
+### Conceptual Handles (Non-Ontological Clarifiers)
+
+#### Operational Ledger
+**Type:** Conceptual Handle  
+**Definition:** A non-geometric, non-computational abstraction referring to the evolving set of node parameters updated each tick.  
+**Forensic Role:** Provides a descriptive way to discuss how tick-budget, strain, and exaction values change without implying storage, memory, or physical bookkeeping.
+
+#### Ledger Site
+**Type:** Conceptual Handle  
+**Definition:** A node considered solely as the location where exaction, strain, and tick-budget values are resolved during a tick.  
+**Forensic Role:** Prevents misinterpretation of nodes as containers or memory cells; emphasizes that all values are transient and tick-indexed.
+
+#### Relational Description
+**Type:** Conceptual Handle  
+**Definition:** A way of referring to node-to-node adjacency relations without invoking geometry, coordinates, or spatial embedding.  
+**Forensic Role:** Ensures that adjacency is understood as a structural relation only, not a spatial distance or metric.
+
+#### Coarse-Graining (SVET Sense)
+**Type:** Analytical Method  
+**Definition:** A mathematical grouping of many nodes into a larger evaluative unit for convenience, without altering any underlying node-level rules or implying physical aggregation.  
+**Forensic Role:** Allows large-scale systems to be described without introducing geometry, volume, or continuum assumptions.
+
+#### Partition (SVET Sense)
+**Type:** Conceptual Handle  
+**Definition:** A descriptive way of referring to how node-level parameters are logically separated for analysis, without implying spatial division, memory segmentation, or computational storage.  
+**Forensic Role:** Ensures that references to “partitioning the ledger” are understood as conceptual bookkeeping, not physical subdivision of the vacuum.
+
+#### Atomic (SVET Sense)
+**Type:** Conceptual Handle  
+**Definition:** Indicates that a node is the smallest descriptive unit of exaction resolution, without implying physical indivisibility, geometric size, or material structure.  
+**Forensic Role:** Prevents misinterpretation of nodes as particles, volumes, or computational atoms.
+
+#### Scalable Unit (SVET Sense)
+**Type:** Conceptual Handle  
+**Definition:** A node considered as a unit that can be grouped mathematically with others for analysis, without implying extensibility, spatial scaling, or hierarchical structure.  
+**Forensic Role:** Allows coarse-graining of many nodes into analytical clusters while preserving the non-geometric nature of the node set.
+
 ---
 
 ## Mathematics & Symbolic Variables
