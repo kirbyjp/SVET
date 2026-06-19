@@ -232,6 +232,65 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 *   **Coherence Failure** marks the terminal collapse of a pattern segment [1].  
 *   All processes obey the **Node Ledger Identity**, ensuring divergence‑free bookkeeping [1].
 
+### Category 5: Horizons, Routing, & Emergence (Causal Boundaries)
+
+This category defines the routing-cost primitives that govern how nodes resolve directional exaction, how coherence-minimal paths emerge, and how causal boundaries arise when local cadence collapses. All terms operate strictly within the SVET two-layer ontology: patterns express directional exaction; nodes resolve routing cost; macroscopic behavior is an interpretation of these discrete routing constraints [1].
+
+#### Coherence Cost Density ($C(x,v)$)
+**Type:** Derived Metric  
+**Definition:** The adjacency-indexed cost a node assigns to resolving directional exaction along a local direction $v$ at position $x$ [1].  
+**Forensic Role:** Determines how expensive it is for a node to instantiate the requested adjacency-coherent continuation of a pattern in direction $v$.
+
+#### Least-Cost Coherence Routing
+**Type:** Routing Principle  
+**Definition:** The rule by which nodes resolve directional exaction by selecting adjacency transitions that minimize local coherence cost [1].  
+**Forensic Role:** Produces the discrete analogue of least-action behavior: nodes instantiate the adjacency step with minimal $C(x,v)$ [1].
+
+#### Coherence-Minimal Path (Coherence Geodesic)
+**Type:** Emergent Path  
+**Definition:** A sequence of node-level instantiations that collectively minimize accumulated coherence cost across adjacency.  
+**Forensic Role:** Represents the emergent propagation path of a coherent pattern; not a geometric geodesic but a minimal-cost reconstruction sequence.
+
+#### Coherence Manifold
+**Type:** Emergent Structure  
+**Definition:** The global pattern of coherence-minimal routing costs induced by distributed exaction across the node set.  
+**Forensic Role:** Provides the interpretive structure that appears as macroscopic “geometry,” arising entirely from routing-cost gradients.
+
+#### Emergent Effective Metric (Pattern-Level)
+**Type:** Interpretive Quantity  
+**Definition:** A pattern-level representation of routing-cost relationships that behaves like a metric when $C(x,v)$ is homogeneous in $v$ [1].  
+**Forensic Role:** Allows macroscopic observers to model routing behavior using metric-like constructs **without implying any geometric structure in the node set.**
+
+#### Coherence Horizon
+**Type:** Causal Boundary  
+**Definition:** A boundary where local cadence collapse prevents outward adjacency-coherent reconstruction from being instantiated [1].  
+**Forensic Role:** Marks the limit beyond which nodes cannot resolve outward exaction; coherent propagation becomes one-way.
+
+#### Frozen Interior
+**Type:** Collapse Regime  
+**Definition:** A region inside a coherence horizon where local cadence is so dilated that adjacency-coherent reconstruction becomes effectively non-advancing [1].  
+**Forensic Role:** Represents the interior regime where patterns cannot maintain outward reconstruction due to extreme cadence divergence.
+
+#### Tidal Cadence Gradient
+**Type:** Derived Quantity  
+**Definition:** The adjacency-indexed variation in effective cadence across neighboring nodes in a high-strain region.  
+**Forensic Role:** Produces differential reconstruction delays that manifest as tidal-like effects in macroscopic interpretations.
+
+#### Planck Saturation Ceiling (Microphysical Saturation Ceiling)
+**Type:** Capacity Limit  
+**Definition:** The upper bound on local excitation beyond which nodes cannot increase update throughput, corresponding to the microphysical saturation of exaction capacity.  
+**Forensic Role:** Ensures that cadence collapse is asymptotic rather than singular; prevents unbounded update demand.
+
+#### Hubble Coherence Horizon
+**Type:** Large-Scale Causal Boundary  
+**Definition:** The large-scale limit at which local cadence collapse aligns with the suppression of outward adjacency-coherent reconstruction due to cosmic expansion [1].  
+**Forensic Role:** Represents the macroscopic boundary beyond which nodes cannot maintain coherence against expansion-driven cadence divergence [1].
+
+#### Universality Scoring System
+**Type:** Diagnostic Framework  
+**Definition:** The evaluation system used to score candidate universal horizon variables based on curve collapse, monotonicity, smoothness, predictive power, and compatibility with both quantum and cosmic limits [1].  
+**Forensic Role:** Determines which candidate axis best unifies horizon behavior across scales, enabling empirical discovery of the universal horizon variable [1].
+
 ---
 
 ## Mathematics & Symbolic Variables
