@@ -1,10 +1,6 @@
-# SVET Master Glossary v1.2.6
+# SVET Authoritative Glossary
 
 This document serves as the authoritative notation and terminology reference for **Static Vacuum Exaction Theory (SVET)**.
-
----
-
-# SVET Authoritative Glossary
 
 ## Vocabulary
 *This section serves as the centralized repository for the structural terms, local transaction mechanics, and environmental definitions unique to Static Vacuum Exaction Theory (SVET).*
