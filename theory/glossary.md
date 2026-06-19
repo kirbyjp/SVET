@@ -184,6 +184,54 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** A coherent pattern whose effective local cadence is increased (slowed) by strain while its adjacency-consistent structure and stability factor ($\Gamma_p$) remain intact [1].  
 **Forensic Role:** Represents the pattern-level manifestation of time dilation: the pattern’s reconstruction cadence is delayed under strain without loss of coherence or structural integrity [1].
 
+### Category 4: Ledger, Conservation, & Dissipation
+
+This category defines the bookkeeping primitives governing how nodes resolve exaction, how adjacency‑coherent reconstruction is maintained, and how coherence is preserved or shed under load. All terms operate strictly within the SVET two‑layer ontology: patterns express exaction; nodes resolve that exaction; ledger outcomes determine whether coherence continues, redirects, or collapses into the incoherent channel [1].
+
+#### Instantiate
+**Type:** Operational Step  
+**Definition:** The act of a node allocating tick‑budget to resolve a pattern’s adjacency‑coherent exaction request for the current tick [1].  
+**Forensic Role:** Represents the fundamental bookkeeping event: a node spends budget to instantiate the next local segment of a coherent pattern.
+
+#### Re‑instantiation
+**Type:** Operational Step  
+**Definition:** The repeated tick‑indexed action by which a node resolves a pattern’s continuing adjacency‑coherent exaction across ticks [1].  
+**Forensic Role:** Maintains continuity of pattern identity; failure of a node to re‑instantiate results in coherence‑shedding.
+
+#### Re‑embedding
+**Type:** Operational Step  
+**Definition:** The process by which a node re‑expresses the **requested adjacency‑coherent structure** of a pattern within its local neighborhood after propagation or deformation [1].  
+**Forensic Role:** Ensures that adjacency structure is preserved despite routing changes, strain, or cadence variation.
+
+#### Incoherent Deviation
+**Type:** Bookkeeping Quantity  
+**Definition:** The incremental amount of exaction a node diverts into the incoherent channel ($H$) during a single tick when coherent reconstruction cannot be satisfied [1].  
+**Forensic Role:** Quantifies the local loss of coherence; accumulates into $\Delta H$ over successive ticks [1].
+
+#### Coherence Failure (Coherence Catastrophe)
+**Type:** Terminal Event  
+**Definition:** The condition in which a node cannot satisfy the adjacency‑coherent exaction request, forcing full diversion of that exaction into the incoherent channel [1].  
+**Forensic Role:** Marks the end of coherent propagation for that pattern segment; the ledger records a complete transition into $H$ [1].
+
+#### Node Ledger
+**Type:** Bookkeeping Structure  
+**Definition:** The local accounting identity by which a node partitions incoming exaction into coherent acceptance, coherent rejection, or incoherent diversion.  
+**Forensic Role:** Enforces conservation of coherence constraints at each node; ensures all incoming exaction is accounted for without loss or creation.
+
+#### Accounting Shock (Local Ledger Rejection)
+**Type:** Boundary Event  
+**Definition:** A node‑level rejection of incoming coherent exaction when local budget or adjacency constraints cannot satisfy the reconstruction request [1].  
+**Forensic Role:** Produces coherent reflection rather than incoherent shedding; represents a boundary‑level ledger event distinct from bulk coherence failure.
+
+#### Bookkeeping Layer Summary
+*   **Instantiate** and **Re‑instantiate** describe how nodes resolve adjacency‑coherent exaction [1].  
+*   **Re‑embedding** maintains adjacency structure under routing changes [1].  
+*   **Node Ledger** enforces conservation of coherence constraints [1].  
+*   **Accounting Shock** handles boundary‑level rejection [1].  
+*   **Coherence‑Shedding**, **Incoherent Channel**, and **Incoherent Deviation** describe how coherence is lost [1].  
+*   **Coherence Failure** marks the terminal collapse of a pattern segment [1].  
+*   All processes obey the **Node Ledger Identity**, ensuring divergence‑free bookkeeping [1].
+
 ---
 
 ## Mathematics & Symbolic Variables
