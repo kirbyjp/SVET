@@ -1,6 +1,6 @@
 # SVET Master Glossary v1.2.6
 
-This document serves as the authoritative notation and terminology reference for **Static Vacuum Excitation Theory (SVET)**.
+This document serves as the authoritative notation and terminology reference for **Static Vacuum Exaction Theory (SVET)**.
 
 ---
 
@@ -16,7 +16,7 @@ This document serves as the authoritative notation and terminology reference for
 
 ---
 
-## 1. Primitives (The Substrate "Hardware")
+## 1. Primitives (The Vacuum "Hardware")
 
 ### Node Set
 **Type:** Primitive  
@@ -175,7 +175,7 @@ This document serves as the authoritative notation and terminology reference for
 ### The Node Ledger
 **Type:** Accounting Identity  
 **Definition:** Conservation of exaction:  
-$$I_{in} = I_{refl} + I_{trans} + \Delta H = 100\%$$
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 
 ---
 
