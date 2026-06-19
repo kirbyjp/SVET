@@ -289,6 +289,36 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 
 ---
 
+## Deprecated Terminology (Redirects Only)
+
+*The legacy terms listed below appear in early drafts of `theory.md` and related notes. They are deprecated under SVET v1.2.6 and must not be used in any new text. Each entry redirects to the correct, ontology-compliant terminology to protect the non-coordinate, exaction-spending nature of the framework.*
+
+**Substrate**  
+**Redirect:** *Node Set*  
+Legacy mechanical term implying a physical medium or deformable background. Replaced by the static, non-geometric Node Set.
+
+**Node Network**  
+**Redirect:** *Node Set*  
+Deprecated due to mechanical and graph-theoretic connotations. The Node Set has no physical wiring, links, or routing hardware.
+
+**Force**  
+**Redirect:** *Local Gradient Response*  
+SVET has no forces; propagating wave patterns respond to local cadence and cost gradients.
+
+**Vacuum Energy**  
+**Redirect:** *Floor Budget ($B_0(x)$)* / *Background Bias*  
+Legacy field-theory term. SVET vacuum behavior arises from the structural baseline budget a node must expend to participate in adjacency, not an energy reservoir [1].
+
+**Zero-Point Energy**  
+**Redirect:** *Netzero Principle*  
+Replaced by the SVET rule that the node set performs no background updates in empty space and contributes no extractable energy [1].
+
+**Lapse Function**  
+**Redirect:** *Effective Cadence ($\tau_{\text{eff}}$)* / *Dilation ($\alpha$)*  
+General relativity legacy term. SVET timing behavior is expressed through pattern-level cadence and dilation, not background spacetime foliation [1].
+
+---
+
 ## Mathematics & Symbolic Variables
 *This section contains the formal mathematical primitives, operators, and coordinate-agnostic tensor notations used across the SVET master framework.*
 
