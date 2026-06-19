@@ -140,6 +140,35 @@ This document serves as the authoritative notation and terminology reference for
 
 ---
 
+### Category 2: Pattern & Exaction
+
+#### Pattern
+**Type:** Conceptual  
+**Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction.  
+**Forensic Role:** The dynamic entities that instantiate all observable physical behavior in SVET through their exaction-driven interaction with the node set.
+
+#### Coherence
+**Type:** Pattern Property  
+**Definition:** The adjacency-consistent integrity of a pattern’s configuration across successive tick-indexed reconstructions.  
+**Forensic Role:** Determines whether a pattern propagates stably or undergoes structural degradation.
+
+#### Pattern Exaction
+**Type:** Demand  
+**Definition:** The localized reconstruction request a pattern communicates to the node set to maintain adjacency-coherent continuation.  
+**Forensic Role:** The source of exaction load that produces local strain; patterns request coherence, and the node set determines when (via dilation $\Delta\tau$) and what can be instantiated under its available budget.
+
+#### Exactor
+**Type:** Pattern Property  
+**Definition:** A pattern whose exaction density is sufficiently high to induce persistent cadence lag in its adjacency neighborhood.  
+**Forensic Role:** Generates localized timing bias and sustained strain, producing the macroscopic effects associated with gravitating systems.
+
+#### Adjacency Exaction
+**Type:** Continuity Demand  
+**Definition:** The continuity requirement relayed across adjacent nodes to maintain forward reconstruction of a propagating pattern.  
+**Forensic Role:** Drives spatial propagation by enforcing adjacency-coherent continuation across the node set.
+
+---
+
 ## Mathematics & Symbolic Variables
 *This section contains the formal mathematical primitives, operators, and coordinate-agnostic tensor notations used across the SVET master framework.*
 
