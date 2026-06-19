@@ -167,6 +167,23 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** The continuity requirement relayed across adjacent nodes to maintain forward reconstruction of a propagating pattern.  
 **Forensic Role:** Drives spatial propagation by enforcing adjacency-coherent continuation across the node set.
 
+### Category 3: Strain, Cadence, & Dilation
+
+#### Asymptotic Cadence Collapse
+**Type:** Temporal Boundary  
+**Definition:** The pattern-level phenomenon in which a propagating pattern’s effective cadence ($\tau_{\text{eff}}$) increases asymptotically as local excitation approaches the saturation regime ($\eta \to 1$) [1].  
+**Forensic Role:** Describes the limit in which a pattern’s ability to exploit node-level update capacity diminishes without the node set ever reaching zero-tick [1]. Cadence collapse is strictly pattern-level and remains finite, preventing singular or undefined temporal behavior [1].
+
+#### Resolution Latency
+**Type:** Timing Metric  
+**Definition:** The additional tick-indexed delay required for an extended pattern to satisfy its adjacency-coherence and exaction constraints under high local budget utilization [1].  
+**Forensic Role:** Quantifies the pattern-level temporal slowdown arising from strain-induced reconstruction delays, corresponding to the observed effects of relativistic time dilation [1].
+
+#### Time-Dilated Pattern
+**Type:** Derived Configuration  
+**Definition:** A coherent pattern whose effective local cadence is increased (slowed) by strain while its adjacency-consistent structure and stability factor ($\Gamma_p$) remain intact [1].  
+**Forensic Role:** Represents the pattern-level manifestation of time dilation: the pattern’s reconstruction cadence is delayed under strain without loss of coherence or structural integrity [1].
+
 ---
 
 ## Mathematics & Symbolic Variables
