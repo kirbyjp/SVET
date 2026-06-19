@@ -517,4 +517,24 @@ $$\eta \le 1$$
 
 ---
 
+---
+
+## Speculative & Unverified Constructs (Pending Review)
+
+*The constructs listed below are exploratory and do not constitute part of the validated SVET v1.2.6 ontology. They are preserved in this isolated appendix for tracking purposes only, and are not to be defined or integrated into the formal glossary pillars until their physical and mathematical formulations are completed and verified by human authorization.*
+
+**Double-Walled Universe**  
+A proposed large-scale structural interpretation in which horizon behavior appears to organize into two nested causal boundaries (the microscopic Planck-scale limit and the macroscopic Hubble-scale limit). This concept emerged from mass-independent curve-collapse anomalies in early universality scoring experiments.
+
+**Quantum Wall**  
+A hypothesized microscopic boundary where node-set capacity and pattern exactions saturate, creating a local cadence-collapse horizon. Its verification would unify several quantum-limit behaviors under a single non-singular mechanism.
+
+**Cosmic Wall**  
+A proposed cosmological-scale boundary where expansion-driven cadence suppression outruns the maximum coherent update propagation rate $c$. If validated, it would serve as the macroscopic counterpart to the Quantum Wall.
+
+**Coherence Locking**  
+A speculative microphysical mechanism in which nuclear-scale node-set configurations temporarily lock exactions to minimize update costs, resisting dissipation into the $H$-channel. This remains an unverified hypothesis regarding extreme-stability regimes..
+
+---
+
 © 2026 John Kirby. Licensed under the MIT License.
