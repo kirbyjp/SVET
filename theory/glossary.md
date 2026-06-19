@@ -4,6 +4,18 @@ This document serves as the authoritative notation and terminology reference for
 
 ---
 
+# SVET Authoritative Glossary
+
+## Vocabulary
+*This section serves as the centralized repository for the structural terms, local transaction mechanics, and environmental definitions unique to Static Vacuum Exaction Theory (SVET).*
+
+---
+
+## Mathematics & Symbolic Variables
+*This section contains the formal mathematical primitives, operators, and coordinate-agnostic tensor notations used across the SVET master framework.*
+
+---
+
 ## 1. Primitives (The Substrate "Hardware")
 
 ### Node Set
