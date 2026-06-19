@@ -100,6 +100,11 @@ This document serves as the authoritative notation and terminology reference for
 **Forensic Role:** Monitors small-scale node set jitter and stress.  
 **Clarification:** **Not** a demand channel; does **not** contribute to $S$.
 
+### $B_0(x)$ — "Local Floor Budget"
+**Type:** Local Parameter (Spatially Dependent)  
+**Definition:** The minimum available tick-budget a node at coordinate $x$ must expend to participate in the vacuum of adjacency (to exist as a structural element of adjacency and tick-budget) [1].  
+**Forensic Role:** Serves as the baseline structural existence cost of a node [1]. It represents pure, localized network structure induced entirely by the cumulative background exaction environment of the universe, rather than an independent energy reservoir or background field [1].
+
 ---
 
 ## 4. Ratios & Metrics (The "Diagnostics")
