@@ -145,12 +145,12 @@ This document serves as the authoritative notation and terminology reference for
 #### Pattern
 **Type:** Conceptual  
 **Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction.  
-**Forensic Role:** The dynamic entities that instantiate all observable physical behavior in SVET through their exaction-driven interaction with the node set.
+**Forensic Role:** The dynamic entities that nodes use to instantiate all observable physical behavior in SVET through their exaction-driven interaction with the node set.
 
 #### Coherence
 **Type:** Pattern Property  
 **Definition:** The adjacency-consistent integrity of a pattern’s configuration across successive tick-indexed reconstructions.  
-**Forensic Role:** Determines whether a pattern propagates stably or undergoes structural degradation.
+**Forensic Role:** Determines whether a pattern propagates stably or undergoes structural degradation or change.
 
 #### Pattern Exaction
 **Type:** Demand  
@@ -206,6 +206,22 @@ This document serves as the authoritative notation and terminology reference for
 **Type:** Primitive  
 **Definition:** Incoherent energy ledger for collapsed update demand.  
 **Forensic Role:** Captures "accounting debris" such as heat, fluorescence, and fracture.
+
+### $\Xi$ — "Xi" (Residual Continuity Requirement)
+**Type:** Primitive Parameter  
+**Definition:** The adjacency-continuity requirement a node imposes on its neighbors after its own update to ensure forward reconstruction of a propagating pattern [1].  
+**Forensic Role:** Serves as the minimal continuity condition for adjacency-coherent propagation [1]. If the neighboring nodes cannot satisfy this requirement during their next tick-indexed update, the pattern fails to reconstruct and collapses into incoherent $H$-channel deviation ($\Delta H$) [1].
+
+### $\Gamma_p$ — "Gamma-p" (Pattern Stability Factor)
+**Type:** Derived Metric  
+**Definition:** A dimensionless stability factor characterizing a pattern’s tolerance to strain, derived from its adjacency-reinforcement structure and cadence-coupling behavior [1].  
+**Forensic Role:**  
+*   **Yield Threshold:** A pattern reaches its yield limit when the applied local strain ratio satisfies:  
+    $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$
+    A higher $\Gamma_p$ raises this threshold, meaning more stable patterns require proportionally greater strain to trigger coherence collapse [1].  
+*   **Dissipation Behavior:** Once the yield limit is breached, the rate of localized degradation and incoherent energy generation ($\Delta H$) scales **inversely** with $\Gamma_p$ [1]. Robust patterns dissipate slowly under failure, while fragile patterns dissipate rapidly [1].  
+
+This dual specification prevents inversion errors in simulation implementations: $\Gamma_p$ increases the collapse threshold, but decreases the dissipation rate once collapse occurs [1].
 
 ---
 
