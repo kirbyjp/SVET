@@ -249,6 +249,12 @@ This dual specification prevents inversion errors in simulation implementations:
 **Definition:** The invariant adjacency‑hop rate of the node space; the maximum rate at which coherent influence, strain, or routing information can propagate between adjacent nodes.  
 **Forensic Role:** Structural causal ceiling of the node space; defines the maximum propagation rate of coherent updates and establishes the causal ordering of all pattern‑level dynamics.
 
+### $S$ — "Strain"
+**Type:** Primitive  
+**Definition:** How much of a node's tick-budget is consumed instantiating exactions from patterns on that node and its adjacency [1].  
+**Invariant:** $S \ge 0$ [1].  
+**Forensic Role:** Represents the local update load currently placed on a node by propagating coherent patterns [1]. Both node-local and adjacency-local exactions contribute directly to strain, which represents active budget utilization rather than an independent field [1].
+
 ### $\tau_0$ — "tau-naught"
 **Type:** Constant  
 **Definition:** Baseline update timing in a zero-strain vacuum.  
@@ -258,6 +264,11 @@ This dual specification prevents inversion errors in simulation implementations:
 **Type:** Constant  
 **Definition:** Threshold constant defining when scaled demand exceeds pattern stability.  
 **Forensic Role:** The "Redline" where a coherent pattern must fracture into the H-channel.
+
+### $\tau_{\text{eff}}$ — "tau-eff" (Effective Cadence)
+**Type:** Derived Quantity  
+**Definition:** The realized reconstruction cadence of a pattern under local strain or exaction [1].  
+**Forensic Role:** Measures the pattern-level slowdown in reconstruction timing, representing the delayed propagation behavior observed in regions of high exaction density [1].
 
 ### $\nabla \tau_{\text{eff}}(x)$ — "Cadence Gradient"
 **Type:** Derived Metric  
