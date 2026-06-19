@@ -37,12 +37,6 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** Incoherent energy ledger for collapsed update demand.  
 **Forensic Role:** Captures "accounting debris" such as heat, fluorescence, and fracture.
 
-### $B_0$ — "B-zero"
-**Type:** Primitive  
-**Definition:** Minimum coherent-processing capacity a node possesses in the absence of load.  
-**Forensic Role:** Hardware permission enabling nodes to transmit demand even when "idle."  
-**Clarification:** **Not** vacuum energy, dark energy, stored energy, or a cosmological reservoir.
-
 ---
 
 ## 2. Constants (Structural Invariants)
