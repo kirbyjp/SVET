@@ -145,7 +145,7 @@ This document serves as the authoritative notation and terminology reference for
 #### Pattern
 **Type:** Conceptual  
 **Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction.  
-**Forensic Role:** The dynamic entities that nodes use to instantiate all observable physical behavior in SVET through their exaction-driven interaction with the node set.
+**Forensic Role:** The dynamic entities whose exaction‑driven interaction with the node set gives rise to all observable physical behavior in SVET through their exaction-driven interaction with the node set.
 
 #### Coherence
 **Type:** Pattern Property  
@@ -241,6 +241,11 @@ This dual specification prevents inversion errors in simulation implementations:
 **Type:** Constant  
 **Definition:** Threshold constant defining when scaled demand exceeds pattern stability.  
 **Forensic Role:** The "Redline" where a coherent pattern must fracture into the H-channel.
+
+### $\nabla \tau_{\text{eff}}(x)$ — "Cadence Gradient"
+**Type:** Derived Metric  
+**Definition:** The adjacency-indexed variation in effective local cadence across neighboring nodes [1].  
+**Forensic Role:** Produces routing bias for propagating patterns: adjacency paths leading through regions of higher effective latency are preferentially selected, yielding the macroscopic propagation behavior interpreted as gravitational curvature [1].
 
 ---
 
