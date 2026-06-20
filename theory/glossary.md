@@ -143,6 +143,18 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction.  
 **Forensic Role:** The dynamic entities whose exaction‑driven interaction with the node set gives rise to all observable physical behavior in SVET through their exaction-driven interaction with the node set.
 
+#### Coherence-Constraint Set
+**Type:** Pattern Property  
+**Definition:** The unified configuration of local and adjacency exaction instructions that preserves a pattern's identity, oscillation, phase, and directional persistence across node ticks [1].  
+**Forensic Role:** Serves as the central, pattern-level boundary condition from which all relativistic, kinematic, and dynamical behaviors emerge.
+
+**Laboratory Interpretation:**  
+Although the coherence-constraint set is not directly observable, its operational modes correspond to measurable laboratory quantities [1]. The stability of the constraint set under strain appears experimentally as rest mass; its directional persistence appears as momentum; its resistance to reconfiguration appears as inertia; and its total update demand appears as energy [1].  
+
+Changes in the coherence-constraint set manifest as observable accelerations, deflections, frequency shifts, phase shifts, and interference patterns [1]. Interactions between patterns correspond to coherence-constraint negotiations, which appear in the laboratory as scattering events, binding events, and the conservation of classical quantities [1].  
+
+Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern-level construct of SVET, its continuity and reconfiguration map directly onto the conserved quantities and dynamical behaviors measured in physical experiments [1].
+
 #### Coherence
 **Type:** Pattern Property  
 **Definition:** The adjacency-consistent integrity of a pattern’s configuration across successive tick-indexed reconstructions.  
