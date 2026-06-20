@@ -260,7 +260,7 @@ Dynamic loading (CaBS) lowers the effective threshold, making rapid increases in
 SVET adopts a **Netzero** energy interpretation rather than the traditional quantum field theory concept of zero-point energy. The node set itself possesses zero net energy in its static configuration. All physical energy is a ledger accounting of active, coherent pattern exactions compelling the node set to spend its available local update budgets.
 
 #### The Static Vacuum and Budget Availability
-The node set does not perform background updates in empty space. The tick budget is a finite capacity that remains available until pattern exactions require expenditure. In empty space, nodes do not perform updates other than to maintain their node bias. Updates occur only when active patterns demand instantiation.
+The node set does not perform background updates in empty space. The tick budget is a finite capacity that remains available until pattern exactions require expenditure. In empty space, nodes do not perform updates other than to maintain their node bias [1]. Updates occur only when active patterns demand instantiation.
 
 No exaction means no expenditure of budget.
 
@@ -271,7 +271,7 @@ Because distant pattern exactions propagate across adjacency, the cumulative bac
 
 The Local Floor Budget $B_0(x)$ is not an independent vacuum reservoir or background energy field; it is the local structural floor induced entirely by the collective pattern exactions of the universe.
 
-Because the node set does not possess or store energy independently, the conservation of energy is the exact conservation of local coherence constraints. When patterns interact, their combined coherence structures must reconcile their update demands across the adjacent node set into a new, self-consistent configuration. No physical energy is transferred; instead, the underlying exaction-driven coherence constraints are redistributed according to what we may think of as the local ledger conservation identity:
+Because the node set does not possess or store energy independently, the conservation of energy is the exact conservation of local coherence constraints [1]. When patterns interact, their combined coherence structures must reconcile their update demands across the adjacent node set into a new, self-consistent configuration. No physical energy is transferred; instead, the underlying exaction-driven coherence constraints are redistributed according to what we may think of as the local ledger conservation identity [1]:
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 Thus, energy conservation is not an arbitrary physical law imposed on the universe, but the exact mathematical consequence of preserving pattern identity across discrete temporal ticks.
 
