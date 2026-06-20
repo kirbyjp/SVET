@@ -591,6 +591,48 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Coherence-Catastrophe Zone**  
 *Placeholder:* A region where local coherence constraints exceed a pattern’s structural stability, causing catastrophic reconfiguration. Serves as the SVET-native replacement for the general relativity concept of a physical singularity.
 
+**Observable Projection**  
+*Placeholder:* The lab-visible quantity that results when a coherence-constraint set is interpreted through a measurement apparatus [2]. This is not an intrinsic property of the pattern, but a projection of its active constraint modes into a classical observable [2].
+
+**Observable Mode**  
+*Placeholder:* A specific aspect of the coherence-constraint set that corresponds to a classical observable (e.g., directional persistence $\to$ momentum) [2].
+
+**Observable Correspondence**  
+*Placeholder:* The mapping between a SVET coherence-constraint mode and a classical measurable quantity, forming the conceptual basis of the universal mapping matrix [2].
+
+**Observable Inference**  
+*Placeholder:* The process by which a laboratory instrument infers a classical quantity from a pattern’s active coherence-constraint behavior, preventing theoretical drift into measurement-as-interaction [2].
+
+**Constraint Mode**  
+*Placeholder:* A specific functional expression of the coherence-constraint set (such as identity, oscillation, phase, directional persistence, or update demand) [2].
+
+**Constraint Signature**  
+*Placeholder:* The stable pattern of constraint modes that uniquely identifies a pattern’s behavior across successive node ticks, serving as the SVET equivalent to quantum numbers [2].
+
+**Constraint Expression**  
+*Placeholder:* The localized physical manifestation of a coherence-constraint set under update load, where the structural exaction translates to a specific, measurable phase or timing offset [2].
+
+**Adjacency Degree (Emergent Form)**  
+*Placeholder:* The localized density of active adjacency links, evaluated to determine how local network topology affects large-scale wave propagation.
+
+**Routing Signature**  
+*Placeholder:* The pattern-specific way a coherence-constraint set selects its least-cost, coherence-minimal propagation paths, serving as the SVET replacement for a particle's trajectory or worldline [2].
+
+**Routing Response**  
+*Placeholder:* The localized adjustment of a pattern’s propagation path in response to local cadence gradients [2].
+
+**Routing Inference**  
+*Placeholder:* The lab-visible acceleration inferred by an observer from a pattern’s deflected, coherence-minimal propagation path [2].
+
+**Interaction Signature**  
+*Placeholder:* The stable, observable pattern produced when two or more coherence-constraint sets undergo local negotiation, serving as the SVET equivalent to a scattering amplitude [2].
+
+**Interaction Correspondence**  
+*Placeholder:* The mapping between a local coherence-constraint negotiation and a classical interaction outcome, preventing drift into mediator-particle assumptions [2].
+
+**Interaction Inference**  
+*Placeholder:* The lab-visible interpretation of a coherence-constraint negotiation (e.g., scattering angles or decay distributions) [2].
+
 ---
 
 **Anisotropic Pattern Gradient**  
