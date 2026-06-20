@@ -639,6 +639,22 @@ Because the node set cannot store or transmit mass, mass is always a pattern-int
 
 In this view, mass is not fundamental. It is the emergent measure of how difficult it is to reconfigure a coherence-constraint set while preserving identity across ticks. Mass is coherence rigidity.
 
+### 4.13 Curvature as Routing Deflection in Cadence Gradients
+
+SVET does not treat curvature as a property of spacetime or as a deformation of a geometric manifold. The node set is flat, fixed, and adjacency-preserving, and it cannot bend or warp. What we call "curvature" in classical physics is the visible consequence of a pattern adjusting its coherence-minimal routing when it moves through a non-uniform cadence environment. The curvature is not in the node set; it is in the routing solution the pattern must adopt to remain coherence-consistent across ticks.
+
+Directional persistence gives each pattern a stable tendency to reinstantiate along a consistent direction. In a uniform cadence environment, the routing that minimizes coherence strain is unbiased because no reconfiguration of directional constraints is required. But when the local cadence varies—due to accumulated update demand, phase-coherence bias, or nearby patterns—unbiased routing no longer preserves coherence. The pattern must adopt a deflected routing path that minimizes coherence strain relative to the cadence gradient. This deflection is the SVET meaning of curvature.
+
+This reframes the classical notion of a geodesic. In SVET, a geodesic is not the shortest path in a curved spacetime. It is the least-coherence-strain propagation path available to a pattern in a given cadence environment. Patterns follow these routes not because the node set guides them, but because any other routing would violate their coherence-constraint set. The node set does not bend; the pattern’s routing adjusts.
+
+Gravitational curvature follows directly from this principle. A region with high accumulated update demand produces a steep cadence gradient. Patterns moving through this region must adopt routing that minimizes coherence strain, resulting in visibly deflected paths. All patterns—regardless of mass, internal structure, or coherence rigidity—follow the same deflection because the cadence gradient determines the routing, not the pattern's properties. This is the SVET-native explanation of the equivalence principle.
+
+Electromagnetic curvature arises in the same way. Phase-coherence relationships between patterns modify the local cadence structure, and patterns adjust their routing accordingly. No field lines curve. No spacetime bends. The curvature is entirely in the routing required to maintain coherence.
+
+Because the node set cannot store or transmit curvature, all curvature is pattern-internal. It is the routing a pattern must adopt to remain coherence-consistent across ticks. The node set remains flat; only the routing deflects.
+
+In this view, curvature is not a fundamental property of the universe. It is the emergent behavior of patterns navigating cadence gradients in a flat, adjacency-preserving node set. Curvature is routing deflection driven by coherence preservation.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
