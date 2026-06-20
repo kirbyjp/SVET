@@ -545,10 +545,7 @@ Energy is therefore not a thing a pattern possesses. It is a **constraint**: the
 
 In SVET, momentum is not a quantity carried by an object, nor a conserved vector stored in space. Momentum is the **directional coherence** of a pattern — the degree to which its structure compels re-instantiation along a persistent direction across successive node ticks. A pattern with strong directional coherence maintains a stable propagation direction because its internal structure exacts it.
 
-Every pattern possesses two forms of coherence:  
-**internal coherence**, which preserves its identity, and  
-**directional coherence**, which preserves its propagation direction.  
-The Node Set does not push patterns forward; it simply resolves their exaction demands under the same adjacency-preserving update rule. A pattern with strong directional coherence exacts the Node Set to re-instantiate it in a way that maintains its direction. This directional persistence is what SVET identifies as momentum.
+Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks [1]. The Node Set does not push patterns forward; it simply resolves their exaction demands under the same adjacency-preserving update rule [1]. A pattern with strong directional persistence exacts the Node Set to re-instantiate it in a way that maintains its direction [1]. This directional persistence is what SVET identifies as momentum [1].
 
 Momentum is therefore not a force, not a stored quantity, and not a property of space. It is a **coherence constraint** internal to the pattern. A pattern with high directional coherence resists changes to its coherence-minimal propagation path because altering direction would require reconfiguring its internal coherence [1, 2]. This resistance is what we interpret as inertia.
 
