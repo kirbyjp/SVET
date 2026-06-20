@@ -547,13 +547,13 @@ In SVET, momentum is not a quantity carried by an object, nor a conserved vector
 
 Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks [1]. The Node Set does not push patterns forward; it simply resolves their exaction demands under the same adjacency-preserving update rule [1]. A pattern with strong directional persistence exacts the Node Set to re-instantiate it in a way that maintains its direction [1]. This directional persistence is what SVET identifies as momentum [1].
 
-Momentum is therefore not a force, not a stored quantity, and not a property of space. It is a **coherence constraint** internal to the pattern. A pattern with high directional coherence resists changes to its coherence-minimal propagation path because altering direction would require reconfiguring its internal coherence [1, 2]. This resistance is what we interpret as inertia.
+Momentum is therefore not a force, not a stored quantity, and not a property of space. It is a **coherence constraint** internal to the pattern. A pattern with high directional persistence resists changes to its coherence-minimal propagation path because altering direction would require reconfiguring its coherence constraints [1, 2]. This resistance is what we interpret as inertia.
 
 When patterns interact, their directional coherence constraints must reconcile into a configuration that preserves the total exaction demand. The Node Set does not transfer momentum; it simply enforces coherence consistency. Momentum conservation is not an imposed physical law but the logical consequence of maintaining pattern identity across discrete node ticks.
 
-This reframes collisions and interactions. When two patterns meet, their directional coherence constraints combine, distort, or redistribute. The resulting least-cost routing path is the one that satisfies the coherence constraints of both patterns while preserving total update demand [1, 2]. No momentum is “exchanged”; instead, directional coherence is reallocated.
+This reframes collisions and interactions. When two patterns meet, their directional persistence profiles and coherence constraints combine, distort, or redistribute [1]. The resulting least-cost routing path is the one that satisfies the coherence constraints of both patterns while preserving total update demand [1, 2]. No momentum is “exchanged”; instead, directional coherence is reallocated.
 
-Momentum is not something a pattern has. It is something a pattern **is doing**: maintaining directional coherence under the invariant adjacency-preserving update rule. Momentum is the persistence of its coherence-minimal propagation path [1, 2].
+Momentum is not something a pattern has. It is something a pattern **is doing**: maintaining directional persistence under the invariant adjacency-preserving update rule [1]. Momentum is the persistence of its coherence-minimal propagation path [1, 2].
 
 ### 4.8 Conservation as Coherence‑Constraint Accounting
 
