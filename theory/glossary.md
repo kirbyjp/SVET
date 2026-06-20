@@ -567,6 +567,20 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 
 *The terms listed below are not part of the validated SVET v1.2.6 ontology. They are included here as forward-looking placeholders for potential formalization in future versions of the framework. No definitions are provided, and these terms must not be used in theory.md until formally approved.*
 
+**Coherence-Structure Negotiation**  
+*Placeholder:* The local reconciliation process between overlapping pattern-level coherence constraints during interaction. Represents the SVET-native mechanism underlying scattering, binding, and annihilation-like transformations.
+
+**Coherence Rigidity Index**  
+*Placeholder:* A proposed quantitative measure of how resistant a pattern’s internal coherence-structure is to reconfiguration, potentially formalizing the SVET definition of mass as coherence rigidity.
+
+**Propagation-Geometry Constraint**  
+*Placeholder:* The adjacency-indexed routing-cost pathing a pattern must follow to minimize coherence strain in a non-uniform cadence environment, serving as the SVET-native replacement for the general relativity concept of a geodesic.
+
+**Coherence-Catastrophe Zone**  
+*Placeholder:* A region where local coherence constraints exceed a pattern’s structural stability, causing catastrophic reconfiguration. Serves as the SVET-native replacement for the general relativity concept of a physical singularity.
+
+---
+
 **Anisotropic Pattern Gradient**  
 *Placeholder:* Directional variation in pattern-level exaction demand. Pending formal definition and mathematical integration.
 
