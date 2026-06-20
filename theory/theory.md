@@ -589,6 +589,20 @@ Because the node set cannot store or transmit forces, all interactions are **Coh
 
 In SVET, forces are not fundamental entities. They are emergent behaviors arising from the requirement that patterns maintain coherence in a node set whose cadence structure is shaped by other patterns. Forces are coherence-gradient responses.
 
+### 4.10 Acceleration as Coherence-Strain Minimization
+
+In SVET, acceleration is not caused by forces acting on objects, nor by curvature of spacetime. Instead, acceleration is the pattern-level adjustment of coherence-minimal propagation routing in response to variations in local cadence and strain. The node set does not push, pull, bend, or curve anything; it simply resolves exaction requests under the invariant adjacency-preserving update rule.
+
+Every pattern expresses a single coherence-constraint set whose directional persistence mode biases how it is re-instantiated across ticks. In a uniform cadence environment, the coherence-minimal routing is unbiased *(traditionally interpreted as straight-line motion)*. When local cadence varies—due to strain, nearby patterns, or accumulated update demand—the unbiased routing no longer preserves the coherence-constraint set. The pattern adjusts its routing to minimize coherence strain. This adjustment is what appears macroscopically as acceleration.
+
+A pattern with strong directional persistence resists changes to its routing, which appears experimentally as inertia. When cadence gradients become sufficiently steep, the least-strain routing deflects, and the pattern follows that deflection automatically. No force is transmitted; no field mediates the interaction. The routing change is the pattern’s own coherence-preservation requirement.
+
+Gravitational acceleration arises when a pattern encounters a region of increased local update latency. The coherence-minimal routing deflects toward regions of increased cadence suppression. The pattern accelerates not because it is pulled, but because maintaining its previous routing would violate its coherence-constraint set.
+
+Electromagnetic acceleration follows the same principle. Phase-coherence bias between patterns creates localized cadence suppression. Patterns adjust their routing to minimize coherence strain relative to these phase relationships. No field or mediator is required.
+
+Because the node set cannot store or transmit forces, all acceleration is an emergent consequence of coherence-constraint preservation in a flat, adjacency-preserving node set. Acceleration is the operational expression of least-strain routing under non-uniform cadence conditions.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
