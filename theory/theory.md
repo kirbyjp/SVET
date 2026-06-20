@@ -354,8 +354,6 @@ Each incremental decimal increase in $\eta$ (e.g., $0.9 \to 0.99 \to 0.999$) req
 
 *Note on the Two-Layer Ontology:* Cadence collapse is strictly a pattern-level phenomenon. The underlying node set (the physical hardware) continues to respect the absolute, structural propagation limit $c$ (exactly one adjacency hop per network tick). What collapses under extreme excitation and routing cost is the capacity of extended, coherent patterns (the software) to exploit that raw network capacity. As local excitation approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$. In the weak-field limit, variations in $\tau_{\text{eff}}$ reproduce the gravitational redshift and time dilation of General Relativity, with $\tau_{\text{eff}}$ serving as the SVET analogue of the GR lapse function $g_{00}$, not as a dynamical metric component but as a pattern-level cadence field emerging from excitation [1]. This establishes the direct correspondence between SVET cadence and the GR lapse function $g_{00}$, ensuring that gravitational redshift emerges naturally from the excitation–cadence structure [1].
 
-Local excitation $\eta(x)$ is the primary driver of strain $S_{ij}(x)$, which in turn determines the local bias $B_a(x)$, the coherence cost $C(x,v)$, and ultimately the emergent metric $g_{\mu\nu}(x)$ [1]. Because the emergent metric $g_{\mu\nu}(x)$ determines routing cost $C(x,v)$ and local cadence, the excitation field $\eta(x)$ participates in a self-consistent routing cycle that shapes both geometry and propagation [1].
-
 ### 3.8 Coherence Manifold Mapping
 
 The mapping from physical wave patterns to emergent metric geometry proceeds through a five-stage processing pipeline:
@@ -384,6 +382,9 @@ Least-cost coherence routing paths are the geodesics of this cost functional.
 If the cost function $C(x,v)$ is homogeneous of degree one in the velocity vector $v$, it can be modeled as a Finsler metric. Under isotropic assumptions, this reduces to a Riemannian metric tensor $g_{\mu\nu}(x)$ such that:
 $$C(x,v) = \sqrt{g_{\mu\nu}(x)\,v^\mu v^\nu}$$
 The emergent coherence manifold is $(M, g_{\mu\nu})$, where horizons and ergospheres represent critical, capacity-limited boundaries of the metric.
+
+Because the emergent effective metric (pattern-level) $g_{\mu\nu}(x)$ determines routing cost $C(x,v)$ and local cadence, the excitation function $\eta(x)$ participates in a self-consistent routing cycle that shapes both geometry and propagation [1].
+
 ---
 
 ## 4. Flux Algebra
