@@ -574,6 +574,27 @@ Interactions are not exchanges of physical quantities but **reconfigurations of 
 
 In SVET, conservation is not a property of matter or fields. It is a property of **coherence accounting** in a universe where patterns must maintain identity across a flat, adjacency-preserving Node Set. Conservation is the unavoidable consequence of coherence‑constraint continuity.
 
+### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
+
+To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
+
+**Rest Mass ($m$):**  
+In SVET, mass is not an intrinsic substance or stored quantity. It is the stationary update demand of a pattern — the persistent exaction required to maintain its internal coherence across node ticks. A stationary pattern authorizes a stable, localized update cost, producing the effective cadence lag associated with rest mass.
+
+**Momentum ($p$):**  
+Momentum is not a conserved vector carried by an object. It is the directional coherence of a pattern — the requirement that its re-instantiation across ticks preserve a persistent direction. Patterns with strong directional coherence resist changes to their coherence-minimal propagation path, giving rise to the phenomenon interpreted as inertia.
+
+**Conservation Laws:**  
+Conservation does not arise from continuous spacetime symmetries. It follows from the node set's inability to absorb or erase coherence constraints. During interactions, total update demand, total directional coherence, and total phase asymmetry must remain constant. Conservation is therefore the exact continuity of coherence constraints across discrete node ticks.
+
+**Inertia as Coherence Reconfiguration Cost:**  
+In SVET, a pattern resists changes to its direction because altering its propagation requires reconfiguring its internal coherence. A pattern with strong directional coherence maintains a stable propagation direction across node ticks, and any deviation from that direction demands a restructuring of its coherence constraints. This structural resistance to reconfiguration is what manifests macroscopically as inertia.
+
+**Momentum Without Exchange:**  
+Traditional physics treats collisions as exchanges of momentum between objects. In SVET, no quantity is transferred. When patterns interact, their coherence constraints must reconcile into a configuration that preserves total update demand and total directional coherence. The resulting propagation paths are the coherence‑minimal solutions that satisfy both patterns’ constraints. Momentum conservation emerges not from exchange, but from the Node Set’s inability to absorb or erase coherence constraints.
+
+These correspondences demonstrate that SVET reproduces the classical conservation pillars not by postulating fields or symmetries, but by enforcing coherence consistency under a single, adjacency-preserving update rule.
+
 ---
 
 ## 5. Emergent Wave Mechanics
