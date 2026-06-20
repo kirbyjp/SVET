@@ -419,7 +419,7 @@ This vector-based subtraction replaces the standard wave mechanics requirement f
 
 ### 4.3 Propagation, Reflection, and Refraction
 
-The spatial paths of coherent update demands are governed by local capacity negotiations and routing preferences across the node set. This interaction produces the discrete behaviors of transmission, reflection, and refractive bending.
+The spatial paths of coherent update demands are governed by local capacity constraints and routing biases across the node set. These rule-driven resolutions produce the discrete behaviors of transmission, reflection, and refractive deflection.
 
 **1. Coherent Transmission**  
 Coherent propagation occurs when adjacent node $j$ has sufficient available budget $B_j$ to accept the incoming coherent demand $F_{i\to j}^{\text{eff}}$. The successfully transmitted fraction continues along its trajectory.
@@ -585,7 +585,7 @@ This reframes classical forces.
 **Nuclear forces** emerge from extreme coherence-density conditions where only tightly constrained coherence configurations remain stable.  
 In all cases, the node set plays no active role; the apparent force is the pattern’s coherence-preserving response to local cadence conditions.
 
-Because the node set cannot store or transmit forces, all interactions are **Coherence-Constraint Resolutions**. When patterns co-occupy adjacent nodes, their coherence constraints enter a configuration in which not all constraints can be simultaneously satisfied. The adjacency-preserving local update rules resolve this configuration into a new arrangement of coherence-constraint sets, preventing the need for force-carrying mediator particles. No quantity is exchanged; the patterns simply follow the coherence-minimal paths that resolve their joint constraints.
+Because the node set cannot store or transmit forces, all interactions are **Coherence-Constraint Resolutions** enforced by the adjacency-preserving local update rules. When patterns co-occupy adjacent nodes, their coherence constraints enter a configuration in which not all constraints can be simultaneously satisfied. The adjacency-preserving local update rules resolve this configuration into a new arrangement of coherence-constraint sets, preventing the need for force-carrying mediator particles. No quantity is exchanged; the patterns simply follow the coherence-minimal paths that resolve their joint constraints.
 
 In SVET, forces are not fundamental entities. They are emergent behaviors arising from the requirement that patterns maintain coherence in a node set whose cadence structure is shaped by other patterns. Forces are coherence-gradient responses.
 
@@ -897,7 +897,7 @@ Mass and energy correspond to baseline and dynamic update demand. The rest-frame
 
 Changes in excitation distribution modify the local cadence field. These modifications propagate outward at the invariant hop rate $c$, appearing macroscopically as gravitational influence. In the continuum limit, these propagating cadence-bias adjustments reproduce the tidal and radiative phenomena attributed to curvature in General Relativity.
 
-Under this interpretation, gravity is not a force and not a geometric property of a manifold. It is the macroscopic expression of how coherent patterns negotiate finite update budgets in a discrete, capacity-limited system. Horizons and singularities correspond to limits of pattern coherence, not literal infinities in spacetime geometry.
+Under this interpretation, gravity is not a force and not a geometric property of a manifold. It is the macroscopic expression of how coherence-constraint sets are resolved under finite update budgets in a discrete, capacity-limited system. Horizons and singularities correspond to limits of pattern coherence, not literal infinities in spacetime geometry.
 
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
