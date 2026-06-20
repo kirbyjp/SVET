@@ -558,6 +558,22 @@ This reframes collisions and interactions. When two patterns meet, their directi
 
 Momentum is not something a pattern has. It is something a pattern **is doing**: maintaining directional coherence under the invariant adjacency-preserving update rule. Momentum is the persistence of its coherence-minimal propagation path [1, 2].
 
+### 4.8 Conservation as Coherence‑Constraint Accounting
+
+In SVET, conservation laws do not arise from spacetime symmetries or from fields storing and transferring quantities. Conservation emerges from a simpler and more fundamental requirement: **patterns must maintain coherence across discrete node ticks**. The Node Set does not store energy, momentum, or information. It resolves exaction demands under the same adjacency‑preserving update rule everywhere. Because the Node Set has no mechanism to absorb or erase coherence constraints, all coherence must be accounted for during interactions. This is the SVET meaning of conservation.
+
+Every pattern is a coherence‑preserving configuration defined by its internal coherence and directional coherence. When patterns interact, their coherence constraints must reconcile into a new configuration that preserves the **total update demand** and **total directional coherence**. Nothing is transferred, nothing is lost, and nothing is stored. The coherence constraints are simply redistributed among the resulting patterns. Conservation is therefore not an imposed physical law but the logical consequence of maintaining pattern identity across node ticks.
+
+This reframes traditional conserved quantities.  
+**Energy conservation** becomes the preservation of total update demand.  
+**Momentum conservation** becomes the preservation of total directional coherence.  
+**Charge conservation** becomes the preservation of phase‑coherence asymmetries within patterns.  
+In each case, the Node Set plays no active role; it merely enforces coherence consistency. Because it cannot absorb coherence constraints, the total coherence ledger must remain constant.
+
+Interactions are not exchanges of physical quantities but **reconfigurations of coherence constraints**. When two patterns meet, their internal and directional coherence constraints combine, distort, or redistribute into new patterns whose total exaction demand matches the original. The Node Set does not mediate this process; it simply resolves all exaction demands under the same invariant update rule. Conservation emerges because the Node Set has no mechanism to do anything else.
+
+In SVET, conservation is not a property of matter or fields. It is a property of **coherence accounting** in a universe where patterns must maintain identity across a flat, adjacency-preserving Node Set. Conservation is the unavoidable consequence of coherence‑constraint continuity.
+
 ---
 
 ## 5. Emergent Wave Mechanics
