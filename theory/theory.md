@@ -577,7 +577,7 @@ In SVET, forces are not pushes or pulls transmitted through fields, nor are they
 
 Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks. When the local cadence is uniform, a pattern follows an unbiased coherence-minimal propagation path because this path requires no reconfiguration of its directional persistence. When the cadence varies—due to nearby patterns, accumulated update demand, or local cadence suppression—the coherence-minimal path is no longer unbiased. The pattern must adjust its propagation to remain coherence-consistent with the local cadence gradient. This adjustment is interpreted macroscopically as a force.
 
-A force is therefore not something acting on a pattern. It is the requirement that the pattern maintain coherence under changing local constraints. A pattern with strong directional coherence resists changes to its coherence-minimal path, which manifests as inertia. A pattern in a steep cadence gradient must adopt a deflected coherence-minimal path, which manifests as acceleration. The node set does not cause these behaviors; it enforces coherence consistency across node ticks.
+A force is therefore not something acting on a pattern. It is the requirement that the pattern maintain coherence under changing local constraints. A pattern with strong directional persistence resists changes to its coherence-minimal path, which manifests as inertia. A pattern in a steep cadence gradient must adopt a deflected coherence-minimal path, which manifests as acceleration. The node set does not cause these behaviors; it enforces coherence consistency across node ticks.
 
 This reframes classical forces.  
 **Gravitational attraction** becomes the tendency of patterns to follow propagation paths that minimize coherence strain in regions where cadence gradients arise from accumulated update demand.  
@@ -585,7 +585,7 @@ This reframes classical forces.
 **Nuclear forces** emerge from extreme coherence-density conditions where only tightly constrained coherence configurations remain stable.  
 In all cases, the node set plays no active role; the apparent force is the pattern’s coherence-preserving response to local cadence conditions.
 
-Because the node set cannot store or transmit forces, all interactions are **Coherence-Constraint Negotiations**. When patterns approach each other, their coherence constraints jointly shape the local cadence gradient, and each pattern adjusts its propagation accordingly. No quantity is exchanged, and no mediator is required. The patterns follow the coherence-minimal paths that preserve their constraints.
+Because the node set cannot store or transmit forces, all interactions are **Coherence-Constraint Resolutions**. When patterns co-occupy adjacent nodes, their coherence constraints enter a configuration in which not all constraints can be simultaneously satisfied. The adjacency-preserving local update rules resolve this configuration into a new arrangement of coherence-constraint sets, preventing the need for force-carrying mediator particles. No quantity is exchanged; the patterns simply follow the coherence-minimal paths that resolve their joint constraints.
 
 In SVET, forces are not fundamental entities. They are emergent behaviors arising from the requirement that patterns maintain coherence in a node set whose cadence structure is shaped by other patterns. Forces are coherence-gradient responses.
 
