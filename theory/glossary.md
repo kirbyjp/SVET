@@ -689,7 +689,7 @@ The table below defines how the non-geometric, exaction-based primitives of the 
 | :--- | :--- | :--- | :--- |
 | **Pattern Identity** | Rest Mass ($m$) | The stationary exaction demand required to preserve a pattern's structural identity across node ticks [1]. | Layer 2: Pattern-Level Constraint |
 | **Directional Persistence** | Momentum ($p$) | The local exaction requirement that a pattern's re-instantiation across ticks preserve a persistent propagation direction [1]. | Layer 2: Pattern-Level Constraint |
-| **Constraint Rigidity** | Inertia | The structural resistance of a coherence-constraint set to reconfiguring its propagation path [1]. | Layer 2: Pattern-Level Constraint |
+| **Constraint Rigidity** | Inertia / Hardness / Melting Threshold | The resistance of a coherence-constraint set—or a multi-pattern constraint configuration—to reconfiguration under coherent or incoherent strain [1]. | Layer 2: Pattern-Level Constraint (single-pattern) / Layer 2 Adjacency Constraint (multi-pattern) [1] |
 | **Total Update Demand** | Energy ($E$) | The total localized update-budget expenditure exacted from the node set per node tick [1]. | Layer 1: Node-Set Expenditure |
 | **Cadence Gradient Response** | Acceleration ($a$) | The tendential routing of propagating patterns along paths that minimize exaction strain in regions of high update latency [1]. | Layer 2: Emergent Propagation Path |
 | **Routing Deflection** | Acceleration Measurement | Acceleration measured in the laboratory is the observable projection of pattern-level routing deflection [1]. | Layer 2: Emergent Propagation Path |
