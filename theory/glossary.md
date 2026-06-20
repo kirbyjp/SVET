@@ -603,6 +603,8 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 
 The table below defines how the non-geometric, exaction-based primitives of the node set map directly onto the conserved quantities and dynamical behaviors measured in continuous physical experiments [1].
 
+---
+
 | SVET-Native Construct | Laboratory Observable | Physical Interpretation | Ontological Status (v1.2.6) |
 | :--- | :--- | :--- | :--- |
 | **Pattern Identity** | Rest Mass ($m$) | The stationary exaction demand required to preserve a pattern's structural identity across node ticks [1]. | Layer 2: Pattern-Level Constraint |
@@ -616,5 +618,7 @@ The table below defines how the non-geometric, exaction-based primitives of the 
 | **Constraint Reconfiguration** | Frequency & Phase Shifts | The local modulation of pattern-level cadence and flux vector orientations under varying exaction loads [1]. | Layer 2: Pattern-Level Dilation |
 | **Coherence-Constraint Negotiation** | Interactions / Collisions | Local budget and strain-bias reallocations that occur when overlapping pattern instructions share nodes [1]. | Layer 2: Pattern-Level Transition |
 | **Constraint Continuity** | Conservation Laws | The mathematical consequence of the node set's inability to absorb or erase coherence constraints under local ledger identities ($I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$) [1]. | Layer 1: Node-Set Bookkeeping |
+
+---
 
 © 2026 John Kirby. Licensed under the MIT License.
