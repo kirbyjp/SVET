@@ -599,4 +599,22 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Boundary Strain Shock**  
 *Placeholder:* Discontinuous strain transition across adjacency. Pending formal definition and routing-cost integration.
 
+### SVET-to-Observable Mapping Matrix
+
+The table below defines how the non-geometric, exaction-based primitives of the node set map directly onto the conserved quantities and dynamical behaviors measured in continuous physical experiments [1].
+
+| SVET-Native Construct | Laboratory Observable | Physical Interpretation | Ontological Status (v1.2.6) |
+| :--- | :--- | :--- | :--- |
+| **Pattern Identity** | Rest Mass ($m$) | The stationary exaction demand required to preserve a pattern's structural identity across node ticks [1]. | Layer 2: Pattern-Level Constraint |
+| **Directional Persistence** | Momentum ($p$) | The local exaction requirement that a pattern's re-instantiation across ticks preserve a persistent propagation vector [1]. | Layer 2: Pattern-Level Constraint |
+| **Constraint Rigidity** | Inertia | The structural resistance of a coherence-constraint set to reconfiguring its propagation path [1]. | Layer 2: Pattern-Level Constraint |
+| **Total Update Demand** | Energy ($E$) | The total localized update-budget expenditure exacted from the node set per node tick [1]. | Layer 1: Node-Set Expenditure |
+| **Cadence Gradient Response** | Acceleration ($a$) | The tendential routing of propagating patterns along paths that minimize exaction strain in regions of high update latency [1]. | Layer 2: Emergent Propagation Path |
+| **Local Update Latency ($\tau_{\text{eff}}$)** | Refractive Index ($n$) | The localized slowdown of pattern-reconstruction cadence due to high local strain, producing macroscopic light slowing [1]. | Layer 2: Pattern-Level Latency |
+| **Boundary Accounting Shock** | Fresnel Reflection ($1 - T$) | The partial rejection of a pattern's exaction check at an interface, re-instantiating coherence constraints into high-cadence nodes [1]. | Layer 1/2: Boundary Ledger Event |
+| **Decoherence Tax ($\Delta H$)** | Attenuation / Bulk Heat | The irreversible reallocation of coherent exaction constraints into non-directional node strain [1]. | Layer 1: Node-Set Ledger |
+| **Constraint Reconfiguration** | Frequency & Phase Shifts | The local modulation of pattern-level cadence and flux vector orientations under varying exaction loads [1]. | Layer 2: Pattern-Level Dilation |
+| **Coherence-Constraint Negotiation** | Interactions / Collisions | Local budget and strain-bias reallocations that occur when overlapping pattern instructions share nodes [1]. | Layer 2: Pattern-Level Transition |
+| **Constraint Continuity** | Conservation Laws | The mathematical consequence of the node set's inability to absorb or erase coherence constraints under local ledger identities ($I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$) [1]. | Layer 1: Node-Set Bookkeeping |
+
 © 2026 John Kirby. Licensed under the MIT License.
