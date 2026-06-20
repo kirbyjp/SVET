@@ -617,6 +617,28 @@ Because the node set cannot store or transmit interaction effects, all interacti
 
 In this view, interaction is not a fundamental process. It is the emergent behavior of coherence-constraint sets being resolved by the adjacency-preserving update rule while sharing the same region of a flat, fixed node set. Interaction is coherence-constraint resolution.
 
+### 4.12 Mass as Resistance to Coherence-Constraint Reconfiguration
+
+In SVET, mass is not an intrinsic property of matter, nor a coupling to a Higgs field, nor a measure of stored energy. Instead, mass is the resistance a pattern exhibits when its coherence-constraint set is required to change. Because patterns must maintain coherence across ticks of a flat, adjacency-preserving node set, any change to their coherence-minimal routing requires a reconfiguration of their internal and directional constraints. The degree of resistance to this reconfiguration is what appears experimentally as mass.
+
+Every pattern expresses a specific coherence-constraint set: a stable arrangement of oscillation, phase relationships, and directional persistence. Some patterns have tightly constrained coherence-constraint sets that cannot be altered without violating identity. These patterns exhibit high resistance to changes in routing and therefore appear to have high mass. Other patterns have more flexible constraint sets that can be reconfigured with minimal coherence strain, appearing to have low mass.
+
+Mass is therefore not a substance or a field interaction. It is a measure of coherence rigidity. A pattern with high mass is one whose coherence-constraint set strongly resists reconfiguration. A pattern with low mass is one whose constraint set can adapt more easily. The node set does not impose mass; it enforces coherence continuity. Mass emerges from the internal structure of the coherence-constraint set itself.
+
+This reframes inertia. Inertia is not a mysterious property of matter; it is the resistance of a coherence-constraint set to altering its directional persistence. A pattern with high mass requires significant constraint reconfiguration to change routing, so it accelerates slowly. A pattern with low mass requires minimal reconfiguration, so it accelerates easily. The node set does not push or pull; it resolves exaction requests according to the same adjacency-preserving update rules everywhere.
+
+Mass also reframes gravitational behavior. In a cadence gradient, patterns must adjust their routing to remain coherence-consistent. Patterns with high mass resist this adjustment more strongly, but because the least-strain routing is the same for all patterns in the same gradient, they follow the same deflected path. This is why gravitational acceleration is independent of mass: the routing is determined by the cadence gradient, not by the pattern's resistance to reconfiguration.
+
+Mass should not be confused with material hardness or melting point. Mass reflects the internal rigidity of a single pattern’s coherence-constraint set, while hardness and melting point reflect the rigidity of many patterns arranged in a shared adjacency configuration [1]. A material such as lead can contain high-mass patterns yet remain soft because its multi-pattern constraint configuration is easily reconfigured [1]. Titanium appears hard not because its patterns have greater mass, but because its multi-pattern constraint configuration is highly resistant to reconfiguration [1].
+
+Melting behavior follows the same principle. A solid crystal is a repeating multi-pattern configuration whose coherence-constraint sets must be jointly satisfied across a shared adjacency region. This requires a stable routing arrangement and a consistent local update demand. Heating introduces incoherent strain that the node set must process alongside the coherent constraints of the crystal. A material with a loosely constrained multi-pattern configuration reaches a point where incoherent strain overwhelms the configuration's ability to maintain constraint continuity at a relatively low temperature, producing a low melting point [1]. A material with a tightly constrained configuration can tolerate far more incoherent strain before its shared routing configuration fails, producing a high melting point [1].
+
+These distinctions show that mass, hardness, and melting point are not different physical categories but different structural scales of coherence-constraint rigidity: internal rigidity for mass, multi-pattern rigidity for hardness, and configuration failure thresholds for melting [1].
+
+Because the node set cannot store or transmit mass, mass is always a pattern-internal property. It is not transferred, exchanged, or mediated. When patterns co-occupy adjacent nodes, their coherence-constraint sets are resolved into new patterns whose apparent mass reflects the rigidity of the resulting constraint set. Mass conservation is therefore not a physical law but a consequence of constraint continuity.
+
+In this view, mass is not fundamental. It is the emergent measure of how difficult it is to reconfigure a coherence-constraint set while preserving identity across ticks. Mass is coherence rigidity.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
