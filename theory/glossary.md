@@ -585,6 +585,12 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Coherence Rigidity Index**  
 *Placeholder:* A proposed quantitative measure of how resistant a pattern’s internal coherence-structure is to reconfiguration, potentially formalizing the SVET definition of mass as coherence rigidity.
 
+**Routing Deflection**  
+*Placeholder:* The change in a pattern’s coherence-minimal propagation path caused by local cadence gradients, serving as the SVET-native replacement for the classical acceleration vector [1].
+
+**Cadence Suppression**  
+*Placeholder:* A localized increase in update latency caused by accumulated update demand or phase-coherence bias, serving as the SVET-native replacement for the classical gravitational potential [1].
+
 **Propagation-Geometry Constraint**  
 *Placeholder:* The adjacency-indexed routing-cost pathing a pattern must follow to minimize coherence strain in a non-uniform cadence environment, serving as the SVET-native replacement for the general relativity concept of a geodesic.
 
@@ -647,6 +653,10 @@ The table below defines how the non-geometric, exaction-based primitives of the 
 
 ---
 
+### SVET-to-Observable Mapping Matrix
+
+The table below defines how the non-geometric, exaction-based primitives of the node set map directly onto the conserved quantities and dynamical behaviors measured in continuous physical experiments [1].
+
 | SVET-Native Construct | Laboratory Observable | Physical Interpretation | Ontological Status (v1.2.6) |
 | :--- | :--- | :--- | :--- |
 | **Pattern Identity** | Rest Mass ($m$) | The stationary exaction demand required to preserve a pattern's structural identity across node ticks [1]. | Layer 2: Pattern-Level Constraint |
@@ -654,6 +664,8 @@ The table below defines how the non-geometric, exaction-based primitives of the 
 | **Constraint Rigidity** | Inertia | The structural resistance of a coherence-constraint set to reconfiguring its propagation path [1]. | Layer 2: Pattern-Level Constraint |
 | **Total Update Demand** | Energy ($E$) | The total localized update-budget expenditure exacted from the node set per node tick [1]. | Layer 1: Node-Set Expenditure |
 | **Cadence Gradient Response** | Acceleration ($a$) | The tendential routing of propagating patterns along paths that minimize exaction strain in regions of high update latency [1]. | Layer 2: Emergent Propagation Path |
+| **Routing Deflection** | Acceleration Measurement | Acceleration measured in the laboratory is the observable projection of pattern-level routing deflection [1]. | Layer 2: Emergent Propagation Path |
+| **Cadence Suppression** | Gravitational Redshift / Time Dilation | Localized increase in update latency caused by accumulated update demand or phase-coherence bias, driving classical temporal slowdown [1]. | Layer 2: Pattern-Level Latency |
 | **Local Update Latency ($\tau_{\text{eff}}$)** | Refractive Index ($n$) | The localized slowdown of pattern-reconstruction cadence due to high local strain, producing macroscopic light slowing [1]. | Layer 2: Pattern-Level Latency |
 | **Boundary Accounting Shock** | Fresnel Reflection ($1 - T$) | The partial rejection of a pattern's exaction check at an interface, re-instantiating coherence constraints into high-cadence nodes [1]. | Layer 1/2: Boundary Ledger Event |
 | **Decoherence Tax ($\Delta H$)** | Attenuation / Bulk Heat | The irreversible reallocation of coherent exaction constraints into non-directional node strain [1]. | Layer 1: Node-Set Ledger |
