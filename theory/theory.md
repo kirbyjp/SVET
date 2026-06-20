@@ -574,6 +574,24 @@ Interactions are not exchanges of physical quantities but **reconfigurations of 
 
 In SVET, conservation is not a property of matter or fields. It is a property of **coherence accounting** in a universe where patterns must maintain identity across a flat, adjacency-preserving Node Set. Conservation is the unavoidable consequence of coherence‑constraint continuity.
 
+### 4.9 Forces as Coherence-Gradient Responses
+
+In SVET, forces are not pushes or pulls transmitted through fields, nor are they interactions mediated by particles. A force is the behavior of a pattern maintaining coherence in the presence of a non-uniform cadence environment. The node set does not generate forces; it resolves exaction demands under the same adjacency-preserving update rule everywhere. What appears as a force is the pattern’s coherence-preserving response to local cadence gradients.
+
+Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks. When the local cadence is uniform, a pattern follows an unbiased coherence-minimal propagation path because this path requires no reconfiguration of its directional persistence. When the cadence varies—due to nearby patterns, accumulated update demand, or local cadence suppression—the coherence-minimal path is no longer unbiased. The pattern must adjust its propagation to remain coherence-consistent with the local cadence gradient. This adjustment is interpreted macroscopically as a force.
+
+A force is therefore not something acting on a pattern. It is the requirement that the pattern maintain coherence under changing local constraints. A pattern with strong directional coherence resists changes to its coherence-minimal path, which manifests as inertia. A pattern in a steep cadence gradient must adopt a deflected coherence-minimal path, which manifests as acceleration. The node set does not cause these behaviors; it enforces coherence consistency across node ticks.
+
+This reframes classical forces.  
+**Gravitational attraction** becomes the tendency of patterns to follow propagation paths that minimize coherence strain in regions where cadence gradients arise from accumulated update demand.  
+**Electromagnetic forces** arise from phase-coherence relationships between patterns that modify local cadence structure.  
+**Nuclear forces** emerge from extreme coherence-density conditions where only tightly constrained coherence configurations remain stable.  
+In all cases, the node set plays no active role; the apparent force is the pattern’s coherence-preserving response to local cadence conditions.
+
+Because the node set cannot store or transmit forces, all interactions are **Coherence-Constraint Negotiations**. When patterns approach each other, their coherence constraints jointly shape the local cadence gradient, and each pattern adjusts its propagation accordingly. No quantity is exchanged, and no mediator is required. The patterns follow the coherence-minimal paths that preserve their constraints.
+
+In SVET, forces are not fundamental entities. They are emergent behaviors arising from the requirement that patterns maintain coherence in a node set whose cadence structure is shaped by other patterns. Forces are coherence-gradient responses.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
