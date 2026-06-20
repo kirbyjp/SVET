@@ -639,6 +639,30 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Interaction Inference**  
 *Placeholder:* The lab-visible interpretation of a coherence-constraint negotiation (e.g., scattering angles or decay distributions) [2].
 
+**Co-Occupation Region**  
+*Placeholder:* The local adjacency region of nodes in which two or more coherence-constraint sets simultaneously request re-instantiation, serving as the SVET-native replacement for "interaction region" or "collision zone" [1].
+
+**Constraint Conflict**  
+*Placeholder:* The structural mismatch that arises when overlapping coherence-constraint sets present incompatible update requests to the same local adjacency, serving as the SVET-native replacement for "interaction potential" [1].
+
+**Constraint Resolution**  
+*Placeholder:* The local, rule-driven process by which the node set's update rules resolve a constraint conflict, establishing a new, self-consistent configuration of pattern exactions and serving as the SVET-native replacement for "interaction dynamics" [1].
+
+**Scattering Angle (Observable)**  
+*Placeholder:* The laboratory-visible angular deflection that results from a local constraint resolution, serving as the observable projection of directional-persistence adjustments [1].
+
+**Binding Energy (Observable)**  
+*Placeholder:* The observable projection of reduced routing strain when two compatible coherence-constraint sets are locked in a shared routing configuration [1].
+
+**Cross-Section (Observable)**  
+*Placeholder:* The statistical frequency with which a given constraint conflict results in a specific resolved pattern configuration under repeated trials [1].
+
+**Routing Deflection**  
+*Placeholder:* The change in a pattern’s coherence-minimal propagation path caused by local cadence gradients, serving as the SVET-native replacement for the classical acceleration vector [1].
+
+**Cadence Suppression**  
+*Placeholder:* A localized increase in update latency caused by accumulated update demand or phase-coherence bias, serving as the SVET-native replacement for the classical gravitational potential [1].
+
 ---
 
 **Anisotropic Pattern Gradient**  
