@@ -603,6 +603,20 @@ Electromagnetic acceleration follows the same principle. Phase-coherence bias be
 
 Because the node set cannot store or transmit forces, all acceleration is an emergent consequence of coherence-constraint preservation in a flat, adjacency-preserving node set. Acceleration is the operational expression of least-strain routing under non-uniform cadence conditions.
 
+### 4.11 Interaction as Coherence-Constraint Resolution
+
+In SVET, interactions are not collisions between objects, nor are they exchanges of particles or field-mediated forces. Instead, interactions arise when multiple coherence-constraint sets simultaneously request re-instantiation within the same region of the node set. Because the node set is static, fixed, and incapable of storing energy or information independently, it plays no active role in mediating interactions. All interaction behavior results from the requirement that coherence-constraint sets remain internally consistent across ticks.
+
+Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks. When two patterns co-occupy adjacent nodes, their coherence-constraint sets enter a configuration in which not all constraints can be simultaneously satisfied. The adjacency-preserving update rule resolves this configuration into a new arrangement of coherence-constraint sets that preserves total update demand and total directional persistence. This rule-driven resolution is the SVET meaning of interaction.
+
+The node set does not facilitate or mediate this process; it simply resolves all exactions under the same invariant local update rules everywhere. Because the node set cannot absorb coherence, the combined coherence-constraint set must be conserved. Patterns cannot lose coherence, and they cannot offload it into the node set. Instead, the update rule resolves their overlapping constraints into new coherence-constraint sets. These resolved configurations appear experimentally as scattering, shared routing solutions, divergent routing, or the formation of new stable patterns.
+
+This reframes the idea of “force carriers.” In SVET, there are no mediating particles. What we call a “force” is the routing bias that emerges from constraint resolution. Patterns with incompatible phase-coherence relationships undergo divergent routing because maintaining coherence requires routing that separates. Patterns with compatible phase-coherence relationships adopt shared routing solutions because the least-strain configuration is a jointly satisfied constraint set. Patterns that appear to annihilate do not disappear; their coherence-constraint sets are resolved into new patterns whose combined update demand matches the original.
+
+Because the node set cannot store or transmit interaction effects, all interactions are local coherence-constraint resolutions. The apparent strength of an interaction corresponds to how severely the patterns’ coherence constraints conflict. Strong interactions arise when coherence-constraint sets are highly rigid and cannot be jointly satisfied without major reconfiguration. Weak interactions arise when constraint sets can be jointly satisfied with minimal coherence strain.
+
+In this view, interaction is not a fundamental process. It is the emergent behavior of coherence-constraint sets being resolved by the adjacency-preserving update rule while sharing the same region of a flat, fixed node set. Interaction is coherence-constraint resolution.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
