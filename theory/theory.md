@@ -659,14 +659,22 @@ In this view, curvature is not a fundamental property of the universe. It is the
 
 SVET models the vacuum strictly as a static, non-coordinate node set governed by local update rules. To preserve the two-layer ontology and prevent continuous-field or geometric drift, we establish the absolute, mathematical boundary of pattern-level representation.
 
-**The Principle of Discrete Exaction (Axiomatic Form):**  
-A pattern possesses no intrinsic energy, fields, or geometry. At any isolated, single node-set tick, all macroscopic kinematic variables—such as velocity, acceleration, and wave-front frequency—collapse to zero. What remains is exclusively the static, local exaction-constraint set presented to the node set.
+#### The Frozen Tick as an Evaluation Frame
+The term "frozen tick" does not imply that the node set physically halts or that time stops. It is a conceptual evaluation frame used to analyze the static ledger state between updates. Nodes do not freeze; ticks define the discrete temporal boundaries at which identity is evaluated independently of motion.
 
 #### Axiom 1 — Non-Simultaneous Propagation
 A pattern's internal update cycle (frequency and phase-cycling) and its external propagation (translation across adjacency) do not occur as parallel, simultaneous physical processes. They are simply different operational parameters written inside the same unified Layer 2 instruction packet, resolved sequentially by the identical, single local update operation of the node set.
 
 #### Axiom 2 — Asymptotic Cadence Limit
 The underlying node set remains static and does not perform background updates in empty space. The physical "work" of state updates is performed entirely by the node set as it expends its local capacity to honor the pattern's exaction. As the local exaction approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$.
+
+#### Statement of the Law
+A pattern’s complete physical identity at any single-tick evaluation frame is fully encoded in the static configuration of the node set. This conceptual slice contains:
+1.  the pattern’s coherence-constraint set (identity),  
+2.  the local asymmetric strain footprint (momentum bias), and  
+3.  the one-hop adjacency-offset instruction (next-tick request).
+
+No additional temporal information is stored, required, or permitted.
 
 #### Corollary 1 — No Multi-Tick Storage
 A pattern does not store a trajectory, a worldline, a phase history, a velocity, or an acceleration within the node set. All such quantities arise exclusively from differences between ticks, not from the frozen tick itself.
