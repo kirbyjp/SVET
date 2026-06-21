@@ -1024,7 +1024,7 @@ These two boundaries—the Planck-scale quantum wall and the Hubble-scale cosmic
 
 Furthermore, this unified boundary structure encodes how local gravitational strain suppresses the cosmological Hubble flow. At small scales, the localized update demands of matter dominate, completely suppressing the global expansion rate. The universal horizon variable $U$ must therefore capture this competitive scaling transition, mapping how the node set transitions from locally gravity-dominated to cosmologically expansion-dominated regimes.
 
-Because both the Quantum Wall and the Cosmic Wall arise when exaction approaches its collapse threshold and the effective cadence diverges, the universal horizon variable $U$ must be a monotonic function of $\eta$ and $\tau_{\text{eff}}$, saturating near the quantum wall ($U \to 1$) and vanishing near the cosmic wall ($U \to 0$). This constraint ensures that $U$ serves as the universal axis along which GR-like, SVET-like, and QG-like regimes align, enabling mass-independent curve collapse and forming the mathematical backbone of the Universality Scoring System [1, 2].
+Because both the Quantum Wall and the Cosmic Wall arise when exaction approaches its collapse threshold and the effective cadence diverges, the candidate universal horizon variable $U$ must be a monotonic function of $\eta$ and $\tau_{\text{eff}}$, saturating near the quantum wall ($U \to 1$) and vanishing near the cosmic wall ($U \to 0$). This constraint ensures that $U$ serves as the primary candidate axis along which GR-like, SVET-like, and QG-like regimes align, enabling mass-independent curve collapse and forming the mathematical backbone of the Universality Scoring System [1].
 
 ---
 
