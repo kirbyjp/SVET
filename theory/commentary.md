@@ -40,7 +40,15 @@ $$\mathcal{U} \in [0, 1]$$
 ---
 
 ## 3. Archived Section: 9.4 Double‑Walled Universe (Full Text)
-*(Paste the entire original 9.4 section here for safekeeping.)*
+
+### 9.4 The Double-Walled Universe: Cosmic and Quantum Boundaries
+
+The SVET framework unifies the microscopic and macroscopic limits of the cosmos, showing that the physical universe is bounded by two symmetric, non-singular causal walls. Both boundaries are emergent manifestations of the identical physical phenomenon: asymptotic **Cadence Collapse** at opposite ends of the scale axis.
+
+#### 1. The Quantum Wall (Small-Scale Boundary)
+At the microscopic limit, attempting to probe scales smaller than the Planck length requires concentrating high-energy density into an increasingly localized region. When a Planck-scale probe focuses energy into a volume smaller than its local coherence horizon, the local excitation is driven toward saturation ($\eta \to 1$). 
+
+Through the mechanism of cadence collapse, the local update delays diverge asymptotically. The resulting frozen state prevents further coordinate probing or deeper information extraction, establishing an absolute, non-singular lower boundary on physical measurements. Throughout this transition, the underlying nodes continue to tick normally at the hardware limit $c$; only the pattern-level resolution latency diverges. At the quantum wall, the local excitation approaches the collapse threshold $\eta_{\text{BH}}(R)$, forcing the coherence cost $C(x,v)$ to diverge and driving $\tau_{\text{eff}}$ toward its asymptotic limit.
 
 ### 3.1 Original Motivation
 - Provide a unified axis for quantum wall (U → 1) and cosmic wall (U → 0).  
