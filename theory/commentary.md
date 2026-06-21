@@ -31,6 +31,12 @@ It exists to preserve research lineage and guide future revisions.
 - It served as a curve‑collapse axis for horizon‑scale models.  
 - Future versions may reintroduce a transformed global utilization variable if needed.
 
+### $\mathcal{U}$ — "Universal Horizon Variable"
+**Type:** Derived Universal Axis  
+**Definition:** A candidate universal parameter that unifies horizon behavior across mass scales by collapsing local exaction, cadence, and routing behavior into a single monotonic variable [1]:  
+$$\mathcal{U} \in [0, 1]$$  
+**Forensic Role:** Serves as the axis along which the simulation tool evaluates curve collapse, GR agreement, quantum saturation behavior, and cosmic compatibility, vanishing near the cosmic wall ($\mathcal{U} \to 0$) and saturating near the quantum wall ($\mathcal{U} \to 1$) [1].
+
 ---
 
 ## 3. Archived Section: 9.4 Double‑Walled Universe (Full Text)
