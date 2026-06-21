@@ -452,10 +452,10 @@ General relativity legacy term. SVET timing behavior is expressed through patter
 ## 4. Ratios & Metrics (The "Diagnostics")
 
 ### $U$ — "Utilization"
-**Type:** Ratio / Universal Horizon Variable  
+**Type:** Ratio (Primary Candidate for Universal Horizon Axis in v1.2.6)  
 **Definition:** The capacity utilization ratio:  
 $$U = \frac{S}{B}$$  
-**Forensic Role:** Measures the local update load currently placed on a node relative to its available budget, while serving as the universal scale-bridging axis along which the simulation tool evaluates mass-independent curve collapse ($U \to 1$ near the quantum wall, $U \to 0$ near the cosmic wall) [1].
+**Forensic Role:** Measures how much of a node's available capacity is consumed by local and adjacency exactions, while serving as the primary candidate for the universal scale-bridging axis along which the simulation tool evaluates mass-independent curve collapse ($U \to 1$ near the quantum wall, $U \to 0$ near the cosmic wall) [1].
 
 ### $n$ — "Refractive Index"
 **Type:** Ratio  
