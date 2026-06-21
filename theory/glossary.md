@@ -134,6 +134,16 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** A node considered as a unit that can be grouped mathematically with others for analysis, without implying extensibility, spatial scaling, or hierarchical structure.  
 **Forensic Role:** Allows coarse-graining of many nodes into analytical clusters while preserving the non-geometric nature of the node set.
 
+#### Frozen Tick (Evaluation Frame)
+**Type:** Conceptual Temporal Boundary  
+**Definition:** A discrete evaluation frame in which the node-set is treated as static for the purpose of analyzing pattern identity, adjacency, and exaction [1]. It is not a physical halt in the universe, but a mathematical slice used to separate identity from motion [1].  
+**Forensic Role:** Serves as the primary methodological tool to evaluate discrete ledger states and isolate pattern configuration parameters before the next local update rule is applied.
+
+#### Single-Tick Configuration
+**Type:** Node-Set State  
+**Definition:** The static, un-advancing node-set parameters captured within a single frozen-tick evaluation frame, containing the pattern's active coherence-constraint set, local strain footprint, and next-tick adjacency request [1]. No physical motion, velocity, or multi-tick historical data are present.  
+**Forensic Role:** Provides the complete, discrete data snapshot required to resolve the pattern's next immediate update transition.
+
 ---
 
 ### Category 2: Pattern & Exaction
