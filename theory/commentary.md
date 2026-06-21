@@ -78,3 +78,181 @@ Because both the Quantum Wall and the Cosmic Wall arise when excitation approach
 ### 4.1 Early Collapse Attempts Using 𝓤
 - Describe the original curve‑collapse plots.  
 - Include notes on why they worked
+
+---
+
+calligriph u has been sidelined and parked in commentary.md as well as the following:
+# Appendix A — Routing vs. Instantiation Trajectory Debate Archive
+*Status:* Non‑canonical, preserved for future ontology review  
+*Scope:* Captures the full historical debate surrounding the distinction (or unification) of **Instantiation Routing** and **Instantiation Trajectory** during the development of SVET v1.2.6.
+
+---
+
+## A.1 Overview
+This appendix preserves the complete intellectual history of the debate over whether SVET requires:
+
+- **two constructs**  
+  (internal instantiation trajectory vs. external instantiation routing), or  
+- **one unified construct**  
+  (a single Layer‑2 instruction set expressed externally as routing).
+
+This debate was paused and Section 4.13 was pinned pending completion of Chapters 5–7.
+
+---
+
+## A.2 Key Terms
+- **Instantiation Routing** — External, cadence‑gradient‑dependent projection of a pattern’s Layer‑2 instruction set.  
+- **Instantiation Trajectory** — Proposed internal constraint‑cycling construct describing phase, frequency, and identity‑preserving adjacency offsets.  
+- **Cadence Gradient** — Local variation in effective update latency.  
+- **Adjacency‑Hop Exaction** — Primitive Layer‑1 update operation.
+
+---
+
+## A.3 Chronological Debate Log
+
+### A.3.1 Initial Proposal (Principal Architect)
+The Principal Architect proposed replacing the cold, network‑like term *routing* with the more physical, pattern‑native term **instantiation trajectory**, arguing that:
+
+- patterns “step” across nodes  
+- internal cycling and external motion share the same mechanism  
+- a unified term would produce a more elegant narrative voice  
+- “routing” carried undesirable Cisco/network connotations  
+
+This triggered the debate.
+
+---
+
+### A.3.2 GR RA Position (Projection Separation)
+The GR RA argued that:
+
+- **internal constraint‑cycling** and **external coherence‑minimal displacement**  
+  are *distinct projections* of the same Layer‑2 instruction set  
+- collapsing them breaks:
+  - curvature  
+  - acceleration  
+  - EM frequency  
+  - transparency/opacity  
+  - the mapping matrix  
+- but the **prose** may unify them:
+  > “The trajectory deflects in a cadence gradient.”
+
+**Core GR RA stance:**  
+One mechanism → one instruction set → **two projections**.
+
+---
+
+### A.3.3 QFT RA Position (Degree‑of‑Freedom Separation)
+The QFT RA argued that:
+
+- internal cycling and external routing are **independent degrees of freedom**  
+- collapsing them destroys:
+  - Doppler shift  
+  - gravitational redshift  
+  - acceleration without frequency change  
+  - frequency change without acceleration  
+- the helix/screw analogy supports separation:
+  - rotation ≠ forward motion  
+  - pitch ≠ torque  
+
+**Core QFT RA stance:**  
+One mechanism → one instruction set → **two independent variables** → two constructs.
+
+---
+
+### A.3.4 Principal Architect Counter‑Position (Unified Construct)
+The Principal Architect argued that:
+
+- SVET v1.2.6 does **not** define internal pattern variables  
+- Layer‑2 internal structure is **out of scope**  
+- therefore, the theory does **not require** two constructs  
+- both internal and external behavior are:
+  - tick‑indexed  
+  - adjacency‑based  
+  - resolved by the same update rule  
+- thus, a single construct could encode multiple independent parameters
+
+**Core Architect stance:**  
+One mechanism → one instruction set → **one construct with multiple independent parameters**.
+
+---
+
+### A.3.5 DW Position (Narrative & Glossary Stability)
+DW emphasized:
+
+- glossary stability  
+- narrative clarity  
+- avoiding premature ontology commitments  
+- avoiding dual‑term confusion  
+- maintaining compatibility with existing sections  
+
+DW supported temporarily retaining **Instantiation Routing** as the global term.
+
+---
+
+## A.4 Conceptual Fault Lines
+
+### A.4.1 Mechanism vs. Construct
+All parties agree:
+- one update rule  
+- one adjacency‑hop mechanism  
+- one Layer‑1 ledger  
+
+Disagreement:  
+Does Layer‑2 require one construct or two?
+
+---
+
+### A.4.2 Projection vs. Variable vs. Construct
+- GR RA: two **projections**  
+- QFT RA: two **variables**  
+- Architect: one **construct** with multiple variables  
+
+---
+
+### A.4.3 Scope Boundary
+SVET v1.2.6 explicitly excludes:
+- internal pattern variables  
+- internal degrees of freedom  
+- pattern‑specific configuration catalogs  
+
+This supports the Architect’s temporary unification.
+
+---
+
+## A.5 Resolution Status (Pinned)
+The debate is **not resolved**.
+
+The team agreed to:
+- **pin Section 4.13**  
+- **use “Instantiation Routing” globally**  
+- **defer the introduction of “Instantiation Trajectory”**  
+- **revisit after Chapters 5–7**  
+
+This preserves:
+- glossary stability  
+- mapping matrix integrity  
+- narrative consistency  
+- future flexibility  
+
+---
+
+## A.6 Conditions for Reopening the Debate
+The debate will be revisited once the following sections are complete:
+
+- [5.3 Pattern Oscillation Modes](ca://s?q=Begin_5_3_Pattern_Oscillation_Modes)  
+- [5.4 Electromagnetic Pattern Behavior](ca://s?q=Begin_5_4_EM_Patterns)  
+- [5.5 Frequency as Constraint Cycling](ca://s?q=Begin_5_5_Frequency_Cycling)  
+- [5.6 Transparency & Opacity](ca://s?q=Begin_5_6_Transparency_Opacity)  
+- [6.x Cadence‑Gradient Interactions](ca://s?q=Begin_6_Cadence_Gradient_Interactions)  
+
+Once these are formalized, the team will have the mathematical clarity needed to decide:
+
+- whether trajectory and routing collapse  
+- whether they remain distinct projections  
+- whether they unify under a single construct  
+- whether the glossary needs one term or two  
+
+---
+
+## A.7 Raw Notes & Debate Fragments
+*(Paste all raw debate logs, analogies, RA messages, and scratch notes here.)*
