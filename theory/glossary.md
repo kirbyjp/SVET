@@ -447,20 +447,15 @@ General relativity legacy term. SVET timing behavior is expressed through patter
 **Definition:** The portion of coherent update demand that a node cannot instantiate and therefore rejects and diverts out of the coherent ledger when local exaction exceeds the available processing budget.  
 **Forensic Role:** Represents the local increment of incoherent output recorded when adjacency‑coherent reconstruction fails. See H‑channel.
 
-### $\mathcal{U}$ — "Universal Horizon Variable"
-**Type:** Derived Universal Axis  
-**Definition:** A candidate universal parameter that unifies horizon behavior across mass scales by collapsing local exaction, cadence, and routing behavior into a single monotonic variable [1]:  
-$$\mathcal{U} \in [0, 1]$$  
-**Forensic Role:** Serves as the axis along which the simulation tool evaluates curve collapse, GR agreement, quantum saturation behavior, and cosmic compatibility, vanishing near the cosmic wall ($\mathcal{U} \to 0$) and saturating near the quantum wall ($\mathcal{U} \to 1$) [1].
-
 ---
 
 ## 4. Ratios & Metrics (The "Diagnostics")
 
 ### $U$ — "Utilization"
-**Type:** Ratio  
-**Definition:** Capacity utilization ratio, $U = S/B$.  
-**Forensic Role:** Measures how much of a node's capacity is consumed; used for redline detection.
+**Type:** Ratio / Universal Horizon Variable  
+**Definition:** The capacity utilization ratio:  
+$$U = \frac{S}{B}$$  
+**Forensic Role:** Measures the local update load currently placed on a node relative to its available budget, while serving as the universal scale-bridging axis along which the simulation tool evaluates mass-independent curve collapse ($U \to 1$ near the quantum wall, $U \to 0$ near the cosmic wall) [1].
 
 ### $n$ — "Refractive Index"
 **Type:** Ratio  
