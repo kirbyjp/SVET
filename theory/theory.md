@@ -655,6 +655,46 @@ Because the node set cannot store or transmit curvature, all curvature is patter
 
 In this view, curvature is not a fundamental property of the universe. It is the emergent behavior of patterns navigating cadence gradients in a flat, adjacency-preserving node set. Curvature is routing deflection driven by coherence preservation.
 
+### 4.15 The Single‑Tick Identity Principle (STIP)
+
+SVET models the vacuum strictly as a static, non-coordinate node set governed by local update rules. To preserve the two-layer ontology and prevent continuous-field or geometric drift, we establish the absolute, mathematical boundary of pattern-level representation.
+
+**The Principle of Discrete Exaction (Axiomatic Form):**  
+A pattern possesses no intrinsic energy, fields, or geometry. At any isolated, single node-set tick, all macroscopic kinematic variables—such as velocity, acceleration, and wave-front frequency—collapse to zero. What remains is exclusively the static, local exaction-constraint set presented to the node set.
+
+#### Axiom 1 — Non-Simultaneous Propagation
+A pattern's internal update cycle (frequency and phase-cycling) and its external propagation (translation across adjacency) do not occur as parallel, simultaneous physical processes. They are simply different operational parameters written inside the same unified Layer 2 instruction packet, resolved sequentially by the identical, single local update operation of the node set.
+
+#### Axiom 2 — Asymptotic Cadence Limit
+The underlying node set remains static and does not perform background updates in empty space. The physical "work" of state updates is performed entirely by the node set as it expends its local capacity to honor the pattern's exaction. As the local exaction approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$.
+
+#### Corollary 1 — No Multi-Tick Storage
+A pattern does not store a trajectory, a worldline, a phase history, a velocity, or an acceleration within the node set. All such quantities arise exclusively from differences between ticks, not from the frozen tick itself.
+
+#### Corollary 2 — Local Determinism
+The next tick's instantiation is fully determined by the local handshake between the pattern's one-hop adjacency instruction and the node's local budget and strain state. No non-local information participates in the update.
+
+#### Corollary 3 — Identity Completeness
+The frozen tick contains the full identity of the pattern, including mass (constraint-set rigidity), inertia (reconfiguration cost), spin (adjacency-offset symmetry), frequency class (cyclic adjacency pattern), momentum bias (strain asymmetry), and the next immediate adjacency request.
+
+#### Corollary 4 — No Future Prediction
+The frozen tick contains exactly one tick's worth of forward information: the next adjacency request. Nothing beyond this is encoded or permitted.
+
+#### Forensic Role
+This principle enforces:
+*   strict locality,
+*   discreteness,
+*   a non-coordinate, non-geometric ontology,
+*   no-field ontology,
+*   a non-agency node set,
+*   and the strict separation between identity and motion.
+
+#### Interpretive Summary
+Identity is frozen.  
+Motion is the difference.  
+Trajectory is the sequence of differences.  
+Physics is the ledger resolving one tick at a time.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
