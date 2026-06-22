@@ -102,7 +102,11 @@ This date represents the **formal publication milestone**.
 For academic integrity:
 
 - Keep `theory.md` dated **June 2026** (its true Github creation date).  
-- Preserve earlier timestamps through explicit headers in each uploaded file, e.g.:<img width="1067" height="687" alt="e13a6457-2c77-46e8-a382-bf3737b4bfe0" src="https://github.com/user-attachments/assets/7f24931c-9e2d-4187-a92a-d5ec2f81fd7a" />
+- Preserve earlier timestamps through explicit headers in each uploaded file, e.g.:
+
+---
+
+<img width="1067" height="687" alt="e13a6457-2c77-46e8-a382-bf3737b4bfe0" src="https://github.com/user-attachments/assets/7f24931c-9e2d-4187-a92a-d5ec2f81fd7a" />
 <img width="1017" height="813" alt="0a08ed86-2d36-4f3c-b3b6-5a008c673f2b" src="https://github.com/user-attachments/assets/4383419d-7352-48b6-9b87-4bdd19c002a3" />
 <img width="707" height="1500" alt="f9f1361c-ef8c-474f-8a17-0402f1dd6d10" src="https://github.com/user-attachments/assets/714c64eb-1f01-482e-83aa-e833ae6d36c1" />
 <img width="646" height="1500" alt="dc61d0ea-3e42-4b24-bf95-032b1982f1d8" src="https://github.com/user-attachments/assets/db5476e1-4af8-47b7-b707-e96b0be810fb" />
