@@ -1,9 +1,13 @@
+# SVET Master Glossary v1.2.6
+
+This document serves as the authoritative notation and terminology reference for **Static Vacuum Exaction Theory (SVET)** [1].
+
+---
+
 # SVET Authoritative Glossary
 
-This document serves as the authoritative notation and terminology reference for **Static Vacuum Exaction Theory (SVET)**.  It is sectioned into Vocabulary and Maths.
-
 ## Vocabulary
-*This section serves as the centralized repository for the structural terms, local transaction mechanics, and environmental definitions unique to Static Vacuum Exaction Theory (SVET).*
+*This section serves as the centralized repository for the structural terms, local transaction mechanics, and environmental definitions unique to Static Vacuum Exaction Theory (SVET) [1].*
 
 ### Category 1: Node Set & Vacuum
 
@@ -25,17 +29,17 @@ This document serves as the authoritative notation and terminology reference for
 #### Adjacency Topology
 **Type:** Structural Property  
 **Definition:** The global connectivity structure defined by adjacency relations.  
-**Forensic Role:** Establishes the coordinate-free structural configuration of the node set.
+**Forensic Role:** Establishes the coordinate-free structural configuration of the node set [1].
 
 #### Adjacency Degree
 **Type:** Structural Property  
-**Definition:** The number of adjacency connections linked to a single node within the node set.  
+**Definition:** The number of adjacency connections linked to a single node within the node set [1].  
 **Forensic Role:** Determines the maximum number of simultaneous routing pathways available to a node, constraining local flux resolution.
 
 #### Adjacency Neighborhood
 **Type:** Structural Property  
 **Definition:** The set of all nodes directly linked to a specific target node by a single adjacency hop.  
-**Forensic Role:** Defines the local boundary of causal interaction; a node can only resolve exaction load and local parameters available within its adjacency neighborhood.
+**Forensic Role:** Defines the local boundary of causal interaction; a node can only resolve exaction load and local parameters originating within its adjacency neighborhood [1].
 
 #### Tick
 **Type:** Primitive  
@@ -59,13 +63,13 @@ This document serves as the authoritative notation and terminology reference for
 
 #### Structural Capacity
 **Type:** Structural Constant  
-**Definition:** The invariant baseline processing capacity of a node determined solely by its adjacency structure.  
-**Forensic Role:** Defines the non-reducible structural limit of the node set.
+**Definition:** The invariant baseline processing capacity of a node determined solely by its adjacency structure [1].  
+**Forensic Role:** Defines the non-reducible structural limit of the node set [1].
 
 #### Static Vacuum
 **Type:** Ontological Primitive  
-**Definition:** A locality of node adjacency and tick-budget with no active pattern exactions.  
-**Forensic Role:** Represents the node set in its minimally loaded structural state.
+**Definition:** A locality of node adjacency and tick-budget with no active pattern exactions [1].  
+**Forensic Role:** Represents the node set in its minimally loaded structural state [1].
 
 #### Vacuum of Adjacency
 **Type:** Ontological Primitive  
@@ -74,23 +78,13 @@ This document serves as the authoritative notation and terminology reference for
 
 #### Node Parameters
 **Type:** Primitive Property  
-**Definition:** The local variables associated with a node, including tick-budget, local tick-budget, local cadence, and adjacency list.  
+**Definition:** The local variables associated with a node, including tick-budget, local tick-budget, local cadence, and adjacency list [1].  
 **Forensic Role:** Serves as the structural ledger updated each tick based on incoming and adjacency exactions.
 
 #### Node Identity
 **Type:** Primitive Property  
 **Definition:** The unique, non-geometric set-theoretic identifier assigned to a specific node within the node set.  
 **Forensic Role:** Uniquely identifies the node on the ledger, enabling precise tracking of localized budgets and exaction loads without requiring geometric coordinates.
-
-#### Instantiation Routing
-**Type:** Node-Set Resolution  
-**Definition:** The realized adjacency hop performed by the node set when resolving the pattern’s one-hop adjacency instruction under local budget and strain constraints [1].  
-**Forensic Role:** Represents the physically executed next adjacency, determined entirely by least-strain resolution [1].
-
-#### Frozen-Tick Handshake
-**Type:** Derived Mechanism  
-**Definition:** The local interaction between the pattern’s one-hop adjacency instruction and the node’s budget/strain parameters, which deterministically resolves the next tick’s instantiation.  
-**Forensic Role:** Ensures that identity and motion remain strictly separated and that all updates are resolved locally and discretely.
 
 #### Propagation Limit ($c$)
 **Type:** Constant  
@@ -104,45 +98,8 @@ This document serves as the authoritative notation and terminology reference for
 
 #### Two-Layer Ontology
 **Type:** Ontological Framework  
-**Definition:** The division between the static node set and the dynamic, pattern-level constructs that experience strain, dilation, and cadence collapse.  
-**Forensic Role:** Prevents misinterpreting pattern-level latencies as modifications of node-set invariants.
-
-### Conceptual Handles (Non-Ontological Clarifiers)
-
-#### Operational Ledger
-**Type:** Conceptual Handle  
-**Definition:** A non-geometric, non-computational abstraction referring to the evolving set of node parameters updated each tick.  
-**Forensic Role:** Provides a descriptive way to discuss how tick-budget, strain, and exaction values change without implying storage, memory, or physical bookkeeping.
-
-#### Ledger Site
-**Type:** Conceptual Handle  
-**Definition:** A node considered solely as the location where exaction, strain, and tick-budget values are resolved during a tick.  
-**Forensic Role:** Prevents misinterpretation of nodes as containers or memory cells; emphasizes that all values are transient and tick-indexed.
-
-#### Relational Description
-**Type:** Conceptual Handle  
-**Definition:** A way of referring to node-to-node adjacency relations without invoking geometry, coordinates, or spatial embedding.  
-**Forensic Role:** Ensures that adjacency is understood as a structural relation only, not a spatial distance or metric.
-
-#### Coarse-Graining (SVET Sense)
-**Type:** Analytical Method  
-**Definition:** A mathematical grouping of many nodes into a larger evaluative unit for convenience, without altering any underlying node-level rules or implying physical aggregation.  
-**Forensic Role:** Allows large-scale systems to be described without introducing geometry, volume, or continuum assumptions.
-
-#### Partition (SVET Sense)
-**Type:** Conceptual Handle  
-**Definition:** A descriptive way of referring to how node-level parameters are logically separated for analysis, without implying spatial division, memory segmentation, or computational storage.  
-**Forensic Role:** Ensures that references to “partitioning the ledger” are understood as conceptual bookkeeping, not physical subdivision of the vacuum.
-
-#### Atomic (SVET Sense)
-**Type:** Conceptual Handle  
-**Definition:** Indicates that a node is the smallest descriptive unit of exaction resolution, without implying physical indivisibility, geometric size, or material structure.  
-**Forensic Role:** Prevents misinterpretation of nodes as particles, volumes, or computational atoms.
-
-#### Scalable Unit (SVET Sense)
-**Type:** Conceptual Handle  
-**Definition:** A node considered as a unit that can be grouped mathematically with others for analysis, without implying extensibility, spatial scaling, or hierarchical structure.  
-**Forensic Role:** Allows coarse-graining of many nodes into analytical clusters while preserving the non-geometric nature of the node set.
+**Definition:** The division between the static node set and the dynamic, pattern-level constructs that experience strain, dilation, and cadence collapse [1].  
+**Forensic Role:** Prevents misinterpreting pattern-level latencies as modifications of node-set invariants [1].
 
 #### Frozen Tick (Evaluation Frame)
 **Type:** Conceptual Temporal Boundary  
@@ -160,8 +117,13 @@ This document serves as the authoritative notation and terminology reference for
 
 #### Pattern
 **Type:** Conceptual  
-**Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction.  
-**Forensic Role:** The dynamic entities whose exaction‑driven interaction with the node set gives rise to all observable physical behavior in SVET through their exaction-driven interaction with the node set.
+**Definition:** A coherent adjacency-coordinated configuration reconstructed across nodes each tick. A pattern carries no intrinsic energy, geometry, or fields; it is a structured request for adjacency-coherent reconstruction expressed through exaction [1].  
+**Forensic Role:** The dynamic entities whose exaction-driven interaction with the node set gives rise to all observable physical behavior in SVET through their exaction-driven interaction with the node set.
+
+#### Coherence
+**Type:** Pattern Property  
+**Definition:** The adjacency-consistent integrity of a pattern’s configuration across successive tick-indexed reconstructions [1].  
+**Forensic Role:** Determines whether a pattern propagates stably or undergoes structural degradation or change [1].
 
 #### Coherence-Constraint Set
 **Type:** Pattern Property  
@@ -175,42 +137,29 @@ Changes in the coherence-constraint set manifest as observable accelerations, de
 
 Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern-level construct of SVET, its continuity and reconfiguration map directly onto the conserved quantities and dynamical behaviors measured in physical experiments [1].
 
-#### Coherence
-**Type:** Pattern Property  
-**Definition:** The adjacency-consistent integrity of a pattern’s configuration across successive tick-indexed reconstructions.  
-**Forensic Role:** Determines whether a pattern propagates stably or undergoes structural degradation or change.
-
 #### Pattern Exaction
 **Type:** Demand  
-**Definition:** The localized reconstruction request a pattern communicates to the node set to maintain adjacency-coherent continuation.  
-**Forensic Role:** The source of exaction load that produces local strain; patterns request coherence, and the node set determines when (via dilation $\Delta\tau$) and what can be instantiated under its available budget.
+**Definition:** The localized reconstruction request a pattern communicates to the node set to maintain adjacency-coherent continuation [1].  
+**Forensic Role:** The source of exaction load that produces local strain; patterns request coherence, and the node set determines when (via dilation $\Delta\tau$) and what can be instantiated under its available budget [1].
 
 #### Exactor
 **Type:** Pattern Property  
-**Definition:** A pattern whose exaction density is sufficiently high to induce persistent cadence lag in its adjacency neighborhood.  
-**Forensic Role:** Generates localized timing bias and sustained strain, producing the macroscopic effects associated with gravitating systems.
+**Definition:** A pattern whose exaction density is sufficiently high to induce persistent cadence lag in its adjacency neighborhood [1].  
+**Forensic Role:** Generates localized timing bias and sustained strain, producing the macroscopic effects associated with gravitating systems [1].
 
 #### Adjacency Exaction
 **Type:** Continuity Demand  
-**Definition:** The continuity requirement relayed across adjacent nodes to maintain forward reconstruction of a propagating pattern.  
+**Definition:** The continuity requirement relayed across adjacent nodes to maintain forward reconstruction of a propagating pattern [1].  
 **Forensic Role:** Drives spatial propagation by enforcing adjacency-coherent continuation across the node set.
 
-#### Instantiation Trajectory
-**Type:** Pattern Property  
-**Definition:** The identity-encoded one-hop adjacency instruction contained within the pattern’s coherence-constraint set [1]. It represents the ideal next adjacency offset the pattern requests on the following tick, independent of local budget or strain [1].  
-**Forensic Role:** Encodes the pattern’s next-hop demand without storing a trajectory, worldline, or multi-tick plan [1].
-
-#### One-Hop Adjacency Instruction
-**Type:** Pattern Property  
-**Definition:** The minimal Layer-2 instruction specifying the next adjacency offset a pattern requests. It is derived from the coherence-constraint set and encoded in the frozen-tick identity.  
-**Forensic Role:** Restricts forward information to exactly one tick, preventing non-local or multi-tick prediction.
+---
 
 ### Category 3: Strain, Cadence, & Dilation
 
 #### Asymptotic Cadence Collapse
 **Type:** Temporal Boundary  
-**Definition:** The pattern-level divergence of effective reconstruction cadence ($\tau_{\text{eff}}$) as local node utilization approaches the saturation ceiling ($U \to 1$) [1].  
-**Forensic Role:** Ensures that pattern-level cadence slows arbitrarily under strain but never reaches a literal state of zero-tick, allowing updates, $\Delta H$ diffusion, and adjacency-level ledger redistributions to always remain possible [1].
+**Definition:** The pattern-level phenomenon in which a propagating pattern’s effective cadence ($\tau_{\text{eff}}$) increases asymptotically as local exaction approaches the saturation regime ($\eta \to 1$) [1].  
+**Forensic Role:** Describes the limit in which a pattern’s ability to exploit node-level update capacity diminishes without the node set ever reaching zero-tick [1]. Cadence collapse is strictly pattern-level and remains finite, preventing singular or undefined temporal behavior [1].
 
 #### Resolution Latency
 **Type:** Timing Metric  
@@ -221,51 +170,6 @@ Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern
 **Type:** Derived Configuration  
 **Definition:** A coherent pattern whose effective local cadence is increased (slowed) by strain while its adjacency-consistent structure and stability factor ($\Gamma_p$) remain intact [1].  
 **Forensic Role:** Represents the pattern-level manifestation of time dilation: the pattern’s reconstruction cadence is delayed under strain without loss of coherence or structural integrity [1].
-
-### Category 4: Ledger, Conservation, & Dissipation
-
-This category defines the bookkeeping primitives governing how nodes resolve exaction, how adjacency‑coherent reconstruction is maintained, and how coherence is preserved or shed under load. All terms operate strictly within the SVET two‑layer ontology: patterns express exaction; nodes resolve that exaction; ledger outcomes determine whether coherence continues, redirects, or collapses into the incoherent channel [1].
-
-#### Instantiate
-**Type:** Operational Step  
-**Definition:** The act of a node allocating tick‑budget to resolve a pattern’s adjacency‑coherent exaction request for the current tick [1].  
-**Forensic Role:** Represents the fundamental bookkeeping event: a node spends budget to instantiate the next local segment of a coherent pattern.
-
-#### Re‑instantiation
-**Type:** Operational Step  
-**Definition:** The repeated tick‑indexed action by which a node resolves a pattern’s continuing adjacency‑coherent exaction across ticks [1].  
-**Forensic Role:** Maintains continuity of pattern identity; failure of a node to re‑instantiate results in coherence‑shedding.
-
-#### Re‑embedding
-**Type:** Operational Step  
-**Definition:** The process by which a node re‑expresses the **requested adjacency‑coherent structure** of a pattern within its local neighborhood after propagation or deformation [1].  
-**Forensic Role:** Ensures that adjacency structure is preserved despite routing changes, strain, or cadence variation.
-
-#### Incoherent Deviation
-**Type:** Bookkeeping Quantity  
-**Definition:** The incremental amount of exaction a node diverts into the incoherent channel ($H$) during a single tick when coherent reconstruction cannot be satisfied [1].  
-**Forensic Role:** Quantifies the local loss of coherence; accumulates into $\Delta H$ over successive ticks [1].
-
-#### Coherence Failure (Coherence Catastrophe)
-**Type:** Terminal Event  
-**Definition:** A local reconstruction-failure event in which a pattern’s single-tick coherence-constraint configuration cannot be resolved by the local update rules due to local node utilization approaching the Planck Saturation Ceiling ($U \to 1$) [1].  
-**Forensic Role:** Marks the complete collapse of a pattern segment; the unresolved exaction load is diverted into the Incoherent Channel ($H$) as Coherence-Shedding ($\Delta H$) to maintain ledger closure [1].
-
-#### Incoherent Channel
-**Type:** Primitive (Dissipation Ledger)  
-**Definition:** The non-patternized, non-coherent update pathway of the node set [1].  
-**Forensic Role:** Tracks all non-coherent ledger outcomes. The channel is adjacency-diffusive and never accumulates locally because pattern-level cadence never reaches zero, serving as the native mechanism for decoherence, dissipation, and radiative decay [1].
-
-#### The Node Ledger
-**Type:** Accounting Identity  
-**Definition:** The local bookkeeping identity governing how a node partitions incoming exaction:  
-$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$  
-**Forensic Role:** Enforces exact conservation of coherence constraints at each node, ensuring that all incoming exaction is accounted for across coherent, reflected, transmitted, and incoherent channels [1].
-
-#### Accounting Shock (Local Ledger Rejection)
-**Type:** Boundary Event  
-**Definition:** A node‑level rejection of incoming coherent exaction when local budget or adjacency constraints cannot satisfy the reconstruction request [1].  
-**Forensic Role:** Produces coherent reflection rather than incoherent shedding; represents a boundary‑level ledger event distinct from bulk coherence failure.
 
 #### Directional Asymmetry
 **Type:** Pattern Property  
@@ -282,19 +186,62 @@ $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 **Definition:** The non-uniform profile of effective cadence ($\tau_{\text{eff}}(x)$) across the node set induced by differential local exaction loads [1].  
 **Forensic Role:** Serves as the SVET-native timing mechanism that replaces general relativity's curved spacetime manifold [1].
 
+---
+
+### Category 4: Ledger, Conservation, & Dissipation
+
+This category defines the bookkeeping primitives governing how nodes resolve exaction, how adjacency-coherent reconstruction is maintained, and how coherence is preserved or shed under load. All terms operate strictly within the SVET two-layer ontology: patterns express exaction; nodes resolve that exaction; ledger outcomes determine whether coherence continues, redirects, or collapses into the incoherent channel [1].
+
+#### Instantiate
+**Type:** Operational Step  
+**Definition:** The act of a node allocating tick-budget to resolve a pattern’s adjacency-coherent exaction request for the current tick [1].  
+**Forensic Role:** Represents the fundamental bookkeeping event: a node spends budget to instantiate the next local segment of a coherent pattern.
+
+#### Re-instantiation
+**Type:** Operational Step  
+**Definition:** The repeated tick-indexed action by which a node resolves a pattern’s continuing adjacency-coherent exaction across ticks [1].  
+**Forensic Role:** Maintains continuity of pattern identity; failure of a node to re-instantiate results in coherence-shedding.
+
+#### Re-embedding
+**Type:** Operational Step  
+**Definition:** The process by which a node re-expresses the **requested adjacency-coherent structure** of a pattern within its local neighborhood after propagation or deformation [1].  
+**Forensic Role:** Ensures that adjacency structure is preserved despite routing changes, strain, or cadence variation.
+
+#### Incoherent Deviation
+**Type:** Bookkeeping Quantity  
+**Definition:** The incremental amount of exaction a node diverts into the incoherent channel ($H$) during a single tick when coherent reconstruction cannot be satisfied [1].  
+**Forensic Role:** Quantifies the local loss of coherence; accumulates into $\Delta H$ over successive ticks [1].
+
+#### Coherence Failure (Coherence Catastrophe)
+**Type:** Terminal Event  
+**Definition:** The condition in which a node cannot satisfy the adjacency-coherent exaction request, forcing full diversion of that exaction into the incoherent channel ($H$) [1].  
+**Forensic Role:** Marks the complete collapse of a pattern segment; the ledger records a complete transition into $H$ [1].
+
+#### Node Ledger
+**Type:** Bookkeeping Structure  
+**Definition:** The local accounting identity by which a node partitions incoming exaction into coherent acceptance, coherent rejection, or incoherent diversion.  
+**Forensic Role:** Enforces conservation of coherence constraints at each node; ensures all incoming exaction is accounted for without loss or creation.
+
+#### Accounting Shock (Local Ledger Rejection)
+**Type:** Boundary Event  
+**Definition:** A node-level rejection of incoming coherent exaction when local budget or adjacency constraints cannot satisfy the reconstruction request [1].  
+**Forensic Role:** Produces coherent reflection rather than incoherent shedding; represents a boundary-level ledger event distinct from bulk coherence failure.
+
 #### Directional Decoherence
 **Type:** Dissipation State  
 **Definition:** The irreversible loss of a pattern's directional asymmetry when it is diverted into the incoherent channel ($H$) during an inelastic interaction [1].  
 **Forensic Role:** Quantifies the dissipative scattering of momentum-like exactions into non-directional node-set strain [1].
 
 #### Bookkeeping Layer Summary
-*   **Instantiate** and **Re‑instantiate** describe how nodes resolve adjacency‑coherent exaction [1].  
-*   **Re‑embedding** maintains adjacency structure under routing changes [1].  
+*   **Instantiate** and **Re-instantiation** describe how nodes resolve adjacency-coherent exaction [1].  
+*   **Re-embedding** maintains adjacency structure under routing changes [1].  
 *   **Node Ledger** enforces conservation of coherence constraints [1].  
-*   **Accounting Shock** handles boundary‑level rejection [1].  
-*   **Coherence‑Shedding**, **Incoherent Channel**, and **Incoherent Deviation** describe how coherence is lost [1].  
+*   **Accounting Shock** handles boundary-level rejection [1].  
+*   **Coherence-Shedding**, **Incoherent Channel**, and **Incoherent Deviation** describe how coherence is lost [1].  
 *   **Coherence Failure** marks the terminal collapse of a pattern segment [1].  
-*   All processes obey the **Node Ledger Identity**, ensuring divergence‑free bookkeeping [1].
+*   All processes obey the **Node Ledger Identity**, ensuring divergence-free bookkeeping [1].
+
+---
 
 ### Category 5: Horizons, Routing, & Emergence (Causal Boundaries)
 
@@ -348,22 +295,12 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 #### Hubble Coherence Horizon
 **Type:** Large-Scale Causal Boundary  
 **Definition:** The large-scale limit at which local cadence collapse aligns with the suppression of outward adjacency-coherent reconstruction due to cosmic expansion [1].  
-**Forensic Role:** Represents the macroscopic boundary beyond which nodes cannot maintain coherence against expansion-driven cadence divergence [1].
+**Forensic Role:** Represents the macroscopic boundary beyond which nodes cannot maintain coherence against expansion-driven cadence-suppression [1].
 
 #### Universality Scoring System
 **Type:** Diagnostic Framework  
 **Definition:** The evaluation system used to score candidate universal horizon variables based on curve collapse, monotonicity, smoothness, predictive power, and compatibility with both quantum and cosmic limits [1].  
 **Forensic Role:** Determines which candidate axis best unifies horizon behavior across scales, enabling empirical discovery of the universal horizon variable [1].
-
-#### Planck Saturation Ceiling (Microphysical Saturation Ceiling)
-**Type:** Capacity Limit  
-**Definition:** The microphysical upper bound on local node utilization ($U = S/B$), beyond which a node cannot increase its update throughput [1].  
-**Forensic Role:** Enforces that cadence collapse is asymptotic rather than singular, preventing infinite exaction density or coordinate singularities [1].
-
-#### Cadence Suppression Gradient
-**Type:** Derived Quantity  
-**Definition:** The adjacency-indexed variation in effective pattern-level cadence across neighboring nodes [1].  
-**Forensic Role:** Produces local routing bias (interpreted macroscopically as gravitational time dilation and redshift) and horizon-level evaporation, replacing continuous geometric curvature with discrete timing-domain pressure [1].
 
 ---
 
@@ -504,7 +441,7 @@ Deprecated legacy term. Replaced by the single-tick *Directional Asymmetry* to p
 ### $\chi$ — "Chi"
 **Type:** Derived  
 **Definition:** Localized perturbations or disturbances that do not yet constitute coherent demand.  
-**Forensic Role:** Monitors small-scale node set jitter and stress.  
+**Forensic Role:** Monitors small-scale node-set jitter and stress.  
 **Clarification:** **Not** a demand channel; does **not** contribute to $S$.
 
 ### $B_0(x)$ — "Local Floor Budget"
@@ -529,7 +466,7 @@ $$U = \frac{S}{B}$$
 
 ### $n$ — "Refractive Index"
 **Type:** Ratio  
-**Definition:** $n = \tau_{\text{eff}} / \tau_0$.  
+**Definition:** $n = \tau_{eff} / \tau_0$.  
 **Forensic Role:** Measures the "Lag" of light in a medium compared to vacuum.
 
 ### $\eta$ — "eta"
@@ -537,18 +474,7 @@ $$U = \frac{S}{B}$$
 **Definition:** Efficiency; fraction of coherent demand that becomes flux rather than $H$.  
 **Forensic Role:** Measures the "Tax" or "Leakage" of an update.
 
-### $\Gamma_p$ — "Gamma-p" (Pattern Stability Factor)
-**Type:** Derived Metric  
-**Definition:** A dimensionless stability factor characterizing a pattern’s tolerance to strain, derived from its adjacency-reinforcement structure and cadence-coupling behavior [1].  
-**Forensic Role:**  
-*   **Yield Threshold:** A pattern reaches its yield limit when the applied local strain ratio satisfies:  
-    $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$  
-    A higher $\Gamma_p$ raises this threshold, meaning more stable patterns require proportionally greater strain to trigger coherence collapse [1].  
-*   **Dissipation Behavior:** Once the yield limit is breached, the rate of localized degradation and incoherent energy generation ($\Delta H$) scales **inversely** with $\Gamma_p$ [1]. Robust patterns dissipate slowly under failure, while fragile patterns dissipate rapidly [1].  
-
-This dual specification prevents inversion errors in simulation implementations: $\Gamma_p$ increases the collapse threshold, but decreases the dissipation rate once collapse occurs [1].
-
-### $\ell_{\text{adj}}$ — "ell-adj"
+### $\ell_{adj}$ — "ell-adj"
 **Type:** Metric  
 **Definition:** Adjacency Length; number of hops in a pattern's spatial footprint.  
 **Forensic Role:** Defines the "Size" of a pattern in the node set.
@@ -587,7 +513,7 @@ This dual specification prevents inversion errors in simulation implementations:
 **Type:** Accounting Identity  
 **Definition:** Conservation of exaction:  
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
-**Forensic Role:** Represents the absolute mathematical requirement that all incoming exaction must be accounted for at the node level, partitioning into reflection ($I_{\text{refl}}$), transmission ($I_{\text{trans}}$), or incoherent deviation.
+**Forensic Role:** Enforces exact conservation of coherence constraints at each node, ensuring that all incoming exaction is accounted for across coherent, reflected, transmitted, and incoherent channels [1].
 
 ### Coherence-Shedding Rate
 **Type:** Derived Metric  
@@ -598,7 +524,7 @@ $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 **Type:** Operational Metric  
 **Definition:** The capacity-limited threshold governing the onset of coherence collapse:  
 $$\frac{S_p}{B} \ge \kappa_{\text{yield}} \Gamma_p$$  
-**Forensic Role:** Determines when a node must divert exaction into the incoherent channel because coherent propagation cannot be maintained.
+**Forensic Role:** Determines when a node must divert exaction into the incoherent channel because coherent pattern propagation cannot be maintained.
 
 ### Coherence-Minimal Path Functional
 **Type:** Routing Functional  
@@ -620,8 +546,6 @@ $$\eta \le 1$$
 
 ---
 
----
-
 ## Speculative & Unverified Constructs (Pending Review)
 
 *The constructs listed below are exploratory and do not constitute part of the validated SVET v1.2.6 ontology. They are preserved in this isolated appendix for tracking purposes only, and are not to be defined or integrated into the formal glossary pillars until their physical and mathematical formulations are completed and verified by human authorization.*
@@ -630,13 +554,13 @@ $$\eta \le 1$$
 A proposed large-scale structural interpretation in which horizon behavior appears to organize into two nested causal boundaries (the microscopic Planck-scale limit and the macroscopic Hubble-scale limit). This concept emerged from mass-independent curve-collapse anomalies in early universality scoring experiments.
 
 **Quantum Wall**  
-A hypothesized microscopic boundary where node-set capacity and pattern exactions saturate, creating a local cadence-collapse horizon. Its verification would unify several quantum-limit behaviors under a single non-singular mechanism.
+A hypothesized microscopic boundary where node-set capacity and pattern exactions saturate, creating a local cadence-collapse horizon. Its existence would unify several quantum-limit behaviors under a single non-singular mechanism.
 
 **Cosmic Wall**  
 A proposed cosmological-scale boundary where expansion-driven cadence suppression outruns the maximum coherent update propagation rate $c$. If validated, it would serve as the macroscopic counterpart to the Quantum Wall.
 
 **Coherence Locking**  
-A speculative microphysical mechanism in which nuclear-scale node-set configurations temporarily lock exactions to minimize update costs, resisting dissipation into the $H$-channel. This remains an unverified hypothesis regarding extreme-stability regimes..
+A speculative microphysical mechanism in which nuclear-scale node-set configurations temporarily lock exactions to minimize update costs, resisting dissipation into the $H$-channel. This remains an unverified hypothesis regarding extreme-stability regimes.
 
 ---
 
@@ -644,17 +568,23 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 
 *The terms listed below are not part of the validated SVET v1.2.6 ontology. They are included here as forward-looking placeholders for potential formalization in future versions of the framework. No definitions are provided, and these terms must not be used in theory.md until formally approved.*
 
-**Coherence-Structure Negotiation**  
-*Placeholder:* The local reconciliation process between overlapping pattern-level coherence constraints during interaction. Represents the SVET-native mechanism underlying scattering, binding, and annihilation-like transformations.
+**Anisotropic Pattern Gradient**  
+*Placeholder:* Directional variation in pattern-level exaction demand. Pending formal definition and mathematical integration.
 
-**Coherence Rigidity Index**  
-*Placeholder:* A proposed quantitative measure of how resistant a pattern’s internal coherence-structure is to reconfiguration, potentially formalizing the SVET definition of mass as coherence rigidity.
+**Boundary Strain Shock**  
+*Placeholder:* Discontinuous strain transition across adjacency. Pending formal definition and routing-cost integration.
 
 **Routing Deflection**  
 *Placeholder:* The change in a pattern’s coherence-minimal propagation path caused by local cadence gradients, serving as the SVET-native replacement for the classical acceleration vector [1].
 
 **Cadence Suppression**  
 *Placeholder:* A localized increase in update latency caused by accumulated update demand or phase-coherence bias, serving as the SVET-native replacement for the classical gravitational potential [1].
+
+**Coherence-Structure Negotiation**  
+*Placeholder:* The local reconciliation process between overlapping pattern-level coherence constraints during interaction. Represents the SVET-native mechanism underlying scattering, binding, and annihilation-like transformations.
+
+**Coherence Rigidity Index**  
+*Placeholder:* A proposed quantitative measure of how resistant a pattern’s internal coherence-structure is to reconfiguration, potentially formalizing the SVET definition of mass as coherence rigidity.
 
 **Propagation-Geometry Constraint**  
 *Placeholder:* The adjacency-indexed routing-cost pathing a pattern must follow to minimize coherence strain in a non-uniform cadence environment, serving as the SVET-native replacement for the general relativity concept of a geodesic.
@@ -662,83 +592,17 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Coherence-Catastrophe Zone**  
 *Placeholder:* A region where local coherence constraints exceed a pattern’s structural stability, causing catastrophic reconfiguration. Serves as the SVET-native replacement for the general relativity concept of a physical singularity.
 
-**Observable Projection**  
-*Placeholder:* The lab-visible quantity that results when a coherence-constraint set is interpreted through a measurement apparatus [2]. This is not an intrinsic property of the pattern, but a projection of its active constraint modes into a classical observable [2].
-
-**Observable Mode**  
-*Placeholder:* A specific aspect of the coherence-constraint set that corresponds to a classical observable (e.g., directional persistence $\to$ momentum) [2].
-
-**Observable Correspondence**  
-*Placeholder:* The mapping between a SVET coherence-constraint mode and a classical measurable quantity, forming the conceptual basis of the universal mapping matrix [2].
-
-**Observable Inference**  
-*Placeholder:* The process by which a laboratory instrument infers a classical quantity from a pattern’s active coherence-constraint behavior, preventing theoretical drift into measurement-as-interaction [2].
-
-**Constraint Mode**  
-*Placeholder:* A specific functional expression of the coherence-constraint set (such as identity, oscillation, phase, directional persistence, or update demand) [2].
-
-**Constraint Signature**  
-*Placeholder:* The stable pattern of constraint modes that uniquely identifies a pattern’s behavior across successive node ticks, serving as the SVET equivalent to quantum numbers [2].
-
-**Constraint Expression**  
-*Placeholder:* The localized physical manifestation of a coherence-constraint set under update load, where the structural exaction translates to a specific, measurable phase or timing offset [2].
-
-**Adjacency Degree (Emergent Form)**  
-*Placeholder:* The localized density of active adjacency links, evaluated to determine how local network topology affects large-scale wave propagation.
-
-**Routing Signature**  
-*Placeholder:* The pattern-specific way a coherence-constraint set selects its least-cost, coherence-minimal propagation paths, serving as the SVET replacement for a particle's trajectory or worldline [2].
-
-**Routing Response**  
-*Placeholder:* The localized adjustment of a pattern’s propagation path in response to local cadence gradients [2].
-
-**Routing Inference**  
-*Placeholder:* The lab-visible acceleration inferred by an observer from a pattern’s deflected, coherence-minimal propagation path [2].
-
-**Interaction Signature**  
-*Placeholder:* The stable, observable pattern produced when two or more coherence-constraint sets undergo local negotiation, serving as the SVET equivalent to a scattering amplitude [2].
-
-**Interaction Correspondence**  
-*Placeholder:* The mapping between a local coherence-constraint negotiation and a classical interaction outcome, preventing drift into mediator-particle assumptions [2].
-
-**Interaction Inference**  
-*Placeholder:* The lab-visible interpretation of a coherence-constraint negotiation (e.g., scattering angles or decay distributions) [2].
-
-**Co-Occupation Region**  
-*Placeholder:* The local adjacency region of nodes in which two or more coherence-constraint sets simultaneously request re-instantiation, serving as the SVET-native replacement for "interaction region" or "collision zone" [1].
-
-**Constraint Conflict**  
-*Placeholder:* The structural mismatch that arises when overlapping coherence-constraint sets present incompatible update requests to the same local adjacency, serving as the SVET-native replacement for "interaction potential" [1].
-
-**Constraint Resolution**  
-*Placeholder:* The local, rule-driven process by which the node set's update rules resolve a constraint conflict, establishing a new, self-consistent configuration of pattern exactions and serving as the SVET-native replacement for "interaction dynamics" [1].
-
-**Scattering Angle (Observable)**  
-*Placeholder:* The laboratory-visible angular deflection that results from a local constraint resolution, serving as the observable projection of directional-persistence adjustments [1].
-
-**Binding Energy (Observable)**  
-*Placeholder:* The observable projection of reduced routing strain when two compatible coherence-constraint sets are locked in a shared routing configuration [1].
-
-**Cross-Section (Observable)**  
-*Placeholder:* The statistical frequency with which a given constraint conflict results in a specific resolved pattern configuration under repeated trials [1].
-
-**Routing Deflection**  
-*Placeholder:* The change in a pattern’s coherence-minimal propagation path caused by local cadence gradients, serving as the SVET-native replacement for the classical acceleration vector [1].
-
-**Cadence Suppression**  
-*Placeholder:* A localized increase in update latency caused by accumulated update demand or phase-coherence bias, serving as the SVET-native replacement for the classical gravitational potential [1].
+**Instantiation Trajectory**  
+**Type:** Pattern Property  
+**Status:** Candidate for v1.3+ Vocabulary Integration  
+**Definition:** The tick-to-tick sequence of adjacency-offset instructions expressed internally by a pattern’s coherence-constraint set [1]. An instantiation trajectory specifies the cyclic or phase-rotational constraint modes a pattern must express to preserve identity and coherence across node ticks, independent of its external propagation routing [1]. Both internal instantiation trajectory and external routing are resolved by the identical adjacency-hop mechanism of the node set, functioning as distinct, independent constraint modes of the pattern [1].  
+**Forensic Role:** Distinguishes the internal constraint-cycling behavior of a propagating pattern from its external coherence-minimal routing through cadence gradients [1]. It proves that the vacuum node set runs a single, unified exaction ledger at Layer 1, while the independent degrees of freedom (frequency and path deflection) are managed entirely as software-like instructions inside the pattern configuration at Layer 2 [1].  
+**Observational Projection:** Differences in instantiation-trajectory cycling rates correspond to differences in observed electromagnetic frequency [1]. Low-cycle trajectories correspond to long-period coherence patterns (e.g., visible light), while high-cycle trajectories correspond to rapid, dense constraint-cycling patterns (e.g., X-rays) [1]. Material transparency and opacity arise from whether a multi-pattern configuration can satisfy the specific instantiation-trajectory demands of an incoming pattern [1].
+**Layer:** Layer 2 — Pattern-Level Constraint Expression
 
 ---
 
-**Anisotropic Pattern Gradient**  
-*Placeholder:* Directional variation in pattern-level exaction demand. Pending formal definition and mathematical integration.
-
-**Boundary Strain Shock**  
-*Placeholder:* Discontinuous strain transition across adjacency. Pending formal definition and routing-cost integration.
-
-### SVET-to-Observable Mapping Matrix
-
-The table below defines how the non-geometric, exaction-based primitives of the node set map directly onto the conserved quantities and dynamical behaviors measured in continuous physical experiments [1].
+© 2026 John Kirby. Licensed under the MIT License.
 
 ---
 
