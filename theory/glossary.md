@@ -82,6 +82,16 @@ This document serves as the authoritative notation and terminology reference for
 **Definition:** The unique, non-geometric set-theoretic identifier assigned to a specific node within the node set.  
 **Forensic Role:** Uniquely identifies the node on the ledger, enabling precise tracking of localized budgets and exaction loads without requiring geometric coordinates.
 
+#### Instantiation Routing
+**Type:** Node-Set Resolution  
+**Definition:** The realized adjacency hop performed by the node set when resolving the pattern’s one-hop adjacency instruction under local budget and strain constraints [1].  
+**Forensic Role:** Represents the physically executed next adjacency, determined entirely by least-strain resolution [1].
+
+#### Frozen-Tick Handshake
+**Type:** Derived Mechanism  
+**Definition:** The local interaction between the pattern’s one-hop adjacency instruction and the node’s budget/strain parameters, which deterministically resolves the next tick’s instantiation.  
+**Forensic Role:** Ensures that identity and motion remain strictly separated and that all updates are resolved locally and discretely.
+
 #### Propagation Limit ($c$)
 **Type:** Constant  
 **Definition:** The invariant adjacency-hop rate of the node space; the maximum rate at which coherent influence or routing information can propagate between adjacent nodes (exactly one adjacency hop per tick).  
