@@ -1351,6 +1351,135 @@ Any experimental system engineered to reproduce a Painlevé-type inconsistency w
 **Falsifiability:**  
 If a physical system can be shown to produce a true Painlevé non-solution or infinite acceleration without material compliance, SVET is falsified.
 
+#### 13.13.2 Catalog of Classical Pathology Resolutions
+
+Because the vacuum does not consist of a continuous coordinate manifold, no continuous physical forces exist. In SVET, all classical mechanical pathologies and non-integrable constraints are resolved through local, discrete, and capacity-limited exaction bookkeeping. Below is the compiled catalog of classical paradoxes resolved natively under this single-equation update engine:
+
+**1. Zeno’s Paradoxes (All Variants)**  
+*   **Classical Failure:** Infinite subdivisions of space and time imply that motion is mathematically impossible.  
+*   **SVET Resolution:** The universe is built from a discrete node set; there is no continuous coordinate space and no infinite subdivisions. Motion is not continuous translation; it is the discrete, tick-indexed instantiation of adjacency-hop exactions across neighboring nodes. Under the Single-Tick Identity Principle (STIP), identity is frozen, and motion is reconstructed strictly as the sequence of differences between ticks.  
+*   **Mechanism:** STIP + adjacency-hop exactions + $\Delta\tau$ latency.
+
+**2. D’Alembert’s Paradox (Zero Drag in Ideal Fluids)**  
+*   **Classical Failure:** The Euler equations of fluid dynamics predict that a body moving through an incompressible, inviscid fluid experiences zero drag.  
+*   **SVET Resolution:** An ideal, lossless continuum does not exist. Every moving pattern undergoes a directional coherence-shedding tax ($\Delta H$) as its exactions are propagated. Fluid flow patterns impose local coherence-shearing across the node set, forcing a portion of the exactions to collapse into incoherent $H$-channel deviations.  
+*   **Mechanism:** $\Delta H$ shedding + Coherence-Constraint Reconfiguration.
+
+**3. Painlevé Paradox (Rigid-Body Contact with Friction)**  
+*   **Classical Failure:** Certain friction coefficient and contact angle combinations produce non-existence or infinite accelerations under classical Newtonian constraints.  
+*   **SVET Resolution:** Friction is not an active force; it is the directional coherence cost density $C(x,v)$ of propagating a pattern across a strained node set. Impossible constraints simply drive the local resolution latency $\Delta\tau$ toward its asymptotic limit, and the local ledger resolves the exaction conflict via Accounting Shock (coherent rejection) and $\Delta H$ shedding.  
+*   **Mechanism:** $\Delta\tau$ latency + $C(x,v)$ cost + Accounting Shock.
+
+**4. Rigid-Body Impact Paradox (Infinite Impulse)**  
+*   **Classical Failure:** Colliding rigid bodies require an infinite impulse to reverse velocity instantaneously in zero time.  
+*   **SVET Resolution:** There are no perfectly rigid bodies, and no instantaneous constraint enforcement is permitted. An impact is resolved as a finite sequence of $\Delta\tau$-delayed instantiations; any excess exaction demand that cannot be accommodated within the local tick-budget $B$ is safely shed as $\Delta H$.  
+*   **Mechanism:** $\Delta\tau$ latency + finite tick-budget $B$.
+
+**5. The "Infinite Acceleration" Paradox**  
+*   **Classical Failure:** Certain geometric constraint configurations imply that acceleration diverges to infinity ($a \to \infty$).  
+*   **SVET Resolution:** Acceleration is not a continuous vector; it is the emergent change in the rate of adjacency instantiations. Because the update rate is bounded by the local resolution latency $\Delta\tau$ and the absolute structural limit of $c$ (exactly one adjacency hop per tick), no infinite update rate can occur.  
+*   **Mechanism:** Propagation Limit $c$ + $\Delta\tau$ latency.
+
+**6. The Rigid-Rod Paradox (Instantaneous Force Transmission)**  
+*   **Classical Failure:** A perfectly rigid rod transmits forces instantaneously across space, violating special relativity.  
+*   **SVET Resolution:** There is no fundamental background geometry to support a rigid rod. A rod is an extended pattern with a finite resolution latency $\Delta\tau$; all constraint propagation is strictly limited by the node-set causal limit of $c$ (one adjacency hop per tick).  
+*   **Mechanism:** STIP + adjacency-limited propagation.
+
+**7. The "Simultaneous Constraint" Paradox**  
+*   **Classical Failure:** Multiple simultaneous constraints produce contradictory force requirements that classical mechanics cannot resolve.  
+*   **SVET Resolution:** The node ledger resolves each adjacency exaction locally and independently. Any global constraint contradictions are resolved in situ through Accounting Shock and $\Delta H$ diversion; no global simultaneity exists.  
+*   **Mechanism:** Node Ledger Identity.
+
+**8. The "Rigid Body Rotation" Paradox (Infinite Stress at Corners)**  
+*   **Classical Failure:** Rigid polygons rotating at finite speed require infinite material stress at their outer corners.  
+*   **SVET Resolution:** There are no physical corners. Coherence-constraint sets reconfigure their local directional asymmetries, with any unresolvable update demands shed into the $H$-channel as $\Delta H$ in high-gradient regions.  
+*   **Mechanism:** Coherence-Constraint Reconfiguration + $\Delta H$ shedding.
+
+**9. The "Non-Integrable Constraint" Paradox**  
+*   **Classical Failure:** Non-holonomic constraints cannot be integrated into a globally consistent path of motion.  
+*   **SVET Resolution:** Motion is not integrated mathematically; it is instantiated physically. Each tick is resolved locally and independently by the local update rules; there is no requirement for global integrability.  
+*   **Mechanism:** STIP + discrete adjacency instantiation.
+
+**10. The "Zero-Time Collision" Paradox**  
+*   **Classical Failure:** Two bodies colliding in zero time require infinite reaction forces.  
+*   **SVET Resolution:** Collisions require a finite resolution latency ($\Delta\tau > 0$). There are no zero-time events; the local ledger enforces a finite, capacity-limited update sequence.  
+*   **Mechanism:** $\Delta\tau$ latency + finite tick-budget $B$.
+
+**11. The "Infinite Regress of Constraints" Paradox**  
+*   **Classical Failure:** Nested constraint chains imply an infinite spatial regress of action and reaction forces.  
+*   **SVET Resolution:** There are no physical forces. There are only local adjacency exactions; there is no regress because each node resolves only the exactions originating within its immediate adjacency neighborhood.  
+*   **Mechanism:** Locality + Adjacency Neighborhood.
+
+**12. The "Rigid-Body Fracture Singularity" Paradox**  
+*   **Classical Failure:** Linear elastic fracture mechanics predicts infinite stress singularities at sharp crack tips.  
+*   **SVET Resolution:** Material stress is modeled as localized node strain $S(x)$. Because strain is strictly bounded by the available tick-budget $B$, no singularity can form; exceeding $B$ simply triggers $\Delta H$ shedding, causing the pattern to fracture cleanly.  
+*   **Mechanism:** Bounded $S(x)$ + $\Delta H$ shedding.
+
+**13. The "Instantaneous Reversal" Paradox**  
+*   **Classical Failure:** A moving body reversing direction with no time delay requires infinite jerk.  
+*   **SVET Resolution:** Reversal requires a finite resolution latency ($\Delta\tau$). No instantaneous updates are allowed; the local ledger enforces a finite, step-by-step reconstruction.  
+*   **Mechanism:** $\Delta\tau$ latency + propagation limit $c$.
+
+**14. The "Zero-Mass Constraint" Paradox**  
+*   **Classical Failure:** Massless bodies under physical constraints produce undefined, singular accelerations.  
+*   **SVET Resolution:** Massless patterns do not exist; all physical patterns possess a finite coherence-constraint set rigidity. Because rigidity is bounded, all accelerations remain finite and defined.  
+*   **Mechanism:** Mass = constraint-set rigidity.
+
+**15. The "Infinite Rigidity" Paradox**  
+*   **Classical Failure:** Perfectly rigid bodies imply infinite material stiffness, requiring infinite impact forces.  
+*   **SVET Resolution:** Infinite rigidity does not exist. Under update pressure, coherence-constraint sets reconfigure their directional asymmetries, and the ledger enforces a finite, cadence-limited update step.  
+*   **Mechanism:** Coherence-Constraint Reconfiguration.
+
+**16. The "Simultaneous Multi-Contact" Paradox**  
+*   **Classical Failure:** Multiple simultaneous contacts produce mathematically contradictory force solutions.  
+*   **SVET Resolution:** Each contact is resolved locally and independently by the node set's local update rules. Contradictions trigger Accounting Shock; no global force balance is evaluated or required.  
+*   **Mechanism:** Node Ledger Identity.
+
+**17. The "Rigid-Body Sliding and Rotation" Paradox**  
+*   **Classical Failure:** Rigid bodies sliding and rotating simultaneously produce mathematically inconsistent constraints under classical friction laws.  
+*   **SVET Resolution:** Sliding is modeled as directional decoherence, while rotation is modeled as coherence-constraint reconfiguration. The local update rules resolve each tick independently, eliminating any multi-constraint inconsistencies.  
+*   **Mechanism:** $\Delta H$ shedding + STIP.
+
+**18. The "Instantaneous Torque Transfer" Paradox**  
+*   **Classical Failure:** Rotating rigid bodies transmit torque instantaneously across their radius, violating special relativity.  
+*   **SVET Resolution:** Torque is modeled as a rotating directional asymmetry of exactions. Its propagation across the node set is limited by the causal ceiling $c$; no instantaneous transfer can occur.  
+*   **Mechanism:** Adjacency-limited propagation.
+
+**19. The "Rigid-Body Chain Reaction" Paradox**  
+*   **Classical Failure:** A chain of rigid links transmits impulses instantaneously across its entire length.  
+*   **SVET Resolution:** Each link in the chain has a finite resolution latency ($\Delta\tau$). No instantaneous chain propagation can occur; the node set enforces sequential, step-by-step updates.  
+*   **Mechanism:** $\Delta\tau$ latency + propagation limit $c$.
+
+**20. The "Non-Unique Contact Mode" Paradox**  
+*   **Classical Failure:** Multiple mathematically valid contact modes produce non-unique, ambiguous force solutions.  
+*   **SVET Resolution:** The local update rules deterministically select the unique adjacency path that minimizes the local coherence cost $C(x,v)$. A single, unique continuation path always emerges.  
+*   **Mechanism:** Coherence-Minimal Continuation Path.
+
+**21. The "Rigid-Body Jamming" Paradox**  
+*   **Classical Failure:** Rigid bodies jam unpredictably due to mathematically inconsistent constraint requirements.  
+*   **SVET Resolution:** Jamming is modeled as a local divergence of resolution latency ($\Delta\tau \to \infty$). The node set resolves the exaction conflict via Accounting Shock; no undefined states can occur.  
+*   **Mechanism:** $\Delta\tau$ latency + local strain $S(x)$.
+
+**22. The "Rigid-Body Corner Impact" Paradox**  
+*   **Classical Failure:** Corner impacts on rigid bodies produce undefined force distributions.  
+*   **SVET Resolution:** A corner is modeled as a high-curvature coherence-constraint set. The local update rules resolve the impact via $\Delta H$ shedding; no undefined force distributions are evaluated.  
+*   **Mechanism:** $\Delta H$ shedding + Coherence-Constraint Reconfiguration.
+
+**23. The "Rigid-Body Contact Singularity" Paradox**  
+*   **Classical Failure:** Contact points between rigid bodies produce singular, infinite stress fields.  
+*   **SVET Resolution:** Stress is modeled as local strain $S(x)$. Because $S(x)$ is strictly bounded by the available tick-budget $B$, no singularity can form; exceeding $B$ simply triggers $\Delta H$ shedding.  
+*   **Mechanism:** Finite tick-budget $B$ + local strain $S(x)$.
+
+**24. The "Rigid-Body Sliding Paradox"**  
+*   **Classical Failure:** Sliding with friction produces contradictory force solutions in classical mechanics.  
+*   **SVET Resolution:** Friction is not an active force; it is the directional coherence cost density $C(x,v)$ coupled with localized coherence-shedding ($\Delta H$). The local update rules resolve all contradictions deterministically.  
+*   **Mechanism:** Coherence Cost Density $C(x,v)$ + $\Delta H$ shedding.
+
+**25. The "Rigid-Body Non-Existence" Paradox**  
+*   **Classical Failure:** Certain rigid-body configurations have no mathematically valid solutions.  
+*   **SVET Resolution:** The node set's local update rules always resolve. Because no global force balance is required, there are no non-existent states.  
+*   **Mechanism:** Node Ledger Identity.
+
 ---
 
 ## 14. Emergent Continuum
