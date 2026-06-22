@@ -209,8 +209,8 @@ Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern
 
 #### Asymptotic Cadence Collapse
 **Type:** Temporal Boundary  
-**Definition:** The pattern-level phenomenon in which a propagating pattern’s effective cadence ($\tau_{\text{eff}}$) increases asymptotically as local excitation approaches the saturation regime ($\eta \to 1$) [1].  
-**Forensic Role:** Describes the limit in which a pattern’s ability to exploit node-level update capacity diminishes without the node set ever reaching zero-tick [1]. Cadence collapse is strictly pattern-level and remains finite, preventing singular or undefined temporal behavior [1].
+**Definition:** The pattern-level divergence of effective reconstruction cadence ($\tau_{\text{eff}}$) as local node utilization approaches the saturation ceiling ($U \to 1$) [1].  
+**Forensic Role:** Ensures that pattern-level cadence slows arbitrarily under strain but never reaches a literal state of zero-tick, allowing updates, $\Delta H$ diffusion, and adjacency-level ledger redistributions to always remain possible [1].
 
 #### Resolution Latency
 **Type:** Timing Metric  
@@ -248,8 +248,13 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 
 #### Coherence Failure (Coherence Catastrophe)
 **Type:** Terminal Event  
-**Definition:** The condition in which a node cannot satisfy the adjacency‑coherent exaction request, forcing full diversion of that exaction into the incoherent channel [1].  
-**Forensic Role:** Marks the end of coherent propagation for that pattern segment; the ledger records a complete transition into $H$ [1].
+**Definition:** A local reconstruction-failure event in which a pattern’s single-tick coherence-constraint configuration cannot be resolved by the local update rules due to local node utilization approaching the Planck Saturation Ceiling ($U \to 1$) [1].  
+**Forensic Role:** Marks the complete collapse of a pattern segment; the unresolved exaction load is diverted into the Incoherent Channel ($H$) as Coherence-Shedding ($\Delta H$) to maintain ledger closure [1].
+
+#### Incoherent Channel
+**Type:** Primitive (Dissipation Ledger)  
+**Definition:** The non-patternized, non-coherent update pathway of the node set [1].  
+**Forensic Role:** Tracks all non-coherent ledger outcomes. The channel is adjacency-diffusive and never accumulates locally because pattern-level cadence never reaches zero, serving as the native mechanism for decoherence, dissipation, and radiative decay [1].
 
 #### Node Ledger
 **Type:** Bookkeeping Structure  
@@ -328,6 +333,16 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 **Type:** Diagnostic Framework  
 **Definition:** The evaluation system used to score candidate universal horizon variables based on curve collapse, monotonicity, smoothness, predictive power, and compatibility with both quantum and cosmic limits [1].  
 **Forensic Role:** Determines which candidate axis best unifies horizon behavior across scales, enabling empirical discovery of the universal horizon variable [1].
+
+#### Planck Saturation Ceiling (Microphysical Saturation Ceiling)
+**Type:** Capacity Limit  
+**Definition:** The microphysical upper bound on local node utilization ($U = S/B$), beyond which a node cannot increase its update throughput [1].  
+**Forensic Role:** Enforces that cadence collapse is asymptotic rather than singular, preventing infinite exaction density or coordinate singularities [1].
+
+#### Cadence Suppression Gradient
+**Type:** Derived Quantity  
+**Definition:** The adjacency-indexed variation in effective pattern-level cadence across neighboring nodes [1].  
+**Forensic Role:** Produces local routing bias (interpreted macroscopically as gravitational time dilation and redshift) and horizon-level evaporation, replacing continuous geometric curvature with discrete timing-domain pressure [1].
 
 ---
 
