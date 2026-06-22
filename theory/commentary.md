@@ -110,6 +110,8 @@ This sub-resolution timing-pulse protocol operates strictly as an architectural 
 - Describe the original curve‑collapse plots.  
 - Include notes on why they worked
 
+## 5. Predictions and Paradoxes
+
 ---
 
 calligriph u has been sidelined and parked in commentary.md as well as the following:
