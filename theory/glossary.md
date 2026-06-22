@@ -185,6 +185,16 @@ Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern
 **Definition:** The continuity requirement relayed across adjacent nodes to maintain forward reconstruction of a propagating pattern.  
 **Forensic Role:** Drives spatial propagation by enforcing adjacency-coherent continuation across the node set.
 
+#### Instantiation Trajectory
+**Type:** Pattern Property  
+**Definition:** The identity-encoded one-hop adjacency instruction contained within the pattern’s coherence-constraint set [1]. It represents the ideal next adjacency offset the pattern requests on the following tick, independent of local budget or strain [1].  
+**Forensic Role:** Encodes the pattern’s next-hop demand without storing a trajectory, worldline, or multi-tick plan [1].
+
+#### One-Hop Adjacency Instruction
+**Type:** Pattern Property  
+**Definition:** The minimal Layer-2 instruction specifying the next adjacency offset a pattern requests. It is derived from the coherence-constraint set and encoded in the frozen-tick identity.  
+**Forensic Role:** Restricts forward information to exactly one tick, preventing non-local or multi-tick prediction.
+
 ### Category 3: Strain, Cadence, & Dilation
 
 #### Asymptotic Cadence Collapse
