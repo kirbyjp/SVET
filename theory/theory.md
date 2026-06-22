@@ -543,17 +543,19 @@ Energy is therefore not a thing a pattern possesses. It is a constraint: the req
 
 ### 4.7 Momentum as Directional Coherence
 
-In SVET, momentum is not a quantity carried by an object, nor a conserved vector stored in space. Momentum is the **directional coherence** of a pattern — the degree to which its structure compels re-instantiation along a persistent direction across successive node ticks. A pattern with strong directional coherence maintains a stable propagation direction because its internal structure exacts it.
+In SVET, momentum is not a quantity carried by an object, nor a conserved vector stored in space. Momentum is the instantaneous directional asymmetry of a pattern's local strain footprint within a single frozen tick. This asymmetry compels the update rule to resolve the pattern along a persistent direction on the next tick. A pattern with strong directional asymmetry exhibits a stable propagation direction because its internal structure exacts it [1].
 
-Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional persistence across node ticks [1]. The Node Set does not push patterns forward; it simply resolves their exaction demands under the same adjacency-preserving update rule [1]. A pattern with strong directional persistence exacts the Node Set to re-instantiate it in a way that maintains its direction [1]. This directional persistence is what SVET identifies as momentum [1].
+Every pattern expresses a single coherence-constraint set that preserves its identity, oscillation, phase, and directional asymmetry within each tick [1]. The update rule does not push patterns forward; it resolves their exaction demands uniformly across adjacency. A pattern with strong directional asymmetry exacts the update rule to resolve it in a way that maintains its direction. This directional asymmetry is what SVET identifies as momentum [1].
 
-Momentum is therefore not a force, not a stored quantity, and not a property of space. It is a **coherence constraint** internal to the pattern. A pattern with high directional persistence resists changes to its coherence-minimal propagation path because altering direction would require reconfiguring its coherence constraints [1, 2]. This resistance is what we interpret as inertia.
+Momentum is therefore not a force, not a stored quantity, and not a property of space. It is a coherence constraint internal to the pattern. A pattern with high directional asymmetry resists changes to its coherence-minimal propagation path because altering direction would require reconfiguring its coherence constraints [1]. This resistance is what we interpret as inertia.
 
-When patterns interact, their directional coherence constraints must reconcile into a configuration that preserves the total exaction demand. The Node Set does not transfer momentum; it simply enforces coherence consistency. Momentum conservation is not an imposed physical law but the logical consequence of maintaining pattern identity across discrete node ticks.
+As a pattern's directional asymmetry approaches the adjacency-hop limit, its local strain footprint becomes increasingly anisotropic, driving its update demand toward the saturation ceiling ($U \to 1$). This produces the observed relativistic momentum scaling without invoking mass increase or geometric curvature.
 
-This reframes collisions and interactions. When two patterns meet, their directional persistence profiles and coherence constraints combine, distort, or redistribute [1]. The resulting least-cost routing path is the one that satisfies the coherence constraints of both patterns while preserving total update demand [1, 2]. No momentum is “exchanged”; instead, directional coherence is reallocated.
+When patterns interact, their directional coherence constraints must reconcile into a configuration that preserves the total exaction demand. The update rule does not transfer momentum; it enforces coherence consistency. Inelastic interactions divert unrecoverable directional coherence into the incoherent channel $\Delta H$ as directional decoherence [1].
 
-Momentum is not something a pattern has. It is something a pattern **is doing**: maintaining directional persistence under the invariant adjacency-preserving update rule [1]. Momentum is the persistence of its coherence-minimal propagation path [1, 2].
+This reframes collisions and interactions. When two patterns meet, their directional asymmetry profiles and coherence constraints combine, distort, or redistribute [1]. The resulting coherence-minimal continuation path is the one that satisfies the coherence constraints of both patterns while preserving total update demand. No momentum is "exchanged"; instead, directional coherence is reallocated, with any unrecoverable portion shed into $\Delta H$ [1].
+
+Momentum is not something a pattern has. It is something a pattern is doing: maintaining directional asymmetry under the invariant adjacency-preserving update rule [1]. Momentum is the persistence of its coherence-minimal propagation path.
 
 ### 4.8 Conservation as Coherence‑Constraint Accounting
 
