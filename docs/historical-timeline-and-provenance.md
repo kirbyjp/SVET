@@ -15,7 +15,7 @@ It serves as the archival foundation for the GitHub repository **kirbyjp/SVET**.
 Before SVET had a name, the research focus was on prime‑based discrete structures and Pi‑removal anti‑infinity mathematics.  
 The goal was to eliminate continuous infinities and replace geometric constants with finite, Planck‑bounded arithmetic.
 
-**Artifact:** `maximum_planck_calculator_v0.03.11.html`  
+**Artifact:** `maximum_planck_calculator_v0.01.html`  
 **Created:** *March 18 2026 8:33 PM CST*  
 **Purpose:** Demonstrated that beyond Planck boundaries, additional digits of π lose physical meaning.  
 Introduced the **Planck‑aware digit budget** concept.
