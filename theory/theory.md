@@ -718,52 +718,74 @@ Together, these determine the next tick's instantiation. No additional temporal 
 
 This separation preserves locality, discreteness, and the no-geometry, no-field ontology of SVET.
 
-### 4.15 The Single‑Tick Identity Principle (STIP)
+### 4.15 The Single-Tick Identity Principle (STIP)
 
-SVET models the vacuum strictly as a static, non-coordinate node set governed by local update rules. To preserve the two-layer ontology and prevent continuous-field or geometric drift, we establish the absolute, mathematical boundary of pattern-level representation.
+SVET models the vacuum strictly as a static, non-coordinate node set governed by local update rules. To preserve the two-layer ontology and prevent continuous-field or geometric drift, STIP establishes the absolute mathematical boundary of pattern-level representation.
 
 #### The Frozen Tick as an Evaluation Frame
-The term "frozen tick" does not imply that the node set physically halts or that time stops. It is a conceptual evaluation frame used to analyze the static ledger state between updates. Nodes do not freeze; ticks define the discrete temporal boundaries at which identity is evaluated independently of motion.
 
-#### Axiom 1 — Non-Simultaneous Propagation
-A pattern's internal update cycle (frequency and phase-cycling) and its external propagation (translation across adjacency) do not occur as parallel, simultaneous physical processes. They are simply different operational parameters written inside the same unified Layer 2 instruction packet, resolved sequentially by the identical, single local update operation of the node set.
+The term "frozen tick" does not imply that the node set halts or that time stops. It is a conceptual evaluation frame used to analyze the static ledger state between updates. Nodes do not freeze; ticks define the discrete temporal boundaries at which identity is evaluated independently of motion. Motion emerges only from differences between ticks.
+
+#### Axiom 1 — Non-Simultaneous Operations
+
+A pattern's internal update cycle (frequency and phase-cycling) and its external translation (realized adjacency changes) are not parallel physical processes. They are distinct operational parameters encoded in the same Layer 2 instruction packet and resolved sequentially by the single, invariant local update rule of the node set.
 
 #### Axiom 2 — Asymptotic Cadence Limit
-The underlying node set remains static and does not perform background updates in empty space. The physical "work" of state updates is performed entirely by the node set as it expends its local capacity to honor the pattern's exaction. As the local exaction approaches saturation ($\eta \to 1$), the effective pattern-level cadence diverges asymptotically, never reaching literal zero-tick, in the exact same manner that massive particle patterns asymptotically approach but never reach the invariant propagation rate $c$.
+
+The node set remains static and does not perform background updates in empty space. All physical "work" of state updates is performed when the node set expends its local capacity to honor a pattern's exaction. As the local utilization approaches saturation,
+$$U(x) = \frac{S(x)}{B} \to 1$$
+the effective pattern-level cadence diverges asymptotically. It never reaches a literal zero-tick rate, just as massive patterns asymptotically approach but never reach the invariant propagation rate $c$ [1].
 
 #### Statement of the Law
-A pattern’s complete physical identity at any single-tick evaluation frame is fully encoded in the static configuration of the node set. This conceptual slice contains:
-1.  the pattern’s coherence-constraint set (identity),  
-2.  the local asymmetric strain footprint (momentum bias), and  
-3.  the one-hop adjacency-offset instruction (next-tick request).
+
+A pattern's complete physical identity at any single-tick evaluation frame is fully encoded in the static configuration of the node set. This conceptual slice contains:
+- the pattern's coherence-constraint set (identity),
+- the local asymmetric strain footprint (momentum bias),
+- the one-hop adjacency-offset instruction (next-tick request).
 
 No additional temporal information is stored, required, or permitted.
 
 #### Corollary 1 — No Multi-Tick Storage
-A pattern does not store a trajectory, a worldline, a phase history, a velocity, or an acceleration within the node set. All such quantities arise exclusively from differences between ticks, not from the frozen tick itself.
+
+A pattern does not store a trajectory, worldline, phase history, velocity, or acceleration. All such quantities arise exclusively from differences between ticks. Layer 2 does not persist across ticks; it is reconstructed each tick by Layer 1.
 
 #### Corollary 2 — Local Determinism
-The next tick's instantiation is fully determined by the local handshake between the pattern's one-hop adjacency instruction and the node's local budget and strain state. No non-local information participates in the update.
+
+The next tick's instantiation is fully determined by the local handshake between:
+- the pattern's one-hop adjacency instruction, and
+- the node's local strain, budget, utilization, and cadence-suppression state.
+
+No non-local information participates in the update. If the node set cannot satisfy the full adjacency instruction, the unrecoverable remainder is shed into the incoherent channel $\Delta H$ [1].
 
 #### Corollary 3 — Identity Completeness
-The frozen tick contains the full identity of the pattern, including mass (constraint-set rigidity), inertia (reconfiguration cost), spin (adjacency-offset symmetry), frequency class (cyclic adjacency pattern), momentum bias (strain asymmetry), and the next immediate adjacency request.
+
+The frozen tick contains the full identity of the pattern, including:
+- mass (constraint-set rigidity),
+- inertia (reconfiguration cost),
+- spin (adjacency-offset symmetry),
+- frequency class (cyclic adjacency pattern),
+- momentum bias (strain asymmetry),
+- the next immediate adjacency request.
 
 #### Corollary 4 — No Future Prediction
-The frozen tick contains exactly one tick's worth of forward information: the next adjacency request. Nothing beyond this is encoded or permitted.
+
+The frozen tick contains exactly one shift-indexed tick's worth of forward information: the next adjacency request. Nothing beyond this is encoded or permitted.
 
 #### Forensic Role
-This principle enforces:
+
+STIP enforces:
 *   strict locality,
 *   discreteness,
 *   a non-coordinate, non-geometric ontology,
-*   no-field ontology,
+*   a no-field ontology,
 *   a non-agency node set,
 *   and the strict separation between identity and motion.
 
 #### Interpretive Summary
+
 Identity is frozen.  
 Motion is the difference.  
-Trajectory is the sequence of differences.  
+Trajectory is the realized sequence of instantiation routings.  
 Physics is the ledger resolving one tick at a time.
 
 ### 4.16 Singularities, Coherence-Catastrophe, and the Cadence Suppression Gradient
