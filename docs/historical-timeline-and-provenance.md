@@ -35,7 +35,7 @@ Introduced the **cadence‑suppression gradient** idea that later became central
 
 ---
 
-### **3. Ultrafinitist and Prime‑Domain Experiments (April 2026)**
+### **3. Ultrafinitist and Prime‑Domain Experiments (April 4-5 2026)**
 **Artifact:** `Ultrafinitist_Engine_v1.6.html`  
 **Created:** *April 4 2026 6:30 PM CST*  
 Tested finite arithmetic limits and adjacency rules.
