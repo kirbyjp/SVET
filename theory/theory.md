@@ -744,6 +744,49 @@ Motion is the difference.
 Trajectory is the sequence of differences.  
 Physics is the ledger resolving one tick at a time.
 
+### 4.16 Singularities, Coherence-Catastrophe, and the Cadence Suppression Gradient
+
+SVET does not permit geometric singularities. The node set is flat, adjacency-preserving, and cannot collapse, compress, or form infinities. What fails in extreme-density regimes is not the node set, but the capacity threshold of pattern-level **coherence reconstruction** [1].
+
+A pattern's identity exists only as an instantaneous, tick-indexed coherence-constraint configuration that is locally resolved under the update rule [1]. As exaction density increases, the local utilization ratio $U = S/B$ approaches the non-reducible **Planck Saturation Ceiling ($U \to 1$)**. At this limit, the effective reconstruction cadence $\tau_{\text{eff}}$ grows without bound. Local **Resolution Latency ($\Delta \tau$)** increases asymptotically; updates slow arbitrarily but **never reach zero**, ensuring that pattern-level reconstruction remains locally resolvable at extended tick intervals [1].
+
+When $U$ reaches the saturation limit, the local update rules can no longer satisfy the pattern’s coherence constraints. This is **Coherence-Catastrophe**: the pattern’s coherence-constraint configuration fails, and the unresolved exaction load is diverted into the incoherent channel as a local coherence-shedding increment $\Delta H$ [1]. This channel represents non-patternized node-set jitter ($\chi$), the native mechanism for decoherence and entropy increase.
+
+Because cadence never fully halts, $\Delta H$ is not trapped. It is gradually redistributed across adjacency links over extended tick intervals. No infinite stacking occurs, because the node ledger enforces a strict **Accounting Shock** boundary at $U = 1$: no further coherent exaction can be accepted at that saturated site.
+
+---
+
+### The Cadence Suppression Gradient (Integrated Mechanism)
+
+The **Cadence Suppression Gradient** is the adjacency-indexed variation in effective reconstruction cadence $\tau_{\text{eff}}(x)$ that naturally forms around a high-density core. It is not geometric curvature; it is a **local timing-pressure landscape** induced by differential exaction load.
+
+It has three structural consequences:
+
+**1. Propagation Bias**  
+Patterns traversing regions of varying cadence automatically follow adjacency paths that minimize local coherence cost. This differential reconstruction delay produces the emergent macroscopic behavior historically interpreted as gravitational redshift, lensing, and time dilation.
+
+**2. Coherence Horizon (One-Way Gate)**  
+The gradient extends outward from the Planck core. The **Coherence Horizon** is the causal boundary where the cadence gradient becomes steep enough that outward adjacency-coherent reconstruction cannot be instantiated [1].  
+*   Patterns cross inward seamlessly.  
+*   Outward propagation is blocked.  
+*   No coherence-catastrophe occurs at the horizon.
+
+**3. Horizon-Level Evaporation**  
+Evaporation occurs at the horizon boundary, not at the core. The boundary is where the extended gradient's local budget strain interacts with the Local Floor Budget $B_0(x)$ of the surrounding vacuum [1]. This produces outward redistribution of $\Delta H$ without requiring cross-horizon transport from the core.
+
+---
+
+### Unified Interpretation
+
+The Planck core is the only region where $U = 1$ and Coherence-Catastrophe occurs.  
+The horizon is a one-way causal gate created by the cadence suppression gradient.  
+The gradient itself replaces geometric curvature and ensures:
+*   no region ever halts its processing loop,  
+*   no infinite stacking occurs,  
+*   and horizon-level evaporation emerges naturally from adjacency-indexed timing pressure.
+
+Singularities are therefore **finite coherence-catastrophe zones**, not geometric infinities.
+
 ### 4.x Architectural Correspondence: Classical Quantities as SVET Coherence Primitives
 
 To connect SVET’s coherence-based ontology with the familiar quantities of classical and quantum physics, three structural correspondences can be identified. These are not additional assumptions layered onto the node set; they emerge directly from the local accounting of update demand and coherence constraints.
