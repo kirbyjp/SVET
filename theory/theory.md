@@ -1337,6 +1337,20 @@ The following supporting materials will be generated after correspondence calibr
 
 These placeholders ensure that the QED-testability framework remains visible and will be revisited once the correspondence layer and experimental calibration are complete.
 
+### 13.13 Classical Pathology Resolution Tests
+
+#### 13.13.1 Painlevé-Type Constraint Failure Resolution (SVET Prediction)
+
+Classical rigid-body mechanics exhibits the Painlevé paradox: certain contact-interaction configurations admit no consistent solution under Newtonian constraints, producing non-existence, non-uniqueness, or formally infinite accelerations. These pathologies arise from the classical assumption of instantaneous constraint enforcement and unbounded reaction forces.
+
+SVET predicts that Painlevé-type inconsistencies cannot occur in any physical system. Because all pattern-level interactions are resolved through finite tick-budget, finite strain $S(x)$, and cadence-limited reconstruction, no pattern can impose an instantaneous or infinite constraint. When a classical Painlevé configuration would require an inconsistent or unbounded reaction force, the local update rules resolve the conflict through Accounting Shock (coherent rejection) and $\Delta H$ shedding (incoherent remainder). The coherence-constraint set reconfigures rather than enforcing an impossible constraint.
+
+**Prediction:**  
+Any experimental system engineered to reproduce a Painlevé-type inconsistency will instead exhibit finite, cadence-limited reconstruction delay, coherence-shedding ($\Delta H$), or constraint-set reconfiguration, never infinite acceleration or non-existence of solutions.
+
+**Falsifiability:**  
+If a physical system can be shown to produce a true Painlevé non-solution or infinite acceleration without material compliance, SVET is falsified.
+
 ---
 
 ## 14. Emergent Continuum
