@@ -39,7 +39,17 @@ $$\mathcal{U} \in [0, 1]$$
 
 ---
 
-## 3. Archived Section: 9.4 Double‑Walled Universe (Full Text)
+## 3. Archived Section: 
+
+### Archival Note: Evolution of the Singularity Model (Pre‑STIP → Post‑STIP)
+
+The original Step 5.9 draft treated singularities as coherence‑stress regions but lacked the formal machinery of STIP, the unified utilization axis \(U\), the incoherent channel \(\Delta H\), and the asymptotic cadence model. As a result, early drafts contained several conceptual vulnerabilities: local \(\Delta H\) accumulation, ambiguous reconstruction limits, and incomplete timing‑domain behavior.
+
+After the introduction of the Single‑Tick Identity Principle (STIP), the unified utilization axis \(U = S/B\), and the asymptotic cadence law, the singularity model was rewritten as Section 4.16. This version eliminates geometric collapse entirely and replaces it with coherence‑catastrophe, Accounting Shock, and adjacency‑indexed timing pressure.
+
+Section 4.161 (Cadence Suppression Gradient) was added to formalize the timing‑domain mechanism that replaces geometric curvature and explains horizon‑level evaporation without cross‑horizon transport.
+
+This archival note preserves the lineage of the singularity model and documents the transition from pre‑STIP intuition to the post‑STIP, ledger‑consistent formulation now used in the mainline ontology.
 
 ### 9.4 The Double-Walled Universe: Cosmic and Quantum Boundaries
 
