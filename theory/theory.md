@@ -676,10 +676,11 @@ In this view, mass is not fundamental. It is the emergent measure of how difficu
 
 ### 4.14 Instantiation Trajectory and Instantiation Routing
 
-SVET distinguishes between the **pattern’s identity-encoded next-hop request** and the **node-set’s realized adjacency resolution**. These two constructs describe different projections of the same single-tick update operation and must not be conflated [1].
+SVET distinguishes between the pattern's identity-encoded one-hop adjacency instruction and the node set's realized adjacency resolution. These two constructs describe different projections of the same single-tick update operation and must not be conflated [1].
 
 #### 4.14.1 Instantiation Trajectory (Pattern-Side Request)
-A pattern does not store a worldline, a velocity, or a multi-tick plan. Instead, its coherence-constraint set encodes a **one-hop adjacency instruction**: the next adjacency offset encoded in the pattern's coherence-constraint set, independent of local budget or strain [1]. This instruction is part of the frozen-tick identity and represents the pattern's internal, identity-preserving adjacency demand.
+
+A pattern does not store a worldline, a velocity, or a multi-tick plan. Its coherence-constraint set encodes a one-hop adjacency instruction: the next adjacency offset implied by the pattern's frozen-tick identity, independent of local budget, utilization, or cadence suppression [1]. This instruction is part of the identity and represents the pattern's internal adjacency demand [1].
 
 This request is:
 - identity-encoded,
@@ -687,10 +688,11 @@ This request is:
 - unconstrained by budget or strain,
 - and not guaranteed to be realized.
 
-It is not motion; it is the **structurally implied next adjacency encoded in the pattern’s identity**.
+It is not motion; it is the structurally implied next adjacency encoded in the pattern's coherence-constraint set [1].
 
 #### 4.14.2 Instantiation Routing (Node-Set Resolution)
-The node set performs the actual instantiation. On each tick, the node set resolves the pattern’s one-hop adjacency instruction using its local budget and strain parameters. The result is the **realized adjacency hop**, determined entirely by the least-strain resolution of the local ledger [1].
+
+The node set performs the actual instantiation. On each tick, the node set resolves the pattern's one-hop adjacency instruction using its local strain $S(x)$, utilization $U(x)$, and cadence suppression gradient $\nabla \tau_{\text{eff}}(x)$ [1]. The result is the realized adjacency hop, determined entirely by the least-strain resolution of the local ledger.
 
 Routing is:
 - external,
@@ -698,18 +700,19 @@ Routing is:
 - deterministic,
 - and physically realized.
 
-It is not the pattern’s request; it is the **executed next adjacency**.
+It is not the pattern's request; it is the executed next adjacency [1]. If the node set cannot satisfy the full adjacency instruction, the unrecoverable remainder is shed into the incoherent channel $\Delta H$.
 
 #### 4.14.3 The Frozen-Tick Handshake
-The frozen tick contains both:
-1.  the pattern’s one-hop adjacency instruction (trajectory), and  
-2.  the node’s local budget/strain constraints (routing conditions).
 
-Together, these determine the next tick’s instantiation. No additional temporal information is stored or permitted. The pattern is reconstructed each tick by the node set; Layer 2 does not persist independently of Layer 1.
+The frozen tick contains both:
+1.  the pattern's one-hop adjacency instruction (trajectory), and  
+2.  the node's local budget, utilization, and cadence-suppression constraints (routing conditions) [1].
+
+Together, these determine the next tick's instantiation. No additional temporal information is stored or permitted. Under the Single-Tick Identity Principle (STIP), Layer 2 does not persist across ticks; the pattern is reconstructed each tick by Layer 1.
 
 #### 4.14.4 Layer Interaction Summary
-*   **Layer 2** provides the identity-encoded adjacency request [1].  
-*   **Layer 1** resolves the request and reconstructs the pattern [1].  
+*   **Layer 2** provides the identity-encoded adjacency request.  
+*   **Layer 1** resolves the request and reconstructs the pattern.  
 *   Motion emerges from differences between ticks, not from stored trajectories.  
 *   Identity remains frozen; routing is the realized update.
 
