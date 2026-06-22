@@ -256,10 +256,11 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 **Definition:** The non-patternized, non-coherent update pathway of the node set [1].  
 **Forensic Role:** Tracks all non-coherent ledger outcomes. The channel is adjacency-diffusive and never accumulates locally because pattern-level cadence never reaches zero, serving as the native mechanism for decoherence, dissipation, and radiative decay [1].
 
-#### Node Ledger
-**Type:** Bookkeeping Structure  
-**Definition:** The local accounting identity by which a node partitions incoming exaction into coherent acceptance, coherent rejection, or incoherent diversion.  
-**Forensic Role:** Enforces conservation of coherence constraints at each node; ensures all incoming exaction is accounted for without loss or creation.
+#### The Node Ledger
+**Type:** Accounting Identity  
+**Definition:** The local bookkeeping identity governing how a node partitions incoming exaction:  
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$  
+**Forensic Role:** Enforces exact conservation of coherence constraints at each node, ensuring that all incoming exaction is accounted for across coherent, reflected, transmitted, and incoherent channels [1].
 
 #### Accounting Shock (Local Ledger Rejection)
 **Type:** Boundary Event  
@@ -280,6 +281,11 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 **Type:** Derived Quantity  
 **Definition:** The non-uniform profile of effective cadence ($\tau_{\text{eff}}(x)$) across the node set induced by differential local exaction loads [1].  
 **Forensic Role:** Serves as the SVET-native timing mechanism that replaces general relativity's curved spacetime manifold [1].
+
+#### Directional Decoherence
+**Type:** Dissipation State  
+**Definition:** The irreversible loss of a pattern's directional asymmetry when it is diverted into the incoherent channel ($H$) during an inelastic interaction [1].  
+**Forensic Role:** Quantifies the dissipative scattering of momentum-like exactions into non-directional node-set strain [1].
 
 #### Bookkeeping Layer Summary
 *   **Instantiate** and **Re‑instantiate** describe how nodes resolve adjacency‑coherent exaction [1].  
@@ -388,6 +394,10 @@ Replaced by the SVET rule that the node set performs no background updates in em
 **Lapse Function**  
 **Redirect:** *Effective Cadence ($\tau_{\text{eff}}$)* / *Dilation ($\alpha$)*  
 General relativity legacy term. SVET timing behavior is expressed through pattern-level cadence and dilation, not background spacetime foliation [1].
+
+**Directional Persistence**  
+**Redirect:** *Directional Asymmetry*  
+Deprecated legacy term. Replaced by the single-tick *Directional Asymmetry* to prevent multi-tick temporal violations of the Single-Tick Identity Principle (STIP) [1].
 
 ---
 
