@@ -266,6 +266,21 @@ This category defines the bookkeeping primitives governing how nodes resolve exa
 **Definition:** A node‑level rejection of incoming coherent exaction when local budget or adjacency constraints cannot satisfy the reconstruction request [1].  
 **Forensic Role:** Produces coherent reflection rather than incoherent shedding; represents a boundary‑level ledger event distinct from bulk coherence failure.
 
+#### Directional Asymmetry
+**Type:** Pattern Property  
+**Definition:** The instantaneous anisotropy of a pattern’s local strain footprint within a single frozen-tick evaluation frame [1].  
+**Forensic Role:** Encodes the direction of pattern-level propagation without requiring multi-tick history, serving as the single-tick representation of momentum [1].
+
+#### Coherence-Minimal Continuation Path
+**Type:** Emergent Path  
+**Definition:** The specific adjacency path that minimizes coherence-constraint reconfiguration for a propagating pattern [1].  
+**Forensic Role:** Serves as the SVET analogue of inertial continuation, derived directly from the local single-tick strain asymmetry and local timing-pressure [1].
+
+#### Timing-Pressure Landscape
+**Type:** Derived Quantity  
+**Definition:** The non-uniform profile of effective cadence ($\tau_{\text{eff}}(x)$) across the node set induced by differential local exaction loads [1].  
+**Forensic Role:** Serves as the SVET-native timing mechanism that replaces general relativity's curved spacetime manifold [1].
+
 #### Bookkeeping Layer Summary
 *   **Instantiate** and **Re‑instantiate** describe how nodes resolve adjacency‑coherent exaction [1].  
 *   **Re‑embedding** maintains adjacency structure under routing changes [1].  
