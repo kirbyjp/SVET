@@ -72,6 +72,37 @@ Because both the Quantum Wall and the Cosmic Wall arise when excitation approach
 - Required speculative horizon‑scale assumptions not yet grounded in Chapter 5.  
 - Needed a stable definition of global utilization transformation.
 
+## ARCHIVAL NOTE: The Sub-Resolution Timing-Pulse Protocol (v2.0 Kinematic Engine)
+
+### 1. Conceptual Genesis
+This commentary logs the foundational transition from macro-scale pattern configurations to a pure digital signal processing (DSP) framework at the rock-bottom Planck scale. To maintain absolute structural primacy of Layer 1, a pattern does not present a dense, geometric payload or spatial document to the node set. Instead, a pattern is structurally defined as an invariant stream of discrete, tick-indexed **Exaction Pulses**. 
+
+By anchoring this pulse train to the invariant **Propagation Limit ($c = 1 \text{ adjacency hop per tick}$)**, the node set does not need to analyze a pattern's physical "shape" or "identity." The passive local update rules decode all physical observables—mass, momentum, and electromagnetic frequency—entirely from the **temporal duration spent** between successive local pulse intervals.
+
+### 2. The Absolute Mathematical Boundaries
+By limiting the exaction to pure timing-pulse durations, the universe engine operates within non-singular upper and lower limits dictated strictly by discrete node-set arithmetic:
+
+#### A. The Lower Boundary Threshold (The Microphysical Saturation Ceiling)
+*   **The Condition:** The Layer 2 configuration presents an exaction pulse to the node set on every consecutive universal tick ($\Delta t = 1 \text{ tick}$).
+*   **The Substrate Physics:** The duration spent between pulse intervals drops to the non-reducible microphysical minimum. The localized exaction density redlines the substrate, driving local **Utilization ($U = S/B \to 1$)** to its absolute capacity ceiling. 
+*   **The Observable Projection:** This represents the highest possible energetic expression in the cosmos (the Planck Gamma Limit). The **Effective Cadence ($\tau_{\text{eff}}$)** diverges asymptotically ($\tau_{\text{eff}} \to \infty$), natively generating the non-singular **Quantum Wall** (gravatar boundary) via local budget exhaustion without ever crushing down to a mathematical singularity.
+
+#### B. The Upper Boundary Threshold (The Cosmological Time-Out)
+*   **The Condition:** The pattern executes its forward translation step, but its internal constraint-cycling delays the subsequent timing pulse across a vast chronological span of global ticks ($\Delta t \to \text{max}$).
+*   **The Substrate Physics:** The duration spent between updates becomes maximally dilated and sparse. The time elapsed between pulses approaches the structural limit where the **Residual Continuity Requirement ($\Xi$)** can no longer find a valid neighboring handshake.
+*   **The Observable Projection:** This represents the minimum possible energetic expression in the cosmos (the **Hubble Coherence Horizon / Cosmic Wall**). The transaction duration exceeds the substrate's local availability window; the exaction check times out, hits local ledger rejection, and the remaining wave amplitude is completely diverted into the omnidirectional **Incoherent Channel ($\Delta H$)**.
+
+### 3. Implementation Blueprint for Toy Coding Loops
+This protocol permanently purges continuous floating-point math, trigonometric wave functions, and multi-dimensional coordinate tracking arrays from future software prototype environments (`Unify_v0.20.5+`). 
+
+The runtime engine loop reduces the entire physical universe to a localized **Tick-Counter Ledger**. When an exaction pulse interfaces with a Layer 1 cell, the node executes a basic three-step arithmetic operation:
+1.  **Read:** `duration = currentTick - lastPulseTick`
+2.  **Evaluate:** The single integer `duration` acts as a direct lookup metric to update local **Lattice Strain ($S$)** and adjust the local **Resolution Latency ($\Delta \tau$)**.
+3.  **Render:** If a pattern crosses a region where local utilization is high ($U \to 1$), the local update clock cycle naturally lags. This automatically stretches out the incoming pulse intervals (**Gravitational Redshift**) and deflects the next step location (**Routing Deflection**) because the hardware capacity constraints forced the execution path to warp.
+
+### 4. Strategic Abstraction Firewall
+This sub-resolution timing-pulse protocol operates strictly as an architectural deep-dive for v2.0 engine deployment. To protect the multi-disciplinary staging environment from premature disruption and prevent "textbook alarms" within the active research pipeline, this framework remains strictly quarantined inside `commentary.md`. The official text of `theory.md` (Chapters 4 and 5) will continue to utilize the approved Layer 2 vocabulary (*Coherence-Constraint Sets and Instantiation Trajectories*) as the necessary, macro-scale translation layer for arXiv review.
+
 ---
 
 ## 4. Curve‑Collapse Experiments
