@@ -489,6 +489,18 @@ $$U = \frac{S}{B}$$
 **Definition:** Coherence Length; hops a pattern can propagate before decohering into $H$.  
 **Forensic Role:** Measures the "Life Expectancy" of a coherent signal.
 
+### $\Gamma_p$ — "Gamma-p" (Constraint-Set Stability Margin)
+**Type:** Derived Diagnostic (Ratios & Metrics)  
+**Definition:** A local scalar summary of the stability margin of a pattern’s coherence-constraint set under local strain [1]. $\Gamma_p(x)$ quantifies how close the local strain $S(x)$ is to the node-set-level yield threshold $\kappa_{\text{yield}}$, beyond which the local ledger must shed excess exaction into the incoherent channel ($\Delta H$) [1].  
+**Mathematical Form:**  
+$$\Gamma_p(x) \equiv 1 - \frac{S(x)}{\kappa_{\text{yield}}}$$  
+where $S(x)$ is the local strain and $\kappa_{\text{yield}}$ is the node-set-level structural constant defining the maximum coherent load an adjacency neighborhood can process before clamping [1].  
+**Interpretation:**  
+*   $\Gamma_p = 1$ $\to$ zero local strain.  
+*   $\Gamma_p = 0$ $\to$ at the yield threshold ($S(x) = \kappa_{\text{yield}}$).  
+*   $\Gamma_p$ is strictly clamped to the interval $[0,1]$; any attempted strain exceeding the limit ($S(x) > \kappa_{\text{yield}}$) is immediately diverted into $\Delta H$ while $\Gamma_p$ remains pinned at $0$ [1].  
+**Forensic Role:** Provides a materials-science-friendly stability indicator that bridges classical descriptors (yield strength, ductility, work hardening) with SVET’s discrete update rules [1]. $\Gamma_p(x)$ is not an ontological primitive; it is a convenience metric summarizing the local stability margin of a coherence-constraint set.
+
 ### $C(x,v)$ — "Coherence Cost Density"
 **Type:** Derived Metric  
 **Definition:** The cost assigned by a node at position $x$ for resolving directional exaction along direction $v$ [1].  
