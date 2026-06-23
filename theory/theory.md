@@ -20,7 +20,7 @@ header-includes:
 
 2. Ontology of the Vacuum
 3. Capacity Limits and Divergence‑Free Behavior
-4. Flux Algebra (---why I dont know...)
+4. Flux Algebra
 5. Emergent Wave Mechanics
 6. Hilbert‑Space Correspondence
 7. QFT Correspondence Layer
@@ -28,7 +28,7 @@ header-includes:
 9. Causal Boundaries
 10. Measurement and Decoherence
 11. Material Response & Dispersion
-12. Computational Implementation Layer (WTF?  computational??)
+12. Computational Implementation Layer
 13. Predictions and Falsifiable Tests
 14. Emergent Continuum
 15. Correspondence With Observables
