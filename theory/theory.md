@@ -18,6 +18,24 @@ header-includes:
 
 ---
 
+2. Ontology of the Vacuum
+3. Capacity Limits and Divergence‑Free Behavior
+4. Flux Algebra (---why I dont know...)
+5. Emergent Wave Mechanics
+6. Hilbert‑Space Correspondence
+7. QFT Correspondence Layer
+8. GR Correspondence Layer
+9. Causal Boundaries
+10. Measurement and Decoherence
+11. Material Response & Dispersion
+12. Computational Implementation Layer (WTF?  computational??)
+13. Predictions and Falsifiable Tests
+14. Emergent Continuum
+15. Correspondence With Observables
+16. Open Questions and Future Work
+
+---
+
 ## 0. Notes on this document
 *This file is the living source for SVET. It is Markdown + MathJax (LaTeX math) and is intended to be converted to LaTeX/PDF via Pandoc for arXiv or journal submission. Use the Git history for versioning; keep the filename `theory.md` as the single source of truth.*
 
