@@ -557,6 +557,18 @@ $$\tau_{\text{eff}} \to \infty \quad \text{for outward adjacency}$$
 $$\eta \le 1$$  
 **Forensic Role:** Ensures that cadence collapse is asymptotic and prevents divergence of update demand.
 
+### $\Delta H$ — "Coherence-Shedding"
+**Type:** Derived Quantity (Bookkeeping Outcome)  
+**Definition:** The portion of coherent update demand that a node cannot instantiate and therefore rejects and diverts out of the coherent ledger when local exactions exceed the available processing budget.  
+**Forensic Role:** Represents the local increment of incoherent output recorded when adjacency-coherent reconstruction fails.
+
+### $\Delta H$ vs. Instantiation
+**Type:** Ontological Relationship  
+**Definition:** The local, deterministic division of incoming exaction demand resolved by the update rule.  
+**Forensic Role:** Clarifies that $\Delta H$ (coherence-shedding residue) has no independent physical agency; it is simply the unresolvable remainder when local exactions exceed the available budget. Instantiation is the passive, deterministic resolution performed by the update rule when the coherent portion of the exaction load can be satisfied. Total exaction is strictly conserved under the single-equation ledger identity:  
+$$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$  
+This ensures that even during structural failure or decay, no update demand is ever lost or created.
+
 ---
 
 ## Speculative & Unverified Constructs (Pending Review)
