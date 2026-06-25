@@ -124,6 +124,121 @@ This sub-resolution timing-pulse protocol operates strictly as an architectural 
 
 ---
 
+# Commentary Staging Area (For Review Before Canonical Inclusion)
+
+This section collects candidate insights, observations, and experimental signatures generated during recent development sessions.  
+Nothing in this section is considered canonical SVET theory until explicitly approved and migrated into the main document set.  
+Items here may be refined, merged, discarded, or promoted after deeper review.
+
+---
+
+## Zeno Quantization and Finite Tick Depth
+
+SVET’s discrete ledger resolves halving processes in a finite number of ticks.  
+The halving depth consistently matches the theoretical value of `ceil(log2(N))`, demonstrating that no infinite subdivision occurs.  
+This behavior provides a clean, discrete resolution to Zeno‑type processes without invoking continuous calculus or fractional state.
+
+Relevant expansions:  
+- [Finite_tick_depth](ca://s?q=Explain_finite_tick_depth_in_SVET)  
+- [No_fractional_state](ca://s?q=Explain_no_fractional_state_in_SVET)  
+- [Zeno_resolution](ca://s?q=Draft_Zeno_resolution_summary)
+
+---
+
+## Floating‑Point vs Discrete Ledger (Safe Framing)
+
+SVET does not replace floating‑point arithmetic.  
+Instead, it eliminates the need for fractional subdivision in systems that are fundamentally adjacency‑coherent.  
+Floating‑point mantissa overhead, denormal tails, and rounding penalties appear clearly in the Zeno benchmark, while the SVET ledger terminates cleanly.
+
+Relevant expansions:  
+- [SVET_not_float_replacement](ca://s?q=Draft_SVET_statement_on_floating_point)  
+- [Fractional_state_cost](ca://s?q=Explain_mantissa_overhead)  
+- [Discrete_ledger_advantage](ca://s?q=Explain_discrete_ledger_advantage)
+
+---
+
+## Prime Resonance Filter Observations
+
+The prime‑scanning toy demonstrates pure integer adjacency behavior.  
+Cycle counts scale with `sqrt(n)` as expected from classical number theory.  
+Prime density thins at higher magnitudes, and the SVET ledger exposes this structure cleanly without floating‑point involvement.  
+Waveform coherence peaks correspond to prime isolates.
+
+Relevant expansions:  
+- [Integer_resonance_behavior](ca://s?q=Explain_integer_resonance_behavior)  
+- [Prime_density_thinning](ca://s?q=Explain_prime_density_thinning)  
+- [Cycle_scaling_signature](ca://s?q=Add_cycle_scaling_graph)  
+- [No_pi_dependency](ca://s?q=Explain_pi_irrelevance_in_discrete_models)
+
+---
+
+## Physical Irrelevance of High‑Precision π
+
+If spacetime has finite resolution, only a finite number of digits of π have physical meaning.  
+Beyond that scale, π’s infinite expansion describes the continuum model rather than the discrete universe.  
+SVET treats π as an emergent ratio that converges with scale rather than a fundamental ontological constant.
+
+Relevant expansions:  
+- [Pi_scale_dependence](ca://s?q=Explain_scale_dependent_pi_in_SVET)  
+- [Finite_precision_geometry](ca://s?q=Explain_finite_precision_geometry)  
+- [Pi_as_emergent_ratio](ca://s?q=Draft_SVET_statement_on_pi)
+
+---
+
+## Hardware‑Level Observations (Non‑Overclaiming)
+
+Integer‑only workloads saturate CPU pipelines efficiently and pack tightly into L1 cache.  
+Floating‑point halving incurs mantissa‑related overhead and denormal tails, which appear as measurable latency in the Zeno benchmark.  
+These observations are implementation‑level and should not be framed as SVET being a hardware optimization technique.
+
+Relevant expansions:  
+- [Integer_pipeline_efficiency](ca://s?q=Explain_integer_pipeline_efficiency)  
+- [Mantissa_tail_cost](ca://s?q=Explain_mantissa_tail_cost)  
+- [Cache_density_effects](ca://s?q=Explain_cache_density_effects)
+
+---
+
+## Ontological Clarifications
+
+SVET operates on discrete adjacency relations with no fractional states.  
+All updates occur locally, and global behavior emerges from finite, deterministic ledger steps.  
+Finite resolution prevents infinite regress and ensures termination in all processes modeled within the ontology.
+
+Relevant expansions:  
+- [SVET_discreteness](ca://s?q=Explain_SVET_discreteness)  
+- [Adjacency_coherence](ca://s?q=Explain_adjacency_coherence)  
+- [Finite_resolution_implications](ca://s?q=Explain_finite_resolution_implications)
+
+---
+
+## Items Requiring Caution Before Inclusion
+
+These ideas are promising but require deeper vetting before entering the main theory:
+
+- Claims about GPS accuracy improvements  
+- Assertions about eliminating dynamic range issues  
+- Statements about rotation aliasing and directional symmetry  
+
+These may eventually become appendices or remain commentary‑only.
+
+---
+
+## Meta‑TODO: Integration Decisions
+
+Future steps include:
+
+- Determining which items become appendices  
+- Identifying which insights belong in theory.md  
+- Consolidating overlapping concepts  
+- Removing speculative or redundant material  
+- Formalizing safe, critic‑proof language for each accepted item
+
+---
+
+
+---
+
 calligriph u has been sidelined and parked in commentary.md as well as the following:
 # Appendix A — Routing vs. Instantiation Trajectory Debate Archive
 *Status:* Non‑canonical, preserved for future ontology review  
