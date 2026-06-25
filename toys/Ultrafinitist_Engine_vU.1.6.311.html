@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ultrafinitist Engine vU.1.6.3 — Phase 1.1 Chassis</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* no page scroll */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #111;
+      color: #eee;
+    }
+    #root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    #header {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border-bottom: 1px solid #333;
+      background: #181818;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    #header-title {
+      font-weight: 600;
+    }
+    #header-version {
+      font-size: 12px;
+      color: #aaa;
+    }
+    #app {
+      flex: 1 1 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: auto 260px;
+      grid-template-areas:
+        "controls plots"
+        "math     math";
+      height: 100%;
+    }
+    #controls {
+      grid-area: controls;
+      border-right: 1px solid #333;
+      padding: 10px;
+      box-sizing: border-box;
+      background: #181818;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #plots {
+      grid-area: plots;
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 4px;
+      padding: 4px;
+      box-sizing: border-box;
+      background: #101010;
+    }
+    .plot-container {
+      border: 1px solid #333;
+      background: #000;
+    }
+    #math-panel {
+      grid-area: math;
+      border-top: 1px solid #333;
+      background: #141414;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    #math-panel-controls {
+      flex: 0 0 auto;
+      padding: 6px 8px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: #181818;
+    }
+    #math-panel-controls button {
+      background: #333;
+      color: #eee;
+      border: 1px solid #555;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    #math-panel-controls button:hover {
+      background: #444;
+    }
+    #math-panel-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 6px 8px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+    }
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .control-row label {
+      flex: 1 1 auto;
+    }
+    .control-row select,
+    .control-row input {
+      flex: 1 1 auto;
+      background: #222;
+      color: #eee;
+      border: 1px solid #444;
+      padding: 2px 4px;
+      font-size: 12px;
+    }
+    .control-row input[type="number"] {
+      text-align: right;
+    }
+    .small-note {
+      font-size: 11px;
+      color: #888;
+    }
+    .error-line {
+      color: #ff5555;
+    }
+  </style>
+</head>
+<body>
+<div id="root">
+  <div id="header">
+    <div id="header-title">Ultrafinitist Engine</div>
+    <div id="header-version">vU.1.6.3 — Phase 1.1 (Stabilized Chassis)</div>
+  </div>
+
+  <div id="app">
+    <!-- Controls Panel -->
+    <div id="controls">
+      <button id="btn-run" style="margin-bottom:6px;background:#4caf50;border-color:#66bb6a;">
+        RUN PHYSICAL SCRUTINY
+      </button>
+
+      <div class="section-title">Mode</div>
+      <div class="control-row">
+        <label for="mode-select">Mode</label>
+        <select id="mode-select">
+          <option value="MACRO">Macro</option>
+          <option value="MICRO">Micro</option>
+        </select>
+      </div>
+
+      <div class="section-title">Substrate</div>
+      <div class="control-row">
+        <label for="substrate-select">Substrate</label>
+        <select id="substrate-select">
+          <option value="WHOLE">Whole</option>
+          <option value="RATIONAL">Rational</option>
+        </select>
+      </div>
+
+      <div class="section-title">Compute Profile</div>
+      <div class="control-row">
+        <label for="profile-select">Profile</label>
+        <select id="profile-select">
+          <option value="NORMAL">Normal</option>
+          <option value="QUANTUM">Quantum</option>
+          <option value="CUSTOM">Custom</option>
+        </select>
+      </div>
+
+      <div class="section-title">Universe</div>
+      <div class="control-row">
+        <label for="nphys-input">log10(N_phys)</label>
+        <input id="nphys-input" type="number" value="122" />
+      </div>
+
+      <div class="section-title">Target</div>
+      <div class="control-row">
+        <label for="target-log-input">log10(n_target)</label>
+        <input id="target-log-input" type="number" value="6" />
+      </div>
+
+      <div class="section-title">Internal QA (Phase 1.1)</div>
+      <div class="small-note">
+        - Substrate toggle updates Ratio axis label.<br/>
+        - Zoom in any plot syncs all three.<br/>
+        - Math panel controls stay visible.<br/>
+        - Only math panel scrolls.<br/>
+        - Run button triggers render; sliders only update state.
+      </div>
+    </div>
+
+    <!-- Plots -->
+    <div id="plots">
+      <div id="plot-whole" class="plot-container"></div>
+      <div id="plot-rational" class="plot-container"></div>
+      <div id="plot-ratio" class="plot-container"></div>
+    </div>
+
+    <!-- Math Panel -->
+    <div id="math-panel">
+      <div id="math-panel-controls">
+        <button id="btn-copy">Copy</button>
+        <button id="btn-clear">Clear</button>
+        <button id="btn-qa">Run QA Sweep</button>
+        <button id="btn-export">Export JSON</button>
+        <span class="small-note">Phase 1.1 — Chassis Only</span>
+      </div>
+      <div id="math-panel-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // -----------------------------
+  // Math panel logging
+  // -----------------------------
+  const mathPanelBody = document.getElementById('math-panel-body');
+
+  function logLine(text) {
+    const ts = new Date().toISOString();
+    mathPanelBody.innerHTML += `[${ts}] ${text}<br>`;
+    mathPanelBody.scrollTop = mathPanelBody.scrollHeight;
+    console.log(text);
+  }
+
+  function logErrorLine(text) {
+    const ts = new Date().toISOString();
+    mathPanelBody.innerHTML += `<span class="error-line">[${ts}] ERROR: ${text}</span><br>`;
+    mathPanelBody.scrollTop = mathPanelBody.scrollHeight;
+    console.error(text);
+  }
+
+  function clearMathPanel() {
+    mathPanelBody.innerHTML = '';
+  }
+
+  // Global error catcher (Black Box Recorder)
+  window.onerror = function(message, source, lineno, colno, error) {
+    const details = `${message} at ${source}:${lineno}:${colno}`;
+    logErrorLine(details);
+    return false; // allow default logging too
+  };
+
+  // -----------------------------
+  // Controls
+  // -----------------------------
+  const modeSelect = document.getElementById('mode-select');
+  const substrateSelect = document.getElementById('substrate-select');
+  const profileSelect = document.getElementById('profile-select');
+  const nphysInput = document.getElementById('nphys-input');
+  const targetLogInput = document.getElementById('target-log-input');
+  const runButton = document.getElementById('btn-run');
+
+  // -----------------------------
+  // Plot containers
+  // -----------------------------
+  const plotWhole = document.getElementById('plot-whole');
+  const plotRational = document.getElementById('plot-rational');
+  const plotRatio = document.getElementById('plot-ratio');
+
+  // -----------------------------
+  // Internal state (Phase 1.1)
+  // -----------------------------
+  const state = {
+    mode: 'MACRO',
+    substrate: 'WHOLE',
+    profile: 'NORMAL',
+    log10Nphys: 122,
+    log10Target: 6,
+    xRangeWhole: null,
+    xRangeAlpha: null
+  };
+
+  // -----------------------------
+  // Diagnostics on boot
+  // -----------------------------
+  function initDiagnostics() {
+    logLine('=== System Diagnostic (Boot) ===');
+    // Browser / environment
+    logLine(`UserAgent: ${navigator.userAgent}`);
+    // BigInt support
+    const hasBigInt = typeof BigInt !== 'undefined';
+    logLine(`BigInt support: ${hasBigInt ? 'YES' : 'NO'}`);
+    // Plotly readiness
+    const hasPlotly = typeof Plotly !== 'undefined';
+    logLine(`Plotly loaded: ${hasPlotly ? 'YES' : 'NO'}`);
+    if (!hasPlotly) {
+      logErrorLine('Plotly is not available. Plots will not render.');
+    }
+    logLine('Initial Mode: ' + state.mode);
+    logLine('Initial Substrate: ' + state.substrate);
+    logLine('Initial Profile: ' + state.profile);
+    logLine(`Initial log10(N_phys): ${state.log10Nphys}`);
+    logLine(`Initial log10(n_target): ${state.log10Target}`);
+    logLine('=== End Diagnostic ===');
+  }
+
+  // -----------------------------
+  // Demo data generators
+  // -----------------------------
+  function generateWholeDemoData() {
+    const maxN = 1000;
+    const x = [];
+    const y = [];
+    let count = 0;
+    for (let n = 2; n <= maxN; n++) {
+      if (isPrime(n)) count++;
+      x.push(n);
+      y.push(count);
+    }
+    return { x, y };
+  }
+
+  function generateRationalDemoData() {
+    const maxN = 1000;
+    const x = [];
+    const y = [];
+    let count = 0;
+    // Use safe scale: alpha = n * 10^(-log10Nphys)
+    const scale = Math.pow(10, -state.log10Nphys);
+    for (let n = 2; n <= maxN; n++) {
+      if (isPrime(n)) count++;
+      const alpha = n * scale; // extremely small but finite
+      x.push(alpha);
+      y.push(count);
+    }
+    return { x, y };
+  }
+
+  function isPrime(n) {
+    if (n < 2) return false;
+    if (n === 2) return true;
+    if (n % 2 === 0) return false;
+    const r = Math.floor(Math.sqrt(n));
+    for (let i = 3; i <= r; i += 2) {
+      if (n % i === 0) return false;
+    }
+    return true;
+  }
+
+  // -----------------------------
+  // Plot rendering (triggered by RUN)
+  // -----------------------------
+  function renderAll() {
+    logLine('RUN PHYSICAL SCRUTINY triggered (Phase 1.1). Rendering demo chassis.');
+
+    const wholeData = generateWholeDemoData();
+    const rationalData = generateRationalDemoData();
+
+    // Plot 1: Whole
+    const traceWhole = {
+      x: wholeData.x,
+      y: wholeData.y,
+      type: 'scatter',
+      mode: 'lines',
+      line: { shape: 'hv', color: '#4caf50' },
+      name: 'π(n)'
+    };
+    const layoutWhole = {
+      margin: { l: 50, r: 10, t: 20, b: 30 },
+      paper_bgcolor: '#000',
+      plot_bgcolor: '#000',
+      xaxis: { title: 'n (Whole substrate)', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } },
+      yaxis: { title: 'π(n)', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } }
+    };
+
+    // Plot 2: Rational
+    const traceRational = {
+      x: rationalData.x,
+      y: rationalData.y,
+      type: 'scatter',
+      mode: 'lines',
+      line: { color: '#2196f3' },
+      name: 'π(α N_phys)'
+    };
+    const layoutRational = {
+      margin: { l: 50, r: 10, t: 20, b: 30 },
+      paper_bgcolor: '#000',
+      plot_bgcolor: '#000',
+      xaxis: { title: 'α = n / N_phys', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } },
+      yaxis: { title: 'π(α N_phys)', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } }
+    };
+
+    // Plot 3: Ratio placeholder
+    const traceRatio = {
+      x: [0, 1],
+      y: [1, 1],
+      type: 'scatter',
+      mode: 'lines',
+      line: { color: '#ff9800', dash: 'dot' },
+      name: 'Ratio placeholder'
+    };
+    const layoutRatio = {
+      margin: { l: 50, r: 10, t: 20, b: 30 },
+      paper_bgcolor: '#000',
+      plot_bgcolor: '#000',
+      xaxis: { title: 'Substrate-dependent axis (n or α)', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } },
+      yaxis: { title: 'R (stub)', tickfont: { color: '#ccc' }, titlefont: { color: '#ccc' } }
+    };
+
+    const config = { scrollZoom: true, displaylogo: false };
+
+    Plotly.newPlot(plotWhole, [traceWhole], layoutWhole, config);
+    Plotly.newPlot(plotRational, [traceRational], layoutRational, config);
+    Plotly.newPlot(plotRatio, [traceRatio], layoutRatio, config);
+
+    // Attach sync handlers
+    attachZoomSync(plotWhole, 'WHOLE');
+    attachZoomSync(plotRational, 'RATIONAL');
+    attachZoomSync(plotRatio, 'RATIO');
+
+    applySubstrate(); // ensure axis labels match substrate
+    logLine('Phase 1.1 plots rendered and substrate applied.');
+  }
+
+  // -----------------------------
+  // Zoom synchronization
+  // -----------------------------
+  function attachZoomSync(div, kind) {
+    div.on('plotly_relayout', (eventData) => {
+      if (eventData['xaxis.range[0]'] !== undefined && eventData['xaxis.range[1]'] !== undefined) {
+        const x0 = eventData['xaxis.range[0]'];
+        const x1 = eventData['xaxis.range[1]'];
+        if (kind === 'WHOLE') {
+          state.xRangeWhole = [x0, x1];
+          syncFromWhole();
+        } else if (kind === 'RATIONAL') {
+          state.xRangeAlpha = [x0, x1];
+          syncFromRational();
+        } else if (kind === 'RATIO') {
+          if (state.substrate === 'WHOLE') {
+            state.xRangeWhole = [x0, x1];
+            syncFromWhole();
+          } else {
+            state.xRangeAlpha = [x0, x1];
+            syncFromRational();
+          }
+        }
+      }
+    });
+  }
+
+  function syncFromWhole() {
+    const range = state.xRangeWhole;
+    if (!range) return;
+    const scale = Math.pow(10, -state.log10Nphys);
+    const alpha0 = range[0] * scale;
+    const alpha1 = range[1] * scale;
+    state.xRangeAlpha = [alpha0, alpha1];
+
+    Plotly.relayout(plotWhole, { 'xaxis.range': range });
+    Plotly.relayout(plotRational, { 'xaxis.range': [alpha0, alpha1] });
+    Plotly.relayout(plotRatio, {
+      'xaxis.range': state.substrate === 'WHOLE' ? range : [alpha0, alpha1]
+    });
+
+    logLine(`SyncFromWhole: n-range=[${range[0]}, ${range[1]}], α-range≈[${alpha0}, ${alpha1}]`);
+  }
+
+  function syncFromRational() {
+    const range = state.xRangeAlpha;
+    if (!range) return;
+    const scale = Math.pow(10, -state.log10Nphys);
+    const n0 = range[0] / scale;
+    const n1 = range[1] / scale;
+    state.xRangeWhole = [n0, n1];
+
+    Plotly.relayout(plotRational, { 'xaxis.range': range });
+    Plotly.relayout(plotWhole, { 'xaxis.range': [n0, n1] });
+    Plotly.relayout(plotRatio, {
+      'xaxis.range': state.substrate === 'WHOLE' ? [n0, n1] : range
+    });
+
+    logLine(`SyncFromRational: α-range=[${range[0]}, ${range[1]}], n-range≈[${n0}, ${n1}]`);
+  }
+
+  // -----------------------------
+  // Substrate toggle behavior
+  // -----------------------------
+  function applySubstrate() {
+    const substrate = state.substrate;
+
+    if (!plotWhole.data || !plotRational.data || !plotRatio.data) {
+      // Plots not rendered yet; nothing to relabel
+      return;
+    }
+
+    if (substrate === 'WHOLE') {
+      Plotly.relayout(plotWhole, { 'xaxis.title.text': 'n (Whole substrate)' });
+      Plotly.relayout(plotRational, { 'xaxis.title.text': 'α = n / N_phys' });
+      Plotly.relayout(plotRatio, { 'xaxis.title.text': 'n (Ratio, Whole substrate)' });
+    } else {
+      Plotly.relayout(plotWhole, { 'xaxis.title.text': 'n (Whole view)' });
+      Plotly.relayout(plotRational, { 'xaxis.title.text': 'α = n / N_phys (Rational substrate)' });
+      Plotly.relayout(plotRatio, { 'xaxis.title.text': 'α (Ratio, Rational substrate)' });
+    }
+
+    logLine(`Substrate set to ${substrate}. Ratio plot axis now follows ${substrate}.`);
+
+    // Preserve zoom level across substrate change
+    if (substrate === 'WHOLE' && state.xRangeWhole) {
+      syncFromWhole();
+    } else if (substrate === 'RATIONAL' && state.xRangeAlpha) {
+      syncFromRational();
+    }
+  }
+
+  // -----------------------------
+  // Event wiring
+  // -----------------------------
+  modeSelect.addEventListener('change', () => {
+    state.mode = modeSelect.value;
+    logLine(`Mode changed to ${state.mode}. (Phase 1.1: no behavior change yet)`);
+  });
+
+  substrateSelect.addEventListener('change', () => {
+    state.substrate = substrateSelect.value;
+    applySubstrate();
+  });
+
+  profileSelect.addEventListener('change', () => {
+    state.profile = profileSelect.value;
+    logLine(`Compute profile changed to ${state.profile}. (Phase 1.1: stub only)`);
+  });
+
+  nphysInput.addEventListener('change', () => {
+    state.log10Nphys = Number(nphysInput.value);
+    logLine(`log10(N_phys) set to ${state.log10Nphys}. (Phase 1.1: affects sync scale only)`);
+  });
+
+  targetLogInput.addEventListener('change', () => {
+    state.log10Target = Number(targetLogInput.value);
+    logLine(`log10(n_target) set to ${state.log10Target}. (Phase 1.1: no targeting yet)`);
+  });
+
+  runButton.addEventListener('click', () => {
+    renderAll();
+  });
+
+  // Math panel buttons
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    clearMathPanel();
+    logLine('Math panel cleared.');
+  });
+
+  document.getElementById('btn-copy').addEventListener('click', () => {
+    const text = mathPanelBody.innerText || '';
+    navigator.clipboard.writeText(text)
+      .then(() => logLine('Math panel copied to clipboard.'))
+      .catch(() => logErrorLine('Failed to copy math panel.'));
+  });
+
+  document.getElementById('btn-qa').addEventListener('click', () => {
+    logLine('QA Sweep (Phase 1.1):');
+    logLine(`- Mode: ${state.mode}`);
+    logLine(`- Substrate: ${state.substrate}`);
+    logLine(`- Profile: ${state.profile}`);
+    logLine(`- log10(N_phys): ${state.log10Nphys}`);
+    logLine(`- log10(n_target): ${state.log10Target}`);
+    logLine('- Verify: substrate toggle updates Ratio axis label.');
+    logLine('- Verify: zoom in any plot syncs all three.');
+    logLine('- Verify: math panel controls remain visible; only body scrolls.');
+    logLine('- Verify: sliders do not re-render; RUN button triggers render.');
+  });
+
+  document.getElementById('btn-export').addEventListener('click', () => {
+    const exportObj = {
+      version: 'vU.1.6.3-phase1.1',
+      mode: state.mode,
+      substrate: state.substrate,
+      profile: state.profile,
+      log10Nphys: state.log10Nphys,
+      log10Target: state.log10Target,
+      note: 'Phase 1.1 stabilized chassis; no Li(n), no ratio, no circuit breakers.'
+    };
+    const json = JSON.stringify(exportObj, null, 2);
+    logLine('Export JSON:\n' + json);
+  });
+
+  // -----------------------------
+  // Init
+  // -----------------------------
+  window.addEventListener('load', () => {
+    logLine('Ultrafinitist Engine vU.1.6.3 Phase 1.1 — Stabilized Chassis booting...');
+    initDiagnostics();
+    // Auto QA on boot
+    document.getElementById('btn-qa').click();
+    logLine('Ready. Press RUN PHYSICAL SCRUTINY to render plots.');
+  });
+</script>
+</body>
+</html>

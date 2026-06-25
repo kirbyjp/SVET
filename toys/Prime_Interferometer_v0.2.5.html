@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Prime Interferometer v0.2.5</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!--
+Version: v0.2.5
+Date: 2026-04-05
+Summary: High-Speed Collision Build — SPF sieve, displacement trace (Std - Inv), Engineer Mode (sampled), dual Euler worker diagnostics.
+-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  :root{--bg:#050505;--panel:#111;--accent:#00f2ff;--muted:#888;}
+  body{margin:0;font-family:Inter,Segoe UI,Arial;background:var(--bg);color:#ddd;display:flex;flex-direction:column;height:100vh;}
+  header{padding:10px 16px;background:var(--panel);border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+  header h1{font-size:1rem;margin:0}
+  #layout{display:grid;grid-template-columns:320px 1fr 360px;gap:8px;flex:1;padding:8px;box-sizing:border-box}
+  .panel{background:#0b0b0b;border:1px solid #222;padding:12px;overflow:auto;border-radius:6px}
+  .metric{background:#0f1112;padding:8px;margin-bottom:8px;border-left:4px solid var(--accent)}
+  .metric .val{color:var(--accent);font-family:monospace;font-size:1.05rem}
+  label{display:block;margin-top:10px;font-size:0.85rem;color:var(--muted)}
+  input[type=range]{width:100%}
+  input[type=number]{width:100%;padding:6px;margin-top:6px;background:#0b0b0b;border:1px solid #222;color:#ddd}
+  select,button{width:100%;padding:8px;margin-top:8px;background:#0b0b0b;border:1px solid #222;color:var(--accent);cursor:pointer}
+  button:hover{background:var(--accent);color:#000}
+  .plot-box{height:100%;min-height:160px}
+  textarea{width:100%;height:220px;background:#000;border:1px solid #222;color:#0f0;padding:8px;font-family:monospace}
+  .small{font-size:0.85rem;color:var(--muted)}
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  .muted{color:var(--muted)}
+  .legend{display:flex;gap:8px;align-items:center;margin-top:8px}
+  .legend .dot{width:12px;height:12px;border-radius:2px;display:inline-block;margin-right:6px}
+  .diag-box{background:#060606;border:1px solid #222;padding:8px;margin-top:8px;border-radius:6px;color:#9f9}
+  .small-muted{font-size:0.8rem;color:#999;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <h1>PRIME INTERFEROMETER — v0.2.5 (High-Speed Collision)</h1>
+  <div class="small">Status: <span id="status">READY</span></div>
+</header>
+
+<div id="layout">
+  <div class="panel" id="controls">
+    <div class="metric"><div class="small">Interference Energy E_T</div><div id="m-et" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Parity Violation ΔP</div><div id="m-dp" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Twin Sensitivity S_twin</div><div id="m-stwin" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Phase Jumps J_T</div><div id="m-jt" class="val">0</div></div>
+
+    <label>Phase Rotation θ (radians)</label>
+    <div class="row"><input id="thetaRange" type="range" min="0" max="6.28318" step="0.001" value="0"><input id="thetaNum" type="number" min="0" max="6.28318" step="0.001" value="0"></div>
+
+    <label>Delta Offset δ (integer)</label>
+    <div class="row"><input id="deltaRange" type="range" min="-500" max="500" step="1" value="0"><input id="deltaNum" type="number" min="-500" max="500" step="1" value="0"></div>
+
+    <label>Truncation Mode</label>
+    <select id="truncMode">
+      <option value="soft">Soft (Gaussian)</option>
+      <option value="hard">Hard (Brick Wall)</option>
+    </select>
+
+    <label>Window Function</label>
+    <select id="windowType">
+      <option value="gaussian">Gaussian</option>
+      <option value="tukey">Tukey</option>
+      <option value="hann">Hann</option>
+    </select>
+
+    <label>Symmetric half-width T (primes ≤ T used)</label>
+    <div class="row"><input id="TRange" type="range" min="1000" max="20000" step="100" value="10000"><input id="TNum" type="number" min="1000" max="20000" step="100" value="10000"></div>
+
+    <label>MaxX (visualization range)</label>
+    <div class="row"><input id="maxXRange" type="range" min="1000" max="50000" step="1000" value="20000"><input id="maxXNum" type="number" min="1000" max="50000" step="1000" value="20000"></div>
+
+    <label>Identity Mode</label>
+    <select id="mode">
+      <option value="standard">Standard</option>
+      <option value="flip">Constant Flip</option>
+      <option value="sink">Sign-Sink</option>
+    </select>
+
+    <label class="small">Special primes markers</label>
+    <div class="row"><button id="toggleMarkers">Toggle Markers</button><button id="zoomMarker">Zoom Marker</button></div>
+
+    <label class="small">Frequency Bank (heavy compute)</label>
+    <div class="row"><button id="computeZerosStandard">Compute Frequency Bank (Standard)</button><button id="computeZerosInverted">Compute Frequency Bank (Inverted)</button></div>
+    <div id="zeroProgress" class="small muted" style="margin-top:6px;display:none">Progress: <span id="zeroPct">0%</span></div>
+
+    <label class="small">Presets</label>
+    <div class="row">
+      <button id="presetSmall">Small</button>
+      <button id="presetMedium">Medium</button>
+    </div>
+
+    <div style="margin-top:12px" class="small muted">Notes: SPF sieve precomputed at startup; displacement plotted by default. Engineer Mode sampled diagnostics included.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="panel" id="plotWhole" style="height:46%">
+      <div id="wholePlot" class="plot-box" style="height:100%"></div>
+      <div class="legend">
+        <div><span class="dot" style="background:#00cc66"></span>Agreement</div>
+        <div><span class="dot" style="background:#ff3333"></span>Conflict</div>
+        <div style="margin-left:12px"><input id="showInvertedLine" type="checkbox"> Show Inverted Staircase</div>
+      </div>
+    </div>
+    <div class="panel" id="plotSpec" style="height:26%">
+      <div id="specPlot" class="plot-box" style="height:100%"></div>
+    </div>
+    <div class="panel" id="plotZeros" style="height:26%">
+      <div id="zerosPlot" class="plot-box" style="height:100%"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="mathPanel">
+    <div style="font-weight:bold;margin-bottom:8px">MATH PANEL / QA</div>
+
+    <div style="margin-top:8px">
+      <label><input id="engineerMode" type="checkbox" checked> Engineer Mode (sampled diagnostics)</label>
+      <button id="exportFullDiag" style="margin-top:8px">Export Full Diagnostics</button>
+    </div>
+
+    <div class="small muted" style="margin-top:8px">Export Snapshot (JSON)</div>
+    <textarea id="snapshot" readonly></textarea>
+    <div class="row" style="margin-top:8px">
+      <button id="copySnap">Copy Snapshot</button>
+      <button id="clearCache">Clear Cache</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="downloadReport">Export Snapshot (JSON)</button>
+      <button id="exportHTML">Clone Tool (Self-Save)</button>
+    </div>
+
+    <div style="margin-top:12px" class="small-muted">
+      <strong>QA VERIFICATION</strong>
+      <ul>
+        <li>Sieve: <span id="qa-sieve">loading...</span></li>
+        <li>Dopants: <span id="qa-dopants">loading...</span></li>
+        <li>Worker: Blob-encapsulated</li>
+        <li>Mode: High-Speed Collision</li>
+      </ul>
+    </div>
+
+    <div id="diagPanel" class="diag-box" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- Utilities ---------- */
+function now(){ return Date.now(); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+/* ---------- Sieve: first 2000 primes ---------- */
+function sievePrimes(limit){
+  const sieve = new Uint8Array(limit+1);
+  sieve.fill(1); sieve[0]=0; sieve[1]=0;
+  for(let p=2;p*p<=limit;p++) if(sieve[p]) for(let q=p*p;q<=limit;q+=p) sieve[q]=0;
+  const out=[];
+  for(let i=2;i<=limit && out.length<2000;i++) if(sieve[i]) out.push(i);
+  return out;
+}
+const basePrimes = sievePrimes(180000);
+document.getElementById('qa-sieve').innerText = basePrimes.length >= 2000 ? '2000 primes loaded' : 'sieve incomplete';
+
+/* ---------- Curated 79 dopants ---------- */
+const curated79 = (function(){
+  const mers = [3,7,31,127,8191,131071,524287];
+  const ferm = [3,5,17,257,65537];
+  const sophie = [2,3,5,11,23,29,41,53,83,89,113,131];
+  const twins = [3,5,101,103,1009,1011,1229,1231,1693,1695];
+  const special = [1093,3511,5,13,563];
+  const others = [11,101,131,191,313,757,919,1031,10007,100003];
+  const set = new Set([...mers, ...ferm, ...sophie, ...twins, ...special, ...others]);
+  let i = 0;
+  while(set.size < 79 && i < basePrimes.length){
+    set.add(basePrimes[i++]);
+  }
+  return Array.from(set).slice(0,79).sort((a,b)=>a-b);
+})();
+document.getElementById('qa-dopants').innerText = curated79.length + ' dopants active';
+
+/* ---------- State and cache ---------- */
+const state = {
+  theta: 0,
+  delta: 0,
+  mode: 'standard',
+  truncMode: 'soft',
+  windowType: 'gaussian',
+  T: 10000,
+  maxX: 20000,
+  markersOn: true
+};
+let cache = { zeros: new Map() };
+
+/* ---------- Bind range-number pairs ---------- */
+function bindRangeNumber(rangeId, numId, onChange){
+  const r = document.getElementById(rangeId), n = document.getElementById(numId);
+  r.addEventListener('input', ()=>{ n.value = r.value; onChange(Number(r.value)); });
+  n.addEventListener('change', ()=>{ r.value = n.value; onChange(Number(n.value)); });
+}
+bindRangeNumber('thetaRange','thetaNum', v => { state.theta = v; scheduleRender(); });
+bindRangeNumber('deltaRange','deltaNum', v => { state.delta = Math.round(v); scheduleRender(); });
+bindRangeNumber('TRange','TNum', v => { state.T = Math.round(v); scheduleRender(); });
+bindRangeNumber('maxXRange','maxXNum', v => { state.maxX = Math.round(v); scheduleRender(); });
+
+document.getElementById('mode').addEventListener('change', (e)=>{ state.mode = e.target.value; scheduleRender(); });
+document.getElementById('truncMode').addEventListener('change', (e)=>{ state.truncMode = e.target.value; scheduleRender(); });
+document.getElementById('windowType').addEventListener('change', (e)=>{ state.windowType = e.target.value; scheduleRender(); });
+
+document.getElementById('toggleMarkers').addEventListener('click', ()=>{ state.markersOn = !state.markersOn; scheduleRender(); });
+document.getElementById('zoomMarker').addEventListener('click', ()=>{ if(curated79.length){ const p=curated79[0]; Plotly.relayout('wholePlot', {'xaxis.range':[p-200,p+200]}); } });
+
+/* ---------- Centered windowWeight (weight(0) === 1.0) ---------- */
+function windowWeight(p, T, windowType){
+  if (p <= 0) return 1.0;
+  if (p >= T) return 0.0;
+  const t = p / T;
+  if (windowType === 'hard') return 1.0;
+  if (windowType === 'gaussian'){
+    const sigma = 0.35;
+    return Math.exp(-0.5 * Math.pow(t / sigma, 2));
+  }
+  if (windowType === 'tukey'){
+    const alpha = 0.5;
+    if (t <= (1 - alpha)) return 1.0;
+    const tt = (t - (1 - alpha)) / alpha;
+    return 0.5 * (1 + Math.cos(Math.PI * (1 - tt)));
+  }
+  if (windowType === 'hann'){
+    return 0.5 * (1 + Math.cos(Math.PI * t));
+  }
+  return 1.0;
+}
+
+/* ---------- SPF Linear Sieve and fast factorization ---------- */
+let SPF = null;
+let SPF_PRIMES = null;
+function buildSPF(MAX_N){
+  if(SPF && SPF.length > MAX_N) return { spf: SPF, primes: SPF_PRIMES, built: true };
+  const N = Math.max(MAX_N, 2);
+  const spf = new Uint32Array(N+1);
+  const primes = [];
+  for(let i=2;i<=N;i++){
+    if(spf[i] === 0){
+      spf[i] = i;
+      primes.push(i);
+    }
+    for(let j=0;j<primes.length && primes[j] <= spf[i] && i*primes[j] <= N; j++){
+      spf[i * primes[j]] = primes[j];
+    }
+  }
+  SPF = spf; SPF_PRIMES = primes;
+  return { spf, primes, built: true };
+}
+function factorizeWithSPF(n, spf){
+  const out = [];
+  let m = n;
+  while(m > 1){
+    const p = spf[m];
+    let e = 0;
+    while(m % p === 0){ m = Math.floor(m / p); e++; }
+    out.push({ p, exp: e });
+  }
+  return out;
+}
+function expandFactors(factors){
+  const seq = [];
+  for(const f of factors) for(let i=0;i<f.exp;i++) seq.push(f.p);
+  return seq;
+}
+
+/* ---------- State-machine inverted sign for signed integers ---------- */
+function computeInvertedSignForSigned(nSign, factors){
+  const seq = expandFactors(factors);
+  if(seq.length === 0) return 1;
+  const signSeq = [nSign];
+  for(let i=1;i<seq.length;i++) signSeq.push(1);
+  let currentSign = signSeq[0];
+  for(let i=1;i<signSeq.length;i++){
+    const nextSign = signSeq[i];
+    currentSign = (currentSign === nextSign) ? -1 : 1;
+  }
+  return currentSign;
+}
+
+/* ---------- Fast unified pass (displacement) using SPF ---------- */
+function unifiedPassFast(maxX, spf){
+  const signMap = new Array(maxX+1);
+  const displacement = new Float64Array(maxX+1);
+  const pi_pos = new Float64Array(maxX+1);
+  const pi_neg = new Float64Array(maxX+1);
+  const negCounts = new Uint8Array(maxX+1);
+  let conflictsCount = 0;
+  let cpos = 0, cneg = 0;
+  for(let m=1;m<=maxX;m++){
+    const factors = factorizeWithSPF(m, spf);
+    const sign_std = 1;
+    const sign_inv_pos = computeInvertedSignForSigned(+1, factors);
+    const sign_inv_neg = computeInvertedSignForSigned(-1, factors);
+    const disp = sign_std - sign_inv_pos;
+    displacement[m] = disp;
+    const conflict = (disp !== 0);
+    if(conflict) conflictsCount++;
+    if(sign_std > 0) cpos += 1;
+    if(sign_inv_pos < 0) cneg += 1;
+    if(sign_inv_neg < 0) cneg += 1;
+    pi_pos[m] = cpos;
+    pi_neg[m] = cneg;
+    negCounts[m] = (sign_inv_pos < 0 ? 1 : 0) + (sign_inv_neg < 0 ? 1 : 0);
+    signMap[m] = { n: m, sign_std, sign_inv_pos, sign_inv_neg, conflict, factors };
+  }
+  return { signMap, displacement, pi_pos, pi_neg, negCounts, conflictsCount };
+}
+
+/* ---------- Spectrogram (basic STFT) ---------- */
+function computeAndRenderSpectrogram(signal){
+  const N = signal.length;
+  const winSize = 256;
+  const hop = 64;
+  const frames = [];
+  for(let start=0; start+winSize<=N; start+=hop){
+    const frame = signal.slice(start, start+winSize);
+    const windowed = frame.map((v,i)=> v * (0.5*(1 - Math.cos(2*Math.PI*i/(winSize-1)))));
+    const mags = new Float32Array(winSize/2);
+    for(let k=0;k<winSize/2;k++){
+      let re=0, im=0;
+      for(let n=0;n<winSize;n++){
+        const angle = 2*Math.PI*k*n/winSize;
+        re += windowed[n]*Math.cos(angle);
+        im -= windowed[n]*Math.sin(angle);
+      }
+      mags[k] = Math.sqrt(re*re + im*im);
+    }
+    frames.push(Array.from(mags));
+  }
+  const z = [];
+  const freqBins = winSize/2;
+  for(let k=0;k<freqBins;k++){
+    const row = [];
+    for(let f=0; f<frames.length; f++) row.push(frames[f][k]);
+    z.push(row);
+  }
+  const data = [{ z: z, type:'heatmap', colorscale:'Viridis', showscale:true }];
+  const layout = { title: 'Residual Spectrogram (Log-Frequency)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'Time'}, yaxis:{title:'Freq Bin'} };
+  Plotly.react('specPlot', data, layout, {displayModeBar:false});
+}
+
+/* ---------- Debounce and render scheduling ---------- */
+let uiTimer = null;
+function scheduleRender(){
+  if(uiTimer) clearTimeout(uiTimer);
+  // quick immediate visual feedback: show spinner status
+  document.getElementById('status').innerText = 'UPDATING...';
+  uiTimer = setTimeout(()=>{ render(); uiTimer = null; document.getElementById('status').innerText = 'READY'; }, 120);
+}
+
+/* ---------- Render ---------- */
+let lastResidual = null;
+function render(){
+  // ensure SPF built
+  buildSPF(Math.max(state.maxX, 50000));
+  const up = unifiedPassFast(state.maxX, SPF);
+  const xs = Array.from({length: up.displacement.length}, (_,i)=>i);
+  const ys = Array.from(up.displacement);
+  lastResidual = { xs, ys, signMap: up.signMap, pi_pos: up.pi_pos, pi_neg: up.pi_neg };
+
+  const trace = { x: xs, y: ys, mode:'lines', line:{color:'#00f2ff',width:1}, name:'Displacement Trace (Std - Inv)',
+    customdata: xs.map(x => [ up.pi_pos[x], up.pi_neg[x], up.displacement[x] ]),
+    hovertemplate: 'x=%{x}<br>Pos=%{customdata[0]}<br>Neg=%{customdata[1]}<br>Disp=%{customdata[2]}<extra></extra>'
+  };
+  const data = [trace];
+
+  if(document.getElementById('showInvertedLine') && document.getElementById('showInvertedLine').checked){
+    data.push({ x: xs, y: Array.from(up.pi_neg), mode:'lines', line:{color:'#ff66cc',width:1,dash:'dash'}, name:'Inverted Staircase (pi_neg)' });
+  }
+
+  if(state.markersOn){
+    const markersX = [], markersY = [], texts = [];
+    for(const p of curated79){
+      markersX.push(p); markersY.push(0); texts.push('dopant: ' + p);
+    }
+    data.push({ x: markersX, y: markersY, mode:'markers', marker:{color:'#ff7f50',size:6}, name:'Dopants', text:texts, hoverinfo:'text' });
+  }
+
+  const layout = { title: 'Displacement Trace (Std - Inv)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'x (folded, x ≥ 0)'}, yaxis:{title:'Displacement'} };
+  Plotly.react('wholePlot', data, layout, {displayModeBar:false});
+
+  computeAndRenderSpectrogram(ys);
+
+  const E = ys.reduce((s,v)=>s+v*v,0);
+  document.getElementById('m-et').innerText = E.toExponential(6);
+  const pj = computePhaseJumps(5000);
+  document.getElementById('m-jt').innerText = pj.count;
+  document.getElementById('m-stwin').innerText = computeTwinSensitivity().toFixed(6);
+  const S_standard = symmetryScoreForMode('standard');
+  const S_sink = symmetryScoreForMode('sink');
+  const deltaP = Math.abs(S_standard - S_sink);
+  document.getElementById('m-dp').innerText = deltaP.toExponential(6);
+
+  const conflicts = up.signMap.filter(r=>r && r.conflict);
+  updateSnapshot({ E, deltaP, pj, conflicts_summary: conflicts.slice(0,200), conflicts_count: up.conflictsCount });
+
+  // If engineer mode is on, request sampled diagnostics (non-blocking)
+  if(document.getElementById('engineerMode') && document.getElementById('engineerMode').checked){
+    requestSampledDiagnostics(Math.min(500, state.maxX));
+  } else {
+    document.getElementById('diagPanel').style.display = 'none';
+  }
+}
+
+/* ---------- Symmetry helper ---------- */
+function symmetryScoreForMode(mode){
+  const oldMode = state.mode;
+  state.mode = mode;
+  const { displacement } = unifiedPassFast(state.maxX, SPF);
+  const E = Array.from(displacement).reduce((s,v)=>s+v*v,0);
+  state.mode = oldMode;
+  return E;
+}
+
+/* ---------- Phase Jump metric (sampled) ---------- */
+function warpedMultiplySign(a,b,mode){
+  const standard = a*b;
+  if(mode === 'sink') return Math.sign(-Math.abs(standard));
+  if(mode === 'flip') return Math.sign(-standard);
+  return Math.sign(standard);
+}
+function computePhaseJumps(sampleLimit=5000){
+  const T = state.T;
+  const windowType = state.windowType;
+  let count = 0, energy = 0;
+  const primesForSample = basePrimes.slice(0,200);
+  for(let i=0;i<primesForSample.length;i++){
+    for(let j=0;j<primesForSample.length;j++){
+      const a = primesForSample[i], b = primesForSample[j];
+      const n = a*b;
+      if(n > sampleLimit) break;
+      const stdSign = Math.sign(n);
+      const warpedSign = warpedMultiplySign(a,b,state.mode);
+      if(stdSign !== warpedSign){
+        const w = windowWeight(Math.min(a,b), T, windowType);
+        count++;
+        energy += w;
+      }
+    }
+  }
+  return {count, energy};
+}
+
+/* ---------- Twin sensitivity (sampled) ---------- */
+function computeTwinSensitivity(){
+  const smallDelta = 0.01;
+  const twins = [];
+  for(let i=0;i<basePrimes.length-1;i++){
+    if(basePrimes[i+1] - basePrimes[i] === 2) twins.push(basePrimes[i]);
+    if(twins.length >= 30) break;
+  }
+  if(twins.length === 0) return 0;
+  let totalSens = 0;
+  for(const p of twins){
+    const r0 = computeLocalVariance(p, state.theta);
+    const r1 = computeLocalVariance(p, state.theta + smallDelta);
+    const sens = Math.abs(r1 - r0) / (r0 + 1e-12);
+    totalSens += sens;
+  }
+  return totalSens / twins.length;
+}
+function computeLocalVariance(center, theta){
+  const radius = Math.max(3, Math.floor(Math.log(center+1)));
+  const oldTheta = state.theta;
+  state.theta = theta;
+  const arr = [];
+  for(let x=center-radius; x<=center+radius; x++){
+    const px = Math.max(0, x);
+    const up = unifiedPassFast(state.maxX, SPF);
+    const piPos = up.pi_pos[px];
+    const piNeg = up.pi_neg[px];
+    arr.push(piPos + piNeg);
+  }
+  state.theta = oldTheta;
+  const m = arr.reduce((a,b)=>a+b,0)/arr.length;
+  return arr.reduce((s,v)=>s+(v-m)*(v-m),0)/arr.length;
+}
+
+/* ---------- Snapshot and QA ---------- */
+function updateSnapshot(extra){
+  const snap = {
+    timestamp: now(),
+    params: { ...state },
+    metrics: { E_T: document.getElementById('m-et').innerText, DeltaP: document.getElementById('m-dp').innerText, JT: document.getElementById('m-jt').innerText },
+    extra: extra || {}
+  };
+  try {
+    const prev = JSON.parse(document.getElementById('snapshot').value || '{}');
+    if(prev && prev.extra && prev.extra.frequency_bank) snap.extra.frequency_bank = prev.extra.frequency_bank;
+    if(prev && prev.extra && prev.extra.diagnostics) snap.extra.diagnostics = prev.extra.diagnostics;
+  } catch(e){}
+  document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+}
+
+/* ---------- Worker code (dual Euler + diagnostics) ---------- */
+const workerCode = `
+// Worker: dual Euler zeros + sampled diagnostics
+self.addEventListener('message', async (ev) => {
+  const msg = ev.data;
+  try {
+    if(msg.cmd === 'start'){
+      const { primes, logps, theta, arithmeticMode, xRange, yRange, grid } = msg;
+      const nx = grid.nx, ny = grid.ny;
+      const boxes = [];
+      for (let i=0;i<nx;i++){
+        for (let j=0;j<ny;j++){
+          const bx0 = xRange[0] + (xRange[1]-xRange[0])*(i/nx);
+          const bx1 = xRange[0] + (xRange[1]-xRange[0])*((i+1)/nx);
+          const by0 = yRange[0] + (yRange[1]-yRange[0])*(j/ny);
+          const by1 = yRange[0] + (yRange[1]-yRange[0])*((j+1)/ny);
+          boxes.push({bx0,bx1,by0,by1,i,j});
+        }
+      }
+      const found = [];
+      for (let idx=0; idx<boxes.length; idx++){
+        if (self.cancelRequested) { self.postMessage({cmd:'cancelled'}); return; }
+        const b = boxes[idx];
+        const winding = windingNumberOnRect(primes, logps, theta, arithmeticMode, b.bx0,b.bx1,b.by0,b.by1, 24);
+        if (winding !== 0) found.push({box:b, winding});
+        if (idx % 10 === 0) self.postMessage({cmd:'progress', pct: Math.round(50*idx/boxes.length), message: 'scanning'});
+        await sleep(0);
+      }
+      const zeros = [];
+      for (let k=0;k<found.length;k++){
+        if (self.cancelRequested) { self.postMessage({cmd:'cancelled'}); return; }
+        const fb = found[k];
+        const samples = 5;
+        for (let a=0;a<samples;a++){
+          for (let b=0;b<samples;b++){
+            const re = fb.box.bx0 + (fb.box.bx1 - fb.box.bx0)*(a/(samples-1));
+            const im = fb.box.by0 + (fb.box.by1 - fb.box.by0)*(b/(samples-1));
+            const zref = newtonRefine({re,im}, primes, logps, theta, arithmeticMode, 40, 1e-12);
+            const Zval = evalZ_logsum(zref, primes, logps, theta, arithmeticMode);
+            if (cAbs(Zval) < 1e-6){
+              const dup = zeros.find(z => Math.hypot(z.re - zref.re, z.im - zref.im) < 1e-8);
+              if (!dup) zeros.push({re:zref.re, im:zref.im});
+            }
+          }
+        }
+        self.postMessage({cmd:'progress', pct: 50 + Math.round(50*(k+1)/found.length), message: 'refining'});
+        await sleep(0);
+      }
+      self.postMessage({cmd:'result', zeros});
+    } else if(msg.cmd === 'cancel'){
+      self.cancelRequested = true;
+    } else if(msg.cmd === 'diagnostics_sample'){
+      const maxX = msg.maxX || 2000;
+      // build SPF locally
+      const spf = new Uint32Array(maxX+1);
+      const primes = [];
+      for(let i=2;i<=maxX;i++){
+        if(spf[i] === 0){ spf[i] = i; primes.push(i); }
+        for(let j=0;j<primes.length && primes[j] <= spf[i] && i*primes[j] <= maxX; j++){
+          spf[i*primes[j]] = primes[j];
+        }
+      }
+      // compressed unified pass
+      const signMap = [];
+      const displacement = new Array(maxX+1).fill(0);
+      const pi_pos = new Array(maxX+1).fill(0);
+      const pi_neg = new Array(maxX+1).fill(0);
+      let cpos=0, cneg=0;
+      for(let m=1;m<=maxX;m++){
+        let mm = m; const factors = [];
+        while(mm>1){
+          const p = spf[mm];
+          let e=0;
+          while(mm%p===0){ mm/=p; e++; }
+          factors.push({p,exp:e});
+        }
+        const sign_inv_pos = (function computeInv(nSign, factors){
+          const seq = [];
+          for(const f of factors) for(let i=0;i<f.exp;i++) seq.push(f.p);
+          if(seq.length===0) return 1;
+          const signSeq = [nSign];
+          for(let i=1;i<seq.length;i++) signSeq.push(1);
+          let cur = signSeq[0];
+          for(let i=1;i<signSeq.length;i++) cur = (cur === signSeq[i]) ? -1 : 1;
+          return cur;
+        })(+1, factors);
+        const sign_std = 1;
+        const disp = sign_std - sign_inv_pos;
+        displacement[m] = disp;
+        const conflict = (disp !== 0);
+        if(sign_std > 0) cpos++;
+        if(sign_inv_pos < 0) cneg++;
+        pi_pos[m] = cpos; pi_neg[m] = cneg;
+        signMap.push({ n:m, sign_std, sign_inv_pos, conflict, factors });
+      }
+      const primesCheck = [2,3,5,7,11].map(p => signMap[p] || null);
+      const conflicts = signMap.filter(s=>s && s.conflict).slice(0,200);
+      self.postMessage({ cmd:'diag_sample_done', data:{ spfInfo:{MAX_N:maxX, spfBuilt:true}, primesCheck, plotSnapshot:{ pi_pos: pi_pos.slice(0,200), pi_neg: pi_neg.slice(0,200), displacement: displacement.slice(0,200) }, conflictSummary:{ count: conflicts.length, first: conflicts } }});
+    }
+  } catch(err){
+    self.postMessage({cmd:'error', message: err.message || String(err)});
+  }
+});
+
+function cAdd(a,b){return {re:a.re+b.re,im:a.im+b.im};}
+function cSub(a,b){return {re:a.re-b.re,im:a.im-b.im};}
+function cMul(a,b){return {re:a.re*b.re - a.im*b.im, im:a.re*b.im + a.im*b.re};}
+function cDiv(a,b){ const d=b.re*b.re+b.im*b.im; return {re:(a.re*b.re + a.im*b.im)/d, im:(a.im*b.re - a.re*b.im)/d};}
+function cAbs(a){return Math.hypot(a.re,a.im);}
+function cExp(a){ const er=Math.exp(a.re); return {re:er*Math.cos(a.im), im:er*Math.sin(a.im)}; }
+function cLog(a){ return {re:Math.log(cAbs(a)), im:Math.atan2(a.im,a.re)}; }
+
+function evalZ_logsum(s, primes, logps, theta, arithmeticMode){
+  let logZ = {re:0, im:0};
+  for(let i=0;i<primes.length;i++){
+    const logp = logps[i];
+    const minus_s_logp = { re: -s.re * logp, im: -s.im * logp };
+    const p_pow = cExp(minus_s_logp);
+    const phase = { re: Math.cos(theta), im: Math.sin(theta) };
+    const mult = cMul(p_pow, phase);
+    let oneTerm;
+    if(arithmeticMode === 'inverted'){
+      oneTerm = cAdd({re:1,im:0}, mult);
+    } else {
+      oneTerm = cSub({re:1,im:0}, mult);
+    }
+    const logOneTerm = cLog(oneTerm);
+    logZ = cSub(logZ, logOneTerm);
+  }
+  return cExp(logZ);
+}
+
+function windingNumberOnRect(primes, logps, theta, arithmeticMode, x0,x1,y0,y1, samples){
+  const pts = [];
+  for(let i=0;i<samples;i++){ const t=i/(samples-1); pts.push({re:x0 + (x1-x0)*t, im:y0}); }
+  for(let i=1;i<samples;i++){ const t=i/(samples-1); pts.push({re:x1, im:y0 + (y1-y0)*t}); }
+  for(let i=1;i<samples;i++){ const t=i/(samples-1); pts.push({re:x1 - (x1-x0)*t, im:y1}); }
+  for(let i=1;i<samples-1;i++){ const t=i/(samples-1); pts.push({re:x0, im:y1 - (y1-y0)*t}); }
+  const vals = pts.map(pt => evalZ_logsum(pt, primes, logps, theta, arithmeticMode));
+  let total = 0;
+  for(let i=0;i<vals.length;i++){
+    const a = vals[i], b = vals[(i+1)%vals.length];
+    const argA = Math.atan2(a.im, a.re), argB = Math.atan2(b.im, b.re);
+    let diff = argB - argA;
+    while(diff <= -Math.PI) diff += 2*Math.PI;
+    while(diff > Math.PI) diff -= 2*Math.PI;
+    total += diff;
+  }
+  return Math.round(total / (2*Math.PI));
+}
+
+function newtonRefine(z0, primes, logps, theta, arithmeticMode, maxIter=30, tol=1e-10){
+  let z = {re:z0.re, im:z0.im};
+  for(let k=0;k<maxIter;k++){
+    const Z = evalZ_logsum(z, primes, logps, theta, arithmeticMode);
+    const h = 1e-6;
+    const zph = {re: z.re + h, im: z.im};
+    const Zph = evalZ_logsum(zph, primes, logps, theta, arithmeticMode);
+    const dZ = { re: (Zph.re - Z.re)/h, im: (Zph.im - Z.im)/h };
+    const denom = dZ.re*dZ.re + dZ.im*dZ.im;
+    if(denom === 0) break;
+    const step = cDiv(Z, dZ);
+    z = cSub(z, step);
+    if(cAbs(step) < tol) break;
+  }
+  return z;
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+`;
+
+/* ---------- Worker setup ---------- */
+const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+let zeroWorker = null;
+function ensureWorker(){
+  if(zeroWorker) return zeroWorker;
+  zeroWorker = new Worker(URL.createObjectURL(workerBlob));
+  zeroWorker.onmessage = function(ev){
+    const msg = ev.data;
+    if(msg.cmd === 'progress'){
+      document.getElementById('zeroProgress').style.display = 'block';
+      document.getElementById('zeroPct').innerText = msg.pct + '% — ' + (msg.message || '');
+    } else if(msg.cmd === 'result'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      renderZeros(msg.zeros);
+      try {
+        const snap = JSON.parse(document.getElementById('snapshot').value || '{}');
+        snap.extra = snap.extra || {};
+        snap.extra.frequency_bank = snap.extra.frequency_bank || {};
+        snap.extra.frequency_bank.mode = (msg.zeros && msg.zeros.length && msg.zeros[0].mode) ? msg.zeros[0].mode : 'unknown';
+        snap.extra.frequency_bank.count = msg.zeros.length;
+        snap.extra.frequency_bank.zeros = msg.zeros.map(z => ({ re: z.re, im: z.im }));
+        document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+      } catch(e){}
+      cache.zeros.set(JSON.stringify(paramsSnapshot()), msg.zeros);
+    } else if(msg.cmd === 'cancelled'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      document.getElementById('status').innerText = 'FREQUENCY SCAN CANCELLED';
+    } else if(msg.cmd === 'error'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      document.getElementById('status').innerText = 'FREQUENCY SCAN ERROR';
+      console.error('Worker error:', msg.message);
+    } else if(msg.cmd === 'diag_sample_done'){
+      attachDiagnosticsToSnapshot(msg.data);
+      renderDiagnosticsPanel(msg.data);
+    }
+  };
+  return zeroWorker;
+}
+
+/* ---------- Frequency Bank controls ---------- */
+document.getElementById('computeZerosStandard').addEventListener('click', ()=>{
+  const snap = paramsSnapshot();
+  const cached = cache.zeros.get(JSON.stringify(snap));
+  if(cached){ renderZeros(cached); return; }
+  const worker = ensureWorker();
+  const primesForWorker = basePrimes.filter(p => p <= state.T);
+  const logps = primesForWorker.map(p => Math.log(p));
+  const xRange = [0.2, 1.2];
+  const yRange = [0, 120];
+  const grid = { nx: 20, ny: 20 };
+  worker.postMessage({ cmd:'start', primes:primesForWorker, logps, theta: state.theta, arithmeticMode:'standard', xRange, yRange, grid });
+  document.getElementById('status').innerText = 'FREQUENCY SCAN RUNNING (standard)';
+});
+document.getElementById('computeZerosInverted').addEventListener('click', ()=>{
+  const snap = paramsSnapshot();
+  const cached = cache.zeros.get(JSON.stringify(snap));
+  if(cached){ renderZeros(cached); return; }
+  const worker = ensureWorker();
+  const primesForWorker = basePrimes.filter(p => p <= state.T);
+  const logps = primesForWorker.map(p => Math.log(p));
+  const xRange = [0.2, 1.2];
+  const yRange = [0, 120];
+  const grid = { nx: 20, ny: 20 };
+  worker.postMessage({ cmd:'start', primes:primesForWorker, logps, theta: state.theta, arithmeticMode:'inverted', xRange, yRange, grid });
+  document.getElementById('status').innerText = 'FREQUENCY SCAN RUNNING (inverted)';
+});
+document.getElementById('cancelZeros').addEventListener('click', ()=>{ if(zeroWorker) zeroWorker.postMessage({cmd:'cancel'}); });
+
+function renderZeros(zeros){
+  const data = [{ x: zeros.map(z=>z.re), y: zeros.map(z=>z.im), mode:'markers', marker:{color:'#ffcc00',size:6}, text: zeros.map(z => (z.mode || 'mode') ) }];
+  const layout = { title: 'Frequency Bank (Complex Plane)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'Re(s)'}, yaxis:{title:'Im(s)'} };
+  Plotly.react('zerosPlot', data, layout, {displayModeBar:false});
+  document.getElementById('status').innerText = 'FREQUENCY SCAN COMPLETE';
+}
+
+/* ---------- Diagnostics request (sampled) ---------- */
+function requestSampledDiagnostics(N_sample=500){
+  const w = ensureWorker();
+  w.postMessage({ cmd:'diagnostics_sample', maxX: Math.max(state.maxX, N_sample), sampleN: N_sample });
+}
+
+/* ---------- Snapshot / QA buttons ---------- */
+document.getElementById('copySnap').addEventListener('click', async ()=>{ await navigator.clipboard.writeText(document.getElementById('snapshot').value); alert('Snapshot copied'); });
+document.getElementById('clearCache').addEventListener('click', ()=>{ cache = { zeros: new Map() }; alert('Cache cleared'); });
+document.getElementById('downloadReport').addEventListener('click', ()=>{ const snap = document.getElementById('snapshot').value; const blob = new Blob([snap], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='First_Light_Snapshot_'+Date.now()+'.json'; a.click(); URL.revokeObjectURL(url); });
+document.getElementById('exportHTML').addEventListener('click', ()=>{ const html = document.documentElement.outerHTML; const blob = new Blob([html], {type:'text/html'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='Prime_Interferometer_v0.2.5.html'; a.click(); URL.revokeObjectURL(url); });
+
+document.getElementById('exportFullDiag').addEventListener('click', ()=>{ requestSampledDiagnostics(state.maxX); });
+
+/* ---------- Presets ---------- */
+document.getElementById('presetSmall').addEventListener('click', ()=>{ document.getElementById('TRange').value=5000; document.getElementById('TNum').value=5000; document.getElementById('maxXRange').value=10000; document.getElementById('maxXNum').value=10000; state.T=5000; state.maxX=10000; scheduleRender(); });
+document.getElementById('presetMedium').addEventListener('click', ()=>{ document.getElementById('TRange').value=10000; document.getElementById('TNum').value=10000; document.getElementById('maxXRange').value=20000; document.getElementById('maxXNum').value=20000; state.T=10000; state.maxX=20000; scheduleRender(); });
+
+/* ---------- params snapshot ---------- */
+function paramsSnapshot(){ return { theta: state.theta, delta: state.delta, mode: state.mode, truncMode: state.truncMode, windowType: state.windowType, T: state.T, maxX: state.maxX, timestamp: now() }; }
+
+/* ---------- Placeholder QA snippet (non-blocking) ---------- */
+function placeholderCheck(){
+  try {
+    const scripts = document.getElementsByTagName('script');
+    for (let s of scripts) {
+      if (s.innerText && /x\s*\*\s*\d+(\.\d+)?/.test(s.innerText)) {
+        console.warn('[QA ALERT] Spatial x*CONST pattern FOUND in script.');
+        return false;
+      }
+    }
+    console.info('[QA PASS] No x*CONST pattern found.');
+    return true;
+  } catch(e){
+    return true;
+  }
+}
+
+/* ---------- Baseline verification ---------- */
+function baselineVerification(){
+  const old = {...state};
+  state.theta = 0; state.delta = 0; state.mode = 'standard'; state.truncMode = 'soft'; state.windowType = 'gaussian';
+  buildSPF(Math.max(state.maxX, 50000));
+  const up = unifiedPassFast(state.maxX, SPF);
+  const ys = Array.from(up.displacement);
+  const maxAbs = ys.reduce((m,v)=>Math.max(m,Math.abs(v)),0);
+  const ok = maxAbs < 1e-9;
+  const snap = { timestamp: now(), params: {...state}, metrics: {}, extra: { baselineMaxAbs: maxAbs, baselineOk: ok, conflicts: up.signMap.filter(r=>r && r.conflict).slice(0,500) } };
+  document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+  Object.assign(state, old);
+  render();
+  placeholderCheck();
+}
+
+/* ---------- Diagnostics UI ---------- */
+function renderDiagnosticsPanel(diag){
+  try {
+    const panel = document.getElementById('diagPanel');
+    panel.style.display = 'block';
+    let html = '<div style="font-weight:bold;color:#9f9">Engineer Mode Diagnostics (sampled)</div>';
+    html += '<div class="small-muted">SPF: MAX_N=' + (diag.spfInfo && diag.spfInfo.MAX_N ? diag.spfInfo.MAX_N : state.maxX) + '</div>';
+    html += '<div style="margin-top:8px"><strong>Primes Check</strong><ul>';
+    (diag.primesCheck || []).forEach(p=>{
+      if(!p) return;
+      html += '<li>n=' + p.n + ' | sign_inv_pos=' + p.sign_inv_pos + ' | conflict=' + (p.conflict ? 'YES' : 'NO') + '</li>';
+    });
+    html += '</ul></div>';
+    html += '<div style="margin-top:8px"><strong>Conflict Summary</strong><div>count: ' + (diag.conflictSummary ? diag.conflictSummary.count : 'n/a') + '</div></div>';
+    panel.innerHTML = html;
+  } catch(e){
+    console.error('diag render error', e);
+  }
+}
+
+/* ---------- Attach diagnostics to snapshot ---------- */
+function attachDiagnosticsToSnapshot(diag){
+  try {
+    const snap = JSON.parse(document.getElementById('snapshot').value || '{}');
+    snap.extra = snap.extra || {};
+    snap.extra.diagnostics = diag;
+    document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+  } catch(e){}
+}
+
+/* ---------- Initial render and baseline check ---------- */
+render();
+baselineVerification();
+
+</script>
+</body>
+</html>

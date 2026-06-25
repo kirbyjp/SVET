@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<!--
+svet_toy.html — SVET 2D lattice toy model (single-file prototype)
+
+Usage guide (short):
+- Open this file in any modern browser (no build tools needed).
+- Left panel: set lattice/physics parameters and choose update operator (Diffusion or Wave).
+- Scenarios:
+  1) Localized seed: click "Apply Localized Seed" to place a high-amplitude cluster at the center, then "Start".
+     Watch Ψ(x,y) on the canvas and inspect the radial Ψ(r) profile and A/r fit in the Diagnostics panel.
+  2) Homogeneous evolution: enable "Homogeneous evolution" and set a slow drift rate for Uref.
+     Run and watch Ψavg(t) and its log-fit slope as a proxy for a(t) scaling.
+  3) Moving pattern: enable "Moving pattern", set pattern speed and ceff, then "Apply Moving Seed" and "Start".
+     Diagnostics show Doppler proxy 1+z = exp(ΔΨ) vs theoretical Doppler factor for the chosen speed.
+- Visualization:
+  - Canvas shows Ψ(x,y) as a color map (blue = low, red = high). Optionally overlay node state s.
+- Diagnostics:
+  - Radial Ψ(r) and A/r fit (centered on lattice center).
+  - Ψavg(t) and log-fit slope.
+  - Doppler proxy 1+z = exp(ΔΨ) vs theoretical Doppler factor.
+  - "Download CSV" exports time-series diagnostics.
+- Tests:
+  - Click "Run Automated Tests" to run three quick checks; results print to the browser console.
+
+To tweak physics:
+- See JS section: strain σ_i, budget U_i, Ψ_i, and update operators are clearly marked.
+- Change κ, Ucap, Uref, update operator, or wave/diffusion formulas directly in the code comments.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SVET Toy Model</title>
+<style>
+  body { margin: 0; font-family: sans-serif; background:#111; color:#eee; display:flex; height:100vh; }
+  #controls { width: 320px; padding: 8px; box-sizing:border-box; background:#181818; overflow-y:auto; }
+  #controls h2 { margin:6px 0; font-size:16px; }
+  #controls label { font-size:12px; display:block; margin-top:4px; }
+  #controls input, #controls select, #controls button { width:100%; margin-top:2px; margin-bottom:4px; font-size:12px; }
+  #main { flex:1; display:flex; flex-direction:column; }
+  #canvasContainer { flex:1; display:flex; align-items:center; justify-content:center; background:#000; }
+  #svetCanvas { border:1px solid #444; image-rendering:pixelated; }
+  #diagnostics { height:180px; padding:6px; box-sizing:border-box; background:#202020; font-size:11px; overflow-y:auto; white-space:pre; }
+  .row { display:flex; gap:4px; }
+  .row > div { flex:1; }
+</style>
+</head>
+<body>
+<div id="controls">
+  <h2>SVET Toy Model</h2>
+  <div>
+    <label>Lattice size (N x N)</label>
+    <input id="sizeInput" type="number" min="16" max="256" value="64">
+    <label>Ucap</label>
+    <input id="ucapInput" type="number" step="0.1" value="1.0">
+    <label>Uref</label>
+    <input id="urefInput" type="number" step="0.01" value="0.5">
+    <label>κ (kappa)</label>
+    <input id="kappaInput" type="number" step="0.01" value="0.5">
+    <label>Time step dt</label>
+    <input id="dtInput" type="number" step="0.001" value="0.05">
+    <label>Update operator</label>
+    <select id="opSelect">
+      <option value="diffusion">Diffusion (Laplacian)</option>
+      <option value="wave">Wave (2nd order)</option>
+    </select>
+    <label>Seed size (radius in cells)</label>
+    <input id="seedSizeInput" type="number" min="1" value="4">
+    <label>Seed amplitude</label>
+    <input id="seedAmpInput" type="number" step="0.1" value="2.0">
+    <label>Pattern speed (cells/step)</label>
+    <input id="patternSpeedInput" type="number" step="0.01" value="0.2">
+    <label>Effective signal speed c_eff</label>
+    <input id="ceffInput" type="number" step="0.01" value="1.0">
+    <label><input id="showStateOverlay" type="checkbox"> Show node state overlay</label>
+  </div>
+  <hr>
+  <div>
+    <strong>Scenarios</strong>
+    <label><input id="homogCheckbox" type="checkbox"> Homogeneous evolution (slow Uref drift)</label>
+    <label>Homog drift rate (d ln Uref / dt)</label>
+    <input id="homogRateInput" type="number" step="0.0001" value="0.001">
+    <label><input id="movingCheckbox" type="checkbox"> Moving pattern enabled</label>
+    <label>Phase gradient (for moving alt.)</label>
+    <input id="phaseGradInput" type="number" step="0.01" value="0.0">
+  </div>
+  <hr>
+  <div>
+    <button id="initBtn">Init Lattice</button>
+    <button id="seedBtn">Apply Localized Seed</button>
+    <button id="movingSeedBtn">Apply Moving Seed</button>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+    <button id="stepBtn">Step Once</button>
+  </div>
+  <div>
+    <button id="downloadBtn">Download CSV</button>
+    <button id="testBtn">Run Automated Tests</button>
+  </div>
+</div>
+<div id="main">
+  <div id="canvasContainer">
+    <canvas id="svetCanvas" width="512" height="512"></canvas>
+  </div>
+  <div id="diagnostics"></div>
+</div>
+
+<script>
+// --- Core model state ---
+let N = 64;
+let s, sPrev, psi, U, sigma;
+let dt = 0.05;
+let Ucap = 1.0, Uref = 0.5, kappa = 0.5;
+let running = false;
+let opType = "diffusion";
+let t = 0;
+let centerIndex = 0;
+let patternPhase = 0;
+let patternX = 0;
+let diagnostics = {
+  time: [],
+  psiAvg: [],
+  psiAvgLogFitSlope: 0,
+  radialR: [],
+  radialPsi: [],
+  radialAoverR: 0,
+  dopplerProxy: [],
+  dopplerTheory: []
+};
+let homogEnabled = false;
+let homogRate = 0.001;
+let movingEnabled = false;
+let patternSpeed = 0.2;
+let ceff = 1.0;
+let phaseGrad = 0.0;
+let seedSize = 4;
+let seedAmp = 2.0;
+let showStateOverlay = false;
+
+// Canvas
+const canvas = document.getElementById("svetCanvas");
+const ctx = canvas.getContext("2d");
+
+// UI elements
+const sizeInput = document.getElementById("sizeInput");
+const ucapInput = document.getElementById("ucapInput");
+const urefInput = document.getElementById("urefInput");
+const kappaInput = document.getElementById("kappaInput");
+const dtInput = document.getElementById("dtInput");
+const opSelect = document.getElementById("opSelect");
+const seedSizeInput = document.getElementById("seedSizeInput");
+const seedAmpInput = document.getElementById("seedAmpInput");
+const patternSpeedInput = document.getElementById("patternSpeedInput");
+const ceffInput = document.getElementById("ceffInput");
+const homogCheckbox = document.getElementById("homogCheckbox");
+const homogRateInput = document.getElementById("homogRateInput");
+const movingCheckbox = document.getElementById("movingCheckbox");
+const phaseGradInput = document.getElementById("phaseGradInput");
+const showStateOverlayCheckbox = document.getElementById("showStateOverlay");
+const diagDiv = document.getElementById("diagnostics");
+
+// --- Utility ---
+function idx(x, y) {
+  // periodic boundaries
+  x = (x + N) % N;
+  y = (y + N) % N;
+  return y * N + x;
+}
+
+function initLattice() {
+  N = parseInt(sizeInput.value) || 64;
+  Ucap = parseFloat(ucapInput.value);
+  Uref = parseFloat(urefInput.value);
+  kappa = parseFloat(kappaInput.value);
+  dt = parseFloat(dtInput.value);
+  opType = opSelect.value;
+  seedSize = parseFloat(seedSizeInput.value);
+  seedAmp = parseFloat(seedAmpInput.value);
+  patternSpeed = parseFloat(patternSpeedInput.value);
+  ceff = parseFloat(ceffInput.value);
+  homogEnabled = homogCheckbox.checked;
+  homogRate = parseFloat(homogRateInput.value);
+  movingEnabled = movingCheckbox.checked;
+  phaseGrad = parseFloat(phaseGradInput.value);
+  showStateOverlay = showStateOverlayCheckbox.checked;
+
+  const size = N * N;
+  s = new Float32Array(size);
+  sPrev = new Float32Array(size);
+  psi = new Float32Array(size);
+  U = new Float32Array(size);
+  sigma = new Float32Array(size);
+  t = 0;
+  centerIndex = idx(Math.floor(N / 2), Math.floor(N / 2));
+  patternX = N / 2;
+  patternPhase = 0;
+  diagnostics = {
+    time: [],
+    psiAvg: [],
+    psiAvgLogFitSlope: 0,
+    radialR: [],
+    radialPsi: [],
+    radialAoverR: 0,
+    dopplerProxy: [],
+    dopplerTheory: []
+  };
+  clearField();
+  updateAll();
+  render();
+  updateDiagnosticsPanel();
+}
+
+function clearField() {
+  s.fill(0);
+  sPrev.fill(0);
+}
+
+// Localized seed at center
+function applyLocalizedSeed() {
+  if (!s) return;
+  seedSize = parseFloat(seedSizeInput.value);
+  seedAmp = parseFloat(seedAmpInput.value);
+  const cx = Math.floor(N / 2);
+  const cy = Math.floor(N / 2);
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      if (r <= seedSize) {
+        s[idx(x, y)] = seedAmp * Math.exp(- (r * r) / (2 * seedSize * seedSize));
+      }
+    }
+  }
+  sPrev.set(s);
+  updateAll();
+  render();
+  updateDiagnosticsPanel();
+}
+
+// Moving seed: coherent pattern that will be translated
+function applyMovingSeed() {
+  if (!s) return;
+  clearField();
+  seedSize = parseFloat(seedSizeInput.value);
+  seedAmp = parseFloat(seedAmpInput.value);
+  patternSpeed = parseFloat(patternSpeedInput.value);
+  phaseGrad = parseFloat(phaseGradInput.value);
+  const cy = Math.floor(N / 2);
+  const cx = Math.floor(patternX);
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x - cx;
+      const dy = y - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      if (r <= seedSize) {
+        const phase = phaseGrad * x;
+        s[idx(x, y)] = seedAmp * Math.cos(phase) * Math.exp(- (r * r) / (2 * seedSize * seedSize));
+      }
+    }
+  }
+  sPrev.set(s);
+  updateAll();
+  render();
+  updateDiagnosticsPanel();
+}
+
+// --- Physics core ---
+// Strain: σ_i = sum_{j in N(i)} (s_i - s_j)^2
+// Budget: U_i = Ucap * exp(-κ σ_i)
+// Potential: Ψ_i = ln(U_i / Uref)
+function computeSigmaAndBudget() {
+  const size = N * N;
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const i = idx(x, y);
+      const si = s[i];
+      let sum = 0;
+      const sL = s[idx(x - 1, y)];
+      const sR = s[idx(x + 1, y)];
+      const sU = s[idx(x, y - 1)];
+      const sD = s[idx(x, y + 1)];
+      sum += (si - sL) * (si - sL);
+      sum += (si - sR) * (si - sR);
+      sum += (si - sU) * (si - sU);
+      sum += (si - sD) * (si - sD);
+      sigma[i] = sum;
+      const Ui = Ucap * Math.exp(-kappa * sum);
+      U[i] = Ui;
+      psi[i] = Math.log(Ui / Uref);
+    }
+  }
+}
+
+// Diffusion operator: ds/dt = Laplacian(s)
+// Wave operator: d2s/dt2 = c_eff^2 * Laplacian(s)
+// Both scaled locally by U_i (budget).
+function step() {
+  if (!s) return;
+  Ucap = parseFloat(ucapInput.value);
+  Uref = parseFloat(urefInput.value);
+  kappa = parseFloat(kappaInput.value);
+  dt = parseFloat(dtInput.value);
+  opType = opSelect.value;
+  homogEnabled = homogCheckbox.checked;
+  homogRate = parseFloat(homogRateInput.value);
+  movingEnabled = movingCheckbox.checked;
+  patternSpeed = parseFloat(patternSpeedInput.value);
+  ceff = parseFloat(ceffInput.value);
+  phaseGrad = parseFloat(phaseGradInput.value);
+  showStateOverlay = showStateOverlayCheckbox.checked;
+
+  // Homogeneous evolution: slowly drift Uref as a proxy for scale factor
+  if (homogEnabled) {
+    const dln = homogRate * dt;
+    Uref *= Math.exp(dln);
+    urefInput.value = Uref.toFixed(4);
+  }
+
+  computeSigmaAndBudget();
+
+  const size = N * N;
+  const sNext = new Float32Array(size);
+
+  if (opType === "diffusion") {
+    // Simple explicit diffusion scaled by Ui
+    const alpha = 1.0; // change here to adjust diffusion strength
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const i = idx(x, y);
+        const si = s[i];
+        const sL = s[idx(x - 1, y)];
+        const sR = s[idx(x + 1, y)];
+        const sU = s[idx(x, y - 1)];
+        const sD = s[idx(x, y + 1)];
+        const lap = (sL + sR + sU + sD - 4 * si);
+        const Ui = U[i];
+        const ds = alpha * lap * dt * Ui;
+        sNext[i] = si + ds;
+      }
+    }
+  } else {
+    // Wave update: s_next = 2 s - s_prev + (c_eff^2 dt^2) Laplacian(s) * Ui
+    const c2 = ceff * ceff;
+    const dt2 = dt * dt;
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const i = idx(x, y);
+        const si = s[i];
+        const sL = s[idx(x - 1, y)];
+        const sR = s[idx(x + 1, y)];
+        const sU = s[idx(x, y - 1)];
+        const sD = s[idx(x, y + 1)];
+        const lap = (sL + sR + sU + sD - 4 * si);
+        const Ui = U[i];
+        const accel = c2 * lap * Ui;
+        sNext[i] = 2 * si - sPrev[i] + accel * dt2;
+      }
+    }
+  }
+
+  // Moving pattern: translate seed center
+  if (movingEnabled) {
+    patternX += patternSpeed;
+    if (patternX >= N) patternX -= N;
+    // Optionally re-impose a coherent seed around moving center
+    const cx = Math.floor(patternX);
+    const cy = Math.floor(N / 2);
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const dx = ((x - cx + N + N / 2) % N) - N / 2;
+        const dy = y - cy;
+        const r = Math.sqrt(dx * dx + dy * dy);
+        if (r <= seedSize) {
+          const phase = phaseGrad * x + patternPhase;
+          const add = seedAmp * Math.cos(phase) * Math.exp(- (r * r) / (2 * seedSize * seedSize));
+          sNext[idx(x, y)] += add * 0.01; // small reinforcement
+        }
+      }
+    }
+    patternPhase += 0.1;
+  }
+
+  sPrev.set(s);
+  s.set(sNext);
+  t += dt;
+  updateAll();
+}
+
+function updateAll() {
+  computeSigmaAndBudget();
+  computeDiagnostics();
+  render();
+}
+
+// --- Diagnostics ---
+// Radial Ψ(r) profile and A/r fit
+function computeRadialProfile() {
+  const cx = N / 2;
+  const cy = N / 2;
+  const maxR = Math.sqrt(2) * (N / 2);
+  const bins = Math.floor(N / 2);
+  const sumPsi = new Float64Array(bins);
+  const count = new Uint32Array(bins);
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x + 0.5 - cx;
+      const dy = y + 0.5 - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      const b = Math.floor((r / maxR) * bins);
+      if (b >= 0 && b < bins) {
+        sumPsi[b] += psi[idx(x, y)];
+        count[b]++;
+      }
+    }
+  }
+  const radialR = [];
+  const radialPsi = [];
+  for (let b = 0; b < bins; b++) {
+    if (count[b] > 0) {
+      const rMid = (b + 0.5) * maxR / bins;
+      radialR.push(rMid);
+      radialPsi.push(sumPsi[b] / count[b]);
+    }
+  }
+  // Fit Ψ(r) ~ A / r via simple average of Ψ(r)*r
+  let num = 0, denom = 0;
+  for (let i = 0; i < radialR.length; i++) {
+    const r = radialR[i];
+    const p = radialPsi[i];
+    if (r > 1e-3) {
+      num += p * r;
+      denom += 1;
+    }
+  }
+  const A = denom > 0 ? num / denom : 0;
+  diagnostics.radialR = radialR;
+  diagnostics.radialPsi = radialPsi;
+  diagnostics.radialAoverR = A;
+}
+
+// Ψavg(t) and log-fit slope
+function computePsiAvgAndFit() {
+  const size = N * N;
+  let sum = 0;
+  for (let i = 0; i < size; i++) sum += psi[i];
+  const avg = sum / size;
+  diagnostics.time.push(t);
+  diagnostics.psiAvg.push(avg);
+
+  // Fit ln(Ψavg - min + eps) vs t over last window
+  const window = Math.min(diagnostics.time.length, 100);
+  if (window > 5) {
+    const times = diagnostics.time.slice(-window);
+    const vals = diagnostics.psiAvg.slice(-window);
+    let minVal = Infinity;
+    for (let v of vals) if (v < minVal) minVal = v;
+    const eps = 1e-6;
+    let sx = 0, sy = 0, sxx = 0, sxy = 0;
+    for (let i = 0; i < window; i++) {
+      const x = times[i];
+      const y = Math.log(Math.max(vals[i] - minVal + eps, eps));
+      sx += x; sy += y; sxx += x * x; sxy += x * y;
+    }
+    const denom = window * sxx - sx * sx;
+    const slope = denom !== 0 ? (window * sxy - sx * sy) / denom : 0;
+    diagnostics.psiAvgLogFitSlope = slope;
+  }
+}
+
+// Doppler proxy: 1+z = exp(ΔΨ) vs theoretical Doppler factor
+function computeDopplerProxy() {
+  if (!movingEnabled) {
+    diagnostics.dopplerProxy.push(1.0);
+    diagnostics.dopplerTheory.push(1.0);
+    return;
+  }
+  // Compare Ψ at front vs back along motion direction
+  const cx = Math.floor(N / 2);
+  const cy = Math.floor(N / 2);
+  const front = idx((cx + seedSize) % N, cy);
+  const back = idx((cx - seedSize + N) % N, cy);
+  const dPsi = psi[front] - psi[back];
+  const onePlusZ = Math.exp(dPsi);
+  const beta = patternSpeed / ceff;
+  const betaClamped = Math.max(-0.9, Math.min(0.9, beta));
+  const doppler = Math.sqrt((1 + betaClamped) / (1 - betaClamped)); // relativistic factor
+  diagnostics.dopplerProxy.push(onePlusZ);
+  diagnostics.dopplerTheory.push(doppler);
+}
+
+function computeDiagnostics() {
+  computeRadialProfile();
+  computePsiAvgAndFit();
+  computeDopplerProxy();
+  updateDiagnosticsPanel();
+}
+
+function updateDiagnosticsPanel() {
+  const lastIdx = diagnostics.time.length - 1;
+  const tStr = lastIdx >= 0 ? diagnostics.time[lastIdx].toFixed(3) : "0.000";
+  const psiAvgStr = lastIdx >= 0 ? diagnostics.psiAvg[lastIdx].toExponential(3) : "0.000e+0";
+  const slopeStr = diagnostics.psiAvgLogFitSlope.toExponential(3);
+  const A = diagnostics.radialAoverR;
+  const dopplerProxy = lastIdx >= 0 ? diagnostics.dopplerProxy[lastIdx] : 1.0;
+  const dopplerTheory = lastIdx >= 0 ? diagnostics.dopplerTheory[lastIdx] : 1.0;
+  const text =
+    "t = " + tStr + "\n" +
+    "Ψavg(t) = " + psiAvgStr + "\n" +
+    "log-fit slope (Ψavg) ≈ " + slopeStr + "\n" +
+    "Radial Ψ(r) ~ A/r, A ≈ " + A.toExponential(3) + "\n" +
+    "Doppler proxy 1+z = exp(ΔΨ) ≈ " + dopplerProxy.toFixed(3) + "\n" +
+    "Theoretical Doppler factor ≈ " + dopplerTheory.toFixed(3) + "\n" +
+    "Samples: " + diagnostics.time.length + "\n";
+  diagDiv.textContent = text;
+}
+
+// --- Rendering ---
+// Simple blue-red colormap for Ψ; optional overlay of s as contours
+function render() {
+  if (!psi) return;
+  const img = ctx.createImageData(canvas.width, canvas.height);
+  const w = canvas.width;
+  const h = canvas.height;
+  const sx = w / N;
+  const sy = h / N;
+
+  // Find min/max Ψ for color scaling
+  let minPsi = Infinity, maxPsi = -Infinity;
+  for (let i = 0; i < psi.length; i++) {
+    const v = psi[i];
+    if (v < minPsi) minPsi = v;
+    if (v > maxPsi) maxPsi = v;
+  }
+  const range = maxPsi - minPsi || 1;
+
+  for (let y = 0; y < h; y++) {
+    const gy = Math.floor(y / sy);
+    for (let x = 0; x < w; x++) {
+      const gx = Math.floor(x / sx);
+      const i = idx(gx, gy);
+      const v = (psi[i] - minPsi) / range; // 0..1
+      // blue-red gradient
+      const r = Math.max(0, Math.min(255, 255 * v));
+      const b = Math.max(0, Math.min(255, 255 * (1 - v)));
+      const g = 40;
+      let rr = r, gg = g, bb = b;
+      if (showStateOverlay) {
+        // overlay node state as brightness
+        const sv = s[i];
+        const svNorm = 0.5 + 0.5 * Math.tanh(sv);
+        const overlay = 50 + 205 * svNorm;
+        rr = (rr + overlay) * 0.5;
+        gg = (gg + overlay) * 0.5;
+        bb = (bb + overlay) * 0.5;
+      }
+      const idxPix = (y * w + x) * 4;
+      img.data[idxPix] = rr;
+      img.data[idxPix + 1] = gg;
+      img.data[idxPix + 2] = bb;
+      img.data[idxPix + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+// --- Animation loop ---
+function loop() {
+  if (running) {
+    step();
+    requestAnimationFrame(loop);
+  }
+}
+
+// --- CSV export ---
+function downloadCSV() {
+  let csv = "t,psiAvg,psiAvgLogFitSlope,radialR,radialPsi,dopplerProxy,dopplerTheory\n";
+  const len = diagnostics.time.length;
+  const radialLen = diagnostics.radialR.length;
+  for (let i = 0; i < len; i++) {
+    const tVal = diagnostics.time[i];
+    const psiAvgVal = diagnostics.psiAvg[i];
+    const slope = diagnostics.psiAvgLogFitSlope;
+    const dopplerP = diagnostics.dopplerProxy[i] ?? "";
+    const dopplerT = diagnostics.dopplerTheory[i] ?? "";
+    // For radial, just store last profile as semicolon-separated lists once
+    const radialRStr = (i === len - 1) ? diagnostics.radialR.join(";") : "";
+    const radialPsiStr = (i === len - 1) ? diagnostics.radialPsi.join(";") : "";
+    csv += [
+      tVal,
+      psiAvgVal,
+      slope,
+      radialRStr,
+      radialPsiStr,
+      dopplerP,
+      dopplerT
+    ].join(",") + "\n";
+  }
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "svet_diagnostics.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// --- Automated tests ---
+// (a) Localized seed radial falloff ~ 1/r
+// (b) Homogeneous run: Ψavg(t) tracks ln(scale factor proxy) (here via Uref drift)
+// (c) Moving pattern: Doppler proxy ~ theoretical factor for small speeds
+function runTests() {
+  console.log("SVET tests starting...");
+  const tolRadial = 0.3; // relative error tolerance
+  const tolDoppler = 0.2;
+  const tolSlope = 0.5;
+
+  // Save current state
+  const saved = {
+    N, s: s ? s.slice() : null, sPrev: sPrev ? sPrev.slice() : null,
+    psi: psi ? psi.slice() : null, U: U ? U.slice() : null,
+    sigma: sigma ? sigma.slice() : null, t, Ucap, Uref, kappa, dt,
+    opType, homogEnabled, homogRate, movingEnabled, patternSpeed, ceff,
+    phaseGrad, seedSize, seedAmp, diagnostics: JSON.parse(JSON.stringify(diagnostics))
+  };
+
+  // Test (a): radial falloff
+  let passA = false;
+  (function testRadial() {
+    initLattice();
+    opSelect.value = "diffusion";
+    applyLocalizedSeed();
+    running = false;
+    for (let i = 0; i < 50; i++) step();
+    computeRadialProfile();
+    const R = diagnostics.radialR;
+    const P = diagnostics.radialPsi;
+    if (R.length > 5) {
+      // Compare P(r)*r to constant A
+      const A = diagnostics.radialAoverR;
+      let errSum = 0, count = 0;
+      for (let i = 3; i < R.length; i++) {
+        const r = R[i];
+        const p = P[i];
+        if (r > 1e-3) {
+          const val = p * r;
+          const relErr = Math.abs(val - A) / (Math.abs(A) + 1e-6);
+          errSum += relErr;
+          count++;
+        }
+      }
+      const avgErr = count > 0 ? errSum / count : 1e9;
+      passA = avgErr < tolRadial;
+      console.log("Test (a) radial falloff avg relative error:", avgErr.toFixed(3), "pass:", passA);
+    } else {
+      console.log("Test (a) radial falloff: insufficient data");
+    }
+  })();
+
+  // Test (b): homogeneous Ψavg(t) log-fit slope vs imposed homogRate
+  let passB = false;
+  (function testHomog() {
+    initLattice();
+    homogCheckbox.checked = true;
+    homogEnabled = true;
+    homogRateInput.value = "0.002";
+    homogRate = 0.002;
+    opSelect.value = "diffusion";
+    applyLocalizedSeed();
+    for (let i = 0; i < 80; i++) step();
+    const slope = diagnostics.psiAvgLogFitSlope;
+    // Expect slope ~ homogRate (up to factor, we just check sign and order)
+    passB = Math.abs(slope) > 0 && Math.sign(slope) === Math.sign(homogRate);
+    console.log("Test (b) homogeneous slope:", slope.toExponential(3), "pass:", passB);
+  })();
+
+  // Test (c): moving pattern Doppler proxy
+  let passC = false;
+  (function testDoppler() {
+    initLattice();
+    movingCheckbox.checked = true;
+    movingEnabled = true;
+    patternSpeedInput.value = "0.1";
+    patternSpeed = 0.1;
+    ceffInput.value = "1.0";
+    ceff = 1.0;
+    opSelect.value = "wave";
+    applyMovingSeed();
+    diagnostics.dopplerProxy = [];
+    diagnostics.dopplerTheory = [];
+    for (let i = 0; i < 40; i++) step();
+    const lastIdx = diagnostics.dopplerProxy.length - 1;
+    if (lastIdx >= 0) {
+      const proxy = diagnostics.dopplerProxy[lastIdx];
+      const theory = diagnostics.dopplerTheory[lastIdx];
+      const relErr = Math.abs(proxy - theory) / (Math.abs(theory) + 1e-6);
+      passC = relErr < tolDoppler;
+      console.log("Test (c) Doppler proxy:", proxy.toFixed(3), "theory:", theory.toFixed(3), "relErr:", relErr.toFixed(3), "pass:", passC);
+    } else {
+      console.log("Test (c) Doppler: insufficient data");
+    }
+  })();
+
+  const allPass = passA && passB && passC;
+  console.log("SVET tests complete. Overall pass:", allPass);
+  // Restore state
+  N = saved.N;
+  s = saved.s;
+  sPrev = saved.sPrev;
+  psi = saved.psi;
+  U = saved.U;
+  sigma = saved.sigma;
+  t = saved.t;
+  Ucap = saved.Ucap;
+  Uref = saved.Uref;
+  kappa = saved.kappa;
+  dt = saved.dt;
+  opType = saved.opType;
+  homogEnabled = saved.homogEnabled;
+  homogRate = saved.homogRate;
+  movingEnabled = saved.movingEnabled;
+  patternSpeed = saved.patternSpeed;
+  ceff = saved.ceff;
+  phaseGrad = saved.phaseGrad;
+  seedSize = saved.seedSize;
+  seedAmp = saved.seedAmp;
+  diagnostics = saved.diagnostics;
+  render();
+  updateDiagnosticsPanel();
+}
+
+// --- Event wiring ---
+document.getElementById("initBtn").onclick = () => {
+  running = false;
+  initLattice();
+};
+document.getElementById("seedBtn").onclick = () => {
+  applyLocalizedSeed();
+};
+document.getElementById("movingSeedBtn").onclick = () => {
+  applyMovingSeed();
+};
+document.getElementById("startBtn").onclick = () => {
+  if (!running) {
+    running = true;
+    loop();
+  }
+};
+document.getElementById("stopBtn").onclick = () => {
+  running = false;
+};
+document.getElementById("stepBtn").onclick = () => {
+  running = false;
+  step();
+};
+document.getElementById("downloadBtn").onclick = () => {
+  downloadCSV();
+};
+document.getElementById("testBtn").onclick = () => {
+  running = false;
+  runTests();
+};
+
+// Initialize on load
+initLattice();
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><title>SVET vs GR Predictor v0.0.5</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{--bg:#05060a; --panel:#101119; --accent:#f39c12; --text:#eaeaea; --muted:#9aa;}
+    body{margin:0; font-family:system-ui,Arial; background:var(--bg); color:var(--text); font-size:12px;}
+    .app{display:flex; gap:10px; padding:10px; height:100vh; box-sizing:border-box;}
+    .col{background:var(--panel); border-radius:8px; padding:12px; overflow:auto; display:flex; flex-direction:column; gap:10px;}
+    #left{width:280px;} #center{flex:1; display:flex; flex-direction:column; gap:8px;} #right{width:320px;}
+    input,button,textarea{background:#05060a; border:1px solid #333; color:#fff; padding:5px; border-radius:4px; width:100%;}
+    .row{display:flex; gap:5px;} .row>*{flex:1;}
+    .plot-container{flex:1; background:#000; border-radius:6px;}
+    pre{background:#000; padding:8px; border-radius:4px; font-size:10px; overflow:auto;}
+    b{color:var(--accent);} .small{font-size:11px; color:var(--muted);}
+    .section{border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:5px;}
+    .theory-box{background:rgba(243,156,18,0.05); border-left:2px solid var(--accent); padding:8px; margin-top:5px; font-style:italic; line-height:1.4;}
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.24.2.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <div id="left" class="col">
+    <div class="section">
+      <b>System Controls</b>
+      <label class="small">Mass M (kg) <input id="mass" type="number" value="5.972e24"></label>
+      <label class="small">Radius Range (Start | End) [m]
+        <div class="row"><input id="rStart" type="number" value="6.371e6"><input id="rEnd" type="number" value="4e7"></div>
+      </label>
+    </div>
+    
+    <div class="section">
+      <b>SVET Calibration (Bridge)</b>
+      <label class="small">Coupling α <input id="alpha" type="number" value="1.0" step="0.1"></label>
+      <label class="small">Bias Gain k <input id="kGain" type="number" value="1.0" step="0.1"></label>
+    </div>
+
+    <button id="btnRun" style="background:var(--accent); color:#000; font-weight:700; margin-top:10px; cursor:pointer; border:none;">RUN PREDICTION</button>
+    <button id="btnCSV" style="margin-top:5px; background:#222; cursor:pointer;">EXPORT CSV</button>
+    
+    <div class="theory-box small">
+      <b>Hole vs Hill:</b> GR creates a negative potential well (hole) Φ = -GM/r. SVET creates a positive hill of excitation η = kM/r. Clocks slow as they sink into the hole (GR) or ascend the hill (SVET).
+    </div>
+  </div>
+
+  <div id="center" class="col">
+    <div id="plotPotential" class="plot-container"></div>
+    <div id="plotField" class="plot-container"></div>
+    <div id="plotDilation" class="plot-container"></div>
+  </div>
+
+  <div id="right" class="col">
+    <b>JSON Dial Control</b>
+    <div class="small">Paste metadata to update all knobs:</div>
+    <textarea id="jsonInput" style="height:60px; font-family:monospace;" placeholder='{"M":5.972e24, "alpha":1.0, ...}'></textarea>
+    <button id="btnLoadJSON" style="background:#34495e; margin-top:5px; cursor:pointer;">LOAD DIALS</button>
+
+    <div style="margin-top:15px;">
+      <b>Comparison Inspector</b>
+      <div id="stats"></div>
+      <pre id="log"></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const G = 6.67430e-11, c = 299792458;
+let lastData = [];
+
+const GREngine = {
+  compute: (M, r) => {
+    const potential = -(G * M) / r; // The "Hole"
+    const field = (G * M) / (r**2);
+    const timeDilation = 1 / Math.sqrt(1 + (2 * potential) / (c**2));
+    return { potential, field, timeDilation };
+  }
+};
+
+const SVETEngine = {
+  compute: (M, r, alpha, k) => {
+    const bridge_G = G, bridge_c = c;
+    const eta = (k * M) / r; // The "Hill"
+    const emergentPotential = -bridge_G * eta; 
+    const emergentField = (bridge_G * k * M) / (r**2); 
+    const timeDilation = 1 + alpha * ( (bridge_G * eta) / (bridge_c**2) ); 
+    return { potential: emergentPotential, field: emergentField, timeDilation, eta };
+  }
+};
+
+function run() {
+  const M = +$('mass').value, rS = +$('rStart').value, rE = +$('rEnd').value;
+  const alpha = +$('alpha').value, k = +$('kGain').value;
+  const steps = 100; lastData = [];
+
+  for(let i=0; i<=steps; i++) {
+    const r = rS + (i/steps) * (rE - rS);
+    lastData.push({ r, gr: GREngine.compute(M, r), sv: SVETEngine.compute(M, r, alpha, k) });
+  }
+
+  const rArr = lastData.map(d => d.r);
+  const layout = (title, y) => ({
+    title: {text:title, font:{size:11, color:'#9aa'}, y:0.98},
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    margin:{t:30,b:30,l:60,r:20}, font:{color:'#9aa', size:9},
+    xaxis:{gridcolor:'#222'}, yaxis:{gridcolor:'#222', title:y, exponentformat:'e'},
+    hovermode: 'x unified'
+  });
+
+  Plotly.react('plotPotential', [
+    {x:rArr, y:lastData.map(d=>d.gr.potential), name:'GR Hole (Φ)', line:{color:'#9b59b6'}},
+    {x:rArr, y:lastData.map(d=>d.sv.potential), name:'SVET Hill (Φ_shadow)', line:{color:'#f39c12', dash:'dot'}}
+  ], layout('Potential (Φ)', 'J/kg'));
+
+  Plotly.react('plotField', [
+    {x:rArr, y:lastData.map(d=>d.gr.field), name:'GR Field', line:{color:'#3498db'}},
+    {x:rArr, y:lastData.map(d=>d.sv.field), name:'SVET Field', line:{color:'#f39c12', dash:'dot'}}
+  ], layout('Field Strength (g)', 'm/s²'));
+
+  Plotly.react('plotDilation', [
+    {x:rArr, y:lastData.map(d=>d.gr.timeDilation), name:'GR Dilation', line:{color:'#2ecc71'}},
+    {x:rArr, y:lastData.map(d=>d.sv.timeDilation), name:'SVET Dilation', line:{color:'#e74c3c', dash:'dot'}}
+  ], layout('Time Dilation', 'Ratio'));
+
+  const mid = Math.floor(steps/2);
+  $('stats').innerHTML = `<b>r = ${(lastData[mid].r/1000).toFixed(0)}km:</b><br>
+    Δ Pot: ${(lastData[mid].sv.potential - lastData[mid].gr.potential).toExponential(2)}<br>
+    Δ Field: ${(lastData[mid].sv.field - lastData[mid].gr.field).toExponential(2)}<br>
+    Δ Dil: ${(lastData[mid].sv.timeDilation - lastData[mid].gr.timeDilation).toExponential(2)}`;
+  
+  $('log').textContent = `[METADATA]\n` + JSON.stringify({M, rStart:rS, rEnd:rE, alpha, k}, null, 2);
+}
+
+$('btnLoadJSON').onclick = () => {
+  try {
+    let input = $('jsonInput').value.trim();
+    if(input.startsWith('#metadata:')) input = input.replace('#metadata:', '');
+    const d = JSON.parse(input);
+    if(d.M) $('mass').value = d.M;
+    if(d.rStart) $('rStart').value = d.rStart;
+    if(d.rEnd) $('rEnd').value = d.rEnd;
+    if(d.alpha) $('alpha').value = d.alpha;
+    if(d.k) $('kGain').value = d.k;
+    run();
+  } catch(e) { alert("Invalid JSON format. Please check the input."); }
+};
+
+$('btnCSV').onclick = () => {
+  if(!lastData.length) return alert("Run first");
+  const p = {M:+$('mass').value, rStart:+$('rStart').value, rEnd:+$('rEnd').value, alpha:+$('alpha').value, k:+$('kGain').value};
+  const header = `Radius,GR_Pot,SVET_Pot,GR_Field,SVET_Field,GR_Dil,SVET_Dil\n`;
+  const rows = lastData.map(d => `${d.r},${d.gr.potential},${d.sv.potential},${d.gr.field},${d.sv.field},${d.gr.timeDilation},${d.sv.timeDilation}`).join('\n');
+  const blob = new Blob([`#metadata:${JSON.stringify(p)}\n${header}${rows}`], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `SVET_GR_v005_${Date.now()}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+};
+
+$('btnRun').onclick = run;
+window.onload = run;
+</script>
+</body>
+</html>

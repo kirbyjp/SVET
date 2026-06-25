@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Prime Interferometer v0.2.3</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<!--
+Version: v0.2.3
+Date: 2026-04-05
+Summary: Clean-Room calibration: centered windows, no spatial phase, Frequency Bank logging.
+-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<style>
+  :root{--bg:#050505;--panel:#111;--accent:#00f2ff;--muted:#888;}
+  body{margin:0;font-family:Inter,Segoe UI,Arial;background:var(--bg);color:#ddd;display:flex;flex-direction:column;height:100vh;}
+  header{padding:10px 16px;background:var(--panel);border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+  header h1{font-size:1rem;margin:0}
+  #layout{display:grid;grid-template-columns:320px 1fr 320px;gap:8px;flex:1;padding:8px;box-sizing:border-box}
+  .panel{background:#0b0b0b;border:1px solid #222;padding:12px;overflow:auto;border-radius:6px}
+  .metric{background:#0f1112;padding:8px;margin-bottom:8px;border-left:4px solid var(--accent)}
+  .metric .val{color:var(--accent);font-family:monospace;font-size:1.05rem}
+  label{display:block;margin-top:10px;font-size:0.85rem;color:var(--muted)}
+  input[type=range]{width:100%}
+  input[type=number]{width:100%;padding:6px;margin-top:6px;background:#0b0b0b;border:1px solid #222;color:#ddd}
+  select,button{width:100%;padding:8px;margin-top:8px;background:#0b0b0b;border:1px solid #222;color:var(--accent);cursor:pointer}
+  button:hover{background:var(--accent);color:#000}
+  .plot-box{height:100%;min-height:160px}
+  textarea{width:100%;height:160px;background:#000;border:1px solid #222;color:#0f0;padding:8px;font-family:monospace}
+  .small{font-size:0.85rem;color:var(--muted)}
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>PRIME INTERFEROMETER — v0.2.3 (Clean Room)</h1>
+  <div class="small">Status: <span id="status">READY</span></div>
+</header>
+
+<div id="layout">
+  <div class="panel" id="controls">
+    <div class="metric"><div class="small">Interference Energy E_T</div><div id="m-et" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Parity Violation ΔP</div><div id="m-dp" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Twin Sensitivity S_twin</div><div id="m-stwin" class="val">0.000</div></div>
+    <div class="metric"><div class="small">Phase Jumps J_T</div><div id="m-jt" class="val">0</div></div>
+
+    <label>Phase Rotation θ (radians)</label>
+    <div class="row"><input id="thetaRange" type="range" min="0" max="6.28318" step="0.001" value="0"><input id="thetaNum" type="number" min="0" max="6.28318" step="0.001" value="0"></div>
+
+    <label>Delta Offset δ (integer)</label>
+    <div class="row"><input id="deltaRange" type="range" min="-500" max="500" step="1" value="0"><input id="deltaNum" type="number" min="-500" max="500" step="1" value="0"></div>
+
+    <label>Truncation Mode</label>
+    <select id="truncMode">
+      <option value="soft">Soft (Gaussian)</option>
+      <option value="hard">Hard (Brick Wall)</option>
+    </select>
+
+    <label>Window Function</label>
+    <select id="windowType">
+      <option value="gaussian">Gaussian</option>
+      <option value="tukey">Tukey</option>
+      <option value="hann">Hann</option>
+    </select>
+
+    <label>Symmetric half-width T (primes ≤ T used)</label>
+    <div class="row"><input id="TRange" type="range" min="1000" max="20000" step="100" value="10000"><input id="TNum" type="number" min="1000" max="20000" step="100" value="10000"></div>
+
+    <label>MaxX (visualization range)</label>
+    <div class="row"><input id="maxXRange" type="range" min="1000" max="50000" step="1000" value="20000"><input id="maxXNum" type="number" min="1000" max="50000" step="1000" value="20000"></div>
+
+    <label>Identity Mode</label>
+    <select id="mode">
+      <option value="standard">Standard</option>
+      <option value="flip">Constant Flip</option>
+      <option value="sink">Sign-Sink</option>
+    </select>
+
+    <label class="small">Special primes markers</label>
+    <div class="row"><button id="toggleMarkers">Toggle Markers</button><button id="zoomMarker">Zoom Marker</button></div>
+
+    <label class="small">Frequency Bank (heavy compute)</label>
+    <div class="row"><button id="computeZeros">Compute Frequency Bank</button><button id="cancelZeros">Cancel</button></div>
+    <div id="zeroProgress" class="small muted" style="margin-top:6px;display:none">Progress: <span id="zeroPct">0%</span></div>
+
+    <label class="small">Presets</label>
+    <div class="row">
+      <button id="presetSmall">Small</button>
+      <button id="presetMedium">Medium</button>
+    </div>
+
+    <div style="margin-top:12px" class="small muted">Notes: numeric inputs are paired with sliders for precision. Heavy scans are cancelable.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="panel" id="plotWhole" style="height:46%">
+      <div id="wholePlot" class="plot-box" style="height:100%"></div>
+    </div>
+    <div class="panel" id="plotSpec" style="height:26%">
+      <div id="specPlot" class="plot-box" style="height:100%"></div>
+    </div>
+    <div class="panel" id="plotZeros" style="height:26%">
+      <div id="zerosPlot" class="plot-box" style="height:100%"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="mathPanel">
+    <div style="font-weight:bold;margin-bottom:8px">MATH PANEL / QA</div>
+    <div class="small muted">Export Snapshot (JSON)</div>
+    <textarea id="snapshot" readonly></textarea>
+    <div class="row" style="margin-top:8px">
+      <button id="copySnap">Copy Snapshot</button>
+      <button id="clearCache">Clear Cache</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="downloadReport">Export Snapshot (JSON)</button>
+      <button id="exportHTML">Clone Tool (Self-Save)</button>
+    </div>
+
+    <div style="margin-top:12px" class="small muted">
+      <strong>QA VERIFICATION</strong>
+      <ul>
+        <li>Sieve: <span id="qa-sieve">loading...</span></li>
+        <li>Dopants: <span id="qa-dopants">loading...</span></li>
+        <li>Worker: Blob-encapsulated</li>
+        <li>Mode: Phase-aware interference</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Utilities ---------- */
+function now(){ return Date.now(); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+/* ---------- Sieve: first 2000 primes ---------- */
+function sievePrimes(limit){
+  const sieve = new Uint8Array(limit+1);
+  sieve.fill(1); sieve[0]=0; sieve[1]=0;
+  for(let p=2;p*p<=limit;p++) if(sieve[p]) for(let q=p*p;q<=limit;q+=p) sieve[q]=0;
+  const out=[];
+  for(let i=2;i<=limit && out.length<2000;i++) if(sieve[i]) out.push(i);
+  return out;
+}
+const basePrimes = sievePrimes(180000);
+document.getElementById('qa-sieve').innerText = basePrimes.length >= 2000 ? '2000 primes loaded' : 'sieve incomplete';
+
+/* ---------- Curated 79 dopants ---------- */
+const curated79 = (function(){
+  const mers = [3,7,31,127,8191,131071,524287];
+  const ferm = [3,5,17,257,65537];
+  const sophie = [2,3,5,11,23,29,41,53,83,89,113,131];
+  const twins = [3,5,101,103,1009,1011,1229,1231,1693,1695];
+  const special = [1093,3511,5,13,563];
+  const others = [11,101,131,191,313,757,919,1031,10007,100003];
+  const set = new Set([...mers, ...ferm, ...sophie, ...twins, ...special, ...others]);
+  let i = 0;
+  while(set.size < 79 && i < basePrimes.length){
+    set.add(basePrimes[i++]);
+  }
+  return Array.from(set).slice(0,79).sort((a,b)=>a-b);
+})();
+document.getElementById('qa-dopants').innerText = curated79.length + ' dopants active';
+
+/* ---------- State and cache ---------- */
+const state = {
+  theta: 0,
+  delta: 0,
+  mode: 'standard',
+  truncMode: 'soft',
+  windowType: 'gaussian',
+  T: 10000,
+  maxX: 20000,
+  markersOn: true
+};
+let cache = { zeros: new Map() };
+
+/* ---------- Precompute logs for primes used ---------- */
+const allPrimes = Array.from(new Set([...basePrimes, ...curated79])).sort((a,b)=>a-b);
+const primeLogs = new Map(); allPrimes.forEach(p=>primeLogs.set(p, Math.log(p)));
+
+/* ---------- Bind range-number pairs ---------- */
+function bindRangeNumber(rangeId, numId, onChange){
+  const r = document.getElementById(rangeId), n = document.getElementById(numId);
+  r.addEventListener('input', ()=>{ n.value = r.value; onChange(Number(r.value)); });
+  n.addEventListener('change', ()=>{ r.value = n.value; onChange(Number(n.value)); });
+}
+bindRangeNumber('thetaRange','thetaNum', v => { state.theta = v; render(); });
+bindRangeNumber('deltaRange','deltaNum', v => { state.delta = Math.round(v); render(); });
+bindRangeNumber('TRange','TNum', v => { state.T = Math.round(v); render(); });
+bindRangeNumber('maxXRange','maxXNum', v => { state.maxX = Math.round(v); render(); });
+
+document.getElementById('mode').addEventListener('change', (e)=>{ state.mode = e.target.value; render(); });
+document.getElementById('truncMode').addEventListener('change', (e)=>{ state.truncMode = e.target.value; render(); });
+document.getElementById('windowType').addEventListener('change', (e)=>{ state.windowType = e.target.value; render(); });
+
+document.getElementById('toggleMarkers').addEventListener('click', ()=>{ state.markersOn = !state.markersOn; render(); });
+document.getElementById('zoomMarker').addEventListener('click', ()=>{ if(curated79.length){ const p=curated79[0]; Plotly.relayout('wholePlot', {'xaxis.range':[p-200,p+200]}); } });
+
+/* ---------- Centered windowWeight (weight(0) === 1.0) ---------- */
+function windowWeight(p, T, windowType){
+  // p >= 0
+  if (p <= 0) return 1.0;
+  if (p >= T) return 0.0;
+  const t = p / T; // normalized 0..1
+  if (windowType === 'hard') return 1.0; // caller will zero-out p > T
+  if (windowType === 'gaussian'){
+    const sigma = 0.35;
+    return Math.exp(-0.5 * Math.pow(t / sigma, 2));
+  }
+  if (windowType === 'tukey'){
+    const alpha = 0.5;
+    if (t <= (1 - alpha)) return 1.0;
+    const tt = (t - (1 - alpha)) / alpha;
+    return 0.5 * (1 + Math.cos(Math.PI * (1 - tt)));
+  }
+  if (windowType === 'hann'){
+    return 0.5 * (1 + Math.cos(Math.PI * t));
+  }
+  return 1.0;
+}
+
+/* ---------- pi(x) count ---------- */
+function computePiCountUpTo(x){
+  if(x < 2) return 0;
+  let lo=0, hi=basePrimes.length;
+  while(lo<hi){
+    const mid=(lo+hi)>>1;
+    if(basePrimes[mid] <= x) lo = mid+1; else hi = mid;
+  }
+  return lo;
+}
+
+/* ---------- mirrorPiAt helper (no spatial phase) ---------- */
+function mirrorPiAt(x){
+  // x >= 0
+  const pi = computePiCountUpTo(x);
+  const T = state.T;
+  const windowType = state.windowType;
+  const truncMode = state.truncMode;
+  // phase is global only (no x dependence)
+  const phaseFactor = Math.cos(state.theta);
+  let val = -pi;
+  if(state.mode === 'standard'){
+    val = -pi * phaseFactor;
+  } else if(state.mode === 'flip'){
+    val = (state.theta === 0) ? -pi : -(-pi) * phaseFactor;
+  } else if(state.mode === 'sink'){
+    val = -Math.abs(pi) * phaseFactor;
+  }
+  if(truncMode === 'hard'){
+    return (x <= T) ? val : 0;
+  } else {
+    const taper = windowWeight(Math.min(x, T), T, windowType);
+    return val * taper;
+  }
+}
+
+/* ---------- Interference trace (folded) ---------- */
+function computeInterferenceTrace(){
+  const maxX = state.maxX;
+  const xs = [];
+  const ys = [];
+  for(let x=0; x<=maxX; x++){
+    xs.push(x);
+    const piPos = computePiCountUpTo(x);
+    const mirror = mirrorPiAt(x);
+    ys.push(piPos + mirror);
+  }
+  return { xs, ys };
+}
+
+/* ---------- Phase Jump metric (sampled) ---------- */
+function warpedMultiplySign(a,b,mode){
+  const standard = a*b;
+  if(mode === 'sink') return Math.sign(-Math.abs(standard));
+  if(mode === 'flip') return Math.sign(-standard);
+  return Math.sign(standard);
+}
+function computePhaseJumps(sampleLimit=5000){
+  const T = state.T;
+  const windowType = state.windowType;
+  let count = 0, energy = 0;
+  const primesForSample = basePrimes.slice(0,200);
+  for(let i=0;i<primesForSample.length;i++){
+    for(let j=0;j<primesForSample.length;j++){
+      const a = primesForSample[i], b = primesForSample[j];
+      const n = a*b;
+      if(n > sampleLimit) break;
+      const stdSign = Math.sign(n);
+      const warpedSign = warpedMultiplySign(a,b,state.mode);
+      if(stdSign !== warpedSign){
+        const w = windowWeight(Math.min(a,b), T, windowType);
+        count++;
+        energy += w;
+      }
+    }
+  }
+  return {count, energy};
+}
+
+/* ---------- Twin sensitivity (sampled) ---------- */
+function computeTwinSensitivity(){
+  const smallDelta = 0.01;
+  const twins = [];
+  for(let i=0;i<basePrimes.length-1;i++){
+    if(basePrimes[i+1] - basePrimes[i] === 2) twins.push(basePrimes[i]);
+    if(twins.length >= 30) break;
+  }
+  if(twins.length === 0) return 0;
+  let totalSens = 0;
+  for(const p of twins){
+    const r0 = computeLocalVariance(p, state.theta);
+    const r1 = computeLocalVariance(p, state.theta + smallDelta);
+    const sens = Math.abs(r1 - r0) / (r0 + 1e-12);
+    totalSens += sens;
+  }
+  return totalSens / twins.length;
+}
+function computeLocalVariance(center, theta){
+  const radius = Math.max(3, Math.floor(Math.log(center+1)));
+  const oldTheta = state.theta;
+  state.theta = theta;
+  const arr = [];
+  for(let x=center-radius; x<=center+radius; x++){
+    const px = Math.max(0, x);
+    const piPos = computePiCountUpTo(px);
+    const mirror = mirrorPiAt(px);
+    arr.push(piPos + mirror);
+  }
+  state.theta = oldTheta;
+  const m = arr.reduce((a,b)=>a+b,0)/arr.length;
+  return arr.reduce((s,v)=>s+(v-m)*(v-m),0)/arr.length;
+}
+
+/* ---------- Render ---------- */
+let lastResidual = null;
+function render(){
+  const { xs, ys } = computeInterferenceTrace();
+  lastResidual = { xs, ys };
+
+  const trace = { x: xs, y: ys, mode:'lines', line:{color:'#00f2ff',width:1}, name:'Interference Trace (Dipole Sum)',
+    customdata: xs.map(x => [ computePiCountUpTo(x), mirrorPiAt(x) ]),
+    hovertemplate: 'x=%{x}<br>Pos=%{customdata[0]}<br>Neg=%{customdata[1]}<br>Sum=%{y}<extra></extra>'
+  };
+  const data = [trace];
+
+  if(state.markersOn){
+    const markersX = [], markersY = [], texts = [];
+    for(const p of curated79){
+      markersX.push(p); markersY.push(0); texts.push('dopant: ' + p);
+    }
+    data.push({ x: markersX, y: markersY, mode:'markers', marker:{color:'#ff7f50',size:6}, name:'Dopants', text:texts, hoverinfo:'text' });
+  }
+
+  const layout = { title: 'Interference Trace (Dipole Sum)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'x (folded, x ≥ 0)'}, yaxis:{title:'Interference'} };
+  Plotly.react('wholePlot', data, layout, {displayModeBar:false});
+
+  computeAndRenderSpectrogram(ys);
+
+  const E = ys.reduce((s,v)=>s+v*v,0);
+  document.getElementById('m-et').innerText = E.toExponential(6);
+  const pj = computePhaseJumps(5000);
+  document.getElementById('m-jt').innerText = pj.count;
+  document.getElementById('m-stwin').innerText = computeTwinSensitivity().toFixed(6);
+  const S_standard = symmetryScoreForMode('standard');
+  const S_sink = symmetryScoreForMode('sink');
+  const deltaP = Math.abs(S_standard - S_sink);
+  document.getElementById('m-dp').innerText = deltaP.toExponential(6);
+
+  updateSnapshot({ E, deltaP, pj });
+}
+
+/* ---------- Symmetry helper ---------- */
+function symmetryScoreForMode(mode){
+  const oldMode = state.mode;
+  state.mode = mode;
+  const { ys } = computeInterferenceTrace();
+  const E = ys.reduce((s,v)=>s+v*v,0);
+  state.mode = oldMode;
+  return E;
+}
+
+/* ---------- Spectrogram (basic STFT) ---------- */
+function computeAndRenderSpectrogram(signal){
+  const N = signal.length;
+  const winSize = 256;
+  const hop = 64;
+  const frames = [];
+  for(let start=0; start+winSize<=N; start+=hop){
+    const frame = signal.slice(start, start+winSize);
+    const windowed = frame.map((v,i)=> v * (0.5*(1 - Math.cos(2*Math.PI*i/(winSize-1)))));
+    const mags = new Float32Array(winSize/2);
+    for(let k=0;k<winSize/2;k++){
+      let re=0, im=0;
+      for(let n=0;n<winSize;n++){
+        const angle = 2*Math.PI*k*n/winSize;
+        re += windowed[n]*Math.cos(angle);
+        im -= windowed[n]*Math.sin(angle);
+      }
+      mags[k] = Math.sqrt(re*re + im*im);
+    }
+    frames.push(Array.from(mags));
+  }
+  const z = [];
+  const freqBins = winSize/2;
+  for(let k=0;k<freqBins;k++){
+    const row = [];
+    for(let f=0; f<frames.length; f++) row.push(frames[f][k]);
+    z.push(row);
+  }
+  const data = [{ z: z, type:'heatmap', colorscale:'Viridis', showscale:true }];
+  const layout = { title: 'Residual Spectrogram (Log-Frequency)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'Time'}, yaxis:{title:'Freq Bin'} };
+  Plotly.react('specPlot', data, layout, {displayModeBar:false});
+}
+
+/* ---------- Snapshot and QA ---------- */
+function updateSnapshot(extra){
+  const snap = {
+    timestamp: now(),
+    params: { ...state },
+    metrics: { E_T: document.getElementById('m-et').innerText, DeltaP: document.getElementById('m-dp').innerText, JT: document.getElementById('m-jt').innerText },
+    extra: extra || {}
+  };
+  // preserve previous frequency_bank if present
+  try {
+    const prev = JSON.parse(document.getElementById('snapshot').value || '{}');
+    if(prev && prev.extra && prev.extra.frequency_bank) snap.extra.frequency_bank = prev.extra.frequency_bank;
+  } catch(e){}
+  document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+}
+
+/* ---------- Frequency Bank Worker (full implementation) ---------- */
+const workerCode = `
+// zero/frequency bank worker: argument principle + Newton refinement
+self.addEventListener('message', async (ev) => {
+  const msg = ev.data;
+  try {
+    if (msg.cmd === 'start') {
+      const { primes, logps, theta, chiMode, xRange, yRange, grid } = msg;
+      const nx = grid.nx, ny = grid.ny;
+      const boxes = [];
+      for (let i=0;i<nx;i++){
+        for (let j=0;j<ny;j++){
+          const bx0 = xRange[0] + (xRange[1]-xRange[0])*(i/nx);
+          const bx1 = xRange[0] + (xRange[1]-xRange[0])*((i+1)/nx);
+          const by0 = yRange[0] + (yRange[1]-yRange[0])*(j/ny);
+          const by1 = yRange[0] + (yRange[1]-yRange[0])*((j+1)/ny);
+          boxes.push({bx0,bx1,by0,by1,i,j});
+        }
+      }
+      const found = [];
+      for (let idx=0; idx<boxes.length; idx++){
+        if (self.cancelRequested) { self.postMessage({cmd:'cancelled'}); return; }
+        const b = boxes[idx];
+        const winding = windingNumberOnRect(primes, logps, theta, chiMode, b.bx0,b.bx1,b.by0,b.by1, 24);
+        if (winding !== 0) found.push({box:b, winding});
+        if (idx % 10 === 0) self.postMessage({cmd:'progress', pct: Math.round(50*idx/boxes.length), message: 'scanning'});
+        await sleep(0);
+      }
+      const zeros = [];
+      for (let k=0;k<found.length;k++){
+        if (self.cancelRequested) { self.postMessage({cmd:'cancelled'}); return; }
+        const fb = found[k];
+        const samples = 5;
+        for (let a=0;a<samples;a++){
+          for (let b=0;b<samples;b++){
+            const re = fb.box.bx0 + (fb.box.bx1 - fb.box.bx0)*(a/(samples-1));
+            const im = fb.box.by0 + (fb.box.by1 - fb.box.by0)*(b/(samples-1));
+            const zref = newtonRefine({re,im}, primes, logps, theta, chiMode, 40, 1e-12);
+            const Zval = evalZ_logsum(zref, primes, logps, theta, chiMode);
+            if (cAbs(Zval) < 1e-6){
+              const dup = zeros.find(z => Math.hypot(z.re - zref.re, z.im - zref.im) < 1e-8);
+              if (!dup) zeros.push({re:zref.re, im:zref.im});
+            }
+          }
+        }
+        self.postMessage({cmd:'progress', pct: 50 + Math.round(50*(k+1)/found.length), message: 'refining'});
+        await sleep(0);
+      }
+      self.postMessage({cmd:'result', zeros});
+    } else if (msg.cmd === 'cancel') {
+      self.cancelRequested = true;
+    }
+  } catch (err) {
+    self.postMessage({cmd:'error', message: err.message || String(err)});
+  }
+});
+
+// complex helpers
+function cAdd(a,b){return {re:a.re+b.re,im:a.im+b.im};}
+function cSub(a,b){return {re:a.re-b.re,im:a.im-b.im};}
+function cMul(a,b){return {re:a.re*b.re - a.im*b.im, im:a.re*b.im + a.im*b.re};}
+function cDiv(a,b){ const d=b.re*b.re+b.im*b.im; return {re:(a.re*b.re + a.im*b.im)/d, im:(a.im*b.re - a.re*b.im)/d};}
+function cAbs(a){return Math.hypot(a.re,a.im);}
+function cExp(a){ const er=Math.exp(a.re); return {re:er*Math.cos(a.im), im:er*Math.sin(a.im)}; }
+function cLog(a){ return {re:Math.log(cAbs(a)), im:Math.atan2(a.im,a.re)}; }
+
+function evalZ_logsum(s, primes, logps, theta, chiMode){
+  let logZ = {re:0, im:0};
+  for(let i=0;i<primes.length;i++){
+    const logp = logps[i];
+    const minus_s_logp = { re: -s.re * logp, im: -s.im * logp };
+    const p_pow = cExp(minus_s_logp);
+    const phase = { re: Math.cos(theta), im: Math.sin(theta) };
+    let mult = cMul(p_pow, phase);
+    const oneMinus = cSub({re:1,im:0}, mult);
+    const logOneMinus = cLog(oneMinus);
+    logZ = cSub(logZ, logOneMinus);
+  }
+  return cExp(logZ);
+}
+
+function windingNumberOnRect(primes, logps, theta, chiMode, x0,x1,y0,y1, samples){
+  const pts = [];
+  for(let i=0;i<samples;i++){ const t=i/(samples-1); pts.push({re:x0 + (x1-x0)*t, im:y0}); }
+  for(let i=1;i<samples;i++){ const t=i/(samples-1); pts.push({re:x1, im:y0 + (y1-y0)*t}); }
+  for(let i=1;i<samples;i++){ const t=i/(samples-1); pts.push({re:x1 - (x1-x0)*t, im:y1}); }
+  for(let i=1;i<samples-1;i++){ const t=i/(samples-1); pts.push({re:x0, im:y1 - (y1-y0)*t}); }
+  const vals = pts.map(pt => evalZ_logsum(pt, primes, logps, theta, chiMode));
+  let total = 0;
+  for(let i=0;i<vals.length;i++){
+    const a = vals[i], b = vals[(i+1)%vals.length];
+    const argA = Math.atan2(a.im, a.re), argB = Math.atan2(b.im, b.re);
+    let diff = argB - argA;
+    while(diff <= -Math.PI) diff += 2*Math.PI;
+    while(diff > Math.PI) diff -= 2*Math.PI;
+    total += diff;
+  }
+  return Math.round(total / (2*Math.PI));
+}
+
+function newtonRefine(z0, primes, logps, theta, chiMode, maxIter=30, tol=1e-10){
+  let z = {re:z0.re, im:z0.im};
+  for(let k=0;k<maxIter;k++){
+    const Z = evalZ_logsum(z, primes, logps, theta, chiMode);
+    const h = 1e-6;
+    const zph = {re: z.re + h, im: z.im};
+    const Zph = evalZ_logsum(zph, primes, logps, theta, chiMode);
+    const dZ = { re: (Zph.re - Z.re)/h, im: (Zph.im - Z.im)/h };
+    const denom = dZ.re*dZ.re + dZ.im*dZ.im;
+    if(denom === 0) break;
+    const step = cDiv(Z, dZ);
+    z = cSub(z, step);
+    if(cAbs(step) < tol) break;
+  }
+  return z;
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+`;
+const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+let zeroWorker = null;
+function ensureWorker(){
+  if(zeroWorker) return zeroWorker;
+  zeroWorker = new Worker(URL.createObjectURL(workerBlob));
+  zeroWorker.onmessage = function(ev){
+    const msg = ev.data;
+    if(msg.cmd === 'progress'){
+      document.getElementById('zeroProgress').style.display = 'block';
+      document.getElementById('zeroPct').innerText = msg.pct + '% — ' + (msg.message || '');
+    } else if(msg.cmd === 'result'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      renderZeros(msg.zeros);
+      // attach frequency_bank to snapshot
+      try {
+        const snap = JSON.parse(document.getElementById('snapshot').value || '{}');
+        snap.extra = snap.extra || {};
+        snap.extra.frequency_bank = { count: msg.zeros.length, zeros: msg.zeros.map(z => ({ re: z.re, im: z.im })) };
+        document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+      } catch(e){}
+      cache.zeros.set(JSON.stringify(paramsSnapshot()), msg.zeros);
+    } else if(msg.cmd === 'cancelled'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      document.getElementById('status').innerText = 'FREQUENCY SCAN CANCELLED';
+    } else if(msg.cmd === 'error'){
+      document.getElementById('zeroProgress').style.display = 'none';
+      document.getElementById('status').innerText = 'FREQUENCY SCAN ERROR';
+      console.error('Worker error:', msg.message);
+    }
+  };
+  return zeroWorker;
+}
+
+/* ---------- Frequency Bank controls ---------- */
+document.getElementById('computeZeros').addEventListener('click', ()=>{
+  const snap = paramsSnapshot();
+  const cached = cache.zeros.get(JSON.stringify(snap));
+  if(cached){ renderZeros(cached); return; }
+  const worker = ensureWorker();
+  const primesForWorker = basePrimes.filter(p => p <= state.T);
+  const logps = primesForWorker.map(p => Math.log(p));
+  const xRange = [0.2, 1.2];
+  const yRange = [0, 100];
+  const grid = { nx: 20, ny: 20 };
+  worker.postMessage({ cmd:'start', primes:primesForWorker, logps, theta: state.theta, chiMode:'identity', xRange, yRange, grid });
+  document.getElementById('status').innerText = 'FREQUENCY SCAN RUNNING';
+});
+document.getElementById('cancelZeros').addEventListener('click', ()=>{ if(zeroWorker) zeroWorker.postMessage({cmd:'cancel'}); });
+
+function renderZeros(zeros){
+  const data = [{ x: zeros.map(z=>z.re), y: zeros.map(z=>z.im), mode:'markers', marker:{color:'#ffcc00',size:6} }];
+  const layout = { title: 'Frequency Bank (Complex Plane)', margin:{t:30,b:30,l:40,r:20}, paper_bgcolor:'#000', plot_bgcolor:'#000', font:{color:'#ddd'}, xaxis:{title:'Re(s)'}, yaxis:{title:'Im(s)'} };
+  Plotly.react('zerosPlot', data, layout, {displayModeBar:false});
+  document.getElementById('status').innerText = 'FREQUENCY SCAN COMPLETE';
+}
+
+/* ---------- Snapshot / QA buttons ---------- */
+document.getElementById('copySnap').addEventListener('click', async ()=>{ await navigator.clipboard.writeText(document.getElementById('snapshot').value); alert('Snapshot copied'); });
+document.getElementById('clearCache').addEventListener('click', ()=>{ cache = { zeros: new Map() }; alert('Cache cleared'); });
+document.getElementById('downloadReport').addEventListener('click', ()=>{ const snap = document.getElementById('snapshot').value; const blob = new Blob([snap], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='First_Light_Snapshot_'+Date.now()+'.json'; a.click(); URL.revokeObjectURL(url); });
+document.getElementById('exportHTML').addEventListener('click', ()=>{ const html = document.documentElement.outerHTML; const blob = new Blob([html], {type:'text/html'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='Prime_Interferometer_v0.2.3.html'; a.click(); URL.revokeObjectURL(url); });
+
+/* ---------- Presets ---------- */
+document.getElementById('presetSmall').addEventListener('click', ()=>{ document.getElementById('TRange').value=5000; document.getElementById('TNum').value=5000; document.getElementById('maxXRange').value=10000; document.getElementById('maxXNum').value=10000; state.T=5000; state.maxX=10000; render(); });
+document.getElementById('presetMedium').addEventListener('click', ()=>{ document.getElementById('TRange').value=10000; document.getElementById('TNum').value=10000; document.getElementById('maxXRange').value=20000; document.getElementById('maxXNum').value=20000; state.T=10000; state.maxX=20000; render(); });
+
+/* ---------- params snapshot ---------- */
+function paramsSnapshot(){ return { theta: state.theta, delta: state.delta, mode: state.mode, truncMode: state.truncMode, windowType: state.windowType, T: state.T, maxX: state.maxX, timestamp: now() }; }
+
+/* ---------- Placeholder QA snippet (non-blocking) ---------- */
+function placeholderCheck(){
+  try {
+    const scripts = document.getElementsByTagName('script');
+    for (let s of scripts) {
+      if (s.innerText && /x\s*\*\s*\d+(\.\d+)?/.test(s.innerText)) {
+        console.warn('[QA ALERT] Spatial x*CONST pattern FOUND in script.');
+        return false;
+      }
+    }
+    console.info('[QA PASS] No x*CONST pattern found.');
+    return true;
+  } catch(e){
+    return true;
+  }
+}
+
+/* ---------- Baseline verification ---------- */
+function baselineVerification(){
+  const old = {...state};
+  state.theta = 0; state.delta = 0; state.mode = 'standard'; state.truncMode = 'soft'; state.windowType = 'gaussian';
+  const { ys } = computeInterferenceTrace();
+  const maxAbs = ys.reduce((m,v)=>Math.max(m,Math.abs(v)),0);
+  const ok = maxAbs < 1e-9;
+  // record in snapshot
+  const snap = { timestamp: now(), params: {...state}, metrics: {}, extra: { baselineMaxAbs: maxAbs, baselineOk: ok } };
+  document.getElementById('snapshot').value = JSON.stringify(snap, null, 2);
+  Object.assign(state, old);
+  render();
+  // run placeholder check and log
+  placeholderCheck();
+}
+
+/* ---------- Initial render and baseline check ---------- */
+render();
+baselineVerification();
+
+</script>
+</body>
+</html>

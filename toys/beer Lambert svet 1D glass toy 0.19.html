@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVET v0.19.1 — The Glass Slab (Fixed)</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <style>
+        :root { 
+            --svet-green: #0b5; 
+            --svet-blue: #1f77b4; 
+            --svet-pink: #ff1493; 
+        }
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #0b0e14; 
+            color: #eee; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden;
+        }
+        header { 
+            padding: 10px 20px; 
+            background: var(--svet-green); 
+            color: #012; 
+            font-weight: bold; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            height: 40px;
+        }
+        #main { 
+            display: grid; 
+            grid-template-columns: 300px 1fr 300px; 
+            flex: 1; 
+            overflow: hidden; 
+            gap: 2px;
+            background: #333;
+        }
+        #sidebar, #data-panel { 
+            background: #161b22; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+            overflow-y: auto;
+        }
+        #viewport { background: #000; display: flex; flex-direction: column; }
+        
+        .dial-group { display: flex; flex-direction: column; gap: 5px; }
+        label { font-size: 10px; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+        input[type="range"], input[type="number"] { width: 100%; background: #0d1117; color: #eee; border: 1px solid #333; }
+        .readout { font-family: monospace; font-size: 12px; color: var(--svet-green); text-align: right; }
+        
+        .audit-panel {
+            border: 1px solid #333;
+            padding: 10px;
+            background: #0d1117;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .audit-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        
+        #raw-data-out {
+            flex: 1;
+            background: #000;
+            color: #555;
+            border: 1px solid #222;
+            font-family: monospace;
+            font-size: 10px;
+            resize: none;
+            padding: 10px;
+        }
+        #raw-data-out:focus { color: var(--svet-green); outline: none; }
+        
+        button {
+            padding: 10px;
+            background: #21262d;
+            color: #eee;
+            border: 1px solid #30363d;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+        button:hover { border-color: var(--svet-green); }
+        #playBtn.active { background: var(--svet-green); color: #000; }
+    </style>
+</head>
+<body>
+
+<header>
+    <span>SVET_v0.19.1 // THE_GLASS_SLAB_FIXED</span>
+    <span id="cons-readout">CONSERVATION: 100.00%</span>
+</header>
+
+<div id="main">
+    <!-- LEFT: Controls -->
+    <aside id="sidebar">
+        <button id="playBtn">INITIATE_PULSE</button>
+        <button id="resetBtn">RESET_SUBSTRATE</button>
+
+        <div class="dial-group">
+            <label>Slab Budget (B)</label>
+            <input type="range" id="dial-B" min="10" max="100" value="80">
+            <div class="readout" id="lbl-B">0.80</div>
+        </div>
+
+        <div class="dial-group">
+            <label>Slab Strain (S)</label>
+            <input type="range" id="dial-S" min="0" max="100" value="20">
+            <div class="readout" id="lbl-S">0.20</div>
+        </div>
+
+        <div class="dial-group">
+            <label>Material Model (β)</label>
+            <input type="range" id="dial-beta" min="1" max="5" step="0.1" value="2">
+            <div class="readout" id="lbl-beta">2.0</div>
+        </div>
+
+        <div class="dial-group">
+            <label>Base Cadence (τ₀ ticks)</label>
+            <input type="number" id="dial-tau0" value="10">
+        </div>
+
+        <div class="audit-panel">
+            <label>Slab Properties (Nodes 20-39)</label>
+            <hr style="border:0; border-top:1px solid #222; margin: 5px 0;">
+            <div class="audit-row"><span>Refractive Index (n):</span><span id="res-n" style="color:var(--svet-blue)">1.00</span></div>
+            <div class="audit-row"><span>Attenuation (μ):</span><span id="res-mu" style="color:var(--svet-pink)">0.00</span></div>
+            <div class="audit-row"><span>Slab Latency (τ_eff):</span><span id="res-tau">10.0</span></div>
+        </div>
+
+        <div class="mini" style="font-size: 9px; color: #444; margin-top: auto;">
+            SUBSTRATE_TICKS: <span id="tick-count">0</span><br>
+            ZONE: <span id="zone-indicator" style="color:var(--svet-green)">VACUUM</span>
+        </div>
+    </aside>
+
+    <!-- CENTER: Monitor -->
+    <div id="viewport">
+        <div id="chart" style="width: 100%; height: 100%;"></div>
+    </div>
+
+    <!-- RIGHT: Forensic Data -->
+    <aside id="data-panel">
+        <label>Forensic Output (Tab-Separated)</label>
+        <textarea id="raw-data-out" readonly placeholder="Awaiting pulse data..."></textarea>
+        <div class="mini" style="font-size: 9px; color: #555;">
+            Click inside and press Ctrl+A to copy for Excel.
+        </div>
+    </aside>
+</div>
+
+<script>
+    // --- Color Constants ---
+    const SVET_GREEN = '#0b5';
+    const COLOR_BLUE = '#1f77b4';
+    const COLOR_PINK = '#ff1493';
+    
+    const numNodes = 60;
+
+    let state = {
+        running: false,
+        ticks: 0,
+        pulseIdx: -1,
+        waitTimer: 0,
+        intensities: new Array(numNodes).fill(0),
+        heat: new Array(numNodes).fill(0)
+    };
+
+    const playBtn = document.getElementById('playBtn');
+    const dataOut = document.getElementById('raw-data-out');
+    const tickLbl = document.getElementById('tick-count');
+    const zoneLbl = document.getElementById('zone-indicator');
+    const consLbl = document.getElementById('cons-readout');
+
+    function getLocalParams(nodeIdx) {
+        const tau0 = parseFloat(document.getElementById('dial-tau0').value);
+        
+        // Zone Logic: Nodes 20-39 are Glass, others are Vacuum
+        if (nodeIdx >= 20 && nodeIdx <= 39) {
+            const B = parseFloat(document.getElementById('dial-B').value) / 100;
+            const S = parseFloat(document.getElementById('dial-S').value) / 100;
+            const beta = parseFloat(document.getElementById('dial-beta').value);
+            const T = B / (B + S);
+            const eta = S / B;
+            const tauEff = tau0 * Math.pow(1 + eta, beta);
+            return { T, tauEff, isGlass: true };
+        } else {
+            return { T: 1.0, tauEff: tau0, isGlass: false };
+        }
+    }
+
+    function updateSidebarAudit() {
+        const B = parseFloat(document.getElementById('dial-B').value) / 100;
+        const S = parseFloat(document.getElementById('dial-S').value) / 100;
+        const tau0 = parseFloat(document.getElementById('dial-tau0').value);
+        const beta = parseFloat(document.getElementById('dial-beta').value);
+        
+        const eta = S / B;
+        const tauEff = tau0 * Math.pow(1 + eta, beta);
+        
+        document.getElementById('lbl-B').textContent = B.toFixed(2);
+        document.getElementById('lbl-S').textContent = S.toFixed(2);
+        document.getElementById('lbl-beta').textContent = beta.toFixed(1);
+        document.getElementById('res-n').textContent = (tauEff / tau0).toFixed(2);
+        document.getElementById('res-mu').textContent = Math.log(1 + eta).toFixed(4);
+        document.getElementById('res-tau').textContent = tauEff.toFixed(1);
+    }
+
+    function reset() {
+        state.running = false;
+        state.ticks = 0;
+        state.pulseIdx = -1;
+        state.waitTimer = 0;
+        state.intensities.fill(0);
+        state.heat.fill(0);
+        playBtn.textContent = "INITIATE_PULSE";
+        playBtn.classList.remove('active');
+        dataOut.value = "Node\tZone\tIntensity\tHeat\tLatency\n";
+        render();
+    }
+
+    function step() {
+        if (!state.running) return;
+        state.ticks++;
+
+        // Start Pulse
+        if (state.pulseIdx === -1) {
+            state.pulseIdx = 0;
+            state.intensities[0] = 1.0;
+            logNode(0, "VAC", 1.0, 0, getLocalParams(0).tauEff);
+        }
+
+        const p = getLocalParams(state.pulseIdx);
+        state.waitTimer++;
+
+        // Step 4: Latency Check
+        if (state.waitTimer >= p.tauEff) {
+            const currentI = state.intensities[state.pulseIdx];
+            
+            if (state.pulseIdx < numNodes - 1) {
+                const nextIdx = state.pulseIdx + 1;
+                const nextP = getLocalParams(nextIdx);
+                
+                // Step 2 & 3: Tax & Heat
+                const realizedI = currentI * nextP.T;
+                const tax = currentI - realizedI;
+                
+                state.intensities[nextIdx] = realizedI;
+                state.heat[nextIdx] += tax;
+                state.intensities[state.pulseIdx] = 0;
+                
+                state.pulseIdx = nextIdx;
+                state.waitTimer = 0;
+
+                // Update Zone UI
+                zoneLbl.textContent = nextP.isGlass ? "GLASS_SLAB" : "VACUUM";
+                zoneLbl.style.color = nextP.isGlass ? COLOR_PINK : SVET_GREEN;
+                
+                logNode(nextIdx, nextP.isGlass ? "GLS" : "VAC", realizedI, state.heat[nextIdx], nextP.tauEff);
+            } else {
+                state.running = false;
+                playBtn.textContent = "AUDIT_COMPLETE";
+                playBtn.classList.remove('active');
+            }
+        }
+
+        tickLbl.textContent = state.ticks;
+        const total = state.intensities.reduce((a,b)=>a+b,0) + state.heat.reduce((a,b)=>a+b,0);
+        consLbl.textContent = `CONSERVATION: ${(total * 100).toFixed(2)}%`;
+    }
+
+    function logNode(idx, zone, i, h, tau) {
+        dataOut.value += `${idx}\t${zone}\t${i.toFixed(4)}\t${h.toFixed(4)}\t${tau.toFixed(2)}\n`;
+    }
+
+    function render() {
+        const x = Array.from({length: numNodes}, (_, i) => i);
+        const traces = [
+            { x: x, y: state.intensities, type: 'bar', marker: { color: COLOR_BLUE }, name: 'Pulse' },
+            { x: x, y: state.heat, type: 'scatter', mode: 'lines', fill: 'tozeroy', line: { color: COLOR_PINK }, name: 'Heat' }
+        ];
+
+        const layout = {
+            paper_bgcolor: '#000', plot_bgcolor: '#000',
+            margin: { l: 40, r: 20, t: 20, b: 40 },
+            xaxis: { title: 'Node Index', gridcolor: '#222', range: [-1, numNodes], fixedrange: true },
+            yaxis: { title: 'Energy Intensity', gridcolor: '#222', range: [0, 1.1], fixedrange: true },
+            showlegend: false,
+            shapes: [
+                { 
+                    type: 'rect', x0: 19.5, x1: 39.5, y0: 0, y1: 1.1,
+                    fillcolor: 'rgba(255, 255, 255, 0.05)', line: { width: 0 }
+                }
+            ]
+        };
+        Plotly.react('chart', traces, layout, { displayModeBar: false });
+    }
+
+    function loop() {
+        if (state.running) {
+            for(let i=0; i<5; i++) step(); 
+            render();
+        }
+        requestAnimationFrame(loop);
+    }
+
+    playBtn.onclick = () => {
+        if (state.pulseIdx >= numNodes - 1) reset();
+        state.running = !state.running;
+        playBtn.textContent = state.running ? "PAUSE_AUDIT" : "RESUME_AUDIT";
+        playBtn.classList.toggle('active', state.running);
+    };
+    document.getElementById('resetBtn').onclick = reset;
+    document.querySelectorAll('input').forEach(el => el.oninput = () => {
+        updateSidebarAudit();
+        render();
+    });
+
+    updateSidebarAudit();
+    reset();
+    loop();
+</script>
+</body>
+</html>

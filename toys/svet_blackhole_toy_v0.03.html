@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SVET_Blackhole_Toy_v0.0.3</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0b0b0f; --panel:#121217; --muted:#9aa; --accent:#f39c12;
+      --glass: rgba(255,255,255,0.03); --text:#eaeaea;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .app{
+      display:flex;
+      gap:12px;
+      padding:12px;
+      box-sizing:border-box;
+      height:100vh;
+    }
+    .col{
+      background:var(--panel);
+      border-radius:8px;
+      padding:12px;
+      box-sizing:border-box;
+      overflow:auto;
+    }
+    #left{width:320px;min-width:260px}
+    #right{width:360px;min-width:300px}
+    #center{flex:1;display:flex;flex-direction:column;gap:12px}
+    h1{font-size:16px;margin:0 0 8px 0}
+    label{display:block;font-size:12px;color:var(--muted);margin-top:8px}
+    input[type="range"]{width:100%}
+    input[type="number"], select, button{
+      background:#0b0b0c;
+      border:1px solid #222;
+      color:var(--text);
+      padding:6px;
+      border-radius:6px;
+    }
+    .row{display:flex;gap:8px}
+    .row>div{flex:1}
+    .controls{display:flex;flex-direction:column;gap:6px}
+    .btnRow{display:flex;gap:8px;margin-top:8px}
+    .btnRow button{
+      flex:1;
+      padding:8px;
+      background:var(--accent);
+      border:none;
+      color:#081018;
+      font-weight:700;
+      cursor:pointer;
+      border-radius:6px;
+    }
+    .small{font-size:12px;color:var(--muted)}
+    .note{font-size:11px;color:var(--muted)}
+    .gaugeRow{display:flex;gap:8px;margin-top:8px}
+    .gauge{
+      flex:1;
+      background:var(--glass);
+      padding:8px;
+      border-radius:8px;
+      text-align:center;
+    }
+    .gauge svg{width:100%;height:80px}
+    .footer{font-size:12px;color:var(--muted);margin-top:8px}
+    .label-small{font-size:12px;color:var(--muted);margin-bottom:6px}
+
+    .plot-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      width:100%;
+      box-sizing:border-box;
+    }
+    .plot-cell{
+      flex:1 1 260px;
+      min-width:260px;
+      min-height:240px;
+      background:#070708;
+      border-radius:6px;
+      padding:6px;
+      box-sizing:border-box;
+    }
+    #plotA,#plotB,#plotErgo,#plotC{
+      width:100%;
+      height:100%;
+    }
+
+    #canvasWrap{
+      width:100%;
+      background:linear-gradient(180deg,#0b0b0f 0%, #0f0f14 100%);
+      border-radius:8px;
+      padding:8px;
+      box-sizing:border-box;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+    canvas{
+      border-radius:6px;
+      background:transparent;
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+    }
+
+    pre{
+      background:#060607;
+      padding:8px;
+      border-radius:6px;
+      font-size:11px;
+      color:#cfd8dc;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+    .modal .card{
+      background:#0b0b0c;
+      padding:12px;
+      border-radius:8px;
+      width:90%;
+      max-width:720px;
+      box-sizing:border-box;
+    }
+    textarea{
+      width:100%;
+      box-sizing:border-box;
+      background:#000;
+      color:#cfc;
+      padding:8px;
+      border-radius:6px;
+      font-family:monospace;
+      font-size:12px;
+    }
+    input[type="text"]{
+      background:#070708;
+      border:1px solid #222;
+      color:var(--text);
+      padding:6px;
+      border-radius:6px;
+    }
+  </style>
+  <script src="https://cdn.plot.ly/plotly-2.24.2.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- LEFT COLUMN -->
+    <div id="left" class="col">
+      <h1>SVET Blackhole Toy v0.0.3</h1>
+      <div class="small">Budget: B(r) = Cmax(r) − (S_r² + S_θ² + S_Q²)</div>
+
+      <div class="controls">
+        <label>Mass M
+          <input id="Mnum" type="number" step="0.1" value="1.0">
+        </label>
+
+        <label>Spin J (normalized a slider)
+          <input id="Jrange" type="range" min="0" max="0.99" step="0.001" value="0.0">
+        </label>
+        <div class="row">
+          <div><input id="Jnum" type="number" step="0.01" value="0.00"></div>
+          <div class="small">J absolute = a · M²</div>
+        </div>
+
+        <label>Charge Q
+          <input id="Qnum" type="number" step="0.01" value="0.0">
+        </label>
+
+        <label>C0
+          <input id="C0num" type="number" step="0.1" value="1.0">
+        </label>
+        <label>γ (gamma)
+          <input id="gammnum" type="number" step="0.1" value="1.0">
+        </label>
+        <label>α (alpha)
+          <input id="alphanum" type="number" step="0.1" value="1.0">
+        </label>
+
+        <label>r grid resolution
+          <select id="resolution">
+            <option value="200">Low (200)</option>
+            <option value="500" selected>Default (500)</option>
+            <option value="2000">High (2000)</option>
+          </select>
+        </label>
+
+        <label>Bias value b
+          <input id="biasRange" type="range" min="-1" max="1" step="0.01" value="0">
+        </label>
+        <div class="row">
+          <div><input id="biasNum" type="number" step="0.001" value="0.000"></div>
+          <div>
+            <label><input id="biasMode" type="radio" name="biasMode" value="denom" checked> Denominator only</label>
+            <label><input id="biasModeGlobal" type="radio" name="biasMode" value="global"> Global</label>
+            <label><input id="biasModeOff" type="radio" name="biasMode" value="off"> Off</label>
+          </div>
+        </div>
+        <div class="note">Denominator-only is conservative: affects diagnostics not pattern dynamics.</div>
+
+        <label>CSV mode
+          <select id="csvMode">
+            <option value="none">None</option>
+            <option value="small" selected>Small (summary)</option>
+            <option value="verbose">Verbose (profiles)</option>
+            <option value="both">Both</option>
+          </select>
+        </label>
+
+        <div class="btnRow">
+          <button id="runSweep">Run Sweep (50 a steps)</button>
+          <button id="exportProfile">Export Profile (current a)</button>
+        </div>
+
+        <div class="btnRow">
+          <button id="downloadSummary">Download Summary CSV</button>
+          <button id="snapshot">Save PNG Snapshot</button>
+        </div>
+
+        <div class="gaugeRow">
+          <div class="gauge" id="gMaxStrain">
+            <div class="small">Max Strain</div>
+            <svg viewBox="0 0 100 40"></svg>
+            <div class="small" id="gMaxStrainVal">0%</div>
+          </div>
+          <div class="gauge" id="gClamped">
+            <div class="small">Clamped %</div>
+            <svg viewBox="0 0 100 40"></svg>
+            <div class="small" id="gClampedVal">0%</div>
+          </div>
+          <div class="gauge" id="gBiased">
+            <div class="small">Nodes Biased</div>
+            <svg viewBox="0 0 100 40"></svg>
+            <div class="small" id="gBiasedVal">0%</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="small">Colorblind palette:
+            <label><input id="cbToggle" type="checkbox"> On</label>
+          </div>
+          <div class="small" style="margin-top:6px">Use a local server for full clipboard support.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER COLUMN -->
+    <div id="center" class="col">
+      <!-- TOP ROW -->
+      <div class="plot-row">
+        <div class="plot-cell">
+          <div class="label-small" id="labelPlotA">B(r) profile — budget residual vs radius. Horizon marker shows where B(r)=0.</div>
+          <div id="plotA"></div>
+        </div>
+        <div class="plot-cell">
+          <div class="label-small" id="labelPlotB">Horizon map — horizon radius r_horizon as spin a varies.</div>
+          <div id="plotB"></div>
+        </div>
+      </div>
+
+      <!-- MIDDLE ROW -->
+      <div class="plot-row">
+        <div class="plot-cell">
+          <div class="label-small" id="labelErgo">Ergosphere map — inner and outer ergosphere radii vs spin.</div>
+          <div id="plotErgo"></div>
+        </div>
+        <div class="plot-cell">
+          <div class="label-small" id="labelPlotC">Component overlay — B(r) with strain components Sr², St², Sq².</div>
+          <div id="plotC"></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM: CANVAS -->
+      <div id="canvasWrap">
+        <div class="label-small" id="labelCanvas">Field visualization — radial budget band. Warm = deficit (B&lt;0), cool = surplus (B&gt;0). Vertical line = horizon.</div>
+        <canvas id="fieldCanvas" width="900" height="360"></canvas>
+      </div>
+
+      <div class="small note" style="margin-top:8px">
+        Use sliders to explore. Run Sweep computes r_horizon and ergosphere vs normalized spin a.
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div id="right" class="col">
+      <h1>Inspector & Logs</h1>
+      <div class="small">Current run</div>
+      <pre id="state" style="height:140px;overflow:auto;"></pre>
+
+      <div style="margin-top:10px">
+        <label class="small">JSON Dial Control (paste then Load)</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input id="jsonPasteField" type="text" placeholder='{"M":1,"J":0.2,...}' style="flex:1;padding:6px;border-radius:6px;background:#070708;border:1px solid #222;color:#eaeaea;font-size:12px">
+        </div>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button id="loadJsonBtn" style="flex:1;padding:6px;border-radius:6px;background:#5fb;border:none;color:#001;font-weight:700;cursor:pointer">Load JSON</button>
+          <button id="copyJsonBtn" style="flex:1;padding:6px;border-radius:6px;background:#222;border:1px solid #333;color:#fff">Copy JSON</button>
+        </div>
+        <div id="jsonLoadMsg" class="small" style="margin-top:6px;color:var(--muted)"></div>
+      </div>
+
+      <div style="margin-top:8px">
+        <button id="copyBriefBtn" style="background:#2ecc71;border:none;padding:8px;border-radius:6px;color:#001;font-weight:700;cursor:pointer">📋 Copy Brief</button>
+        <button id="openModal" style="margin-left:8px;padding:8px;border-radius:6px;background:#222;border:1px solid #333;color:#fff">Show Last CSV</button>
+      </div>
+
+      <div class="small note" style="margin-top:8px">Acceptance canary: r_horizon(a=0) ≈ 2M (within 10%).</div>
+      <div style="margin-top:12px">
+        <a class="small" id="downloadManifest" href="#">Download manifest.json (last)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true">
+    <div class="card">
+      <h3 style="margin:0 0 8px 0">Researcher's Brief (copy fallback)</h3>
+      <textarea id="briefArea" style="height:320px;"></textarea>
+      <div style="text-align:right;margin-top:8px">
+        <button id="closeModal" style="padding:8px;border-radius:6px;background:#222;color:#fff">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* v0.0.3: adds exportData() with JSON header + filename grammar */
+
+/* ---- constants & defaults ---- */
+const EPS = 1e-9;
+const DEFAULTS = { M:1.0, C0:1.0, gamma:1.0, alpha:1.0, resolution:500, sweepSteps:50 };
+
+/* ---- helpers ---- */
+function linspace(a,b,n){
+  const out=[];
+  if(n===1) return [a];
+  const step=(b-a)/(n-1);
+  for(let i=0;i<n;i++) out.push(a + step*i);
+  return out;
+}
+function downloadText(filename, text){
+  const blob=new Blob([text],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+}
+function toCSV(rows, header){
+  const lines=[header.join(',')];
+  for(const r of rows){
+    lines.push(header.map(k=>String(r[k] ?? '')).join(','));
+  }
+  return lines.join('\n');
+}
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+/* ---- physics ---- */
+function computeBudget(rArray, params){
+  params = params || {};
+  const M = Number(params.M ?? DEFAULTS.M);
+  const J = Number(params.J ?? 0);
+  const Q = Number(params.Q ?? 0);
+  const C0 = Number(params.C0 ?? DEFAULTS.C0);
+  const gamma = Number(params.gamma ?? DEFAULTS.gamma);
+  const alpha = Number(params.alpha ?? DEFAULTS.alpha);
+  const bias = params.bias || {mode:'denom', value:0};
+
+  const aBias = (bias && typeof bias.value === 'number') ? bias.value : 0.0;
+  const mode = (bias && bias.mode) ? bias.mode : 'denom';
+
+  const B = new Float64Array(rArray.length);
+  const Sr = new Float64Array(rArray.length);
+  const St = new Float64Array(rArray.length);
+  const Sq = new Float64Array(rArray.length);
+
+  for(let i=0;i<rArray.length;i++){
+    const r = rArray[i];
+    const s_r = M / (r*r);
+    const s_t = J / (r*r*r);
+    const s_q = (alpha * Q) / (r*r);
+    Sr[i]=s_r; St[i]=s_t; Sq[i]=s_q;
+
+    const bmap = Math.tanh(aBias);
+    let Ceff = C0 / Math.pow(r + EPS, gamma);
+    if(mode === 'denom'){
+      Ceff = Ceff * (1 + bmap + EPS);
+      B[i] = Ceff - (s_r*s_r + s_t*s_t + s_q*s_q);
+    } else if(mode === 'global'){
+      const beta = 0.05;
+      const factor = (1 - beta * aBias);
+      B[i] = Ceff - ((s_r*factor)*(s_r*factor) + (s_t*factor)*(s_t*factor) + (s_q*factor)*(s_q*factor));
+    } else {
+      B[i] = Ceff - (s_r*s_r + s_t*s_t + s_q*s_q);
+    }
+  }
+  return { B:Array.from(B), Sr:Array.from(Sr), St:Array.from(St), Sq:Array.from(Sq) };
+}
+function solveHorizon(rArray, Barray){
+  for(let i=0;i<rArray.length-1;i++){
+    const b1 = Barray[i], b2 = Barray[i+1];
+    if(b1 === 0) return rArray[i];
+    if(b1*b2 < 0){
+      let a = rArray[i], b = rArray[i+1], fa = b1;
+      for(let iter=0; iter<40; iter++){
+        const m = 0.5*(a+b);
+        const fm = interpolateB(m, rArray, Barray);
+        if(Math.abs(fm) < 1e-12) return m;
+        if(fa*fm <= 0){ b = m; } else { a = m; fa = fm; }
+      }
+      return 0.5*(a+b);
+    }
+  }
+  return null;
+}
+function interpolateB(x, rArray, Barray){
+  if(x <= rArray[0]) return Barray[0];
+  if(x >= rArray[rArray.length-1]) return Barray[Barray.length-1];
+  let i = 0;
+  while(i < rArray.length-1 && rArray[i+1] < x) i++;
+  const r1 = rArray[i], r2 = rArray[i+1];
+  const t = (x - r1)/(r2 - r1 + EPS);
+  return Barray[i]*(1-t) + Barray[i+1]*t;
+}
+function ergosphereProxy(rArray, Sr, St, Sq){
+  let inner = null, outer = null;
+  for(let i=0;i<rArray.length;i++){
+    const s2 = St[i]*St[i], other = Sr[i]*Sr[i] + Sq[i]*Sq[i];
+    if(s2 > 0.5*other){
+      if(inner === null) inner = rArray[i];
+      outer = rArray[i];
+    }
+  }
+  return { inner, outer };
+}
+function computeCdotInf(rArray, C0, gamma, M){
+  const out = new Float64Array(rArray.length);
+  for(let i=0;i<rArray.length;i++){
+    const r = rArray[i];
+    const Clocal = C0 / Math.pow(r + EPS, gamma);
+    const gtt = Math.max(0, 1 - 2*M/(r + EPS));
+    out[i] = Clocal * Math.sqrt(gtt + EPS);
+  }
+  return Array.from(out);
+}
+
+/* ---- UI elements ---- */
+const els = {
+  Mnum: document.getElementById('Mnum'),
+  Jrange: document.getElementById('Jrange'),
+  Jnum: document.getElementById('Jnum'),
+  Qnum: document.getElementById('Qnum'),
+  C0num: document.getElementById('C0num'),
+  gammnum: document.getElementById('gammnum'),
+  alphanum: document.getElementById('alphanum'),
+  resolution: document.getElementById('resolution'),
+  biasRange: document.getElementById('biasRange'),
+  biasNum: document.getElementById('biasNum'),
+  biasMode: document.getElementById('biasMode'),
+  biasModeGlobal: document.getElementById('biasModeGlobal'),
+  biasModeOff: document.getElementById('biasModeOff'),
+  cbToggle: document.getElementById('cbToggle'),
+  runSweep: document.getElementById('runSweep'),
+  exportProfile: document.getElementById('exportProfile'),
+  downloadSummary: document.getElementById('downloadSummary'),
+  snapshot: document.getElementById('snapshot'),
+  plotA: document.getElementById('plotA'),
+  plotB: document.getElementById('plotB'),
+  plotErgo: document.getElementById('plotErgo'),
+  plotC: document.getElementById('plotC'),
+  fieldCanvas: document.getElementById('fieldCanvas'),
+  state: document.getElementById('state'),
+  copyBriefBtn: document.getElementById('copyBriefBtn'),
+  modal: document.getElementById('modal'),
+  briefArea: document.getElementById('briefArea'),
+  closeModal: document.getElementById('closeModal'),
+  openModal: document.getElementById('openModal'),
+  downloadManifest: document.getElementById('downloadManifest'),
+  jsonPasteField: document.getElementById('jsonPasteField'),
+  loadJsonBtn: document.getElementById('loadJsonBtn'),
+  copyJsonBtn: document.getElementById('copyJsonBtn'),
+  jsonLoadMsg: document.getElementById('jsonLoadMsg'),
+  csvMode: document.getElementById('csvMode')
+};
+
+let lastManifest = null;
+let lastSummaryRows = [];
+let lastProfileCSV = '';
+
+/* ---- sync handlers ---- */
+els.Jrange.addEventListener('input', ()=>{
+  const M = parseFloat(els.Mnum.value)||1.0;
+  els.Jnum.value = (parseFloat(els.Jrange.value) * M * M).toFixed(4);
+  updateAndRender();
+});
+els.Jnum.addEventListener('input', ()=>{
+  const M = parseFloat(els.Mnum.value)||1.0;
+  const a = clamp(parseFloat(els.Jnum.value)/(M*M),0,0.99);
+  els.Jrange.value = a;
+  updateAndRender();
+});
+els.biasRange.addEventListener('input', ()=>{
+  els.biasNum.value = parseFloat(els.biasRange.value).toFixed(3);
+  updateAndRender();
+});
+els.biasNum.addEventListener('input', ()=>{
+  els.biasRange.value = parseFloat(els.biasNum.value);
+  updateAndRender();
+});
+[els.Mnum, els.Qnum, els.C0num, els.gammnum, els.alphanum, els.resolution].forEach(el=>el.addEventListener('change', updateAndRender));
+[els.biasMode, els.biasModeGlobal, els.biasModeOff].forEach(el=>el.addEventListener('change', updateAndRender));
+els.cbToggle.addEventListener('change', updateAndRender);
+
+/* ---- canvas ---- */
+const canvas = els.fieldCanvas;
+const ctx = canvas.getContext('2d');
+function defaultMap(t){
+  const r = Math.floor(255 * Math.max(0, Math.min(1, (t-0.5)*2)));
+  const b = Math.floor(255 * Math.max(0, Math.min(1, (0.5 - t)*2)));
+  const g = Math.floor(255 * (1 - Math.abs(t-0.5)*2));
+  return `rgba(${r},${g},${b},0.9)`;
+}
+function colorblindMap(t){
+  const r = Math.floor(255 * (0.2 + 0.8 * t));
+  const g = Math.floor(255 * (0.4 + 0.2 * (1-t)));
+  const b = Math.floor(255 * (0.6 * (1-t)));
+  return `rgba(${r},${g},${b},0.95)`;
+}
+function renderField(rArray, Barray, horizonR){
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+  const grad = ctx.createRadialGradient(w/2,h/2,20,w/2,h/2,Math.max(w,h));
+  grad.addColorStop(0, 'rgba(255,120,40,0.12)');
+  grad.addColorStop(0.4, 'rgba(40,80,200,0.06)');
+  grad.addColorStop(1, 'rgba(10,10,20,0.6)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,w,h);
+
+  const minB = Math.min(...Barray), maxB = Math.max(...Barray);
+  for(let i=0;i<rArray.length;i+=Math.max(1,Math.floor(rArray.length/400))){
+    const B = Barray[i];
+    const t = (B - minB) / (maxB - minB + EPS);
+    const color = els.cbToggle.checked ? colorblindMap(t) : defaultMap(t);
+    const x = Math.floor((i / (rArray.length-1)) * w);
+    const y = Math.floor(h/2 + (t-0.5)*h*0.6);
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, Math.max(1, Math.floor(w/rArray.length)), 2);
+  }
+
+  if(horizonR){
+    let idx = rArray.findIndex(r=>r>=horizonR);
+    if(idx<0) idx = rArray.length-1;
+    const x = Math.floor((idx / (rArray.length-1)) * w);
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,200,80,0.95)';
+    ctx.lineWidth = 3;
+    ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(255,200,80,0.06)';
+    ctx.ellipse(x, h/2, 80, 120, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+/* ---- Plotly safe wrapper ---- */
+const _plotInitialized = new Set();
+function safePlot(el, data, layout, opts){
+  if(!el){ console.error('safePlot: missing container'); return; }
+  const id = (typeof el === 'string') ? el : el.id;
+  try{
+    if(!_plotInitialized.has(id)){
+      Plotly.newPlot(el, data, layout, opts || {displayModeBar:false});
+      _plotInitialized.add(id);
+    } else {
+      Plotly.react(el, data, layout, opts || {displayModeBar:false});
+    }
+  }catch(err){
+    console.error('safePlot: Plotly error in', id, err);
+    try{
+      el.innerHTML = '<div style="color:#f88;padding:8px;font-size:12px">Plot error — see console.</div>';
+    }catch(e){}
+  }
+}
+
+/* ---- plotting ---- */
+function plotBudget(rArray, Barray, horizonR){
+  const trace = { x: rArray, y: Barray, mode:'lines', line:{color:'#f39c12'}, name:'B(r)' };
+  const layout = {
+    margin:{t:20,l:40,r:20,b:40},
+    xaxis:{title:'r'},
+    yaxis:{title:'B(r)'},
+    showlegend:false
+  };
+  const data = [trace];
+  if(horizonR){
+    data.push({
+      x:[horizonR,horizonR],
+      y:[Math.min(...Barray), Math.max(...Barray)],
+      mode:'lines',
+      line:{color:'#2ecc71',dash:'dash'},
+      name:'horizon'
+    });
+  }
+  safePlot(els.plotA, data, layout, {displayModeBar:false});
+}
+function plotHorizonMap(aVals, horizons){
+  const trace = {
+    x:aVals,
+    y:horizons,
+    mode:'lines+markers',
+    line:{color:'#00aaff'},
+    marker:{size:6},
+    name:'r_horizon'
+  };
+  const layout = {
+    margin:{t:20,l:40,r:20,b:40},
+    xaxis:{title:'a = J / M²'},
+    yaxis:{title:'r_horizon'},
+    showlegend:false
+  };
+  safePlot(els.plotB, [trace], layout, {displayModeBar:false});
+}
+function plotErgosphereMap(aVals, innerR, outerR){
+  const traceInner = {
+    x: aVals,
+    y: innerR,
+    mode:'lines+markers',
+    name:'ergo inner',
+    line:{color:'#ff7f0e'},
+    marker:{size:6}
+  };
+  const traceOuter = {
+    x: aVals,
+    y: outerR,
+    mode:'lines+markers',
+    name:'ergo outer',
+    line:{color:'#1f77b4'},
+    marker:{size:6}
+  };
+  const layout = {
+    margin:{t:20,l:40,r:20,b:40},
+    xaxis:{title:'a = J / M²'},
+    yaxis:{title:'r (radius)'},
+    showlegend:true
+  };
+  safePlot(els.plotErgo, [traceInner, traceOuter], layout, {displayModeBar:false});
+}
+function plotOverlay(rArray, Barray, Sr, St, Sq, horizonR){
+  const traces = [
+    { x:rArray, y:Barray, name:'B(r)', yaxis:'y1', line:{color:'#f39c12'} },
+    { x:rArray, y:Sr.map(v=>v*v), name:'Sr^2', yaxis:'y2', line:{color:'#0072B2',dash:'dot'} },
+    { x:rArray, y:St.map(v=>v*v), name:'St^2', yaxis:'y2', line:{color:'#D55E00',dash:'dash'} },
+    { x:rArray, y:Sq.map(v=>v*v), name:'Sq^2', yaxis:'y2', line:{color:'#009E73',dash:'dashdot'} }
+  ];
+  const layout = {
+    margin:{t:20,l:40,r:40,b:40},
+    yaxis:{title:'B(r)'},
+    yaxis2:{title:'strain^2',overlaying:'y',side:'right'},
+    shapes: horizonR ? [{
+      type:'line',
+      x0:horizonR,x1:horizonR,
+      y0:0,y1:1,
+      yref:'paper',
+      line:{color:'#2ecc71',dash:'dash'}
+    }] : []
+  };
+  safePlot(els.plotC, traces, layout, {displayModeBar:false});
+}
+
+/* ---- gauges ---- */
+function updateGauges(maxStrain, clampedPct, biasedPct){
+  document.getElementById('gMaxStrainVal').textContent = (maxStrain*100).toFixed(2) + '%';
+  document.getElementById('gClampedVal').textContent = clampedPct.toFixed(2) + '%';
+  document.getElementById('gBiasedVal').textContent = biasedPct.toFixed(2) + '%';
+  document.querySelectorAll('.gauge svg').forEach((svg, idx)=>{
+    svg.innerHTML = '';
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',10); rect.setAttribute('y',10);
+    rect.setAttribute('width',80); rect.setAttribute('height',20);
+    rect.setAttribute('rx',10);
+    rect.setAttribute('fill','#071018');
+    g.appendChild(rect);
+    const needle = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    const val = idx===0 ? maxStrain : (idx===1 ? clampedPct/100 : biasedPct/100);
+    const px = 10 + Math.floor(val*80);
+    needle.setAttribute('x',px); needle.setAttribute('y',8);
+    needle.setAttribute('width',4); needle.setAttribute('height',24);
+    needle.setAttribute('fill','#f39c12');
+    g.appendChild(needle);
+    svg.appendChild(g);
+  });
+}
+
+/* ---- parameter snapshot (getP) ---- */
+function getBiasObj(){
+  const val = parseFloat(els.biasNum.value) || 0.0;
+  const mode = els.biasMode.checked ? 'denom' : (els.biasModeGlobal.checked ? 'global' : 'off');
+  return { mode, value: val };
+}
+function getP(){
+  const M = parseFloat(els.Mnum.value) || DEFAULTS.M;
+  const a = parseFloat(els.Jrange.value) || 0;
+  const J = parseFloat(els.Jnum.value) || (a * M * M);
+  const Q = parseFloat(els.Qnum.value) || 0;
+  const C0 = parseFloat(els.C0num.value) || DEFAULTS.C0;
+  const gamma = parseFloat(els.gammnum.value) || DEFAULTS.gamma;
+  const alpha = parseFloat(els.alphanum.value) || DEFAULTS.alpha;
+  const resolution = parseInt(els.resolution.value) || DEFAULTS.resolution;
+  const biasObj = getBiasObj();
+  const bias = biasObj.value;
+  const biasMode = biasObj.mode;
+  const csvMode = els.csvMode.value;
+  return { M,J,a,Q,C0,gamma,alpha,resolution,bias,biasMode,csvMode };
+}
+
+/* ---- exportData: filename + JSON header ---- */
+const exportData = (csvBody, type) => {
+  const p = getP();
+  const d = new Date();
+
+  // Timestamp: YYMMDD_HHMMSS
+  const ts = d.toISOString()
+              .slice(2,19)
+              .replace(/[-:T]/g,'')
+              .replace(/\./g,'');
+
+  // Resolution code: L / D / H
+  const rCode = (()=>{
+    const r = String(p.resolution);
+    if (r === "200") return "L";
+    if (r === "500") return "D";
+    if (r === "2000") return "H";
+    return "D";
+  })();
+
+  // Bias mode code: G / D / O
+  const modeCode = p.biasMode === "global" ? "G"
+                   : p.biasMode === "denom" ? "D"
+                   : "O";
+
+  const fn =
+    `${ts}_${type}` +
+    `_M${p.M}` +
+    `_J${p.J}` +
+    `_Q${p.Q}` +
+    `_C${p.C0}` +
+    `_G${p.gamma}` +
+    `_A${p.alpha}` +
+    `_R${rCode}` +
+    `_B${p.bias}` +
+    `_X${modeCode}.csv`;
+
+  const content = `#${JSON.stringify(p)}\n${csvBody}`;
+  downloadText(fn, content);
+};
+
+/* ---- compute & render ---- */
+function buildRGrid(){
+  const res = parseInt(els.resolution.value) || DEFAULTS.resolution;
+  const M = parseFloat(els.Mnum.value) || DEFAULTS.M;
+  const rmin = Math.max(0.5, 0.5 * 2 * M);
+  const rmax = Math.max(10, 20 * M);
+  return linspace(rmin, rmax, res);
+}
+
+function computeAndRender(){
+  try{
+    const rArray = buildRGrid();
+    if(!Array.isArray(rArray) || rArray.length < 3){
+      console.error('r grid too small', rArray);
+      return;
+    }
+    const M = parseFloat(els.Mnum.value) || DEFAULTS.M;
+    const aNorm = parseFloat(els.Jrange.value) || 0;
+    const J = parseFloat(els.Jnum.value) || (aNorm * M * M);
+    const Q = parseFloat(els.Qnum.value) || 0;
+    const C0 = parseFloat(els.C0num.value) || DEFAULTS.C0;
+    const gamma = parseFloat(els.gammnum.value) || DEFAULTS.gamma;
+    const alpha = parseFloat(els.alphanum.value) || DEFAULTS.alpha;
+    const bias = getBiasObj();
+
+    const params = {M,J,Q,C0,gamma,alpha,bias};
+    const {B,Sr,St,Sq} = computeBudget(rArray, params);
+    const horizon = solveHorizon(rArray, B);
+    const erg = ergosphereProxy(rArray, Sr, St, Sq);
+    const Cdot = computeCdotInf(rArray, C0, gamma, M);
+
+    const maxStrain = Math.max(...Sr.map((v,i)=>Math.sqrt(Sr[i]*Sr[i] + St[i]*St[i] + Sq[i]*Sq[i]))) / (C0 + EPS);
+    const clampedPct = B.filter(v=>v < 0).length / B.length * 100;
+    const biasedPct = bias.value !== 0 ? (B.filter((v,i)=>Math.abs(Sr[i])>0 && Math.abs(St[i])>0).length / B.length * 100) : 0;
+
+    renderField(rArray, B, horizon);
+    plotBudget(rArray, B, horizon);
+    plotHorizonMap([parseFloat(els.Jrange.value)], [horizon || NaN]);
+    plotErgosphereMap([parseFloat(els.Jrange.value)], [erg.inner || NaN], [erg.outer || NaN]);
+    plotOverlay(rArray, B, Sr, St, Sq, horizon);
+    updateGauges(maxStrain, clampedPct, biasedPct);
+
+    const stateObj = {
+      M, J, Q, C0, gamma, alpha, bias,
+      resolution: rArray.length,
+      horizon: horizon || 'none',
+      ergosphere: erg
+    };
+    els.state.textContent = JSON.stringify(stateObj, null, 2);
+
+    const header = ['r','B','Sr','St','Sq','Cdot_inf'];
+    const rows = rArray.map((rv,i)=>({
+      r:rv, B:B[i], Sr:Sr[i], St:St[i], Sq:Sq[i], Cdot_inf:Cdot[i]
+    }));
+    lastProfileCSV = toCSV(rows, header);
+    lastSummaryRows = [{
+      a: parseFloat(els.Jrange.value),
+      J: J,
+      Q: Q,
+      r_horizon: horizon || '',
+      ergosphere_inner: erg.inner || '',
+      ergosphere_outer: erg.outer || '',
+      clamped_pct: clampedPct,
+      nodes_biased_pct: biasedPct
+    }];
+    lastManifest = {
+      generated_at: new Date().toISOString(),
+      params: stateObj,
+      summary_count: lastSummaryRows.length
+    };
+    els.downloadManifest.href = URL.createObjectURL(new Blob([JSON.stringify(lastManifest,null,2)],{type:'application/json'}));
+    els.downloadManifest.download = `svet_manifest_${Date.now()}.json`;
+  }catch(e){
+    console.error('computeAndRender failed', e);
+    els.state.textContent = 'ERROR: ' + (e && e.message ? e.message : String(e));
+  }
+}
+function updateAndRender(){ computeAndRender(); }
+
+/* ---- sweep ---- */
+els.runSweep.addEventListener('click', async ()=>{
+  try{
+    const M = parseFloat(els.Mnum.value) || DEFAULTS.M;
+    const steps = DEFAULTS.sweepSteps;
+    const aVals = linspace(0, 0.99, steps);
+    const horizons = [], ergInners = [], ergOuters = [], summaryRows = [];
+    const rGrid = buildRGrid();
+
+    for(let i=0;i<aVals.length;i++){
+      const a = aVals[i];
+      const Jabs = a * M * M;
+      const params = {
+        M,
+        J: Jabs,
+        Q: parseFloat(els.Qnum.value)||0,
+        C0: parseFloat(els.C0num.value)||1,
+        gamma: parseFloat(els.gammnum.value)||1,
+        alpha: parseFloat(els.alphanum.value)||1,
+        bias: getBiasObj()
+      };
+      const {B,Sr,St,Sq} = computeBudget(rGrid, params);
+      const horizon = solveHorizon(rGrid, B);
+      const erg = ergosphereProxy(rGrid, Sr, St, Sq);
+      horizons.push(horizon || NaN);
+      ergInners.push(erg.inner || NaN);
+      ergOuters.push(erg.outer || NaN);
+      summaryRows.push({
+        a: a,
+        J: Jabs,
+        Q: params.Q,
+        r_horizon: horizon || '',
+        ergosphere_inner: erg.inner || '',
+        ergosphere_outer: erg.outer || ''
+      });
+      if(i % 10 === 0) await new Promise(r => setTimeout(r,0));
+    }
+
+    plotHorizonMap(aVals, horizons);
+    plotErgosphereMap(aVals, ergInners, ergOuters);
+
+    lastSummaryRows = summaryRows;
+    const header = ['a','J','Q','r_horizon','ergosphere_inner','ergosphere_outer'];
+    if(els.csvMode.value !== 'none'){
+      const csv = toCSV(summaryRows, header);
+      exportData(csv, 'sweep');
+      lastManifest = {
+        generated_at: new Date().toISOString(),
+        sweep: {M: M, steps: steps},
+        file_type: 'sweep'
+      };
+      els.downloadManifest.href = URL.createObjectURL(new Blob([JSON.stringify(lastManifest,null,2)],{type:'application/json'}));
+      els.downloadManifest.download = `svet_manifest_${Date.now()}.json`;
+      alert('Sweep complete. Summary CSV downloaded.');
+    } else {
+      lastManifest = {
+        generated_at: new Date().toISOString(),
+        sweep: {M: M, steps: steps},
+        file_type: null
+      };
+      els.downloadManifest.href = URL.createObjectURL(new Blob([JSON.stringify(lastManifest,null,2)],{type:'application/json'}));
+      els.downloadManifest.download = `svet_manifest_${Date.now()}.json`;
+      alert('Sweep complete. CSV mode set to None — no CSV downloaded.');
+    }
+  }catch(e){
+    console.error('runSweep failed', e);
+    alert('Sweep failed — see console for details.');
+  }
+});
+
+/* ---- export buttons ---- */
+els.exportProfile.addEventListener('click', ()=>{
+  if(els.csvMode.value === 'none'){
+    alert('CSV exports are disabled (CSV mode = None).');
+    return;
+  }
+  if(!lastProfileCSV){
+    alert('No profile computed yet. Adjust parameters and render first.');
+    return;
+  }
+  exportData(lastProfileCSV, 'profile');
+});
+els.downloadSummary.addEventListener('click', ()=>{
+  if(els.csvMode.value === 'none'){
+    alert('CSV exports are disabled (CSV mode = None).');
+    return;
+  }
+  if(!lastSummaryRows || lastSummaryRows.length===0){
+    alert('No summary available. Run a sweep first.');
+    return;
+  }
+  const header = ['a','J','Q','r_horizon','ergosphere_inner','ergosphere_outer','clamped_pct','nodes_biased_pct'];
+  const csv = toCSV(lastSummaryRows, header);
+  exportData(csv, 'summary');
+});
+els.snapshot.addEventListener('click', ()=>{
+  const dataUrl = canvas.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = `svet_snapshot_${Date.now()}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
+
+/* ---- brief ---- */
+els.copyBriefBtn.addEventListener('click', async ()=>{
+  try{
+    const brief = generateBriefForLive();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      try{
+        await navigator.clipboard.writeText(brief);
+        alert('Researcher\'s Brief copied to clipboard.');
+        return;
+      }catch(e){}
+    }
+    els.briefArea.value = brief;
+    els.modal.style.display = 'flex';
+  }catch(err){
+    alert('Could not generate brief: ' + (err && err.message ? err.message : String(err)));
+  }
+});
+els.closeModal.addEventListener('click', ()=>{ els.modal.style.display = 'none'; });
+els.openModal.addEventListener('click', ()=>{
+  els.modal.style.display = 'flex';
+  els.briefArea.value = lastProfileCSV || 'No CSV available';
+});
+
+function generateBriefForLive(){
+  const p = getP();
+  const rGrid = buildRGrid();
+  const params = {
+    M:p.M,J:p.J,Q:p.Q,
+    C0:p.C0,gamma:p.gamma,alpha:p.alpha,
+    bias:{mode:p.biasMode,value:p.bias}
+  };
+  const {B,Sr,St,Sq} = computeBudget(rGrid, params);
+  const horizon = solveHorizon(rGrid, B);
+  const erg = ergosphereProxy(rGrid, Sr, St, Sq);
+  const clampedPct = B.filter(v=>v<0).length / B.length * 100;
+  const strategy = (Math.abs(p.bias) > 0.0001 && p.biasMode === 'global')
+    ? {id:'GLOBAL_BIAS', message:'Global bias active; patterns may be altered', confidence:'Medium'}
+    : {id:'DENOM_SAFE', message:'Denominator-only bias (conservative)', confidence:'High'};
+  const md = [
+    `### SVET Researcher's Brief [v0.0.3]`,
+    `**M:** ${p.M} | **J:** ${p.J} | **Q:** ${p.Q}`,
+    ``,
+    `- Grid: ${rGrid.length} points`,
+    `- r_horizon: ${horizon ? horizon.toFixed(4) : 'none in grid'}`,
+    `- ergosphere inner/outer: ${erg.inner || 'n/a'} / ${erg.outer || 'n/a'}`,
+    `- clamped %: ${clampedPct.toFixed(2)}%`,
+    `- bias: ${p.bias.toFixed(4)} (${p.biasMode})`,
+    `- strategy: ${strategy.id} (${strategy.confidence})`,
+    ``,
+    `Generated: ${new Date().toISOString()}`
+  ].join('\n');
+  return md;
+}
+
+/* ---- JSON control ---- */
+function applyParamIfPresent(key, val) {
+  if (key === 'M') { els.Mnum.value = Number(val); return true; }
+  if (key === 'J') {
+    const M = parseFloat(els.Mnum.value) || 1.0;
+    const v = Number(val);
+    if (v <= 1.0 && v >= 0) {
+      els.Jrange.value = clamp(v, 0, 0.99);
+      els.Jnum.value = (Number(els.Jrange.value) * M * M).toFixed(4);
+    } else {
+      const a = clamp(v / (M*M), 0, 0.99);
+      els.Jrange.value = a;
+      els.Jnum.value = (a * M * M).toFixed(4);
+    }
+    return true;
+  }
+  if (key === 'a') {
+    const M = parseFloat(els.Mnum.value) || 1.0;
+    const a = clamp(Number(val),0,0.99);
+    els.Jrange.value = a;
+    els.Jnum.value = (a * M * M).toFixed(4);
+    return true;
+  }
+  if (key === 'Q') { els.Qnum.value = Number(val); return true; }
+  if (key === 'C0') { els.C0num.value = Number(val); return true; }
+  if (key === 'gamma' || key === 'γ') { els.gammnum.value = Number(val); return true; }
+  if (key === 'alpha' || key === 'α') { els.alphanum.value = Number(val); return true; }
+  if (key === 'resolution') {
+    const allowed = [200,500,2000];
+    const n = Number(val);
+    els.resolution.value = allowed.includes(n) ? n : (n < 500 ? 200 : (n > 1000 ? 2000 : 500));
+    return true;
+  }
+  if (key === 'bias' || key === 'bias_value') {
+    els.biasNum.value = Number(val);
+    els.biasRange.value = Number(val);
+    return true;
+  }
+  if (key === 'biasMode' || key === 'bias_mode') {
+    const m = String(val).toLowerCase();
+    if (m.startsWith('denom') || m.startsWith('d')) { els.biasMode.checked = true; }
+    else if (m.startsWith('global') || m.startsWith('g')) { els.biasModeGlobal.checked = true; }
+    else { els.biasModeOff.checked = true; }
+    return true;
+  }
+  if (key === 'csvMode' || key === 'csv_mode') {
+    const m = String(val).toLowerCase();
+    if (m === 'small' || m === 'verbose' || m === 'both' || m === 'none') {
+      els.csvMode.value = m;
+    } else {
+      els.csvMode.value = 'small';
+    }
+    return true;
+  }
+  return false;
+}
+
+els.loadJsonBtn.addEventListener('click', () => {
+  const txt = (els.jsonPasteField.value || '').trim();
+  if (!txt) { els.jsonLoadMsg.textContent = 'No JSON pasted.'; return; }
+  try {
+    const obj = JSON.parse(txt);
+    if (typeof obj !== 'object' || obj === null) throw new Error('JSON must be an object');
+    let applied = 0, ignored = 0;
+    for (const k of Object.keys(obj)) {
+      const ok = applyParamIfPresent(k, obj[k]);
+      if (ok) applied++; else ignored++;
+    }
+    const M = parseFloat(els.Mnum.value) || 1.0;
+    if (els.Jnum.value && !isNaN(Number(els.Jnum.value))) {
+      const jval = Number(els.Jnum.value);
+      const a = clamp(jval / (M*M), 0, 0.99);
+      els.Jrange.value = a;
+    }
+    updateAndRender();
+    els.jsonLoadMsg.textContent = `Loaded: ${applied} keys applied, ${ignored} ignored.`;
+    setTimeout(()=>els.jsonLoadMsg.textContent = '', 4000);
+  } catch (err) {
+    els.jsonLoadMsg.textContent = 'Invalid JSON: ' + (err && err.message ? err.message : String(err));
+  }
+});
+
+els.copyJsonBtn.addEventListener('click', () => {
+  const p = getP();
+  const jsonText = JSON.stringify(p);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(jsonText).then(()=>{
+      els.jsonLoadMsg.textContent = 'JSON copied to clipboard.';
+      setTimeout(()=>els.jsonLoadMsg.textContent='',2000);
+    }).catch(()=>{
+      els.jsonPasteField.value = jsonText;
+      els.jsonLoadMsg.textContent = 'Clipboard blocked — JSON placed in field.';
+    });
+  } else {
+    els.jsonPasteField.value = jsonText;
+    els.jsonLoadMsg.textContent = 'Clipboard unavailable — JSON placed in field.';
+  }
+});
+
+/* ---- manifest guard ---- */
+els.downloadManifest.addEventListener('click', (e)=>{
+  if(!lastManifest){
+    e.preventDefault();
+    alert('No manifest available yet.');
+  }
+});
+
+/* ---- API ---- */
+window.svetToy = {
+  computeBudget, solveHorizon, ergosphereProxy, computeCdotInf,
+  exportSummaryCSV: ()=>{
+    if(lastSummaryRows && lastSummaryRows.length){
+      const header = Object.keys(lastSummaryRows[0]);
+      const csv = toCSV(lastSummaryRows, header);
+      exportData(csv, 'summary');
+    } else alert('No summary to export.');
+  },
+  exportProfileCSV: ()=>{
+    if(lastProfileCSV)
+      exportData(lastProfileCSV, 'profile');
+    else alert('No profile to export.');
+  },
+  setBias: (obj)=>{
+    if(obj && typeof obj.value === 'number'){
+      els.biasNum.value = obj.value;
+      els.biasRange.value = obj.value;
+      if(obj.mode){
+        if(obj.mode==='denom') els.biasMode.checked=true;
+        else if(obj.mode==='global') els.biasModeGlobal.checked=true;
+        else els.biasModeOff.checked=true;
+      }
+      updateAndRender();
+    }
+  }
+};
+
+/* ---- keyboard shortcuts ---- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'r') els.runSweep.click();
+  if(e.key === 's') els.snapshot.click();
+});
+
+/* ---- initial render ---- */
+window.addEventListener('load', () => {
+  if (typeof Plotly === 'undefined') {
+    console.error('Plotly failed to load. Check CDN/network.');
+    els.state.textContent = "Error: Plotly library not loaded. Check network or CDN.";
+    setTimeout(() => {
+      if (typeof Plotly !== 'undefined') updateAndRender();
+    }, 1500);
+  } else {
+    setTimeout(updateAndRender, 50);
+  }
+});
+</script>
+</body>
+</html>

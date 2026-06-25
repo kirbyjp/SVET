@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultrafinitist Engine — vU.1.6.0 Honesty Build</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    :root { --panel-bg:#fff; --muted:#666; --accent:#e11d48; --card-shadow:0 2px 6px rgba(0,0,0,0.06); --code-bg:#1e1e1e; }
+    body { font-family: 'Inter', Arial, sans-serif; margin:0; background:#f0f2f5; color:#111; overflow: hidden; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; background:#111; color:#fff; height: 50px; }
+    .layout { display: grid; grid-template-columns: 400px 1fr; grid-template-rows: 1fr 250px; height: calc(100vh - 50px); gap: 10px; padding: 10px; box-sizing: border-box; }
+    .sidebar { grid-row: 1 / 3; background: var(--panel-bg); border-radius: 8px; padding: 15px; box-shadow: var(--card-shadow); overflow-y: auto; }
+    .display-area { background: var(--panel-bg); border-radius: 8px; padding: 10px; box-shadow: var(--card-shadow); position: relative; }
+    .math-panel { background: var(--code-bg); color: #00ff00; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; overflow-y: auto; font-size: 11px; border: 1px solid #333; line-height: 1.4; }
+    .slider-row { padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+    .btn { background:#444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size: 11px; }
+    .btn-run { background:var(--accent); font-weight: bold; width: 100%; padding: 12px; font-size: 14px; margin-bottom: 10px; }
+    .meter-label { display: flex; justify-content: space-between; font-size: 10px; font-weight: bold; margin-top: 8px; color: #444; }
+    .meter-bar { width: 100%; background: #eee; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 2px; border: 1px solid #ddd; }
+    .meter-fill { height: 100%; width: 0%; transition: width 0.3s; }
+    .toggle-group { display: flex; background: #eee; border-radius: 4px; padding: 2px; margin-bottom: 10px; }
+    .toggle-btn { flex: 1; padding: 6px; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; background: transparent; }
+    .toggle-btn.active { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; }
+    h4 { margin: 10px 0 5px 0; font-size: 11px; text-transform: uppercase; color: #666; letter-spacing: 1px; }
+    .small { font-size: 11px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><span style="font-weight:bold;">Ultrafinitist Engine</span> <span class="small" style="color:#aaa; font-size:10px;">vU.1.6.0 HONESTY BUILD</span></div>
+  <div style="display:flex; gap:8px;">
+    <button class="btn" onclick="runQASweep()">QA Sweep</button>
+    <button class="btn" onclick="copyMath()">Copy Math</button>
+    <button class="btn" onclick="exportJSON()">Export JSON</button>
+    <button class="btn" style="background:#2ecc71;" onclick="rechargeEnergy()">Recharge</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <button class="btn btn-run" onclick="runScrutiny()">RUN PHYSICAL SCRUTINY</button>
+
+    <h4>Numeric Substrate</h4>
+    <div class="toggle-group">
+      <button id="sub-whole" class="toggle-btn active" onclick="setSubstrate('WHOLE')">Whole</button>
+      <button id="sub-rational" class="toggle-btn" onclick="setSubstrate('RATIONAL')">Rational</button>
+    </div>
+
+    <h4>Universe Hardware</h4>
+    <div class="slider-row">
+      <label class="small">Bit-Depth ($N_{phys}$)</label>
+      <input id="bit-slider" type="range" min="10" max="512" value="122" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="bit-val">122 bits</span>
+    </div>
+
+    <div class="slider-row">
+      <label class="small">Energy Budget (log10 J)</label>
+      <input id="energy-slider" type="range" min="-10" max="70" value="20" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="energy-val">10^20 J</span>
+    </div>
+
+    <h4>Budget Meters</h4>
+    <div class="meter-label"><span>ADDRESS (BITS)</span><span id="bits-pct">0%</span></div>
+    <div class="meter-bar"><div id="bits-fill" class="meter-fill" style="background:#2b6ef6;"></div></div>
+    
+    <div class="meter-label"><span>THERMAL (JOULES)</span><span id="energy-pct">0%</span></div>
+    <div class="meter-bar"><div id="energy-fill" class="meter-fill" style="background:#2ecc71;"></div></div>
+
+    <div class="meter-label"><span>TEMPORAL (TIME)</span><span id="time-pct">0%</span></div>
+    <div class="meter-bar"><div id="time-fill" class="meter-fill" style="background:#f1c40f;"></div></div>
+
+    <h4>Target Parameters</h4>
+    <div class="slider-row">
+      <label class="small">Target Magnitude (log10)</label>
+      <input id="target-slider" type="range" min="0.3" max="100" value="15" step="0.1" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="target-val">10^15.0</span>
+    </div>
+
+    <div class="slider-row">
+      <label class="small">RH Verification Height (T)</label>
+      <input id="rh-slider" type="range" min="1" max="20" value="13" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="rh-val">10^13</span>
+    </div>
+  </div>
+
+  <div class="display-area">
+    <div id="main-plot" style="width:100%; height:100%;"></div>
+  </div>
+
+  <div class="math-panel" id="math-panel"></div>
+</div>
+
+<script>
+const C = {
+  kB: 1.380649e-23, T_CMB: 2.73, AGE_UNIVERSE: 4.35e17,
+  COMPUTE: { SILICON: 1.1e18, QUANTUM: 1e35, BEKENSTEIN: 1e50 },
+  ZEROS: [14.1347, 21.0220, 25.0108, 30.4248, 32.9350, 37.5861, 40.9187, 43.3270, 48.0051, 49.7738]
+};
+
+let state = { substrate: 'WHOLE', usedEnergy: 0, regime: 'EXACT' };
+
+function logMath(msg, isHeader = false) {
+  const panel = document.getElementById('math-panel');
+  const timestamp = isHeader ? `\n--- ${new Date().toLocaleString()} ---\n` : "";
+  panel.innerText += `${timestamp}${msg}\n`;
+  panel.scrollTop = panel.scrollHeight;
+}
+
+// --- DUAL-TRACK ARITHMETIC ---
+function safeBigIntLog10(bi) {
+  const s = bi.toString();
+  const len = s.length;
+  if (len < 15) return Math.log10(Number(bi));
+  const leading = Number(s.slice(0, 15));
+  return Math.log10(leading) + (len - 15);
+}
+
+function setSubstrate(mode) {
+  state.substrate = mode;
+  document.getElementById('sub-whole').classList.toggle('active', mode === 'WHOLE');
+  document.getElementById('sub-rational').classList.toggle('active', mode === 'RATIONAL');
+  updateUI();
+  runScrutiny();
+}
+
+function updateUI() {
+  const targetLog = parseFloat(document.getElementById('target-slider').value);
+  const bitDepth = parseFloat(document.getElementById('bit-slider').value);
+  const targetBI = BigInt(10) ** BigInt(Math.floor(targetLog));
+  
+  state = {
+    ...state,
+    bitDepth: bitDepth,
+    nPhys: BigInt(2) ** BigInt(Math.floor(bitDepth)),
+    energyBudget: Math.pow(10, parseFloat(document.getElementById('energy-slider').value)),
+    targetLog: targetLog,
+    targetBI: targetBI,
+    rhHeight: Math.pow(10, parseFloat(document.getElementById('rh-slider').value)),
+    tier: document.getElementById('compute-tier').value || 'SILICON'
+  };
+
+  // Regime Switcher Logic
+  if (targetLog <= 7) state.regime = 'EXACT';
+  else if (targetLog <= 16) state.regime = 'HYBRID';
+  else state.regime = 'ANALYTIC';
+
+  document.getElementById('bit-val').innerText = state.bitDepth + " bits";
+  document.getElementById('target-val').innerText = "10^" + targetLog.toFixed(1);
+  document.getElementById('rh-val').innerText = "10^" + Math.log10(state.rhHeight).toFixed(1);
+
+  // Budget Meters
+  const bitsPct = (targetLog / (state.bitDepth * 0.301)) * 100;
+  const ops = Math.sqrt(Number(state.targetBI > 1e16 ? 1e16 : state.targetBI)); // Cap ops for UI responsiveness
+  const energyCost = ops * (C.kB * C.T_CMB * Math.log(2));
+  const energyPct = (energyCost / state.energyBudget) * 100;
+  const timePct = (ops / C.COMPUTE[state.tier] / C.AGE_UNIVERSE) * 100;
+
+  document.getElementById('bits-fill').style.width = Math.min(100, bitsPct) + "%";
+  document.getElementById('bits-pct').innerText = bitsPct.toFixed(1) + "%";
+  document.getElementById('energy-fill').style.width = Math.min(100, energyPct) + "%";
+  document.getElementById('energy-pct').innerText = energyPct.toFixed(1) + "%";
+  document.getElementById('time-fill').style.width = Math.min(100, timePct) + "%";
+  document.getElementById('time-pct').innerText = timePct.toFixed(1) + "%";
+}
+
+function runScrutiny() {
+  updateUI();
+  logMath(`REGIME: ${state.regime} | SUBSTRATE: ${state.substrate}`, true);
+  
+  const exactBI = state.targetBI;
+  const plottedFloat = safeBigIntLog10(exactBI);
+  const reconstructed = Math.pow(10, plottedFloat);
+  const deltaAbs = exactBI - BigInt(Math.floor(reconstructed));
+  const deltaRel = Number(deltaAbs) / Number(exactBI);
+
+  logMath(`Exact BigInt: ${exactBI.toString()}`);
+  logMath(`Plotted log10: ${plottedFloat.toFixed(6)}`);
+  logMath(`Plot Delta: Abs=${deltaAbs.toString()}, Rel=${deltaRel.toExponential(4)}`);
+
+  let stop = null;
+  if (exactBI > state.nPhys) stop = "ADDRESS HORIZON";
+  if (stop) logMath(`CRITICAL STOP: ${stop}`);
+
+  renderPlot(stop, plottedFloat, deltaRel);
+}
+
+function renderPlot(error, targetX, deltaRel) {
+  const xRange = Array.from({length: 100}, (_, i) => (i/100) * state.targetLog * 1.2);
+  const wallX = safeBigIntLog10(state.nPhys);
+
+  // Analytic Curve with Operational RH
+  const yPhysical = xRange.map(v => {
+    if (v > wallX) return null;
+    let val = Math.pow(10, v) / Math.log(Math.pow(10, v));
+    const sqrtX = Math.sqrt(Math.pow(10, v));
+    const lnX = v * Math.log(10);
+    let sum = 0;
+    C.ZEROS.forEach(gamma => { if (gamma <= state.rhHeight) sum += (Math.sin(gamma * lnX) / gamma); });
+    return val - (2 * sqrtX * sum / lnX);
+  });
+
+  // Corrected Marker (The BigInt Truth)
+  const exactY = Math.pow(10, targetX) / Math.log(Math.pow(10, targetX));
+
+  const traces = [
+    { x: xRange, y: yPhysical, name: 'Physical Reality', line: {color: '#e11d48', width: 2} },
+    { x: [targetX], y: [exactY], name: 'BigInt Truth', mode: 'markers', marker: {color: 'black', size: 10}, 
+      error_y: { type: 'data', array: [exactY * deltaRel], visible: true, color: 'red' } 
+    },
+    { x: [wallX, wallX], y: [0, Math.max(...yPhysical)], name: 'The Wall', line: {color: 'red', dash: 'dash'} }
+  ];
+
+  const layout = { 
+    title: `Prime Distribution (Regime: ${state.regime})`,
+    xaxis: { title: 'log10(n)' },
+    yaxis: { title: 'π(n)' },
+    hovermode: 'closest'
+  };
+
+  Plotly.newPlot('main-plot', traces, layout);
+}
+
+function rechargeEnergy() { logMath("Energy Budget Recharged (Simulated)."); updateUI(); }
+function clearMath() { document.getElementById('math-panel').innerText = ""; }
+function copyMath() { navigator.clipboard.writeText(document.getElementById('math-panel').innerText); alert("Copied!"); }
+function exportJSON() {
+  const exportData = { 
+    ...state, 
+    nPhys: state.nPhys.toString(), 
+    targetBI: state.targetBI.toString(),
+    plot_delta_info: { rel: (Number(state.targetBI) - Math.pow(10, safeBigIntLog10(state.targetBI))) / Number(state.targetBI) }
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `ultrafinitist_v1.6.0.json`; a.click();
+}
+
+function runQASweep() {
+  logMath("--- QA SWEEP ---", true);
+  logMath(`BigInt Precision: ${state.nPhys.toString().length} digits`);
+  logMath(`Landauer Cost: ${(C.kB * 2.73 * Math.log(2)).toExponential(4)} J/bit`);
+  logMath(`Regime Thresholds: Exact <= 1e7, Hybrid <= 1e16`);
+}
+
+window.onload = () => { updateUI(); runScrutiny(); };
+</script>
+</body>
+</html>

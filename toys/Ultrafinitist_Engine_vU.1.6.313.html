@@ -1,0 +1,972 @@
+<!-- Ultrafinitist_Engine_vU.1.6.313.html
+     vU.1.6.313 Phase 2 — Electronics (single-file)
+     Embedded: ANCHORS_V1 (reviewer_ground_truth_v1), Riemann zeros (first 20)
+     Features:
+       - Single-file: all data embedded as JS constants
+       - Hybrid Li(n): numeric integration for n < 1e15; asymptotic N=3 for n >= 1e15
+       - Oscillation proxy using first 20 Riemann zeros with phase reduction & damping
+       - Safety Valve (pre-render budget check) with LOCKED state and override (Dishonesty Magenta)
+       - Tuning Mode for Universe slider: Continuous, Discrete, Snap, Hybrid Glide
+       - Anchors snapping, magnet, anchor list, keyboard shortcuts [, ]
+       - Chameleon axis: Plot 3 syncs to substrate; Rational axis supports log10(alpha) and linear alpha when representable
+       - Math Panel logs all important events and provenance
+     Note: This is a demonstration/instrument visualization. Heavy numeric tasks are approximations for visualization only.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultrafinitist Engine vU.1.6.313 — Phase 2 Electronics</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg:#0f0f10; --panel:#151515; --muted:#9aa0a6; --accent:#4caf50; --danger:#ff6b6b; --magenta:#ff00aa;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:#eee;font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    #root{display:flex;flex-direction:column;height:100%;}
+    header{background:var(--panel);padding:8px 12px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
+    header .title{font-weight:700}
+    header .ver{color:var(--muted);font-size:13px}
+    #main{display:grid;grid-template-columns:320px 1fr;grid-template-rows: auto 320px;grid-template-areas:"controls plots" "math math";gap:8px;flex:1;padding:8px;box-sizing:border-box;}
+    #controls{grid-area:controls;background:#171717;padding:12px;border:1px solid #222;display:flex;flex-direction:column;gap:10px;box-sizing:border-box;}
+    .section-title{color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase}
+    .control-row{display:flex;gap:8px;align-items:center}
+    .control-row label{flex:1 1 auto;font-size:13px}
+    .control-row select,.control-row input{flex:1 1 auto;background:#1b1b1b;color:#eee;border:1px solid #2b2b2b;padding:6px 8px;font-size:13px}
+    #btn-run{background:var(--accent);border:none;color:#fff;padding:8px 10px;font-weight:700;border-radius:4px;cursor:pointer}
+    #btn-run.disabled{background:#666;cursor:not-allowed}
+    #plots{grid-area:plots;display:grid;grid-template-rows:1fr 1fr 1fr;gap:6px;padding:6px;box-sizing:border-box}
+    .plot-container{background:#000;border:1px solid #222}
+    #math{grid-area:math;display:flex;flex-direction:column;border:1px solid #222;background:#121212}
+    #math-controls{padding:8px;border-bottom:1px solid #222;display:flex;gap:8px;align-items:center;background:#161616}
+    #math-controls button{background:#2b2b2b;color:#eee;border:1px solid #333;padding:6px 8px;cursor:pointer}
+    #math-body{padding:8px;overflow:auto;font-family: "SF Mono", Menlo, Consolas, monospace;font-size:12px;line-height:1.4;color:#ddd}
+    .error-line{color:var(--danger);font-weight:700}
+    .warn-line{color:#ffb86b}
+    .info-line{color:var(--muted)}
+    .anchor-list{max-height:120px;overflow:auto;border:1px solid #222;padding:6px;background:#0f0f10}
+    .anchor-item{padding:4px 6px;border-bottom:1px dashed #1a1a1a;cursor:pointer}
+    .anchor-item:hover{background:#111}
+    .small-note{font-size:12px;color:var(--muted)}
+    .tuning-row{display:flex;gap:8px;align-items:center}
+    .tuning-row label{display:flex;gap:6px;align-items:center;cursor:pointer}
+    .badge{background:#222;padding:2px 6px;border-radius:4px;font-size:12px;color:var(--muted)}
+    .truth-marker{padding:4px 8px;border-radius:4px;background:#222;color:#fff;font-weight:700}
+  </style>
+</head>
+<body>
+<div id="root">
+  <header>
+    <div>
+      <div class="title">Ultrafinitist Engine</div>
+      <div class="small-note">vU.1.6.313 — Phase 2 Electronics</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div id="truthMarker" class="truth-marker">TRUTH: PHYSICAL</div>
+      <div class="small-note">Reviewer: reviewer_ground_truth_v1</div>
+    </div>
+  </header>
+
+  <div id="main">
+    <div id="controls">
+      <button id="btn-run">RUN PHYSICAL SCRUTINY</button>
+
+      <div class="section-title">Universe (Hardware)</div>
+      <div class="control-row">
+        <label for="slider">log10(N_phys)</label>
+        <input id="slider" type="range" min="-10" max="200000000" step="0.001" value="122" style="width:100%" />
+      </div>
+      <div class="control-row">
+        <label for="sliderValue">Value</label>
+        <input id="sliderValue" type="number" value="122" step="0.001" />
+      </div>
+
+      <div class="section-title">Tuning Mode</div>
+      <div class="tuning-row" role="radiogroup" aria-label="Tuning Mode">
+        <label><input type="radio" name="tuning" value="CONTINUOUS" checked /> Continuous</label>
+        <label><input type="radio" name="tuning" value="DISCRETE" /> Discrete</label>
+        <label><input type="radio" name="tuning" value="SNAP" /> Snap</label>
+        <label><input type="radio" name="tuning" value="HYBRID" /> Hybrid Glide</label>
+      </div>
+      <div class="small-note">Hybrid Glide: magnetic pull near anchors; Snap: snaps on release if within threshold.</div>
+
+      <div class="section-title">Target (Intent)</div>
+      <div class="control-row">
+        <label for="targetInput">log10(n_target)</label>
+        <input id="targetInput" type="number" value="6" />
+      </div>
+
+      <div class="section-title">Landmarks</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label><input id="masterLandmarks" type="checkbox" checked /> Show Landmarks</label>
+        <label style="margin-left:auto"><input id="toggleMersenne" type="checkbox" checked /> Mersenne</label>
+      </div>
+      <div class="anchor-list" id="anchorList" tabindex="0" aria-label="Anchor list"></div>
+
+      <div class="section-title">Controls & Safety</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label><input id="safetyOverride" type="checkbox" /> Ignore Safety Valve</label>
+        <button id="btn-export" style="margin-left:auto">Export JSON</button>
+      </div>
+
+      <div class="section-title">Shortcuts</div>
+      <div class="small-note">Keyboard: [  previous anchor | ] next anchor | Click landmark to center (preserve zoom)</div>
+    </div>
+
+    <div id="plots">
+      <div id="plot-whole" class="plot-container"></div>
+      <div id="plot-rational" class="plot-container"></div>
+      <div id="plot-ratio" class="plot-container"></div>
+    </div>
+
+    <div id="math">
+      <div id="math-controls">
+        <button id="btn-copy">Copy</button>
+        <button id="btn-clear">Clear</button>
+        <button id="btn-qa">Run QA Sweep</button>
+        <div style="flex:1"></div>
+        <div class="small-note">Phase 2 — Electronics</div>
+      </div>
+      <div id="math-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================
+   Phase 2 Single-file Engine
+   ANCHORS_V1 embedded (reviewer_ground_truth_v1)
+   ============================ */
+
+/* -----------------------------
+   Constants & Embedded Data
+   ----------------------------- */
+const LOG10_2 = 0.3010299956639811952137388947244930267682;
+const LI2_CONST = 1.045163780117492784844588889194613136522615578151; // Li(2) precomputed
+
+// First 20 Riemann zeros (imaginary parts) — reviewer provided
+const ZEROS_V1 = [14.134725,21.022040,25.010858,30.424876,32.935062,37.586178,40.918719,43.327073,48.005151,49.773832,52.970321,56.446248,59.347044,60.831779,65.112508,67.079811,69.546402,72.067158,75.704691,77.144840];
+
+// ANCHORS_V1: reviewer_ground_truth_v1 (27 small-class entries + 52 Mersenne exponents)
+// Note: Mersennes stored as exponent_p; small classes stored as integer payload.value
+// We'll compute numeric log10_magnitude for Mersennes at runtime and then sort the anchors by magnitude.
+const ANCHORS_V1 = [
+  // Small classes (27)
+  { id:"Supersingular_2", class:"Supersingular", label:"Supersingular (2)", payload:{value:2}, log10_magnitude:Math.log10(2), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05", notes:"Exact integer" },
+  { id:"Fermat_F1", class:"Fermat", label:"Fermat F1 (3)", payload:{value:3}, log10_magnitude:Math.log10(3), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_3", class:"Supersingular", label:"Supersingular (3)", payload:{value:3}, log10_magnitude:Math.log10(3), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Fermat_F2", class:"Fermat", label:"Fermat F2 (5)", payload:{value:5}, log10_magnitude:Math.log10(5), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wilson_W1", class:"Wilson", label:"Wilson (5)", payload:{value:5}, log10_magnitude:Math.log10(5), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_5", class:"Supersingular", label:"Supersingular (5)", payload:{value:5}, log10_magnitude:Math.log10(5), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_7", class:"Supersingular", label:"Supersingular (7)", payload:{value:7}, log10_magnitude:Math.log10(7), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wilson_W2", class:"Wilson", label:"Wilson (13)", payload:{value:13}, log10_magnitude:Math.log10(13), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_11", class:"Supersingular", label:"Supersingular (11)", payload:{value:11}, log10_magnitude:Math.log10(11), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_13", class:"Supersingular", label:"Supersingular (13)", payload:{value:13}, log10_magnitude:Math.log10(13), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Fermat_F3", class:"Fermat", label:"Fermat F3 (17)", payload:{value:17}, log10_magnitude:Math.log10(17), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_17", class:"Supersingular", label:"Supersingular (17)", payload:{value:17}, log10_magnitude:Math.log10(17), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_19", class:"Supersingular", label:"Supersingular (19)", payload:{value:19}, log10_magnitude:Math.log10(19), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_23", class:"Supersingular", label:"Supersingular (23)", payload:{value:23}, log10_magnitude:Math.log10(23), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_29", class:"Supersingular", label:"Supersingular (29)", payload:{value:29}, log10_magnitude:Math.log10(29), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_31", class:"Supersingular", label:"Supersingular (31)", payload:{value:31}, log10_magnitude:Math.log10(31), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wilson_W3", class:"Wilson", label:"Wilson (563)", payload:{value:563}, log10_magnitude:Math.log10(563), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wieferich_1093", class:"Wieferich", label:"Wieferich (1093)", payload:{value:1093}, log10_magnitude:Math.log10(1093), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wieferich_3511", class:"Wieferich", label:"Wieferich (3511)", payload:{value:3511}, log10_magnitude:Math.log10(3511), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wolstenholme_16843", class:"Wolstenholme", label:"Wolstenholme (16843)", payload:{value:16843}, log10_magnitude:Math.log10(16843), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Wolstenholme_2124679", class:"Wolstenholme", label:"Wolstenholme (2124679)", payload:{value:2124679}, log10_magnitude:Math.log10(2124679), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_41", class:"Supersingular", label:"Supersingular (41)", payload:{value:41}, log10_magnitude:Math.log10(41), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_47", class:"Supersingular", label:"Supersingular (47)", payload:{value:47}, log10_magnitude:Math.log10(47), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_59", class:"Supersingular", label:"Supersingular (59)", payload:{value:59}, log10_magnitude:Math.log10(59), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Supersingular_71", class:"Supersingular", label:"Supersingular (71)", payload:{value:71}, log10_magnitude:Math.log10(71), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Fermat_F4", class:"Fermat", label:"Fermat F4 (257)", payload:{value:257}, log10_magnitude:Math.log10(257), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Fermat_F5", class:"Fermat", label:"Fermat F5 (65537)", payload:{value:65537}, log10_magnitude:Math.log10(65537), source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+
+  // Mersenne exponents (52) stored as exponent_p
+  { id:"Mersenne_p2", class:"Mersenne", label:"Mersenne (p=2)", payload:{exponent_p:2}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p3", class:"Mersenne", label:"Mersenne (p=3)", payload:{exponent_p:3}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p5", class:"Mersenne", label:"Mersenne (p=5)", payload:{exponent_p:5}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p7", class:"Mersenne", label:"Mersenne (p=7)", payload:{exponent_p:7}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p13", class:"Mersenne", label:"Mersenne (p=13)", payload:{exponent_p:13}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p17", class:"Mersenne", label:"Mersenne (p=17)", payload:{exponent_p:17}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p19", class:"Mersenne", label:"Mersenne (p=19)", payload:{exponent_p:19}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p31", class:"Mersenne", label:"Mersenne (p=31)", payload:{exponent_p:31}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p61", class:"Mersenne", label:"Mersenne (p=61)", payload:{exponent_p:61}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p89", class:"Mersenne", label:"Mersenne (p=89)", payload:{exponent_p:89}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p107", class:"Mersenne", label:"Mersenne (p=107)", payload:{exponent_p:107}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p127", class:"Mersenne", label:"Mersenne (p=127)", payload:{exponent_p:127}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p521", class:"Mersenne", label:"Mersenne (p=521)", payload:{exponent_p:521}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p607", class:"Mersenne", label:"Mersenne (p=607)", payload:{exponent_p:607}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p1279", class:"Mersenne", label:"Mersenne (p=1279)", payload:{exponent_p:1279}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p2203", class:"Mersenne", label:"Mersenne (p=2203)", payload:{exponent_p:2203}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p2281", class:"Mersenne", label:"Mersenne (p=2281)", payload:{exponent_p:2281}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p3217", class:"Mersenne", label:"Mersenne (p=3217)", payload:{exponent_p:3217}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p4253", class:"Mersenne", label:"Mersenne (p=4253)", payload:{exponent_p:4253}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p4423", class:"Mersenne", label:"Mersenne (p=4423)", payload:{exponent_p:4423}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p9689", class:"Mersenne", label:"Mersenne (p=9689)", payload:{exponent_p:9689}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p9941", class:"Mersenne", label:"Mersenne (p=9941)", payload:{exponent_p:9941}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p11213", class:"Mersenne", label:"Mersenne (p=11213)", payload:{exponent_p:11213}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p19937", class:"Mersenne", label:"Mersenne (p=19937)", payload:{exponent_p:19937}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p21701", class:"Mersenne", label:"Mersenne (p=21701)", payload:{exponent_p:21701}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p23209", class:"Mersenne", label:"Mersenne (p=23209)", payload:{exponent_p:23209}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p44497", class:"Mersenne", label:"Mersenne (p=44497)", payload:{exponent_p:44497}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p86243", class:"Mersenne", label:"Mersenne (p=86243)", payload:{exponent_p:86243}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p110503", class:"Mersenne", label:"Mersenne (p=110503)", payload:{exponent_p:110503}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p132049", class:"Mersenne", label:"Mersenne (p=132049)", payload:{exponent_p:132049}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p216091", class:"Mersenne", label:"Mersenne (p=216091)", payload:{exponent_p:216091}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p756839", class:"Mersenne", label:"Mersenne (p=756839)", payload:{exponent_p:756839}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p859433", class:"Mersenne", label:"Mersenne (p=859433)", payload:{exponent_p:859433}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p1257787", class:"Mersenne", label:"Mersenne (p=1257787)", payload:{exponent_p:1257787}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p1398269", class:"Mersenne", label:"Mersenne (p=1398269)", payload:{exponent_p:1398269}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p2976221", class:"Mersenne", label:"Mersenne (p=2976221)", payload:{exponent_p:2976221}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p3021377", class:"Mersenne", label:"Mersenne (p=3021377)", payload:{exponent_p:3021377}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p6972593", class:"Mersenne", label:"Mersenne (p=6972593)", payload:{exponent_p:6972593}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p13466917", class:"Mersenne", label:"Mersenne (p=13466917)", payload:{exponent_p:13466917}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p20996011", class:"Mersenne", label:"Mersenne (p=20996011)", payload:{exponent_p:20996011}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p24036583", class:"Mersenne", label:"Mersenne (p=24036583)", payload:{exponent_p:24036583}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p25964951", class:"Mersenne", label:"Mersenne (p=25964951)", payload:{exponent_p:25964951}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p30402457", class:"Mersenne", label:"Mersenne (p=30402457)", payload:{exponent_p:30402457}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p32582657", class:"Mersenne", label:"Mersenne (p=32582657)", payload:{exponent_p:32582657}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p37156667", class:"Mersenne", label:"Mersenne (p=37156667)", payload:{exponent_p:37156667}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p42643801", class:"Mersenne", label:"Mersenne (p=42643801)", payload:{exponent_p:42643801}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p43112609", class:"Mersenne", label:"Mersenne (p=43112609)", payload:{exponent_p:43112609}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p57885161", class:"Mersenne", label:"Mersenne (p=57885161)", payload:{exponent_p:57885161}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p74207281", class:"Mersenne", label:"Mersenne (p=74207281)", payload:{exponent_p:74207281}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p77232917", class:"Mersenne", label:"Mersenne (p=77232917)", payload:{exponent_p:77232917}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p82589933", class:"Mersenne", label:"Mersenne (p=82589933)", payload:{exponent_p:82589933}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05" },
+  { id:"Mersenne_p136279841", class:"Mersenne", label:"Mersenne (p=136279841)", payload:{exponent_p:136279841}, log10_magnitude_formula:"p * log10(2)", source:"reviewer_ground_truth_v1", last_updated:"2026-04-05", notes:"Oct 2024 discovery included" }
+];
+
+/* -----------------------------
+   UI elements
+   ----------------------------- */
+const slider = document.getElementById('slider');
+const sliderValue = document.getElementById('sliderValue');
+const btnRun = document.getElementById('btn-run');
+const btnExport = document.getElementById('btn-export');
+const btnQA = document.getElementById('btn-qa');
+const btnClear = document.getElementById('btn-clear');
+const btnCopy = document.getElementById('btn-copy');
+const anchorListEl = document.getElementById('anchorList');
+const masterLandmarks = document.getElementById('masterLandmarks');
+const toggleMersenne = document.getElementById('toggleMersenne');
+const tuningRadios = document.getElementsByName('tuning');
+const targetInput = document.getElementById('targetInput');
+const safetyOverride = document.getElementById('safetyOverride');
+const truthMarker = document.getElementById('truthMarker');
+
+const plotWhole = document.getElementById('plot-whole');
+const plotRational = document.getElementById('plot-rational');
+const plotRatio = document.getElementById('plot-ratio');
+
+const mathBody = document.getElementById('math-body');
+
+/* -----------------------------
+   Logging helpers
+   ----------------------------- */
+function appendLine(text, cls){
+  const ts = new Date().toISOString();
+  const div = document.createElement('div');
+  div.className = cls || '';
+  div.innerText = `[${ts}] ${text}`;
+  mathBody.appendChild(div);
+  mathBody.scrollTop = mathBody.scrollHeight;
+  console.log(text);
+}
+function appendInfo(t){ appendLine(t,'info-line'); }
+function appendWarn(t){ appendLine(t,'warn-line'); }
+function appendError(t){ appendLine(t,'error-line'); }
+function clearMath(){ mathBody.innerHTML=''; }
+
+/* Global error catcher */
+window.onerror = function(message, source, lineno, colno, error){
+  appendError(`UNCAUGHT ERROR: ${message} at ${source}:${lineno}:${colno}`);
+  return false;
+};
+
+/* -----------------------------
+   Anchor processing: compute numeric log10 for Mersennes and sort
+   ----------------------------- */
+function computeAnchorLog10(a){
+  if(a.class === 'Mersenne' && a.payload && a.payload.exponent_p){
+    const p = a.payload.exponent_p;
+    a.log10_magnitude = p * LOG10_2; // canonical constant for snapping/comparison
+    a.display = `2^${p}-1`;
+  } else if(a.payload && a.payload.value){
+    a.log10_magnitude = Math.log10(a.payload.value);
+    a.display = String(a.payload.value);
+  }
+  return a;
+}
+
+// compute and sort anchors by log10_magnitude ascending
+for(let i=0;i<ANCHORS_V1.length;i++) computeAnchorLog10(ANCHORS_V1[i]);
+ANCHORS_V1.sort((x,y)=> x.log10_magnitude - y.log10_magnitude);
+
+/* Build anchor list UI */
+function buildAnchorList(){
+  anchorListEl.innerHTML = '';
+  ANCHORS_V1.forEach((a, idx) => {
+    const div = document.createElement('div');
+    div.className = 'anchor-item';
+    div.tabIndex = 0;
+    div.dataset.index = idx;
+    div.innerText = `${a.label} — ${a.display} — log10≈${a.log10_magnitude.toFixed(6)}`;
+    div.addEventListener('click', ()=> selectAnchor(idx));
+    div.addEventListener('keydown', (e)=>{ if(e.key==='Enter') selectAnchor(idx); });
+    anchorListEl.appendChild(div);
+  });
+}
+buildAnchorList();
+
+/* -----------------------------
+   State
+   ----------------------------- */
+const state = {
+  mode: 'MACRO',
+  substrate: 'WHOLE',
+  profile: 'NORMAL',
+  log10Nphys: Number(sliderValue.value),
+  log10Target: Number(targetInput.value),
+  tuningMode: 'CONTINUOUS',
+  anchors: ANCHORS_V1,
+  currentAnchorIndex: null,
+  xRangeWhole: null,
+  xRangeLogAlpha: null,
+  showLandmarks: true,
+  showMersenne: true,
+  safetyTripped: false,
+  dishonestyOverride: false
+};
+
+/* -----------------------------
+   UI wiring
+   ----------------------------- */
+slider.addEventListener('input', (e)=>{
+  const v = Number(e.target.value);
+  sliderValue.value = v;
+  state.log10Nphys = v;
+  // show nearest anchor hint if in snap/hybrid
+  showNearestAnchorHint(v);
+});
+slider.addEventListener('change', (e)=>{
+  // on release, apply tuning mode behavior
+  const v = Number(e.target.value);
+  handleSliderRelease(v);
+});
+sliderValue.addEventListener('change', (e)=>{
+  const v = Number(e.target.value);
+  slider.value = v;
+  state.log10Nphys = v;
+});
+targetInput.addEventListener('change', ()=>{ state.log10Target = Number(targetInput.value); appendInfo(`log10(n_target) set to ${state.log10Target}`); });
+
+document.querySelectorAll('input[name="tuning"]').forEach(r=>{
+  r.addEventListener('change', ()=>{ state.tuningMode = document.querySelector('input[name="tuning"]:checked').value; appendInfo(`Tuning mode: ${state.tuningMode}`); });
+});
+
+masterLandmarks.addEventListener('change', ()=>{ state.showLandmarks = masterLandmarks.checked; renderLandmarks(); });
+toggleMersenne.addEventListener('change', ()=>{ state.showMersenne = toggleMersenne.checked; renderLandmarks(); });
+
+safetyOverride.addEventListener('change', ()=>{ state.dishonestyOverride = safetyOverride.checked; if(state.dishonestyOverride){ truthMarker.style.background = 'var(--magenta)'; truthMarker.innerText='TRUTH: MAGENTA (OVERRIDE)'; appendWarn('WARNING: PHYSICAL DISHONESTY OVERRIDE ENGAGED'); } else { truthMarker.style.background=''; truthMarker.innerText='TRUTH: PHYSICAL'; appendInfo('Safety override cleared'); } });
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === '[') { jumpAnchor(-1); }
+  if(e.key === ']') { jumpAnchor(1); }
+});
+
+/* -----------------------------
+   Anchor selection & snapping
+   ----------------------------- */
+function nearestAnchorIndex(log10v){
+  let best = null; let bestd = Infinity;
+  for(let i=0;i<state.anchors.length;i++){
+    const d = Math.abs(state.anchors[i].log10_magnitude - log10v);
+    if(d < bestd){ bestd = d; best = i; }
+  }
+  return {index:best, delta:bestd};
+}
+
+function showNearestAnchorHint(v){
+  const {index, delta} = nearestAnchorIndex(v);
+  const anchor = state.anchors[index];
+  // show small floating hint in math panel (not too verbose)
+  appendInfo(`Nearest anchor: ${anchor.label} (log10≈${anchor.log10_magnitude.toFixed(6)}), Δ=${delta.toExponential(3)}`);
+}
+
+function handleSliderRelease(v){
+  const mode = state.tuningMode;
+  const snapThreshold = (mode === 'HYBRID' || mode === 'SNAP') ? 0.15 : 0.0; // decades
+  const {index, delta} = nearestAnchorIndex(v);
+  if(mode === 'DISCRETE'){
+    // jump to exact anchor
+    snapToAnchor(index);
+  } else if((mode === 'SNAP' || mode === 'HYBRID') && delta <= snapThreshold){
+    snapToAnchor(index);
+  } else {
+    // continuous: set state to slider value
+    state.log10Nphys = v;
+    appendInfo(`Slider set to log10(N_phys) = ${v}`);
+  }
+}
+
+function snapToAnchor(index){
+  const a = state.anchors[index];
+  state.currentAnchorIndex = index;
+  // set canonical constant
+  state.log10Nphys = a.log10_magnitude;
+  slider.value = state.log10Nphys;
+  sliderValue.value = state.log10Nphys;
+  appendInfo(`ANCHOR SNAP: ${a.label} selected; canonical log10 = ${a.log10_magnitude.toFixed(12)}; source=${a.source}`);
+  // center microscope on anchor (preserve zoom)
+  centerOnAnchor(index);
+}
+
+/* Anchor jump (next/prev) */
+function jumpAnchor(dir){
+  let idx = state.currentAnchorIndex;
+  if(idx === null) idx = 0;
+  idx = Math.max(0, Math.min(state.anchors.length-1, idx + dir));
+  snapToAnchor(idx);
+}
+
+/* Select anchor from list */
+function selectAnchor(idx){
+  snapToAnchor(idx);
+}
+
+/* -----------------------------
+   Centering & preserve zoom
+   ----------------------------- */
+function getCurrentWholeWindow(){
+  // attempt to read current whole x-axis range from plot; fallback to default window
+  try{
+    const layout = plotWhole._fullLayout;
+    if(layout && layout.xaxis && layout.xaxis.range) return layout.xaxis.range;
+  }catch(e){}
+  // default: center around 1e6
+  return [1, 1000];
+}
+
+function centerOnAnchor(index){
+  const a = state.anchors[index];
+  // preserve current window size in whole integers if possible
+  const window = getCurrentWholeWindow();
+  const width = Math.abs(window[1] - window[0]);
+  // compute anchor n (if small-class) or log10(n) for Mersenne
+  if(a.payload && a.payload.value){
+    const n = a.payload.value;
+    const half = Math.max(1, Math.floor(width/2));
+    const n0 = Math.max(1, n - half);
+    const n1 = n + half;
+    state.xRangeWhole = [n0, n1];
+    Plotly.relayout(plotWhole, {'xaxis.range': [n0, n1]});
+    appendInfo(`MICROSCOPE JUMP: centered numeric whole-range ≈ [${n0}, ${n1}] on ${a.label}`);
+  } else if(a.class === 'Mersenne'){
+    // Mersenne: we have log10 magnitude; try numeric if safe
+    const log10n = a.log10_magnitude;
+    const MAX_SAFE_LOG = 308;
+    const halfDecades = 1.0; // default ±1 decade
+    if(log10n + halfDecades < MAX_SAFE_LOG){
+      const n0 = Math.pow(10, log10n - halfDecades);
+      const n1 = Math.pow(10, log10n + halfDecades);
+      state.xRangeWhole = [n0, n1];
+      Plotly.relayout(plotWhole, {'xaxis.range': [n0, n1]});
+      appendInfo(`MICROSCOPE JUMP: centered numeric whole-range ≈ [${n0.toExponential(3)}, ${n1.toExponential(3)}] on ${a.label}`);
+    } else {
+      // fallback to log-space centering for rational plot
+      const la = log10n - state.log10Nphys; // log10(alpha)
+      const la0 = la - 1.0;
+      const la1 = la + 1.0;
+      state.xRangeLogAlpha = [la0, la1];
+      Plotly.relayout(plotRational, {'xaxis.range': [la0, la1]});
+      appendWarn('MICROSCOPE JUMP FALLBACK: numeric whole-range exceeds safe exponent; using log-space centering for rational view only.');
+    }
+  }
+  // update ratio plot accordingly
+  applySubstrate();
+}
+
+/* -----------------------------
+   Safety Valve (pre-render check)
+   ----------------------------- */
+function estimateRenderCost(params){
+  // crude heuristic: cost = base + li_order * factor + zeros_count * factor + (log10Nphys/1000)
+  const base = 1;
+  const liCost = (params.liOrder || 3) * 0.5;
+  const zerosCost = (params.zeros || 100) * 0.02;
+  const magnitudeCost = Math.min(100, Math.abs(state.log10Nphys) / 1000);
+  const total = base + liCost + zerosCost + magnitudeCost;
+  // normalize to percentage (arbitrary scale)
+  const percent = Math.min(200, Math.round(total * 10));
+  return percent;
+}
+
+function preRenderCheck(params){
+  const percent = estimateRenderCost(params);
+  appendInfo(`Pre-render estimate: ${percent}% (threshold 100%)`);
+  if(percent >= 100 && !state.dishonestyOverride){
+    state.safetyTripped = true;
+    btnRun.disabled = true; btnRun.classList.add('disabled');
+    appendError(`SAFETY VALVE TRIPPED: estimated load ${percent}% >= 100%`);
+    btnRun.innerText = `LOCKED: ESTIMATED ${percent}%`;
+    return {ok:false, reason:`ESTIMATED ${percent}%`};
+  } else {
+    state.safetyTripped = false;
+    btnRun.disabled = false; btnRun.classList.remove('disabled');
+    btnRun.innerText = 'RUN PHYSICAL SCRUTINY';
+    return {ok:true};
+  }
+}
+
+/* -----------------------------
+   Li(n) Hybrid implementation
+   - numeric integration for n < 1e15 (adaptive Simpson)
+   - asymptotic series for n >= 1e15 with N=3
+   ----------------------------- */
+function lnFromLog10(log10n){
+  return log10n * Math.LN10;
+}
+
+function liAsymptotic(log10n, order=3){
+  // compute Li(n) approx using asymptotic series
+  // log10n -> ln n
+  const ln = lnFromLog10(log10n);
+  // compute n/ln n in log-space: log10(n/ln n) = log10n - log10(ln)
+  const log10_ln = Math.log10(ln);
+  const log10_pref = log10n - log10_ln;
+  // convert prefactor to numeric mantissa * 10^exp
+  const prefactor = Math.pow(10, log10_pref % 1) * Math.pow(10, Math.floor(log10_pref));
+  // but prefactor may overflow; instead compute using n ~ 10^log10n and divide by ln
+  // For visualization we can compute using double: n = 10^log10n may overflow; so compute using exp(ln)
+  const n_approx = Math.exp(ln); // may overflow for huge ln; caller should avoid
+  const base = n_approx / ln;
+  // series sum
+  let sum = 0;
+  for(let k=0;k<=order;k++){
+    sum += factorial(k) / Math.pow(ln, k);
+  }
+  const Li = base * sum;
+  return {Li, ln, order};
+}
+
+function factorial(k){
+  if(k<=1) return 1;
+  let r=1;
+  for(let i=2;i<=k;i++) r*=i;
+  return r;
+}
+
+/* Numeric integration for Li(n) from 2 to n using adaptive Simpson (simple) */
+function liNumeric(n){
+  // handle small n
+  if(n <= 2) return LI2_CONST;
+  // integrate from 2 to n of dt / ln t
+  // use simple composite Simpson with adaptive refinement
+  const maxIter = 14;
+  let N = 256;
+  function integrand(t){ return 1 / Math.log(t); }
+  function simpson(a,b,N){
+    const h = (b-a)/N;
+    let s = integrand(a) + integrand(b);
+    for(let i=1;i<N;i++){
+      const x = a + i*h;
+      s += (i%2===0 ? 2 : 4) * integrand(x);
+    }
+    return s * h / 3;
+  }
+  let prev = simpson(2,n,N);
+  for(let iter=0;iter<maxIter;iter++){
+    N *= 2;
+    const cur = simpson(2,n,N);
+    if(Math.abs(cur - prev) / Math.abs(cur) < 1e-10) return LI2_CONST + cur;
+    prev = cur;
+  }
+  return LI2_CONST + prev;
+}
+
+/* Hybrid Li wrapper: accepts log10(n) or numeric n depending on context */
+function computeLiFromLog10(log10n){
+  // if n < 1e15 -> numeric integration
+  const threshold = 15; // log10 threshold
+  if(log10n < threshold){
+    const n = Math.pow(10, log10n);
+    const Li = liNumeric(n);
+    appendInfo(`Li(n) method: NUMERIC_INTEGRATION (n < 1e15). log10(n)=${log10n.toFixed(6)}`);
+    return {Li, method:'NUMERIC', estRelError:1e-10};
+  } else {
+    // asymptotic N=3
+    const order = 3;
+    // compute using asymptotic but avoid overflow: compute using exp(ln) may overflow for huge ln
+    const ln = lnFromLog10(log10n);
+    // compute base = exp(ln - ln)?? We'll compute Li approx using formula in log-space where possible
+    // For visualization, compute using Math.exp for moderate ln; if overflow, return proxy and log
+    try{
+      const n_approx = Math.exp(ln);
+      const base = n_approx / ln;
+      let sum = 0;
+      for(let k=0;k<=order;k++) sum += factorial(k) / Math.pow(ln, k);
+      const Li = base * sum;
+      appendInfo(`Li(n) method: ASYMPTOTIC N=${order}. ln n=${ln.toFixed(6)}. estRelError≈O(1/ln^${order+1})`);
+      return {Li, method:'ASYMPTOTIC', order, estRelError: Math.pow(1/ln, order+1)};
+    }catch(e){
+      appendWarn('Li asymptotic numeric overflow for extremely large n; returning log-space proxy');
+      // return proxy object with log10(Li) approximate: log10(n/ln n) + log10(sum)
+      const log10n = log10n;
+      const ln = lnFromLog10(log10n);
+      const sum = (function(){
+        let s=0; for(let k=0;k<=order;k++) s += factorial(k) / Math.pow(ln, k); return s;
+      })();
+      const log10sum = Math.log10(sum);
+      const log10Li = log10n - Math.log10(ln) + log10sum;
+      return {Li:null, method:'ASYMPTOTIC_PROXY', log10Li, order, estRelError: Math.pow(1/ln, order+1)};
+    }
+  }
+}
+
+/* -----------------------------
+   Oscillation proxy using zeros with phase reduction
+   osc(n) ≈ sum_j (2/γ_j) * sin(γ_j * ln n) * w_j
+   ----------------------------- */
+function computeOscillationFromLog10(log10n, zeros=ZEROS_V1, M=100, T=50){
+  // log10n may be huge; compute ln n = log10n * ln10
+  const ln_n = log10n * Math.LN10;
+  // damping weight function
+  function weight(gamma){ return Math.exp(-Math.pow(gamma / T, 2)); }
+  // sum over zeros (truncate to zeros.length or M)
+  const count = Math.min(zeros.length, M);
+  let sum = 0;
+  let c = 0;
+  for(let j=0;j<count;j++){
+    const gamma = zeros[j];
+    // compute phase = gamma * ln_n mod 2π using decomposition to avoid huge arguments
+    const phase = phaseReduce(gamma, log10n);
+    const w = weight(gamma);
+    const term = (2 / gamma) * Math.sin(phase) * w;
+    sum += term;
+    c++;
+  }
+  // return sum and metadata
+  return {osc: sum, used: c, T};
+}
+
+/* Phase reduction: compute gamma * ln n mod 2π robustly using decomposition:
+   ln n = exponent * ln10 + ln(mantissa)
+   gamma * ln n = gamma * exponent * ln10 + gamma * ln(mantissa)
+   reduce gamma * exponent * ln10 modulo 2π using fmod on double (approx)
+*/
+function phaseReduce(gamma, log10n){
+  // log10n = exponent + frac; exponent may be huge
+  const exponent = Math.floor(log10n);
+  const frac = log10n - exponent;
+  const ln10 = Math.LN10;
+  // compute gamma * exponent * ln10 mod 2π
+  const a = (gamma * (exponent % 1e9) * ln10) % (2*Math.PI); // reduce exponent modulo large number to avoid overflow
+  // compute gamma * frac * ln10
+  const b = gamma * frac * ln10;
+  const phase = (a + b) % (2*Math.PI);
+  return phase;
+}
+
+/* -----------------------------
+   Plot initialization and rendering
+   ----------------------------- */
+function initPlots(){
+  const layoutWhole = {margin:{l:50,r:10,t:20,b:30},paper_bgcolor:'#000',plot_bgcolor:'#000',xaxis:{title:'n (Whole substrate)',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}},yaxis:{title:'π(n)',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}}};
+  const layoutRational = {margin:{l:50,r:10,t:20,b:30},paper_bgcolor:'#000',plot_bgcolor:'#000',xaxis:{title:'log10(α) = log10(n) - log10(N_phys)',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}},yaxis:{title:'π(α N_phys)',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}}};
+  const layoutRatio = {margin:{l:50,r:10,t:20,b:30},paper_bgcolor:'#000',plot_bgcolor:'#000',xaxis:{title:'Substrate-dependent axis (n or log10(α))',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}},yaxis:{title:'R (π/ Li)',tickfont:{color:'#ccc'},titlefont:{color:'#ccc'}}};
+  Plotly.newPlot(plotWhole, [{x:[1,10,100],y:[0,1,25],type:'scatter',mode:'lines',line:{color:'#4caf50'}}], layoutWhole, {scrollZoom:true,displaylogo:false});
+  Plotly.newPlot(plotRational, [{x:[-6,-5,-4],y:[0,1,10],type:'scatter',mode:'lines',line:{color:'#2196f3'}}], layoutRational, {scrollZoom:true,displaylogo:false});
+  Plotly.newPlot(plotRatio, [{x:[-6,-5,-4],y:[1,1,1],type:'scatter',mode:'lines',line:{color:'#ff9800',dash:'dot'}}], layoutRatio, {scrollZoom:true,displaylogo:false});
+  attachSync(plotWhole,'WHOLE'); attachSync(plotRational,'RATIONAL'); attachSync(plotRatio,'RATIO');
+  appendInfo('Phase 2 plots initialized (placeholders).');
+}
+
+/* Attach zoom sync handlers */
+function attachSync(div, kind){
+  div.on('plotly_relayout', (eventData)=>{
+    if(eventData['xaxis.range[0]'] !== undefined && eventData['xaxis.range[1]'] !== undefined){
+      const x0 = eventData['xaxis.range[0]'], x1 = eventData['xaxis.range[1]'];
+      if(kind === 'WHOLE'){ state.xRangeWhole = [Number(x0), Number(x1)]; syncFromWhole(); }
+      else if(kind === 'RATIONAL'){ state.xRangeLogAlpha = [Number(x0), Number(x1)]; syncFromLogAlpha(); }
+      else if(kind === 'RATIO'){
+        if(state.substrate === 'WHOLE'){ state.xRangeWhole = [Number(x0), Number(x1)]; syncFromWhole(); }
+        else { state.xRangeLogAlpha = [Number(x0), Number(x1)]; syncFromLogAlpha(); }
+      }
+    }
+  });
+}
+
+function syncFromWhole(){
+  const range = state.xRangeWhole; if(!range) return;
+  const n0 = range[0], n1 = range[1];
+  if(n0 <= 0 || n1 <= 0) return;
+  const log10n0 = Math.log10(n0), log10n1 = Math.log10(n1);
+  const la0 = log10n0 - state.log10Nphys, la1 = log10n1 - state.log10Nphys;
+  state.xRangeLogAlpha = [la0, la1];
+  Plotly.relayout(plotRational, {'xaxis.range':[la0,la1]});
+  Plotly.relayout(plotRatio, {'xaxis.range': state.substrate==='WHOLE' ? [n0,n1] : [la0,la1]});
+  appendInfo(`SyncFromWhole: n-range=[${n0},${n1}] → log10(α)-range=[${la0.toExponential(3)},${la1.toExponential(3)}]`);
+}
+
+function syncFromLogAlpha(){
+  const range = state.xRangeLogAlpha; if(!range) return;
+  const la0 = range[0], la1 = range[1];
+  const log10N = state.log10Nphys;
+  const n0_log = la0 + log10N, n1_log = la1 + log10N;
+  const MAX_SAFE_LOG = 308;
+  if(n0_log < MAX_SAFE_LOG && n1_log < MAX_SAFE_LOG){
+    const n0 = Math.pow(10, n0_log), n1 = Math.pow(10, n1_log);
+    state.xRangeWhole = [n0,n1];
+    Plotly.relayout(plotWhole, {'xaxis.range':[n0,n1]});
+    appendInfo(`SyncFromLogAlpha: log10(α)-range=[${la0},${la1}] → n-range=[${n0.toExponential(3)},${n1.toExponential(3)}]`);
+  } else {
+    state.xRangeWhole = null;
+    appendWarn('SyncFromLogAlpha: computed n-range exceeds numeric limits; preserving log-space view only.');
+  }
+  Plotly.relayout(plotRational, {'xaxis.range':[la0,la1]});
+  if(state.substrate === 'WHOLE' && state.xRangeWhole) Plotly.relayout(plotRatio, {'xaxis.range': state.xRangeWhole});
+  else Plotly.relayout(plotRatio, {'xaxis.range':[la0,la1]});
+}
+
+/* -----------------------------
+   Landmarks rendering across all three plots
+   ----------------------------- */
+function renderLandmarks(){
+  // remove existing landmark shapes/traces and add new ones
+  const shapesWhole = [], shapesRational = [], shapesRatio = [];
+  if(!state.showLandmarks) {
+    Plotly.relayout(plotWhole, {'shapes':[]});
+    Plotly.relayout(plotRational, {'shapes':[]});
+    Plotly.relayout(plotRatio, {'shapes':[]});
+    return;
+  }
+  state.anchors.forEach(a=>{
+    if(a.class === 'Mersenne' && !state.showMersenne) return;
+    const isPhysical = a.log10_magnitude <= state.log10Nphys;
+    const color = isPhysical ? '#4caf50' : '#888';
+    const dash = isPhysical ? 'solid' : 'dot';
+    // Whole: if small integer, place at n; if Mersenne, place at 10^log10 (may overflow)
+    if(a.payload && a.payload.value){
+      const x = a.payload.value;
+      shapesWhole.push({type:'line',x0:x,x1:x,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+      shapesRational.push({type:'line',x0:a.log10_magnitude - state.log10Nphys,x1:a.log10_magnitude - state.log10Nphys,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+      shapesRatio.push({type:'line',x0:a.payload.value,x1:a.payload.value,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+    } else if(a.class === 'Mersenne'){
+      const log10n = a.log10_magnitude;
+      const la = log10n - state.log10Nphys;
+      // Whole: skip numeric placement if too large; instead mark on ratio/log plots
+      if(log10n < 308){
+        const n = Math.pow(10, log10n);
+        shapesWhole.push({type:'line',x0:n,x1:n,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+      }
+      shapesRational.push({type:'line',x0:la,x1:la,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+      shapesRatio.push({type:'line',x0:la,x1:la,y0:0,y1:1,yref:'paper',line:{color:color,width:isPhysical?2:1,dash:dash}});
+    }
+  });
+  Plotly.relayout(plotWhole, {'shapes':shapesWhole});
+  Plotly.relayout(plotRational, {'shapes':shapesRational});
+  Plotly.relayout(plotRatio, {'shapes':shapesRatio});
+}
+
+/* -----------------------------
+   Render full computation: Li, pi (approx), R(n), oscillation
+   ----------------------------- */
+function renderAll(){
+  // Pre-render check
+  const params = {liOrder:3, zeros: ZEROS_V1.length};
+  const check = preRenderCheck(params);
+  if(!check.ok) return;
+  appendInfo('RUN PHYSICAL SCRUTINY: rendering Phase 2 (Hybrid Li + RH Ratio)');
+  // For demo: sample n values across a window determined by target or default
+  // We'll produce sampled points for whole and rational plots
+  const sampleCount = 400;
+  // Whole: sample n from 2 to 1e6 or centered around target if micro
+  let nMin = 2, nMax = 1000000;
+  if(state.mode === 'MICRO'){
+    const t = state.log10Target;
+    if(t < 308){
+      const center = Math.pow(10, t);
+      const half = Math.max(10, Math.floor(center * 0.01));
+      nMin = Math.max(2, center - half);
+      nMax = center + half;
+    } else {
+      // fallback
+      nMin = 2; nMax = 1000;
+    }
+  }
+  // generate whole sample (log-spaced for large ranges)
+  const wholeX = [];
+  const wholeY = [];
+  // choose log spacing between log10(nMin) and log10(nMax)
+  const logMin = Math.log10(nMin), logMax = Math.log10(nMax);
+  for(let i=0;i<sampleCount;i++){
+    const t = i/(sampleCount-1);
+    const logn = logMin + t*(logMax-logMin);
+    const n = Math.max(2, Math.round(Math.pow(10, logn)));
+    wholeX.push(n);
+    // compute pi(n) approx: for small n compute exact via sieve up to 1e6; for larger use Li approximation
+    const pi = approximatePi(n);
+    wholeY.push(pi);
+  }
+
+  // Rational: compute log10(alpha) samples across a window
+  const rationalX = [];
+  const rationalY = [];
+  for(let i=0;i<sampleCount;i++){
+    const la = -6 + (i/(sampleCount-1))*12; // log10(alpha) from -6 to +6
+    rationalX.push(la);
+    // compute corresponding n log10
+    const log10n = la + state.log10Nphys;
+    const LiObj = computeLiFromLog10(log10n);
+    const piApprox = approximatePiFromLog10(log10n);
+    const R = (LiObj.Li ? (piApprox / LiObj.Li) : (piApprox / Math.pow(10, LiObj.log10Li)));
+    rationalY.push(R);
+  }
+
+  // Ratio: compute R(n) across same rationalX
+  const ratioX = rationalX.slice();
+  const ratioY = rationalY.slice();
+
+  // Plot
+  Plotly.react(plotWhole, [{x:wholeX,y:wholeY,type:'scatter',mode:'lines',line:{color:'#4caf50'},name:'π(n)'}], plotWhole._fullLayout);
+  Plotly.react(plotRational, [{x:rationalX,y:rationalY,type:'scatter',mode:'lines',line:{color:'#2196f3'},name:'π(α N_phys)'}], plotRational._fullLayout);
+  Plotly.react(plotRatio, [{x:ratioX,y:ratioY,type:'scatter',mode:'lines',line:{color:'#ff9800'},name:'R(n)'}], plotRatio._fullLayout);
+
+  // render landmarks
+  renderLandmarks();
+
+  appendInfo('Render complete. Plots updated.');
+}
+
+/* Approximate pi(n) for visualization:
+   - For n <= 1e6: compute exact sieve once
+   - For larger n: use Li(n) as proxy: pi(n) ≈ Li(n) + oscillation
+*/
+let sieveCache = null;
+function buildSieve(limit){
+  const sieve = new Uint8Array(limit+1);
+  sieve.fill(1); sieve[0]=0; sieve[1]=0;
+  for(let p=2;p*p<=limit;p++) if(sieve[p]) for(let k=p*p;k<=limit;k+=p) sieve[k]=0;
+  const pi = new Array(limit+1);
+  let count=0;
+  for(let i=0;i<=limit;i++){ if(sieve[i]) count++; pi[i]=count; }
+  return pi;
+}
+function approximatePi(n){
+  if(n <= 1000000){
+    if(!sieveCache) sieveCache = buildSieve(1000000);
+    return sieveCache[Math.floor(n)];
+  } else {
+    const log10n = Math.log10(n);
+    const LiObj = computeLiFromLog10(log10n);
+    const osc = computeOscillationFromLog10(log10n, ZEROS_V1, ZEROS_V1.length, 50);
+    const piApprox = (LiObj.Li ? LiObj.Li : Math.pow(10, LiObj.log10Li)) + osc.osc;
+    return Math.max(0, piApprox);
+  }
+}
+function approximatePiFromLog10(log10n){
+  if(log10n <= 6){
+    const n = Math.round(Math.pow(10, log10n));
+    return approximatePi(n);
+  } else {
+    const LiObj = computeLiFromLog10(log10n);
+    const osc = computeOscillationFromLog10(log10n, ZEROS_V1, ZEROS_V1.length, 50);
+    const piApprox = (LiObj.Li ? LiObj.Li : Math.pow(10, LiObj.log10Li)) + osc.osc;
+    return Math.max(0, piApprox);
+  }
+}
+
+/* -----------------------------
+   Utility: apply substrate labels & preserve zoom
+   ----------------------------- */
+function applySubstrate(){
+  // update axis titles based on substrate
+  if(plotWhole.data && plotRational.data){
+    if(state.substrate === 'WHOLE'){
+      Plotly.relayout(plotWhole, {'xaxis.title.text':'n (Whole substrate)'});
+      Plotly.relayout(plotRational, {'xaxis.title.text':'log10(α) = log10(n) - log10(N_phys)'});
+      Plotly.relayout(plotRatio, {'xaxis.title.text':'n (Ratio, Whole substrate)'});
+    } else {
+      Plotly.relayout(plotWhole, {'xaxis.title.text':'n (Whole view)'});
+      Plotly.relayout(plotRational, {'xaxis.title.text':'log10(α) = log10(n) - log10(N_phys) (Rational substrate)'});
+      Plotly.relayout(plotRatio, {'xaxis.title.text':'log10(α) (Ratio, Rational substrate)'});
+    }
+  }
+}
+
+/* -----------------------------
+   Export JSON (download)
+   ----------------------------- */
+function exportJSON(){
+  const payload = {
+    version:'vU.1.6.3-phase2',
+    anchors_version:'anchors_v1',
+    anchors_count: state.anchors.length,
+    log10Nphys: state.log10Nphys,
+    li_approximation_order: 3,
+    oscillation_zeros_used: ZEROS_V1.length,
+    safety_valve_state: state.safetyTripped ? 'TRIPPED' : (state.dishonestyOverride ? 'OVERRIDDEN' : 'NORMAL'),
+    timestamp: new Date().toISOString()
+  };
+  const json = JSON.stringify(payload, null, 2);
+  appendInfo('Export JSON prepared (download will start).');
+  appendInfo(json);
+  try{
+    const blob = new Blob([json], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Ultrafinitist_Engine_vU.1.6.312_export.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    appendInfo('Export download triggered.');
+  }catch(e){ appendError('Export failed: ' + String(e)); }
+}
+
+/* -----------------------------
+   QA Sweep
+   ----------------------------- */
+function runQASweep(){
+  appendInfo('QA Sweep (Phase 2):');
+  appendInfo(`- log10(N_phys): ${state.log10Nphys}`);
+  appendInfo(`- Tuning mode: ${state.tuningMode}`);
+  appendInfo(`- Anchors loaded: ${state.anchors.length}`);
+  appendInfo(`- Li method threshold: n < 1e15 numeric; >= 1e15 asymptotic N=3`);
+  appendInfo(`- Oscillation zeros loaded: ${ZEROS_V1.length}`);
+  appendInfo(`- Safety valve tripped: ${state.safetyTripped}`);
+}
+
+/* -----------------------------
+   Event wiring for buttons
+   ----------------------------- */
+btnRun.addEventListener('click', ()=>{
+  // if safety tripped and override not set, do nothing
+  const params = {liOrder:3, zeros:ZEROS_V1.length};
+  const check = preRenderCheck(params);
+  if(!check.ok) return;
+  // run render
+  renderAll();
+});
+
+btnExport.addEventListener('click', exportJSON);
+btnQA.addEventListener('click', runQASweep);
+btnClear.addEventListener('click', ()=>{ clearMath(); appendInfo('Math panel cleared.'); });
+btnCopy.addEventListener('click', async ()=>{
+  try{ await navigator.clipboard.writeText(mathBody.innerText || ''); appendInfo('Math panel copied to clipboard.'); } catch(e){ appendError('Copy failed: ' + String(e)); }
+});
+
+/* -----------------------------
+   Init
+   ----------------------------- */
+window.addEventListener('load', ()=>{
+  appendInfo('Ultrafinitist Engine vU.1.6.3 Phase 2 booting...');
+  appendInfo('Anchors loaded: ' + ANCHORS_V1.length + ' (sorted by log10 magnitude)');
+  appendInfo('Riemann zeros loaded: ' + ZEROS_V1.length);
+  initPlots();
+  renderLandmarks();
+  runQASweep();
+  appendInfo('Ready. Adjust controls; press RUN PHYSICAL SCRUTINY to render.');
+});
+</script>
+</body>
+</html>

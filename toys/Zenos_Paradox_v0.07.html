@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#0a0a0a; color:#eee; font-family: monospace; padding: 20px; line-height: 1.5;">
+    <h3>SVET Engine: Information Resolution Clash v0.07</h3>
+    <p>Substrate Scale Configuration (Log-Normalized):</p>
+    
+    <div style="margin-bottom: 15px;">
+        <select id="scaleSelect" style="padding: 6px; cursor: pointer;">
+            <option value="1024">1,024 Nodes (Micro Scale)</option>
+            <option value="1048576">1,048,576 Nodes (Mega Scale)</option>
+            <option value="1000000000">1,000,000,000 Nodes (Giga Scale)</option>
+            <option value="10000000000000">10,000,000,000,000 Nodes (Trillion/Planck Scale)</option>
+        </select>
+        <button id="runBtn" onclick="runHighResolutionBench()" style="padding: 6px 12px; cursor: pointer;">Run Simulation</button>
+        <button onclick="clearCanvas()" style="padding: 6px 12px; cursor: pointer;">Clear</button>
+        <span id="spinner" style="margin-left: 10px; display: none;">⚙ Processing High-Res Bench...</span>
+    </div>
+
+    <canvas id="svetChart" width="650" height="450" style="border:1px solid #444; background:#111; max-width: 100%;"></canvas>
+    <div id="stats" style="margin-top:15px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 20px;"></div>
+
+    <div id="summary" style="max-width: 800px; margin-top: 20px;">
+        <h3>SVET Engine Demonstration Summary</h3>
+        <p>This demo compares two ways of resolving a “halve-the-distance” process. The goal is to show how a continuous floating-point model behaves versus a discrete SVET ledger model when both attempt to repeatedly divide a value.</p>
+        <h4>1. Classical (Floating-Point) Path — Red Dashed Line</h4>
+        <ul><li>Each step divides the value by 2. Floating-point numbers carry fractional mantissa bits. As the value becomes small, the processor must continue halving through tiny fractional states. This produces a “tail” of extra work.</li></ul>
+        <h4>2. SVET Discrete Ledger Path — Cyan Staircase</h4>
+        <ul><li>Each step performs <code>Math.floor(value / 2)</code>. No fractional states exist. Once the value reaches 1, the next step becomes 0 and the process terminates immediately.</li></ul>
+        <h4>Why This Resolves Zeno’s Paradox</h4>
+        <blockquote>Zeno’s paradox assumes motion requires traversing infinitely many sub-intervals. The SVET ledger does not allow infinite subdivision; it resolves the process in a finite number of ticks. Motion completes because the ledger has finite resolution—there is no infinite regress of sub-intervals.</blockquote>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('svetChart');
+        // Mobile Proportional Scaling
+        if (window.innerWidth < 650) {
+            canvas.width = window.innerWidth * 0.9;
+            canvas.height = canvas.width * 0.69;
+        }
+        const ctx = canvas.getContext('2d');
+        const ITERATIONS = 1000000;
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+        }
+
+        function drawGrid() {
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            // X-Axis
+            ctx.beginPath(); ctx.moveTo(50, h-50); ctx.lineTo(w-50, h-50); ctx.stroke();
+            // Y-Axis
+            ctx.beginPath(); ctx.moveTo(50, 50); ctx.lineTo(50, h-50); ctx.stroke();
+            
+            // Grid Anchors
+            ctx.strokeStyle = '#222';
+            ctx.beginPath();
+            ctx.moveTo(50, h * 0.45); ctx.lineTo(w-50, h * 0.45);
+            ctx.moveTo(50, h * 0.65); ctx.lineTo(w-50, h * 0.65);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#aaa';
+            ctx.font = '12px monospace';
+            ctx.fillText("Nodes (Log Normalized)", 40, 40);
+            ctx.fillText("Tick Depth", w/2 - 50, h-20);
+            
+            // Relative Legend Placement
+            ctx.fillStyle = '#ff4444'; ctx.fillText("— Legacy Continuum", w * 0.55, 30);
+            ctx.fillStyle = '#00ffcc'; ctx.fillText("— SVET Discrete Ledger", w * 0.55, 50);
+        }
+
+        async function runHighResolutionBench() {
+            const scale = parseInt(document.getElementById('scaleSelect').value);
+            const spinner = document.getElementById('spinner');
+            const stats = document.getElementById('stats');
+            spinner.style.display = 'inline';
+            await new Promise(resolve => setTimeout(resolve, 50));
+
+            clearCanvas();
+
+            // Accumulator Shields
+            let totalClassicalCycles = 0;
+            let totalSvetCycles = 0;
+
+            // 1. Classical Stress-Test
+            let t0 = performance.now();
+            for(let i = 0; i < ITERATIONS; i++) {
+                // No utilization (U) or ΔH terms here by design; flat background vacuum, constant velocity, pure resolution benchmark.
+                let classicalValue = scale;
+                let classicalTicks = 0;
+                while (classicalValue > 0.0) {
+                    classicalValue /= 2.0;
+                    classicalTicks++;
+                }
+                totalClassicalCycles += classicalTicks;
+            }
+            let t1 = performance.now();
+            let classicalDuration = t1 - t0;
+
+            // 2. SVET Stress-Test
+            let t2 = performance.now();
+            let measuredSvetDepth = 0;
+            for(let i = 0; i < ITERATIONS; i++) {
+                // No utilization (U) or ΔH terms here by design; flat background vacuum, constant velocity, pure resolution benchmark.
+                let currentNodes = scale;
+                let svetTicks = 0;
+                while (currentNodes > 0) {
+                    currentNodes = Math.floor(currentNodes / 2);
+                    svetTicks++;
+                }
+                totalSvetCycles += svetTicks;
+                measuredSvetDepth = svetTicks;
+            }
+            let t3 = performance.now();
+            let svetDuration = t3 - t2;
+
+            drawVisuals(scale, measuredSvetDepth);
+
+            let normalizedClassicalLatency = classicalDuration / ITERATIONS;
+            let normalizedSvetLatency = svetDuration / ITERATIONS;
+            let latencyRatio = normalizedClassicalLatency / normalizedSvetLatency;
+            let theoreticalLimit = Math.log2(scale);
+
+            spinner.style.display = 'none';
+            stats.innerHTML = 
+                `<strong>Performance Log:</strong> Classical cycles: ${totalClassicalCycles.toLocaleString()} | SVET cycles: ${totalSvetCycles.toLocaleString()}<br>` +
+                `<strong>Latency Ratio:</strong> Classical is ${latencyRatio.toFixed(2)}x slower | <strong>Theoretical vs Measured:</strong> ${theoreticalLimit.toFixed(2)} / ${measuredSvetDepth}<br>` +
+                `<strong>Status:</strong> In this implementation, the floating‑point continuum path incurs a measurable overhead from fractional mantissa operations, while the SVET discrete ledger path terminates in a fixed, finite tick depth with no sub‑interval processing.`;
+        }
+
+        function drawVisuals(scale, steps) {
+            const w = canvas.width - 100;
+            const h = canvas.height - 100;
+            const originX = 50;
+            const originY = canvas.height - 50;
+
+            // Classical
+            ctx.beginPath(); ctx.strokeStyle = '#ff4444'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+            for (let px = 0; px <= w; px++) {
+                let currentStepFraction = (px / w) * steps;
+                let valueAtStep = scale * Math.pow(0.5, currentStepFraction);
+                let py = originY - (valueAtStep / scale) * h;
+                if (px === 0) ctx.moveTo(originX + px, py); else ctx.lineTo(originX + px, py);
+            }
+            ctx.stroke();
+
+            // SVET
+            ctx.beginPath(); ctx.strokeStyle = '#00ffcc'; ctx.lineWidth = 2; ctx.setLineDash([]);
+            let currentNodes = scale;
+            let stepPixelWidth = w / steps;
+            for (let x = 0; x < steps; x++) {
+                let px1 = originX + (x * stepPixelWidth);
+                let py1 = originY - (currentNodes / scale) * h;
+                let px2 = originX + ((x + 1) * stepPixelWidth);
+                if (x === 0) ctx.moveTo(px1, py1);
+                ctx.lineTo(px2, py1); // Tread
+                currentNodes = Math.floor(currentNodes / 2);
+                let py2 = originY - (currentNodes / scale) * h;
+                ctx.lineTo(px2, py2); // Riser
+            }
+            ctx.stroke();
+        }
+        
+        drawGrid();
+    </script>
+</body>
+</html>

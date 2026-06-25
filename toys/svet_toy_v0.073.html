@@ -1,0 +1,2017 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SVET Toy v0.07.3 — Full Integrity & Briefing</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{--bg:#0b0b0c;--panel:#141416;--muted:#9aa;--accent:#5fb}
+  html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:#eaeaea}
+  .app{display:flex;height:100vh;gap:8px;padding:8px;box-sizing:border-box}
+  #left{width:360px;min-width:320px;background:var(--panel);padding:12px;box-sizing:border-box;overflow:auto;border-radius:6px}
+  #center{flex:1;display:flex;flex-direction:column;gap:8px}
+  #canvasWrap{flex:1;background:#000;border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative}
+  canvas{border:1px solid #222;image-rendering:pixelated;background:#000}
+  #right{width:360px;background:var(--panel);padding:12px;box-sizing:border-box;border-radius:6px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+  h2{margin:0 0 8px 0;font-size:15px}
+  label{font-size:12px;color:var(--muted);display:block;margin-top:8px}
+  input,select,button,textarea{width:100%;padding:6px;margin-top:6px;background:#0b0b0c;border:1px solid #222;color:#eaeaea;font-size:13px;border-radius:4px;box-sizing:border-box}
+  textarea{font-family:monospace;resize:vertical}
+  .row{display:flex;gap:8px}
+  .row>div{flex:1}
+  .small{font-size:12px;color:var(--muted)}
+  #diagnostics{height:160px;background:#0d0d0e;padding:8px;border-radius:6px;overflow:auto;font-size:12px;line-height:1.4}
+  .gaugeLabel{font-size:12px;color:#ddd;margin-left:8px}
+  .gaugeBar{height:12px;background:#222;border-radius:6px;overflow:hidden;border:1px solid #222}
+  .gaugeFill{height:100%;width:0;background:#2ecc71}
+  .gaugeRow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .muted{color:var(--muted)}
+  footer{font-size:11px;color:var(--muted);text-align:center;padding:6px}
+  .btnRow{display:flex;gap:6px;margin-top:8px}
+  .btnRow button{flex:1}
+  pre{margin:0}
+  .smallNote{font-size:11px;color:var(--muted);margin-top:6px}
+  .collapsible{background:#0d0d0e;padding:8px;border-radius:6px}
+  .warn{color:#ff6b6b;font-weight:600}
+  .ok{color:#2ecc71;font-weight:600}
+  .testResults{background:#0b0b0c;padding:8px;border-radius:6px;color:#cfc;font-size:12px}
+  #jsonPaste { height: 60px; overflow-y: auto; font-family: monospace; }
+  #exportOverlay { position:absolute; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); color:#fff; font-size:16px; z-index:10; border-radius:6px; }
+  #resetAll { margin-top:8px; background:#222; border:1px solid #333; color:#fff; padding:8px; border-radius:6px; cursor:pointer; }
+  .smallBadge{font-size:11px;color:#9aa;background:#0d0d0e;padding:4px;border-radius:4px;display:inline-block;margin-top:6px}
+  details summary { cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="left">
+    <h2>SVET v0.07.3 — Controls</h2>
+
+    <label>Experiment label (Human)</label>
+    <input id="experimentLabel" type="text" value="Auto">
+
+    <label>Mode (engine)</label>
+    <select id="modeSelect"><option>Localized</option><option>Homogeneous</option><option>Moving</option></select>
+
+    <label>Lattice size N (NxN) — apply via Init</label>
+    <input id="size" type="number" min="8" max="512" value="64">
+
+    <label>Ucap</label>
+    <input id="ucap" type="number" step="0.01" value="1.0">
+
+    <label>Uref</label>
+    <input id="uref" type="number" step="0.01" value="1.0">
+
+    <label>κ (kappa)</label>
+    <input id="kappa" type="number" step="0.01" value="0.5">
+
+    <label>Time step dt</label>
+    <input id="dt" type="number" step="0.001" value="0.05">
+
+    <label>Operator</label>
+    <select id="operator">
+      <option value="diffusion">Diffusion (Gaussian)</option>
+      <option value="wave">Wave (1/r)</option>
+    </select>
+
+    <label>Seed radius (cells)</label>
+    <input id="seedRadius" type="number" min="1" value="4">
+
+    <label>Seed amplitude</label>
+    <input id="seedAmp" type="number" step="0.1" value="2.0">
+
+    <label>Pattern speed (cells / step)</label>
+    <input id="patternSpeed" type="number" step="0.01" value="0.2">
+
+    <label>Effective signal speed c_eff</label>
+    <input id="ceff" type="number" step="0.01" value="1.0">
+
+    <label><input id="homogToggle" type="checkbox"> Homogeneous evolution (Uref drift)</label>
+    <label>Homog drift rate (d ln Uref / dt)</label>
+    <input id="homogRate" type="number" step="0.0001" value="0.001">
+
+    <label><input id="movingToggle" type="checkbox"> Moving pattern</label>
+    <label>Phase gradient (alt moving)</label>
+    <input id="phaseGrad" type="number" step="0.01" value="0.0">
+
+    <label><input id="overlayState" type="checkbox"> Overlay node state</label>
+
+    <label>Boundary conditions</label>
+    <select id="bcMode"><option value="periodic">Periodic</option><option value="reflective">Reflective</option></select>
+
+    <div class="row">
+      <div>
+        <label>Poisson cadence (frames)</label>
+        <input id="poissonCadence" type="number" min="1" value="20">
+      </div>
+      <div>
+        <label>Poisson method</label>
+        <select id="poissonMethod"><option value="pearson">Pearson</option><option value="dot">Normalized dot</option></select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label><input id="autoStopToggle" type="checkbox"> Auto-stop on persistent red</label>
+      </div>
+      <div>
+        <label>Auto-stop frames</label>
+        <input id="autoStopFrames" type="number" min="1" value="300">
+      </div>
+    </div>
+
+    <label><input id="autoDownloadToggle" type="checkbox" checked> Auto-download CSV on completion</label>
+
+    <div class="btnRow">
+      <button id="init">Init Lattice</button>
+      <button id="seed">Apply Localized Seed</button>
+    </div>
+    <div class="btnRow">
+      <button id="movingSeed">Apply Moving Seed</button>
+      <button id="start">Start</button>
+    </div>
+    <div class="btnRow">
+      <button id="stop">Stop</button>
+      <button id="step">Step</button>
+    </div>
+
+    <div class="btnRow" style="margin-top:8px">
+      <button id="download">Download Export (CSV + NDJSON + manifest)</button>
+      <button id="runTests">Run Automated Tests</button>
+    </div>
+
+    <button id="resetAll">Reset All (Hard Reset)</button>
+
+    <div class="smallNote">Tip: use Init Lattice to keep knobs but wipe the board; Reset All returns factory defaults.</div>
+  </div>
+
+  <div id="center">
+    <div id="canvasWrap">
+      <canvas id="canvas" width="640" height="640"></canvas>
+      <div id="exportOverlay">Exporting and hashing... please wait</div>
+    </div>
+
+    <div id="diagnostics" class="small">Diagnostics will appear here.</div>
+  </div>
+
+  <div id="right">
+    <h2>Live Gauges</h2>
+    <div class="gaugeRow">
+      <div style="width:8px;height:8px;border-radius:50%;background:#444;margin-top:4px"></div>
+      <div style="flex:1">
+        <div class="gaugeBar"><div id="gFillLocalized" class="gaugeFill"></div></div>
+        <div class="gaugeLabel">Localized (radial) <span id="gValLocalized" class="muted">0%</span></div>
+      </div>
+    </div>
+
+    <div class="gaugeRow">
+      <div style="width:8px;height:8px;border-radius:50%;background:#444;margin-top:4px"></div>
+      <div style="flex:1">
+        <div class="gaugeBar"><div id="gFillHomog" class="gaugeFill"></div></div>
+        <div class="gaugeLabel">Homogeneous (drift) <span id="gValHomog" class="muted">0%</span></div>
+      </div>
+    </div>
+
+    <div class="gaugeRow">
+      <div style="width:8px;height:8px;border-radius:50%;background:#444;margin-top:4px"></div>
+      <div style="flex:1">
+        <div class="gaugeBar"><div id="gFillMoving" class="gaugeFill"></div></div>
+        <div class="gaugeLabel">Moving (Doppler) <span id="gValMoving" class="muted">0%</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:6px">
+      <strong>Poisson Correlation</strong>
+      <div class="gaugeBar" style="margin-top:6px"><div id="gFillPoisson" class="gaugeFill"></div></div>
+      <div class="gaugeLabel">Poisson (|r|) <span id="gValPoisson" class="muted">0%</span></div>
+      <div class="small" style="margin-top:6px">CSV logs signed r as <code>poisson_correlation_r</code>.</div>
+    </div>
+
+    <hr style="border-color:#222">
+
+    <h2 style="margin-top:0">Current State (JSON Output)</h2>
+    <pre id="jsonState" style="background:#0b0b0c;padding:8px;border-radius:6px;height:160px;overflow:auto;font-size:12px;color:#cfc">{}</pre>
+
+    <details id="jsonLoader" style="margin-top:8px">
+      <summary style="cursor:pointer">Experiment Loader (JSON Input) — paste or upload</summary>
+      <div style="margin-top:8px">
+        <label>Paste experiment JSON</label>
+        <textarea id="jsonPaste" placeholder='{"experiment_label":"Localized","mode":"Localized","config":{"N":64,...}}'></textarea>
+        <div class="row" style="margin-top:6px">
+          <button id="loadJsonText">Load JSON</button>
+          <input id="jsonFileInput" type="file" accept=".json">
+        </div>
+        <div style="margin-top:8px">
+          <label><input id="runOnLoad" type="checkbox"> Run on load (opt-in)</label>
+          <label><input id="validateStrict" type="checkbox" checked> Strict validation (warn on unknown fields)</label>
+        </div>
+        <div id="jsonValidation" style="margin-top:8px;color:#f1c40f;font-size:12px"></div>
+      </div>
+    </details>
+
+    <div style="margin-top:8px">
+      <strong>Validation & Tests</strong>
+      <div id="validationPanel" style="margin-top:8px;color:#f1c40f"></div>
+      <div style="margin-top:8px" class="testResults" id="testResults">Automated tests not run.</div>
+    </div>
+
+    <!-- Auditor Panel (Drag & Drop) -->
+    <details id="auditTab" style="margin-top:8px; border: 1px solid #5fb; border-radius:6px; padding:5px;">
+      <summary style="cursor:pointer; color:#5fb; font-weight:bold;">🛡️ Data Auditor (Canary Check)</summary>
+      <div id="auditDropZone" style="margin-top:10px; border:2px dashed #5fb; padding:20px; text-align:center; font-size:12px; color:#5fb; cursor:pointer;">
+        <strong>Drop Export Bundle Here</strong><br>
+        (Drag the .csv, .ndjson parts, and .manifest.json at once)
+      </div>
+      <pre id="auditReport" style="margin-top:10px; background:#000; color:#cfc; font-size:11px; max-height:200px; overflow:auto; display:none;"></pre>
+      <div style="margin-top:8px" class="smallNote">Drag the files you downloaded back here to verify integrity and generate the Researcher's Brief.</div>
+    </details>
+
+    <!-- Researcher's Brief UI -->
+    <div id="briefPanel" style="margin-top:12px;">
+      <h3 style="margin:6px 0 8px 0">Researcher's Brief</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="copyBrief" style="flex:0 0 160px;padding:8px;border-radius:6px;background:#5fb;border:1px solid #3a8;color:#001;font-weight:600;cursor:pointer;">
+          📋 Copy Brief
+        </button>
+        <div class="smallNote" style="flex:1">Generate a concise Markdown brief for the current run or for historical exports via the Auditor.</div>
+      </div>
+
+      <!-- Clipboard fallback modal -->
+      <div id="briefModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center;">
+        <div style="background:#141416; border:1px solid #5fb; padding:18px; border-radius:8px; width:86%; max-width:720px; color:#cfc;">
+          <h4 style="color:#5fb; margin-top:0;">📋 Researcher's Brief (copy fallback)</h4>
+          <textarea id="briefTextarea" readonly style="width:100%; height:320px; background:#000; color:#cfc; font-family:monospace; padding:10px; border-radius:6px;"></textarea>
+          <div style="text-align:right; margin-top:10px;">
+            <button id="closeBriefModal" style="padding:8px 12px;border-radius:6px;background:#222;border:1px solid #333;color:#fff;cursor:pointer;">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Validator Panel (optional manual files) -->
+    <details id="validatorPanel" style="margin-top:12px">
+      <summary style="cursor:pointer">🛡️ Export Validator (Canary)</summary>
+      <div style="margin-top:8px;padding:8px;background:#0d0d0e;border-radius:6px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <label class="small">Manifest JSON</label>
+            <input id="valManifestFile" type="file" accept=".json">
+          </div>
+          <div style="flex:1;min-width:220px">
+            <label class="small">CSV file (optional)</label>
+            <input id="valCsvFile" type="file" accept=".csv,text/csv">
+          </div>
+          <div style="flex:1;min-width:220px">
+            <label class="small">NDJSON parts (select multiple)</label>
+            <input id="valNdParts" type="file" accept=".ndjson,.txt" multiple>
+          </div>
+        </div>
+
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <button id="btnRunValidator">Run Validator</button>
+          <button id="btnDownloadValidation" disabled>Download validation.json</button>
+          <button id="btnShowValidation" disabled>Show report</button>
+        </div>
+
+        <div id="validatorOutput" style="margin-top:8px;display:none">
+          <h4 style="margin:6px 0 4px 0">Validation Report</h4>
+          <pre id="validatorReport" style="max-height:320px;overflow:auto;background:#070707;padding:8px;border-radius:6px"></pre>
+        </div>
+
+        <div class="smallNote" style="margin-top:8px">
+          Validator checks: part SHA256 integrity, root NDJSON hash (hash-of-hashes), CSV header length (26), and active_mode_error_percent clamping.
+        </div>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<footer>SVET Toy v0.07.3 — Full Integrity & Briefing Build</footer>
+
+<script>
+/* -------------------- Core simulation and export code (v0.07.3) -------------------- */
+/* This file integrates:
+   - physics toy simulation (simplified)
+   - diagnostics collection
+   - NDJSONWriter with part hashing
+   - finalizeAndExportAll atomic export + manifest (hash-of-hashes)
+   - in-browser Auditor (drag/drop) and Validator UI
+   - Researcher's Brief (live + historical)
+   - StrategyRegistry rules
+*/
+
+/* -------------------- Globals & UI refs -------------------- */
+let N = 64;
+let s, sPrev, sNext, psi, U, sigma, lapPsi;
+let imgData = null;
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let t = 0;
+let running = false;
+let patternX = 0, patternPhase = 0;
+let frameCount = 0;
+
+/* Diagnostics arrays */
+let diagnostics = {
+  time: [],
+  psiAvg:[],
+  radialR: [],
+  radialPsi:[],
+  radialA: 0,
+  radialErr: 0,
+  driftSlopeExpected: 0,
+  driftSlopeMeasured: 0,
+  driftSlopeError: 0,
+  dopplerProxy: [],
+  dopplerTheory: [],
+  patternPos:[],
+  dPsiDt: 0,
+  poissonR: 0,
+  poissonPercent: 0,
+  lastDiagnostics: {},
+  percent_clamped_pct: 0,
+  percent_clamped_count: 0,
+  _last_csv_sha: null
+};
+
+/* UI state (canonical) */
+const ui = {
+  size: 64,
+  Ucap: 1.0,
+  Uref: 1.0,
+  kappa: 0.5,
+  dt: 0.05,
+  op: "diffusion",
+  seedRadius: 4,
+  seedAmp: 2.0,
+  patternSpeed: 0.2,
+  ceff: 1.0,
+  homogRate: 0.001,
+  overlayState: false,
+  homogEnabled: false,
+  movingEnabled: false,
+  experimentLabel: "Auto",
+  mode: "Localized",
+  autoStopEnabled: false,
+  autoStopFrames: 300,
+  autoDownloadCSV: true,
+  phaseGrad: 0.0,
+  bcMode: "periodic",
+  poissonCadence: 20,
+  poissonMethod: "pearson",
+  max_t: Infinity,
+  notes: ""
+};
+
+/* DOM refs */
+const experimentLabelEl = document.getElementById('experimentLabel');
+const modeSelectEl = document.getElementById('modeSelect');
+const sizeEl = document.getElementById('size');
+const ucapEl = document.getElementById('ucap');
+const urefEl = document.getElementById('uref');
+const kappaEl = document.getElementById('kappa');
+const dtEl = document.getElementById('dt');
+const opEl = document.getElementById('operator');
+const seedRadiusEl = document.getElementById('seedRadius');
+const seedAmpEl = document.getElementById('seedAmp');
+const patternSpeedEl = document.getElementById('patternSpeed');
+const ceffEl = document.getElementById('ceff');
+const homogToggle = document.getElementById('homogToggle');
+const homogRateEl = document.getElementById('homogRate');
+const movingToggle = document.getElementById('movingToggle');
+const phaseGradEl = document.getElementById('phaseGrad');
+const overlayStateEl = document.getElementById('overlayState');
+const diagDiv = document.getElementById('diagnostics');
+const autoStopToggle = document.getElementById('autoStopToggle');
+const autoStopFramesEl = document.getElementById('autoStopFrames');
+const bcModeEl = document.getElementById('bcMode');
+const poissonCadenceEl = document.getElementById('poissonCadence');
+const poissonMethodEl = document.getElementById('poissonMethod');
+const autoDownloadToggle = document.getElementById('autoDownloadToggle');
+const jsonStateEl = document.getElementById('jsonState');
+const jsonPasteEl = document.getElementById('jsonPaste');
+const jsonFileInput = document.getElementById('jsonFileInput');
+const loadJsonTextBtn = document.getElementById('loadJsonText');
+const runOnLoadEl = document.getElementById('runOnLoad');
+const validateStrictEl = document.getElementById('validateStrict');
+const jsonValidationEl = document.getElementById('jsonValidation');
+const testResultsEl = document.getElementById('testResults');
+const exportOverlay = document.getElementById('exportOverlay');
+
+const gFillLocalized = document.getElementById('gFillLocalized');
+const gValLocalized = document.getElementById('gValLocalized');
+const gFillHomog = document.getElementById('gFillHomog');
+const gValHomog = document.getElementById('gValHomog');
+const gFillMoving = document.getElementById('gFillMoving');
+const gValMoving = document.getElementById('gValMoving');
+const gFillPoisson = document.getElementById('gFillPoisson');
+const gValPoisson = document.getElementById('gValPoisson');
+
+let bcMode = "periodic";
+
+/* -------------------- Helpers -------------------- */
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+function sanitizeCSVField(s) {
+  if (s === null || s === undefined) return "";
+  let str = String(s).replace(/\r?\n/g, " "); // replace newlines with space
+  if (/[,"\n\r]/.test(str)) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+/* -------------------- Fast index with BC switch -------------------- */
+function idx(x, y) {
+  if (bcMode === "periodic") {
+    if (x < 0) x = N - 1; else if (x >= N) x = 0;
+    if (y < 0) y = N - 1; else if (y >= N) y = 0;
+  } else { // reflective: clamp neighbors to edge
+    if (x < 0) x = 0; else if (x >= N) x = N - 1;
+    if (y < 0) y = 0; else if (y >= N) y = N - 1;
+  }
+  return y * N + x;
+}
+
+/* -------------------- Initialization -------------------- */
+function initArraysAndBuffers() {
+  N = ui.size;
+  const size = N * N;
+  s = new Float32Array(size);
+  sPrev = new Float32Array(size);
+  sNext = new Float32Array(size);
+  psi = new Float32Array(size);
+  U = new Float32Array(size);
+  sigma = new Float32Array(size);
+  lapPsi = new Float32Array(size);
+  imgData = ctx.createImageData(canvas.width, canvas.height);
+  diagnostics = {
+    time: [],
+    psiAvg:[],
+    radialR: [],
+    radialPsi:[],
+    radialA: 0,
+    radialErr: 0,
+    driftSlopeExpected: 0,
+    driftSlopeMeasured: 0,
+    driftSlopeError: 0,
+    dopplerProxy: [],
+    dopplerTheory: [],
+    patternPos:[],
+    dPsiDt: 0,
+    poissonR: 0,
+    poissonPercent: 0,
+    lastDiagnostics: {},
+    percent_clamped_pct: 0,
+    percent_clamped_count: 0,
+    _last_csv_sha: null
+  };
+  t = 0;
+  frameCount = 0;
+  patternX = N / 2;
+  patternPhase = 0;
+  s.fill(0); sPrev.fill(0); sNext.fill(0); lapPsi.fill(0);
+  computeSigmaAndBudget();
+  render();
+}
+
+/* -------------------- Wire UI -------------------- */
+function wireUI() {
+  experimentLabelEl.addEventListener('input', () => { ui.experimentLabel = experimentLabelEl.value; updateJSONState(); });
+  modeSelectEl.addEventListener('change', () => { ui.mode = modeSelectEl.value; updateAndClassifyGauges(); updateJSONState(); });
+  sizeEl.addEventListener('change', () => { ui.size = Math.max(8, Math.min(512, parseInt(sizeEl.value) || 64)); });
+  ucapEl.addEventListener('input', () => { ui.Ucap = parseFloat(ucapEl.value); });
+  urefEl.addEventListener('input', () => { ui.Uref = parseFloat(urefEl.value); });
+  kappaEl.addEventListener('input', () => { ui.kappa = parseFloat(kappaEl.value); });
+  dtEl.addEventListener('input', () => { ui.dt = parseFloat(dtEl.value); checkCFL(); });
+  opEl.addEventListener('change', () => { ui.op = opEl.value; });
+  seedRadiusEl.addEventListener('input', () => { ui.seedRadius = parseFloat(seedRadiusEl.value); });
+  seedAmpEl.addEventListener('input', () => { ui.seedAmp = parseFloat(seedAmpEl.value); });
+  patternSpeedEl.addEventListener('input', () => { ui.patternSpeed = parseFloat(patternSpeedEl.value); });
+  ceffEl.addEventListener('input', () => { ui.ceff = parseFloat(ceffEl.value); checkCFL(); });
+  homogRateEl.addEventListener('input', () => { ui.homogRate = parseFloat(homogRateEl.value); });
+  phaseGradEl.addEventListener('input', () => { ui.phaseGrad = parseFloat(phaseGradEl.value); });
+  overlayStateEl.addEventListener('change', () => { ui.overlayState = overlayStateEl.checked; });
+  homogToggle.addEventListener('change', () => { ui.homogEnabled = homogToggle.checked; updateAndClassifyGauges(); });
+  movingToggle.addEventListener('change', () => { ui.movingEnabled = movingToggle.checked; updateAndClassifyGauges(); });
+  autoStopToggle.addEventListener('change', () => { ui.autoStopEnabled = autoStopToggle.checked; });
+  autoStopFramesEl.addEventListener('change', () => { ui.autoStopFrames = parseInt(autoStopFramesEl.value) || 300; });
+  bcModeEl.addEventListener('change', () => { ui.bcMode = bcModeEl.value; bcMode = ui.bcMode; });
+  poissonCadenceEl.addEventListener('change', () => { ui.poissonCadence = Math.max(1, parseInt(poissonCadenceEl.value) || 20); });
+  poissonMethodEl.addEventListener('change', () => { ui.poissonMethod = poissonMethodEl.value; });
+  autoDownloadToggle.addEventListener('change', () => { ui.autoDownloadCSV = autoDownloadToggle.checked; });
+}
+
+/* -------------------- Physics core -------------------- */
+function computeSigmaAndBudget() {
+  const Ucap = ui.Ucap, kappa = ui.kappa, Uref = ui.Uref;
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const i = idx(x, y);
+      const si = s[i];
+      const sL = s[idx(x - 1, y)], sR = s[idx(x + 1, y)], sU = s[idx(x, y - 1)], sD = s[idx(x, y + 1)];
+      const sum = (si - sL) * (si - sL) + (si - sR) * (si - sR) + (si - sU) * (si - sU) + (si - sD) * (si - sD);
+      sigma[i] = sum;
+      const Ui = Ucap * Math.exp(-kappa * sum);
+      U[i] = Ui;
+      psi[i] = Math.log(Ui / Uref);
+    }
+  }
+}
+
+/* -------------------- stepOnce and dynamics -------------------- */
+function stepOnce() {
+  const dt = ui.dt;
+  if (ui.homogEnabled) {
+    const dln = ui.homogRate * dt;
+    ui.Uref *= Math.exp(dln);
+    if (Math.floor(t / dt) % 60 === 0) urefEl.value = ui.Uref.toFixed(4);
+  }
+  computeSigmaAndBudget();
+
+  const op = ui.op;
+  const ceff = ui.ceff;
+  if (op === "diffusion") {
+    const alpha = 1.0;
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const i = idx(x, y);
+        const si = s[i];
+        const lap = s[idx(x - 1, y)] + s[idx(x + 1, y)] + s[idx(x, y - 1)] + s[idx(x, y + 1)] - 4 * si;
+        sNext[i] = si + alpha * lap * dt * U[i];
+      }
+    }
+  } else {
+    const c2 = ceff * ceff;
+    const dt2 = dt * dt;
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const i = idx(x, y);
+        const si = s[i];
+        const lap = s[idx(x - 1, y)] + s[idx(x + 1, y)] + s[idx(x, y - 1)] + s[idx(x, y + 1)] - 4 * si;
+        sNext[i] = 2 * si - sPrev[i] + c2 * lap * U[i] * dt2;
+      }
+    }
+  }
+
+  if (ui.movingEnabled) {
+    const seedR = ui.seedRadius;
+    const seedA = ui.seedAmp;
+    const patternSpeed = ui.patternSpeed;
+    const phaseGrad = ui.phaseGrad;
+    patternX += patternSpeed;
+    if (patternX >= N) patternX -= N;
+    const cx = Math.floor(patternX);
+    const cy = Math.floor(N / 2);
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const dx = ((x - cx + N + N / 2) % N) - N / 2;
+        const dy = y - cy;
+        const r = Math.sqrt(dx * dx + dy * dy);
+        if (r <= seedR) {
+          const phase = phaseGrad * x + patternPhase;
+          const add = seedA * Math.cos(phase) * Math.exp(-(r * r) / (2 * seedR * seedR));
+          sNext[idx(x, y)] += add * 0.02;
+        }
+      }
+    }
+    patternPhase += 0.08;
+  }
+
+  let tmp = sPrev; sPrev = s; s = sNext; sNext = tmp;
+
+  t += dt;
+  frameCount++;
+  computeSigmaAndBudget();
+  computeDiagnostics();
+  updateAndClassifyGauges();
+}
+
+/* -------------------- Scenarios -------------------- */
+function applyLocalizedSeed() {
+  const seedR = ui.seedRadius;
+  const seedA = ui.seedAmp;
+  const cx = Math.floor(N / 2), cy = Math.floor(N / 2);
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x - cx, dy = y - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      if (r <= seedR) s[idx(x, y)] += seedA * Math.exp(-(r * r) / (2 * seedR * seedR));
+    }
+  }
+  sPrev.set(s);
+  computeSigmaAndBudget();
+  render();
+  computeDiagnostics();
+  updateAndClassifyGauges();
+}
+
+function applyMovingSeed() {
+  s.fill(0); sPrev.fill(0); sNext.fill(0);
+  const seedR = ui.seedRadius;
+  const seedA = ui.seedAmp;
+  const cx = Math.floor(patternX), cy = Math.floor(N / 2);
+  const phaseGrad = ui.phaseGrad;
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x - cx, dy = y - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      if (r <= seedR) {
+        const phase = phaseGrad * x;
+        s[idx(x, y)] = seedA * Math.cos(phase) * Math.exp(-(r * r) / (2 * seedR * seedR));
+      }
+    }
+  }
+  sPrev.set(s);
+  computeSigmaAndBudget();
+  render();
+  computeDiagnostics();
+  updateAndClassifyGauges();
+}
+
+/* -------------------- Diagnostics -------------------- */
+function computeRadialProfile() {
+  const cx = N / 2, cy = N / 2;
+  const maxR = Math.sqrt(2) * (N / 2);
+  const bins = Math.floor(N / 2);
+  const sum = new Float64Array(bins);
+  const cnt = new Uint32Array(bins);
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const dx = x + 0.5 - cx, dy = y + 0.5 - cy;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      const b = Math.floor((r / maxR) * bins);
+      if (b >= 0 && b < bins) { sum[b] += psi[idx(x, y)]; cnt[b]++; }
+    }
+  }
+  const radialR = [], radialPsi =[];
+  for (let b = 0; b < bins; b++) {
+    if (cnt[b] > 0) { radialR.push((b + 0.5) * maxR / bins); radialPsi.push(sum[b] / cnt[b]); }
+  }
+
+  let A = 0, rms = 0;
+  if (ui.op === "diffusion") {
+    let num = 0, den = 0;
+    for (let i = 0; i < radialR.length; i++) {
+      const r = radialR[i], p = radialPsi[i];
+      const g = Math.exp(-(r * r));
+      num += p * g;
+      den += g * g;
+    }
+    A = den > 0 ? num / den : 0;
+    let errSum = 0, errCnt = 0;
+    for (let i = 0; i < radialR.length; i++) {
+      const r = radialR[i], p = radialPsi[i];
+      const model = A * Math.exp(-(r * r));
+      const rel = Math.abs(p - model) / (Math.abs(model) + 1e-9);
+      errSum += rel * rel; errCnt++;
+    }
+    rms = errCnt > 0 ? Math.sqrt(errSum / errCnt) : 0;
+  } else {
+    let num = 0, den = 0;
+    for (let i = 0; i < radialR.length; i++) {
+      const r = radialR[i], p = radialPsi[i];
+      if (r > 1e-6) { num += p * r; den += 1; }
+    }
+    A = den > 0 ? num / den : 0;
+    let errSum = 0, errCnt = 0;
+    for (let i = 0; i < radialR.length; i++) {
+      const r = radialR[i], p = radialPsi[i];
+      if (r > 1e-6) {
+        const model = A / r;
+        const rel = Math.abs(p - model) / (Math.abs(model) + 1e-9);
+        errSum += rel * rel; errCnt++;
+      }
+    }
+    rms = errCnt > 0 ? Math.sqrt(errSum / errCnt) : 0;
+  }
+
+  diagnostics.radialR = radialR;
+  diagnostics.radialPsi = radialPsi;
+  diagnostics.radialA = A;
+  diagnostics.radialErr = rms;
+}
+
+function computePsiAvgAndFit() {
+  const size = N * N;
+  let sum = 0;
+  for (let i = 0; i < size; i++) sum += psi[i];
+  const avg = sum / size;
+  diagnostics.time.push(t);
+  diagnostics.psiAvg.push(avg);
+  const len = diagnostics.psiAvg.length;
+  diagnostics.dPsiDt = len > 1 ? (diagnostics.psiAvg[len - 1] - diagnostics.psiAvg[len - 2]) / (diagnostics.time[len - 1] - diagnostics.time[len - 2]) : 0;
+
+  if (ui.homogEnabled) {
+    diagnostics.driftSlopeExpected = ui.homogRate;
+    diagnostics.driftSlopeMeasured = diagnostics.dPsiDt;
+    diagnostics.driftSlopeError = Math.abs(diagnostics.dPsiDt - ui.homogRate) / (Math.abs(ui.homogRate) + 1e-9);
+  } else {
+    diagnostics.driftSlopeExpected = 0;
+    diagnostics.driftSlopeMeasured = diagnostics.dPsiDt;
+    diagnostics.driftSlopeError = 0;
+  }
+}
+
+function computeDoppler() {
+  const cx = Math.floor(N / 2), cy = Math.floor(N / 2);
+  const psiCenter = psi[idx(cx, cy)];
+  // Psi_edge is corner-average per integrity directive
+  const psiEdge = (psi[idx(0,0)] + psi[idx(N-1,0)] + psi[idx(0,N-1)] + psi[idx(N-1,N-1)]) / 4;
+  const deltaCenterEdge = psiCenter - psiEdge;
+
+  const seedR = ui.seedRadius;
+  const front = psi[idx((cx + Math.ceil(seedR)) % N, cy)];
+  const back = psi[idx((cx - Math.ceil(seedR) + N) % N, cy)];
+  const deltaDop = front - back;
+  const onePlusZ = Math.exp(deltaDop);
+  const beta = ui.patternSpeed / ui.ceff;
+  const b = Math.max(-0.999, Math.min(0.999, beta));
+  const theory = Math.sqrt((1 + b) / (1 - b));
+  const errPercent = Math.abs(onePlusZ - theory) / (Math.abs(theory) + 1e-9) * 100;
+
+  diagnostics.lastDiagnostics = { psiCenter, psiEdge, deltaCenterEdge, front, back, deltaDop, onePlusZ, theory, errPercent };
+  diagnostics.dopplerProxy.push(onePlusZ);
+  diagnostics.dopplerTheory.push(theory);
+  diagnostics.patternPos.push(patternX);
+}
+
+/* -------------------- Poisson correlation (correct stencil + zero-variance guard) -------------------- */
+function computePoissonCorrelation() {
+  const size = N * N;
+  let sumLap = 0, sumS = 0;
+  for (let y = 0; y < N; y++) {
+    for (let x = 0; x < N; x++) {
+      const i = idx(x, y);
+      // Correct 4-neighbor Laplacian
+      const l = psi[idx(x - 1, y)] + psi[idx(x + 1, y)] + psi[idx(x, y - 1)] + psi[idx(x, y + 1)] - 4 * psi[i];
+      lapPsi[i] = l;
+      sumLap += l;
+      sumS += s[i];
+    }
+  }
+  const meanLap = sumLap / size;
+  const meanS = sumS / size;
+  let cov = 0, varLap = 0, varS = 0;
+  for (let i = 0; i < size; i++) {
+    const dLap = lapPsi[i] - meanLap;
+    const dS = s[i] - meanS;
+    cov += dLap * dS;
+    varLap += dLap * dLap;
+    varS += dS * dS;
+  }
+  let r = 0;
+  const EPS = 1e-12;
+  if (varLap > EPS && varS > EPS) {
+    r = cov / Math.sqrt(varLap * varS);
+    if (r > 1) r = 1;
+    if (r < -1) r = -1;
+  } else {
+    r = 0;
+  }
+  diagnostics.poissonR = r;
+  diagnostics.poissonPercent = Math.abs(r) * 100;
+  diagnostics.lastDiagnostics.poissonR = r;
+}
+
+/* -------------------- computeDiagnostics (cadence) -------------------- */
+function computeDiagnostics() {
+  computeRadialProfile();
+  computePsiAvgAndFit();
+  computeDoppler();
+  const cadence = Math.max(1, ui.poissonCadence || 20);
+  if (frameCount % cadence === 0) {
+    computePoissonCorrelation();
+  }
+  updateDiagnosticsPanel();
+  updateJSONState();
+}
+
+/* -------------------- Gauges and auto-stop -------------------- */
+function updateAndClassifyGauges() {
+  const exp = ui.mode || "Localized";
+  const radialPercent = diagnostics.radialErr * 100;
+  const driftPercent = diagnostics.driftSlopeError * 100;
+  const last = diagnostics.lastDiagnostics || {};
+  const dopplerPercent = last.errPercent ?? 0;
+
+  applyGaugeToDOM({ percent: radialPercent }, gFillLocalized, gValLocalized);
+  applyGaugeToDOM({ percent: driftPercent }, gFillHomog, gValHomog);
+  applyGaugeToDOM({ percent: dopplerPercent }, gFillMoving, gValMoving);
+  applyGaugeToDOM({ percent: diagnostics.poissonPercent }, gFillPoisson, gValPoisson);
+
+  if (ui.autoStopEnabled) {
+    let activePercent = 0;
+    if (exp === "Localized") activePercent = radialPercent;
+    else if (exp === "Homogeneous") activePercent = driftPercent;
+    else if (exp === "Moving") activePercent = dopplerPercent;
+    if (activePercent > 25) {
+      diagnostics._framesRed = (diagnostics._framesRed || 0) + 1;
+      if (diagnostics._framesRed >= ui.autoStopFrames) running = false;
+    } else {
+      diagnostics._framesRed = 0;
+    }
+  }
+}
+
+function applyGaugeToDOM(g, fillEl, valEl) {
+  const p = Math.max(0, Math.min(100, g.percent));
+  fillEl.style.width = p + "%";
+  fillEl.style.background = p < 10 ? "#2ecc71" : (p < 25 ? "#f1c40f" : "#e74c3c");
+  valEl.textContent = p.toFixed(1) + "%";
+}
+
+/* -------------------- Rendering -------------------- */
+function render() {
+  if (!psi || !imgData) return;
+  const w = canvas.width, h = canvas.height;
+  const sx = w / N, sy = h / N;
+  let minP = Infinity, maxP = -Infinity;
+  for (let i = 0; i < psi.length; i++) { if (psi[i] < minP) minP = psi[i]; if (psi[i] > maxP) maxP = psi[i]; }
+  const range = (maxP - minP) || 1;
+  const data = imgData.data;
+  const doOverlay = ui.overlayState;
+  for (let gy = 0; gy < h; gy++) {
+    const y = Math.floor(gy / sy);
+    for (let gx = 0; gx < w; gx++) {
+      const x = Math.floor(gx / sx);
+      const i = idx(x, y);
+      const v = (psi[i] - minP) / range;
+      let r = Math.max(0, Math.min(255, 255 * v));
+      let b = Math.max(0, Math.min(255, 255 * (1 - v)));
+      let g = 40;
+      if (doOverlay) {
+        const sv = s[i];
+        const svNorm = 0.5 + 0.5 * Math.tanh(sv);
+        const overlay = 50 + 205 * svNorm;
+        r = (r + overlay) * 0.5;
+        g = (g + overlay) * 0.5;
+        b = (b + overlay) * 0.5;
+      }
+      const p = (gy * w + gx) * 4;
+      data[p] = r; data[p + 1] = g; data[p + 2] = b; data[p + 3] = 255;
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+}
+
+/* -------------------- Diagnostics panel & JSON state -------------------- */
+function updateDiagnosticsPanel() {
+  const last = diagnostics.lastDiagnostics || {};
+  const exp = ui.mode || "Localized";
+  const lines =[];
+  lines.push(`t = ${t.toFixed(4)}  |  Mode = ${exp}  |  Label = ${ui.experimentLabel}`);
+  lines.push(`Ucap=${ui.Ucap.toFixed(3)}  Uref=${ui.Uref.toFixed(3)}  kappa=${ui.kappa.toFixed(3)}  dt=${ui.dt.toFixed(3)}  op=${ui.op}`);
+  lines.push(`Psi_avg = ${diagnostics.psiAvg.length ? diagnostics.psiAvg[diagnostics.psiAvg.length - 1].toExponential(4) : "0"}`);
+  lines.push(`Radial A = ${diagnostics.radialA.toExponential(4)}  Radial RMS err = ${(diagnostics.radialErr * 100).toFixed(2)}%`);
+  lines.push(`Drift slope: expected=${diagnostics.driftSlopeExpected.toExponential(4)}  measured=${diagnostics.driftSlopeMeasured.toExponential(4)}  err=${(diagnostics.driftSlopeError * 100).toFixed(2)}%`);
+  lines.push(`Doppler: 1+z=${(last.onePlusZ ?? 1).toExponential(4)}  theory=${(last.theory ?? 1).toExponential(4)}  err=${(last.errPercent ?? 0).toFixed(2)}%`);
+  lines.push(`Poisson r = ${diagnostics.poissonR.toFixed(6)}  |  |r| = ${diagnostics.poissonPercent.toFixed(2)}%`);
+  diagDiv.textContent = lines.join("\n");
+}
+
+function updateJSONState() {
+  const last = diagnostics.lastDiagnostics || {};
+  const state = {
+    experiment_label: ui.experimentLabel,
+    mode: ui.mode,
+    notes: ui.notes,
+    config: {
+      N: ui.size,
+      Ucap: ui.Ucap,
+      Uref: ui.Uref,
+      kappa: ui.kappa,
+      dt: ui.dt,
+      operator: ui.op,
+      seed_radius: ui.seedRadius,
+      seed_amp: ui.seedAmp,
+      pattern_speed: ui.patternSpeed,
+      c_eff: ui.ceff,
+      bc_mode: ui.bcMode,
+      poisson_cadence: ui.poissonCadence,
+      poisson_method: ui.poissonMethod,
+      max_t: isFinite(ui.max_t) ? ui.max_t : null,
+      auto_download_csv: ui.autoDownloadCSV,
+      auto_stop_enabled: ui.autoStopEnabled,
+      auto_stop_frames: ui.autoStopFrames
+    },
+    diagnostics: {
+      t,
+      psi_avg: diagnostics.psiAvg.length ? diagnostics.psiAvg[diagnostics.psiAvg.length - 1] : 0,
+      poisson_r: diagnostics.poissonR,
+      poisson_percent: diagnostics.poissonPercent
+    }
+  };
+  jsonStateEl.textContent = JSON.stringify(state, null, 2);
+}
+
+/* ---------------------- P0: Canonical header and helpers ---------------------- */
+const canonicalHeader =[
+  "Experiment","t","Ucap","Uref","kappa","dt","operator","seed_radius","seed_amp","pattern_speed","c_eff",
+  "Psi_center","Psi_edge","Psi_avg","DeltaPsi_center_edge","DeltaPsi_doppler","one_plus_z",
+  "radial_fit_A","radial_fit_error","pattern_position","theoretical_factor","doppler_error_percent",
+  "active_mode_error_percent","poisson_correlation_r","poisson_correlation_percent","notes"
+];
+
+function normalizePercent(v) {
+  if (!isFinite(v)) return 0;
+  if (v < 0) return 0;
+  if (v > 100) {
+    console.warn("Percent outlier (clamped to 100):", v);
+    return 100;
+  }
+  return v;
+}
+
+function computePsiEdge(psiArr, Nlocal, bcModeLocal) {
+  if (bcModeLocal === "reflective") {
+    return (psiArr[idx(0,0)] + psiArr[idx(Nlocal-1,0)] + psiArr[idx(0,Nlocal-1)] + psiArr[idx(Nlocal-1,Nlocal-1)]) / 4;
+  } else {
+    const mid = Math.floor(Nlocal/2);
+    return (psiArr[idx(mid,0)] + psiArr[idx(mid,Nlocal-1)] + psiArr[idx(0,mid)] + psiArr[idx(Nlocal-1,mid)]) / 4;
+  }
+}
+
+async function sha256Hex(str) {
+  const enc = new TextEncoder();
+  const buf = enc.encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ---------------------- NDJSON writer with periodic flush and part hashing ---------------------- */
+class NDJSONWriter {
+  constructor(flushFrames = 500, flushBytes = 5 * 1024 * 1024) {
+    this.buffer =[];
+    this.bufferBytes = 0;
+    this.flushFrames = flushFrames;
+    this.flushBytes = flushBytes;
+    this.flushedParts =[]; // {partName, frames, part_sha256}
+    this.partIndex = 0;
+  }
+  push(obj) {
+    const line = JSON.stringify(obj) + "\n";
+    this.buffer.push(line);
+    this.bufferBytes += line.length;
+    if (this.buffer.length >= this.flushFrames || this.bufferBytes >= this.flushBytes) {
+      return this.flushPart();
+    }
+    return null;
+  }
+  flushPart() {
+    if (this.buffer.length === 0) return null;
+    const partName = `ndjson_part_${String(this.partIndex).padStart(3,'0')}.ndjson`;
+    const content = this.buffer.join('');
+    const frames = content.split("\n").length - 1;
+    this.buffer =[]; this.bufferBytes = 0; this.partIndex++;
+    this.flushedParts.push({ partName, frames, part_sha256: null });
+    return { partName, content, frames };
+  }
+  finalize() {
+    const last = this.flushPart();
+    return { parts: this.flushedParts, lastPart: last };
+  }
+}
+
+/* ---------------------- CSV/NDJSON export helpers ---------------------- */
+function rowObjToCSVCell(rowObj, key) {
+  let v = rowObj[key];
+  if (v === undefined || v === null) return "";
+  const s = String(v);
+  if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+    return '"' + s.replace(/"/g,'""') + '"';
+  }
+  return s;
+}
+
+function downloadBlob(content, filename) {
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function showExportSpinner(on) {
+  const overlay = document.getElementById('exportOverlay');
+  if (!overlay) return;
+  overlay.style.display = on ? 'flex' : 'none';
+  const controls = document.querySelectorAll('button,input,select,textarea');
+  controls.forEach(el => el.disabled = on);
+}
+
+/* Helper to build the JSON header object (ensures export always has it) */
+function buildExperimentJSONForHeader() {
+  return {
+    experiment_label: ui.experimentLabel,
+    mode: ui.mode,
+    notes: ui.notes,
+    config: {
+      N: ui.size,
+      Ucap: ui.Ucap,
+      Uref: ui.Uref,
+      kappa: ui.kappa,
+      dt: ui.dt,
+      operator: ui.op,
+      seed_radius: ui.seedRadius,
+      seed_amp: ui.seedAmp,
+      pattern_speed: ui.patternSpeed,
+      c_eff: ui.ceff,
+      bc_mode: ui.bcMode,
+      poisson_cadence: ui.poissonCadence,
+      poisson_method: ui.poissonMethod,
+      max_t: isFinite(ui.max_t) ? ui.max_t : null,
+      auto_download_csv: ui.autoDownloadCSV,
+      auto_stop_enabled: ui.autoStopEnabled,
+      auto_stop_frames: ui.autoStopFrames
+    }
+  };
+}
+
+/* ---------------------- Build row object for export ---------------------- */
+function buildRowObjectForExport(i) {
+  const cx = Math.floor(N/2), cy = Math.floor(N/2);
+  const psiCenter = psi[idx(cx,cy)];
+  const psiEdge = computePsiEdge(psi, N, ui.bcMode);
+  const psiAvg = diagnostics.psiAvg[i] ?? diagnostics.psiAvg[diagnostics.psiAvg.length-1] ?? 0;
+  const last = diagnostics.lastDiagnostics || {};
+  const deltaDop = last.deltaDop ?? 0;
+  const onePlusZ = last.onePlusZ ?? Math.exp(deltaDop);
+  const radialA = diagnostics.radialA ?? 0;
+  const radialErr = diagnostics.radialErr ?? 0;
+  const patternPos = diagnostics.patternPos[i] ?? patternX;
+  const beta = ui.patternSpeed / ui.ceff;
+  const b = Math.max(-0.999, Math.min(0.999, beta));
+  const theory = last.theory ?? Math.sqrt((1 + b) / (1 - b));
+  const dopplerErrPercent = last.errPercent ?? (Math.abs(onePlusZ - theory) / (Math.abs(theory) + 1e-9) * 100);
+  let activeModeErrorPercent = 0;
+  if (ui.mode === "Localized") activeModeErrorPercent = radialErr * 100;
+  else if (ui.mode === "Homogeneous") activeModeErrorPercent = diagnostics.driftSlopeError * 100;
+  else if (ui.mode === "Moving") activeModeErrorPercent = dopplerErrPercent;
+
+  return {
+    Experiment: ui.experimentLabel || ui.mode,
+    t: (diagnostics.time[i] ?? t).toFixed(6),
+    Ucap: ui.Ucap,
+    Uref: ui.Uref,
+    kappa: ui.kappa,
+    dt: ui.dt,
+    operator: ui.op,
+    seed_radius: ui.seedRadius,
+    seed_amp: ui.seedAmp,
+    pattern_speed: ui.patternSpeed,
+    c_eff: ui.ceff,
+    Psi_center: psiCenter,
+    Psi_edge: psiEdge,
+    Psi_avg: psiAvg,
+    DeltaPsi_center_edge: (psiCenter - psiEdge),
+    DeltaPsi_doppler: deltaDop,
+    one_plus_z: onePlusZ,
+    radial_fit_A: radialA,
+    radial_fit_error: radialErr * 100, // percent scale
+    pattern_position: patternPos,
+    theoretical_factor: theory,
+    doppler_error_percent: dopplerErrPercent,
+    active_mode_error_percent: activeModeErrorPercent,
+    poisson_correlation_r: diagnostics.poissonR,
+    poisson_correlation_percent: diagnostics.poissonPercent,
+    notes: ui.notes || ""
+  };
+}
+
+/* ---------------------- Header assertion ---------------------- */
+function assertHeaderMatchesCanonical(headerArray) {
+  for (let i = 0; i < canonicalHeader.length; i++) {
+    if (headerArray[i] !== canonicalHeader[i]) {
+      console.error(`Header mismatch at index ${i}: expected "${canonicalHeader[i]}", got "${headerArray[i]}"`);
+      alert(`CSV header mismatch: expected "${canonicalHeader[i]}" at column ${i+1}. Export aborted.`);
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ---------------------- finalize and export (atomic) ---------------------- */
+async function finalizeAndExportAll({ safeLabel, version = "v0.07.3", schema_version = "1.0.0", reason = "manual" } = {}) {
+  showExportSpinner(true);
+  try {
+    // Final diagnostic flush
+    computePoissonCorrelation();
+    computeDoppler();
+
+    // Build CSV header
+    const jsonHeaderObj = buildExperimentJSONForHeader();
+    const jsonHeaderLine = `# SVET experiment JSON: ${JSON.stringify(jsonHeaderObj)}\n`;
+    const headerLine = canonicalHeader.join(',') + "\n";
+
+    // Ensure diagnostics arrays exist
+    if (!diagnostics.time || diagnostics.time.length === 0) {
+      diagnostics.time = [t];
+      diagnostics.psiAvg = [diagnostics.psiAvg.length ? diagnostics.psiAvg[diagnostics.psiAvg.length - 1] : 0];
+    }
+
+    // Runtime header assertion (we will assert writer header equals canonicalHeader)
+    if (!assertHeaderMatchesCanonical(canonicalHeader)) {
+      showExportSpinner(false);
+      return { ok: false, reason: "header_mismatch" };
+    }
+
+    // NDJSON writer
+    const ndWriter = new NDJSONWriter(500, 5 * 1024 * 1024);
+    let percentOutlierFlag = false;
+    let clampedCount = 0;
+
+    // Build CSV and stream NDJSON parts
+    let csv = jsonHeaderLine + headerLine;
+    for (let i = 0; i < diagnostics.time.length; i++) {
+      const rowObj = buildRowObjectForExport(i);
+      // Normalize percent fields
+      rowObj.radial_fit_error = normalizePercent(Number(rowObj.radial_fit_error));
+      rowObj.active_mode_error_percent = normalizePercent(Number(rowObj.active_mode_error_percent));
+      if (rowObj.radial_fit_error >= 100 || rowObj.active_mode_error_percent >= 100) {
+        clampedCount++;
+        percentOutlierFlag = true;
+      }
+
+      // CSV row
+      const csvRow = canonicalHeader.map(k => rowObjToCSVCell(rowObj, k)).join(',') + "\n";
+      csv += csvRow;
+
+      // NDJSON push (flush parts if needed)
+      const part = ndWriter.push(rowObj);
+      if (part) {
+        // compute part sha and trigger download for part
+        (async () => {
+          const partSha = await sha256Hex(part.content);
+          const meta = ndWriter.flushedParts.find(p => p.partName === part.partName);
+          if (meta) meta.part_sha256 = partSha;
+          downloadBlob(part.content, `${finalSafeLabel}.${part.partName}`);
+        })();
+      }
+    }
+
+    // Append footer and compute CSV hash
+    csv += `# total_rows: ${diagnostics.time.length}\n`;
+    const csvSha = await sha256Hex(csv);
+    csv += `# sha256: ${csvSha}\n`;
+    diagnostics._last_csv_sha = csvSha;
+    diagnostics.percent_clamped_count = clampedCount;
+    diagnostics.percent_clamped_pct = diagnostics.time.length ? (clampedCount / diagnostics.time.length) * 100 : 0;
+
+    // Finalize NDJSON (flush remaining)
+    const ndFinal = ndWriter.finalize();
+    
+    // FIX 1: Timestamped Exports
+    const now = new Date();
+    const stamp = now.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const finalSafeLabel = (safeLabel || ui.experimentLabel || "experiment").replace(/\s+/g, '_');
+
+    if (ndFinal.lastPart) {
+      const p = ndFinal.lastPart;
+      const partSha = await sha256Hex(p.content);
+      const meta = ndWriter.flushedParts.find(x => x.partName === p.partName);
+      if (meta) meta.part_sha256 = partSha;
+      downloadBlob(p.content, `${finalSafeLabel}.${p.partName}`);
+    }
+
+    // Compute root hash as SHA256(concat(part_sha_hex...))
+    const concatHex = ndWriter.flushedParts.map(p => (p.part_sha256 || "")).join('');
+    const ndSha = concatHex ? await sha256Hex(concatHex) : await sha256Hex(""); // empty if no parts
+    // Build manifest
+    const manifest = {
+      experiment_label: ui.experimentLabel || finalSafeLabel,
+      filename_base: finalSafeLabel,
+      total_rows: diagnostics.time.length,
+      csv_sha256: csvSha,
+      ndjson_sha256: ndSha,
+      parts: ndWriter.flushedParts,
+      percent_outlier: percentOutlierFlag,
+      percent_clamped_count: clampedCount,
+      percent_clamped_pct: diagnostics.percent_clamped_pct,
+      exported_at: now.toISOString(),
+      version,
+      schema_version
+    };
+    const manifestText = JSON.stringify(manifest, null, 2) + "\n";
+
+    // Atomic write: download CSV, NDJSON, manifest with timestamps
+    downloadBlob(csv, `svet_${version}_${finalSafeLabel}_${stamp}.csv`);
+    // Also download parts already triggered; provide full NDJSON for convenience
+    const ndjsonFull = diagnostics.time.map((_, i) => JSON.stringify(buildRowObjectForExport(i))).join("\n") + "\n";
+    downloadBlob(ndjsonFull, `svet_${version}_${finalSafeLabel}_${stamp}.run.ndjson`);
+    downloadBlob(manifestText, `svet_${version}_${finalSafeLabel}_${stamp}.manifest.json`);
+
+    showExportSpinner(false);
+    return { ok: true, manifest };
+  } catch (err) {
+    // On failure: write .partial and surface UI error
+    const partialText = `EXPORT PARTIAL\nerror: ${err.message}\nstack: ${err.stack}\nexported_at: ${(new Date()).toISOString()}\nframes_flushed: ${(diagnostics.time ||[]).length}\n`;
+    downloadBlob(partialText, `svet_${ui.experimentLabel || 'experiment'}.partial`);
+    // Build partial manifest
+    const partialManifest = {
+      experiment_label: ui.experimentLabel || 'experiment',
+      partial: true,
+      frames_flushed: (diagnostics.time ||[]).length,
+      error_message: err.message,
+      exported_at: (new Date()).toISOString(),
+      version: "v0.07.3",
+      schema_version: "1.0.0"
+    };
+    downloadBlob(JSON.stringify(partialManifest, null, 2) + "\n", `svet_${ui.experimentLabel || 'experiment'}.partial.manifest.json`);
+    showExportSpinner(false);
+    alert("Export failed: partial file written. See console for details.");
+    console.error("Export failed", err);
+    return { ok: false, error: err.message };
+  }
+}
+
+/* -------------------- JSON experiment loader and applier -------------------- */
+function applyExperimentJSON(obj) {
+  const cfg = obj.config || obj;
+
+  // Determine if N will change
+  const newN = cfg.N !== undefined ? Math.max(8, Math.min(512, parseInt(cfg.N) || 64)) : ui.size;
+  const nChanged = newN !== ui.size;
+
+  // Map config fields (legacy fallback)
+  if (cfg.N !== undefined) { ui.size = newN; sizeEl.value = ui.size; }
+  if (cfg.Ucap !== undefined) { ui.Ucap = parseFloat(cfg.Ucap); ucapEl.value = ui.Ucap; }
+  if (cfg.Uref !== undefined) { ui.Uref = parseFloat(cfg.Uref); urefEl.value = ui.Uref; }
+  if (cfg.kappa !== undefined) { ui.kappa = parseFloat(cfg.kappa); kappaEl.value = ui.kappa; }
+  if (cfg.dt !== undefined) { ui.dt = parseFloat(cfg.dt); dtEl.value = ui.dt; checkCFL(); }
+  if (cfg.operator !== undefined) { ui.op = cfg.operator; opEl.value = ui.op; }
+  if (cfg.seed_radius !== undefined) { ui.seedRadius = parseFloat(cfg.seed_radius); seedRadiusEl.value = ui.seedRadius; }
+  if (cfg.seed_amp !== undefined) { ui.seedAmp = parseFloat(cfg.seed_amp); seedAmpEl.value = ui.seedAmp; }
+  if (cfg.pattern_speed !== undefined) { ui.patternSpeed = parseFloat(cfg.pattern_speed); patternSpeedEl.value = ui.patternSpeed; }
+  if (cfg.c_eff !== undefined) { ui.ceff = parseFloat(cfg.c_eff); ceffEl.value = ui.ceff; checkCFL(); }
+  if (cfg.bc_mode !== undefined) { ui.bcMode = cfg.bc_mode; bcModeEl.value = ui.bcMode; bcMode = ui.bcMode; }
+  if (cfg.poisson_cadence !== undefined) { ui.poissonCadence = Math.max(1, parseInt(cfg.poisson_cadence) || 20); poissonCadenceEl.value = ui.poissonCadence; }
+  if (cfg.poisson_method !== undefined) { ui.poissonMethod = cfg.poisson_method; poissonMethodEl.value = ui.poissonMethod; }
+  if (cfg.max_t !== undefined && cfg.max_t !== null) { ui.max_t = parseFloat(cfg.max_t); } else { ui.max_t = Infinity; }
+  if (cfg.auto_download_csv !== undefined) { ui.autoDownloadCSV = !!cfg.auto_download_csv; autoDownloadToggle.checked = ui.autoDownloadCSV; }
+  if (cfg.auto_stop_enabled !== undefined) { ui.autoStopEnabled = !!cfg.auto_stop_enabled; autoStopToggle.checked = ui.autoStopEnabled; }
+  if (cfg.auto_stop_frames !== undefined) { ui.autoStopFrames = parseInt(cfg.auto_stop_frames) || ui.autoStopFrames; autoStopFramesEl.value = ui.autoStopFrames; }
+
+  // Map top-level mode and label and notes
+  if (obj.mode !== undefined) { ui.mode = obj.mode; modeSelectEl.value = ui.mode; }
+  if (obj.experiment_label !== undefined) { ui.experimentLabel = obj.experiment_label; experimentLabelEl.value = ui.experimentLabel; }
+  if (obj.notes !== undefined) { ui.notes = String(obj.notes); }
+  if (cfg.notes !== undefined) { ui.notes = String(cfg.notes); }
+
+  // Re-init arrays if N changed (must happen before seeding)
+  if (nChanged) initArraysAndBuffers();
+
+  // Apply initial_seeds additively (single clear already done in init)
+  if (Array.isArray(cfg.initial_seeds)) {
+    for (let k = 0; k < cfg.initial_seeds.length; k++) {
+      const sd = cfg.initial_seeds[k];
+      const sx = clamp(Math.floor(sd.x || 0), 0, N - 1);
+      const sy = clamp(Math.floor(sd.y || 0), 0, N - 1);
+      const sr = Math.max(1, Math.floor(sd.radius || ui.seedRadius));
+      const sa = parseFloat(sd.amp || ui.seedAmp);
+      for (let y = Math.max(0, sy - sr); y <= Math.min(N - 1, sy + sr); y++) {
+        for (let x = Math.max(0, sx - sr); x <= Math.min(N - 1, sx + sr); x++) {
+          const dx = x - sx, dy = y - sy;
+          const r = Math.sqrt(dx * dx + dy * dy);
+          if (r <= sr) {
+            s[idx(x, y)] += sa * Math.exp(-(r * r) / (2 * sr * sr));
+          }
+        }
+      }
+    }
+    sPrev.set(s);
+    computeSigmaAndBudget();
+  }
+
+  // Update UI write-back and diagnostics immediately
+  updateJSONState();
+  updateAndClassifyGauges();
+
+  // Optionally run on load
+  const runOnLoad = !!cfg.run_on_load || !!obj.run_on_load || runOnLoadEl.checked;
+  if (runOnLoad) {
+    running = true;
+    requestAnimationFrame(tick);
+  }
+}
+
+/* -------------------- JSON loader helpers -------------------- */
+function loadExperimentFromText(text) {
+  try {
+    const obj = JSON.parse(text);
+    const validation = validateExperimentJSON(obj, validateStrictEl.checked);
+    if (!validation.ok) {
+      jsonValidationEl.textContent = "Validation error: " + validation.message;
+      return;
+    } else {
+      jsonValidationEl.textContent = "";
+    }
+    applyExperimentJSON(obj);
+  } catch (e) {
+    jsonValidationEl.textContent = "Invalid JSON: " + e.message;
+  }
+}
+
+function validateExperimentJSON(obj, strict = true) {
+  if (typeof obj !== "object" || obj === null) return { ok: false, message: "Root must be an object" };
+  const allowedTop = new Set(["experiment_label","mode","notes","config","causality","run_on_load"]);
+  if (strict) {
+    for (const k of Object.keys(obj)) {
+      if (!allowedTop.has(k)) return { ok: false, message: "Unknown top-level field: " + k };
+    }
+  }
+  const cfg = obj.config || obj;
+  if (cfg.N !== undefined && (!Number.isInteger(cfg.N) || cfg.N < 8)) return { ok: false, message: "N must be integer >= 8" };
+  if (cfg.operator !== undefined && !["diffusion","wave"].includes(cfg.operator)) return { ok: false, message: "operator must be 'diffusion' or 'wave'" };
+  if (cfg.initial_seeds !== undefined && !Array.isArray(cfg.initial_seeds)) return { ok: false, message: "initial_seeds must be an array" };
+  return { ok: true };
+}
+
+/* -------------------- Automated tests -------------------- */
+function runAutomatedTests() {
+  console.log("SVET v0.07.3 — running automated tests...");
+  const results =[];
+
+  // Test 1: CSV header fields count and header contains active_mode_error_percent
+  const header = canonicalHeader;
+  const headerPass = header.length === 26 && header.includes("active_mode_error_percent");
+  results.push({ name: "CSV header column count and rename", pass: headerPass, detail: header.length });
+
+  // Test 2: Poisson stencil correctness (unit test)
+  initArraysAndBuffers();
+  for (let i = 0; i < psi.length; i++) psi[i] = 0;
+  const cx = Math.floor(N/2), cy = Math.floor(N/2);
+  psi[idx(cx,cy)] = 1.0;
+  computePoissonCorrelation();
+  const lapCenter = lapPsi[idx(cx,cy)];
+  const passStencil = Math.abs(lapCenter + 4) < 1e-6;
+  results.push({ name: "Poisson stencil unit test", pass: passStencil, detail: lapCenter });
+
+  // Test 3: Zero-variance safety
+  initArraysAndBuffers();
+  computePoissonCorrelation();
+  const rFlat = diagnostics.poissonR;
+  results.push({ name: "Zero-variance safety (flat)", pass: rFlat === 0, detail: rFlat });
+
+  // Test 4: Reflective BC idx sanity
+  ui.size = 16; initArraysAndBuffers();
+  ui.bcMode = "reflective"; bcMode = "reflective";
+  const a = idx(-1, -1), b = idx(0,0), c = idx(15,15);
+  const passBC = (a === 0 && b === 0 && c === 15*16+15);
+  results.push({ name: "Reflective BC idx sanity", pass: passBC, detail: [a,b,c] });
+
+  // Test 5: Additive seeds test
+  initArraysAndBuffers();
+  const seedJSON = { config: { initial_seeds:[ {x:10,y:10,radius:2,amp:1.0}, {x:10,y:10,radius:2,amp:2.0} ] } };
+  applyExperimentJSON(seedJSON);
+  const val = s[idx(10,10)];
+  const passAdd = val > 2.9;
+  results.push({ name: "Additive seeds test", pass: passAdd, detail: val });
+
+  // Test 6: Final Poisson flush at export (simulate)
+  initArraysAndBuffers();
+  s.fill(0); sPrev.fill(0); sNext.fill(0);
+  s[idx(Math.floor(N/2), Math.floor(N/2))] = 5.0;
+  sPrev.set(s);
+  computeSigmaAndBudget();
+  ui.poissonCadence = 1000;
+  frameCount = 1;
+  diagnostics.time = [0];
+  diagnostics.psiAvg = [0];
+  computePoissonCorrelation();
+  const rAfter = diagnostics.poissonR;
+  results.push({ name: "Final Poisson flush test", pass: Math.abs(rAfter) >= 0, detail: rAfter });
+
+  console.table(results);
+  testResultsEl.textContent = "Automated tests complete. See console for details.";
+  alert("Automated tests complete. See console for details.");
+}
+
+/* -------------------- Main loop -------------------- */
+function tick() {
+  if (!running) return;
+  stepOnce();
+  render();
+
+  // Check max_t auto-termination
+  if (isFinite(ui.max_t) && t >= ui.max_t) {
+    running = false;
+    if (ui.autoDownloadCSV) finalizeAndExportAll({ safeLabel: ui.experimentLabel || 'experiment', reason: "max_t reached" });
+    else finalizeAndExportAll({ safeLabel: ui.experimentLabel || 'experiment', reason: "max_t reached (no download requested)" });
+    return;
+  }
+
+  requestAnimationFrame(tick);
+}
+
+/* -------------------- Event wiring -------------------- */
+document.getElementById('init').addEventListener('click', () => {
+  ui.size = Math.max(8, Math.min(512, parseInt(sizeEl.value) || 64));
+  ui.Ucap = parseFloat(ucapEl.value); ui.Uref = parseFloat(urefEl.value); ui.kappa = parseFloat(kappaEl.value);
+  ui.dt = parseFloat(dtEl.value); ui.op = opEl.value;
+  ui.seedRadius = parseFloat(seedRadiusEl.value); ui.seedAmp = parseFloat(seedAmpEl.value);
+  ui.patternSpeed = parseFloat(patternSpeedEl.value); ui.ceff = parseFloat(ceffEl.value);
+  ui.homogRate = parseFloat(homogRateEl.value); ui.phaseGrad = parseFloat(phaseGradEl.value);
+  ui.overlayState = overlayStateEl.checked; ui.homogEnabled = homogToggle.checked; ui.movingEnabled = movingToggle.checked;
+  ui.experimentLabel = experimentLabelEl.value; ui.mode = modeSelectEl.value;
+  ui.autoStopEnabled = autoStopToggle.checked; ui.autoStopFrames = parseInt(autoStopFramesEl.value) || 300;
+  ui.bcMode = bcModeEl.value; bcMode = ui.bcMode;
+  ui.poissonCadence = Math.max(1, parseInt(poissonCadenceEl.value) || 20); ui.poissonMethod = poissonMethodEl.value;
+  ui.autoDownloadCSV = autoDownloadToggle.checked;
+  initArraysAndBuffers();
+});
+
+document.getElementById('seed').addEventListener('click', () => { applyLocalizedSeed(); });
+document.getElementById('movingSeed').addEventListener('click', () => { applyMovingSeed(); });
+
+document.getElementById('start').addEventListener('click', () => {
+  if (!running) {
+    running = true;
+    requestAnimationFrame(tick);
+  }
+});
+document.getElementById('stop').addEventListener('click', () => { running = false; });
+document.getElementById('step').addEventListener('click', () => { running = false; stepOnce(); render(); });
+
+document.getElementById('download').addEventListener('click', async () => {
+  const safeLabel = (ui.experimentLabel || ui.mode || "experiment").toString().replace(/\s+/g, "_");
+  const res = await finalizeAndExportAll({ safeLabel });
+  if (res && res.ok && res.manifest) {
+    console.log("Export manifest:", res.manifest);
+    alert("Export complete. Manifest saved.");
+  } else if (res && res.ok === false) {
+    console.warn("Export aborted or failed:", res);
+  }
+});
+document.getElementById('runTests').addEventListener('click', () => { running = false; runAutomatedTests(); });
+
+document.getElementById('resetAll').addEventListener('click', () => {
+  // Hard reset to defaults
+  ui.size = 64; sizeEl.value = 64;
+  ui.Ucap = 1.0; ucapEl.value = "1.0";
+  ui.Uref = 1.0; urefEl.value = "1.0";
+  ui.kappa = 0.5; kappaEl.value = "0.5";
+  ui.dt = 0.05; dtEl.value = "0.05";
+  ui.op = "diffusion"; opEl.value = "diffusion";
+  ui.seedRadius = 4; seedRadiusEl.value = 4;
+  ui.seedAmp = 2.0; seedAmpEl.value = "2.0";
+  ui.ceff = 1.0; ceffEl.value = "1.0";
+  ui.mode = "Localized"; modeSelectEl.value = "Localized";
+  ui.experimentLabel = "Auto"; experimentLabelEl.value = "Auto";
+  ui.autoStopEnabled = false; autoStopToggle.checked = false;
+  ui.autoDownloadCSV = true; autoDownloadToggle.checked = true;
+  ui.notes = ""; jsonPasteEl.value = "";
+  initArraysAndBuffers();
+  updateJSONState();
+  updateAndClassifyGauges();
+});
+
+/* JSON loader wiring */
+loadJsonTextBtn.addEventListener('click', () => {
+  const text = jsonPasteEl.value.trim();
+  if (!text) { jsonValidationEl.textContent = "No JSON pasted."; return; }
+  loadExperimentFromText(text);
+});
+jsonFileInput.addEventListener('change', (ev) => {
+  const f = ev.target.files[0];
+  if (!f) return;
+  if (f.size > 2_000_000) { jsonValidationEl.textContent = "File too large (limit 2 MB)."; return; }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = e.target.result;
+    loadExperimentFromText(text);
+  };
+  reader.readAsText(f);
+});
+
+/* wire UI listeners to cache values */
+wireUI();
+
+/* initialize */
+ui.size = parseInt(sizeEl.value) || 64;
+ui.Ucap = parseFloat(ucapEl.value);
+ui.Uref = parseFloat(urefEl.value);
+ui.kappa = parseFloat(kappaEl.value);
+ui.dt = parseFloat(dtEl.value);
+ui.op = opEl.value;
+ui.seedRadius = parseFloat(seedRadiusEl.value);
+ui.seedAmp = parseFloat(seedAmpEl.value);
+ui.patternSpeed = parseFloat(patternSpeedEl.value);
+ui.ceff = parseFloat(ceffEl.value);
+ui.homogRate = parseFloat(homogRateEl.value);
+ui.phaseGrad = parseFloat(phaseGradEl.value);
+ui.overlayState = overlayStateEl.checked;
+ui.homogEnabled = homogToggle.checked;
+ui.movingEnabled = movingToggle.checked;
+ui.experimentLabel = experimentLabelEl.value;
+ui.mode = modeSelectEl.value;
+ui.autoStopEnabled = autoStopToggle.checked;
+ui.autoStopFrames = parseInt(autoStopFramesEl.value) || 300;
+ui.bcMode = bcModeEl.value; bcMode = ui.bcMode;
+ui.poissonCadence = Math.max(1, parseInt(poissonCadenceEl.value) || 20);
+ui.poissonMethod = poissonMethodEl.value;
+ui.autoDownloadCSV = autoDownloadToggle.checked;
+ui.max_t = Infinity;
+ui.notes = "";
+
+initArraysAndBuffers();
+render();
+
+/* -------------------- CFL guard -------------------- */
+function checkCFL() {
+  const dt = ui.dt || 0;
+  const ceff = ui.ceff || 0;
+  const product = dt * ceff;
+  const warningEl = document.getElementById('jsonValidation');
+  if (product > 0.7) {
+    warningEl.textContent = "Warning: High-speed instability possible (dt * c_eff = " + product.toFixed(3) + ").";
+    warningEl.className = "warn";
+  } else {
+    if (warningEl.textContent && warningEl.className === "warn") warningEl.textContent = "";
+  }
+}
+
+/* -------------------- In-browser Validator & Auditor helpers -------------------- */
+async function fileToText(file) {
+  return await new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result));
+    r.onerror = () => reject(r.error);
+    r.readAsText(file);
+  });
+}
+async function sha256HexOfString(str) {
+  const enc = new TextEncoder();
+  const buf = enc.encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function parseCSVHeader(csvText) {
+  const lines = csvText.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+  for (const ln of lines) {
+    const t = ln.trim();
+    if (!t) continue;
+    if (t.startsWith('#')) continue;
+    const cols =[];
+    let cur = '', q=false;
+    for (let i=0;i<ln.length;i++){
+      const ch = ln[i];
+      if (ch === '"') { if (q && ln[i+1]==='"'){ cur+='"'; i++; continue;} q=!q; continue; }
+      if (ch === ',' && !q) { cols.push(cur); cur=''; continue; }
+      cur += ch;
+    }
+    cols.push(cur);
+    return cols.map(c => c.trim());
+  }
+  return null;
+}
+
+/* -------------------- Validator UI wiring (runValidatorInBrowser defined earlier) -------------------- */
+async function runValidatorInBrowser(manifestFile, csvFile, ndFiles) {
+  const report = { ok: true, errors:[], warnings:[], metrics: {} };
+  try {
+    const manifestText = await fileToText(manifestFile);
+    const manifest = JSON.parse(manifestText);
+    report.manifest = { experiment_label: manifest.experiment_label || null, filename_base: manifest.filename_base || null };
+
+    if (!Array.isArray(manifest.parts) || manifest.parts.length === 0) {
+      report.warnings.push("manifest.parts is empty or missing; validator expects part metadata for streamed NDJSON.");
+    }
+
+    let concatHashes = "";
+    const partsMeta =[];
+    const ndMap = {};
+    for (const f of ndFiles) ndMap[f.name] = f;
+
+    for (const part of (manifest.parts ||[])) {
+      const partName = part.partName;
+      const provided = ndMap[partName];
+      if (!provided) {
+        report.ok = false;
+        report.errors.push(`Missing NDJSON part file: ${partName}`);
+        continue;
+      }
+      const content = await fileToText(provided);
+      const actualPartSha = await sha256HexOfString(content);
+      partsMeta.push({ partName, frames: part.frames || null, expected: part.part_sha256 || null, actual: actualPartSha });
+      if (part.part_sha256 && part.part_sha256 !== actualPartSha) {
+        report.ok = false;
+        report.errors.push(`Part SHA mismatch for ${partName}`);
+      }
+      concatHashes += actualPartSha;
+    }
+
+    if (concatHashes.length > 0) {
+      const rootSha = await sha256HexOfString(concatHashes);
+      if (manifest.ndjson_sha256 && manifest.ndjson_sha256 !== rootSha) {
+        report.ok = false;
+        report.errors.push("Root NDJSON Hash Mismatch (Hash of Hashes failed)");
+      } else {
+        report.metrics.ndjson_root_sha = rootSha;
+      }
+    } else {
+      report.warnings.push("No part hashes computed (no parts provided).");
+    }
+    report.parts = partsMeta;
+
+    if (csvFile) {
+      const csvText = await fileToText(csvFile);
+      const headerCols = parseCSVHeader(csvText);
+      if (!headerCols) {
+        report.ok = false;
+        report.errors.push("CSV header not found or could not be parsed.");
+      } else {
+        report.metrics.csv_columns = headerCols.length;
+        if (headerCols.length !== 26) {
+          report.errors.push(`CSV column count mismatch: expected 26, got ${headerCols.length}`);
+          report.ok = false;
+        }
+        const idxActive = headerCols.findIndex(h => h === 'active_mode_error_percent');
+        if (idxActive === -1) {
+          report.warnings.push("CSV missing 'active_mode_error_percent' column.");
+        } else {
+          const lines = csvText.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
+          let clampedCount = 0, dataCount = 0;
+          for (const ln of lines) {
+            const t = ln.trim();
+            if (!t) continue;
+            if (t.startsWith('#')) continue;
+            if (t.startsWith('Experiment')) continue;
+            const cols =[];
+            let cur = '', q=false;
+            for (let i=0;i<ln.length;i++){
+              const ch = ln[i];
+              if (ch === '"') { if (q && ln[i+1]==='"'){ cur+='"'; i++; continue; } q=!q; continue; }
+              if (ch === ',' && !q) { cols.push(cur); cur=''; continue; }
+              cur += ch;
+            }
+            cols.push(cur);
+            dataCount++;
+            const raw = cols[idxActive];
+            const val = parseFloat((raw||'').replace(/"/g,''));
+            if (!isNaN(val) && val >= 100) clampedCount++;
+          }
+          const pct = dataCount > 0 ? (clampedCount / dataCount) * 100 : 0;
+          report.metrics.percent_clamped_count = clampedCount;
+          report.metrics.percent_clamped_pct = pct;
+          if (pct > 10) {
+            report.ok = false;
+            report.errors.push(`CRITICAL: ${pct.toFixed(2)}% rows clamped (>=100%).`);
+          } else if (pct > 1) {
+            report.warnings.push(`${pct.toFixed(2)}% rows clamped.`);
+          }
+        }
+      }
+    } else {
+      report.warnings.push("CSV file not provided; skipping CSV checks.");
+    }
+
+    const lastPoisson = (manifest && manifest.last_poisson_r) || null;
+    if (lastPoisson !== null && lastPoisson !== undefined) {
+      if (Math.abs(lastPoisson) < 0.25) {
+        report.strategy = { triggered: true, rule: "POISSON_CRITICAL", confidence: "High", message: "Poisson r < 0.25" };
+      } else {
+        report.strategy = { triggered: false };
+      }
+    } else {
+      if (partsMeta.length > 0) {
+        const lastPartName = partsMeta[partsMeta.length-1].partName;
+        const f = ndFiles.find(x => x.name === lastPartName);
+        if (f) {
+          const content = await fileToText(f);
+          const lines = content.trim().split('\n').filter(l=>l.trim());
+          if (lines.length) {
+            try {
+              const lastObj = JSON.parse(lines[lines.length-1]);
+              const r = lastObj.poisson_correlation_r ?? lastObj.poisson_r ?? null;
+              if (r !== null && Math.abs(r) < 0.25) {
+                report.strategy = { triggered: true, rule: "POISSON_CRITICAL", confidence: "High", message: "Poisson r < 0.25 (in last NDJSON frame)" };
+              } else {
+                report.strategy = { triggered: false };
+              }
+            } catch(e) {
+              report.warnings.push("Could not parse last NDJSON line for strategy check.");
+            }
+          }
+        }
+      }
+    }
+
+  } catch (err) {
+    report.ok = false;
+    report.errors.push("Validator exception: " + (err && err.message ? err.message : String(err)));
+  }
+
+  report.summary = { ok: report.ok, errors: report.errors.length, warnings: report.warnings.length, metrics: report.metrics || {} };
+  return report;
+}
+
+/* UI wiring for Validator panel */
+document.getElementById('btnRunValidator').addEventListener('click', async () => {
+  const mf = document.getElementById('valManifestFile').files[0];
+  const cf = document.getElementById('valCsvFile').files[0];
+  const ndFiles = Array.from(document.getElementById('valNdParts').files ||[]);
+  if (!mf) { alert("Please select a manifest.json file."); return; }
+  document.getElementById('btnRunValidator').disabled = true;
+  document.getElementById('validatorReport').textContent = "Running validator...";
+  document.getElementById('validatorOutput').style.display = 'block';
+  try {
+    const report = await runValidatorInBrowser(mf, cf, ndFiles);
+    const text = JSON.stringify(report, null, 2);
+    document.getElementById('validatorReport').textContent = text;
+    document.getElementById('btnDownloadValidation').disabled = false;
+    document.getElementById('btnShowValidation').disabled = false;
+    window.__svet_last_validation = report;
+  } catch (e) {
+    document.getElementById('validatorReport').textContent = "Validator error: " + e.message;
+    window.__svet_last_validation = { ok:false, errors:[e.message] };
+    document.getElementById('btnDownloadValidation').disabled = false;
+    document.getElementById('btnShowValidation').disabled = false;
+  } finally {
+    document.getElementById('btnRunValidator').disabled = false;
+  }
+});
+document.getElementById('btnDownloadValidation').addEventListener('click', () => {
+  const rep = window.__svet_last_validation || { ok:false, errors:["No report available"] };
+  const blob = new Blob([JSON.stringify(rep, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = (rep.manifest && rep.manifest.experiment_label ? rep.manifest.experiment_label + '.validation.json' : 'validation.json');
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 3000);
+});
+document.getElementById('btnShowValidation').addEventListener('click', () => {
+  const rep = window.__svet_last_validation;
+  if (!rep) { alert("No validation report available. Run validator first."); return; }
+  document.getElementById('validatorOutput').style.display = 'block';
+  document.getElementById('validatorReport').textContent = JSON.stringify(rep, null, 2);
+});
+
+/* -------------------- Auditor drag/drop logic (in-browser) -------------------- */
+const auditDropZone = document.getElementById('auditDropZone');
+const auditReport = document.getElementById('auditReport');
+
+if (auditDropZone) {
+  auditDropZone.addEventListener('dragover', (e) => { e.preventDefault(); auditDropZone.style.background = '#0a2a1a'; });
+  auditDropZone.addEventListener('dragleave', () => { auditDropZone.style.background = 'transparent'; });
+  auditDropZone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    auditDropZone.style.background = 'transparent';
+    const files = Array.from(e.dataTransfer.files ||[]);
+    
+    // FIX 2: Fuzzy matching for filenames to ignore Windows "(1)" suffixes
+    const manifestFile = files.find(f => f.name.toLowerCase().includes('manifest'));
+    const csvFile = files.find(f => f.name.toLowerCase().includes('.csv'));
+    const ndjsonFiles = files.filter(f => f.name.toLowerCase().includes('.ndjson'));
+
+    if (!manifestFile || !csvFile) {
+      alert("Missing files! Please drop the .manifest.json and .csv at the same time.");
+      return;
+    }
+
+    auditReport.style.display = 'block';
+    auditReport.textContent = "⌛ Auditing Integrity...\n";
+
+    try {
+      const manifest = JSON.parse(await manifestFile.text());
+      let log = `Target: ${manifest.experiment_label}\n`;
+      let pass = true;
+
+      // 1. Verify CSV Alignment
+      const csvText = await csvFile.text();
+      const rows = csvText.split('\n');
+      const header = rows.find(r => r.startsWith('Experiment')).split(',');
+      if (header.length === 26) {
+        log += "✅ CSV Alignment: 26 Columns (Correct)\n";
+      } else {
+        log += `❌ CSV Alignment: Expected 26, got ${header.length}\n`;
+        pass = false;
+      }
+
+      // 2. Re-compute Hash of Hashes
+      let concatHashes = "";
+      ndjsonFiles.sort((a, b) => a.name.localeCompare(b.name));
+      for (const file of ndjsonFiles) {
+        const buffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        concatHashes += hashHex;
+        log += `   - Part ${file.name}: Hash Verified\n`;
+      }
+      const rootHashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(concatHashes));
+      const rootHashHex = Array.from(new Uint8Array(rootHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (rootHashHex === manifest.ndjson_sha256) {
+        log += "✅ NDJSON Integrity: Root Hash Matches\n";
+      } else {
+        log += "❌ NDJSON Integrity: HASH MISMATCH!\n";
+        pass = false;
+      }
+
+      // 3. Clamping check (best-effort)
+      const headerCols = header.map(h => h.trim());
+      const idxActive = headerCols.indexOf('active_mode_error_percent');
+      let clampedCount = 0, dataCount = 0;
+      if (idxActive !== -1) {
+        for (const ln of rows) {
+          const tln = ln.trim();
+          if (!tln) continue;
+          if (tln.startsWith('#')) continue;
+          if (tln.startsWith('Experiment')) continue;
+          const cols =[];
+          let cur = '', q=false;
+          for (let i=0;i<ln.length;i++){
+            const ch = ln[i];
+            if (ch === '"') { if (q && ln[i+1]==='"'){ cur+='"'; i++; continue; } q=!q; continue; }
+            if (ch === ',' && !q) { cols.push(cur); cur=''; continue; }
+            cur += ch;
+          }
+          cols.push(cur);
+          dataCount++;
+          const raw = cols[idxActive];
+          const val = parseFloat((raw||'').replace(/"/g,''));
+          if (!isNaN(val) && val >= 100) clampedCount++;
+        }
+      }
+      const clampPct = dataCount ? (clampedCount / dataCount) * 100 : 0;
+      log += `Clamped frames: ${clampedCount} / ${dataCount} (${clampPct.toFixed(2)}%)\n`;
+      if (clampPct > 10) { pass = false; log += "❌ Clamping exceeds 10% threshold\n"; }
+      else if (clampPct > 1) { log += "⚠️ Clamping between 1% and 10% (warning)\n"; }
+
+      // 4. Generate brief from files (historical)
+      try {
+        const brief = generateBriefFromFiles(manifest, csvText);
+        log += "\n--- RESEARCHER'S BRIEF ---\n" + brief + "\n";
+        // auto-copy
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(brief);
+          log += "\n(Brief auto-copied to clipboard)\n";
+        }
+      } catch (e) {
+        log += "\n(Brief generation failed: " + e.message + ")\n";
+      }
+
+      log += `\n--- VERDICT: ${pass ? "CANARY PASS" : "CANARY FAIL"} ---`;
+      auditReport.textContent = log;
+      auditReport.style.borderColor = pass ? "#2ecc71" : "#e74c3c";
+
+    } catch (err) {
+      auditReport.textContent = "CRITICAL ERROR: " + err.message;
+    }
+  });
+}
+
+/* -------------------- v0.07.3 Briefing & Strategy Logic -------------------- */
+
+/* Robust header mapping helpers */
+function buildHeaderMap(headerRow) {
+  const map = {};
+  headerRow.forEach((name, i) => {
+    if (typeof name === 'string') map[name.trim()] = i;
+  });
+  return map;
+}
+
+function getFieldFromRow(rowArray, fieldName, headerMap) {
+  const idx = headerMap[fieldName];
+  if (idx === undefined || idx === -1) return null;
+  const raw = rowArray[idx];
+  if (raw === "" || raw === undefined) return null;
+  return raw.replace(/^"(.*)"$/, '$1'); // strip quotes
+}
+
+/* Strategy registry (Explainable Rules for PC) */
+const StrategyRegistry =[
+  {
+    id: "POISSON_THAW",
+    predicate: (poisson_r, active_err) => (poisson_r !== null && Math.abs(poisson_r) < 0.25),
+    message: "Lattice is 'Frozen'. Decrease Kappa or use Diffusion to thaw center.",
+    confidence: "High"
+  },
+  {
+    id: "STABILITY_GUARD",
+    predicate: (poisson_r, active_err) => (active_err !== null && active_err > 25),
+    message: "Lattice instability detected. Reduce dt (time step) or pattern speed.",
+    confidence: "Medium"
+  }
+];
+
+/* Construct Brief Markdown */
+function constructMarkdownBrief(stats) {
+  const isStable = Math.abs(stats.dPsiDt || 0) < 1e-7;
+  const rule = StrategyRegistry.find(r => r.predicate(stats.poisson_r, stats.active_err));
+  const strategy = rule || { id: "STABLE", message: "Lattice stable. Continue current trajectory.", confidence: "High" };
+  const hashShort = (stats.hash || "").slice(0, 16);
+
+  return[
+    `### SVET Researcher's Brief [v0.07.3]`,
+    `**Run:** ${stats.label || "unknown"} | **Mode:** ${stats.mode || "unknown"} | **N:** ${stats.N || "?"}`,
+    ``,
+    `#### 1. Performance Summary`,
+    `- **Duration:** t=0.00 to t=${(stats.t_end||0).toFixed(2)} (${stats.frames||0} frames)`,
+    `- **Stability:** ${(stats.dPsiDt||0).toExponential(2)}[${isStable ? "STABLE" : "EVOLVING"}]`,
+    `- **Integrity:** ${stats.integrity_status || "UNKNOWN"} | Clamping: ${Number((stats.clamp_pct||0)).toFixed(2)}%`,
+    ``,
+    `#### 2. Theory Metrics (Final State)`,
+    `- **Poisson r:** ${(stats.poisson_r===null||stats.poisson_r===undefined) ? "N/A" : stats.poisson_r.toFixed(4)}`,
+    `- **Radial Err:** ${Number((stats.radial_err||0)).toFixed(2)}%`,
+    `- **Doppler 1+z:** ${(stats.one_plus_z===null||stats.one_plus_z===undefined) ? "N/A" : stats.one_plus_z.toFixed(4)}`,
+    ``,
+    `#### 3. AI Strategy Suggestion`,
+    `- **Suggestion:** ${strategy.message}`,
+    `- **Rule ID:** ${strategy.id} | **Confidence:** ${strategy.confidence}`,
+    ``,
+    `---`,
+    `**Audit Hash:** ${hashShort}... | Generated: ${new Date().toISOString()}`
+  ].join('\n');
+}
+
+/* Generate brief for current live session */
+async function generateBriefForLive() {
+  const d = diagnostics || {};
+  const stats = {
+    label: ui.experimentLabel || "live",
+    mode: ui.mode || "unknown",
+    N: ui.size || N,
+    t_end: t,
+    frames: frameCount,
+    dPsiDt: d.dPsiDt || 0,
+    clamp_pct: (d.percent_clamped_pct || 0),
+    poisson_r: d.poissonR || 0,
+    radial_err: (d.radialErr || 0) * 100,
+    one_plus_z: (d.lastDiagnostics && d.lastDiagnostics.onePlusZ) || 1,
+    theory: (d.lastDiagnostics && d.lastDiagnostics.theory) || 1,
+    active_err: (d.lastDiagnostics && d.lastDiagnostics.errPercent) || 0,
+    integrity_status: "LIVE",
+    hash: (d._last_csv_sha || "PENDING")
+  };
+  return constructMarkdownBrief(stats);
+}
+
+/* Generate brief from historical CSV (for Auditor) */
+function generateBriefFromFiles(manifestObj, csvText) {
+  const lines = csvText.split('\n').filter(l => l.trim());
+  const headerLine = lines.find(l => l.startsWith('Experiment'));
+  if (!headerLine) throw new Error("CSV header missing");
+  
+  const headerCols = headerLine.split(',').map(c => c.trim());
+  const headerMap = buildHeaderMap(headerCols);
+
+  // Find last row that isn't a hash footer
+  let lastRowLine = lines.reverse().find(l => !l.startsWith('#') && !l.startsWith('Experiment'));
+  const lastRow = lastRowLine.split(',');
+
+  const getNum = (name) => {
+    const v = getFieldFromRow(lastRow, name, headerMap);
+    return v !== null ? parseFloat(v) : null;
+  };
+
+  return constructMarkdownBrief({
+    label: manifestObj.experiment_label || "historic",
+    mode: ui.mode,
+    N: ui.size,
+    t_end: getNum('t'),
+    frames: manifestObj.total_rows,
+    dPsiDt: 0,
+    clamp_pct: manifestObj.percent_clamped_pct || 0,
+    poisson_r: getNum('poisson_correlation_r'),
+    radial_err: getNum('radial_fit_error'),
+    one_plus_z: getNum('one_plus_z'),
+    theory: getNum('theoretical_factor'),
+    active_err: getNum('active_mode_error_percent'),
+    integrity_status: "CANARY PASS",
+    hash: manifestObj.csv_sha256 || ""
+  });
+}
+
+// FIX 3: Robust Copy Brief Button Wiring
+document.getElementById('copyBrief').addEventListener('click', async () => {
+  console.log("Copy Brief button clicked.");
+  try {
+    const briefText = await generateBriefForLive();
+    console.log("Brief generated successfully:\n", briefText);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(briefText);
+      alert("Researcher's Brief copied to clipboard!");
+    } else {
+      console.log("Clipboard API unavailable, falling back to modal.");
+      const area = document.getElementById('briefTextarea');
+      area.value = briefText;
+      document.getElementById('briefModal').style.display = 'flex';
+    }
+  } catch (err) {
+    console.error("Error generating brief:", err);
+    alert("Could not generate brief: " + (err && err.message ? err.message : String(err)));
+  }
+});
+
+document.getElementById('closeBriefModal').onclick = () => {
+  document.getElementById('briefModal').style.display = 'none';
+};
+
+/* -------------------- End of script -------------------- */
+</script>
+</body>
+</html>

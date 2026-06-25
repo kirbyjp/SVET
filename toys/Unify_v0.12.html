@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Unify_v0.12 — CaBS Forensic Monitor</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/seedrandom@3.0.5/seedrandom.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
+
+  <style>
+    :root { font-family: 'Segoe UI', system-ui, sans-serif; --svet-green: #0b5; --svet-blue: #1f77b4; --svet-red: #d62728; --svet-yellow: #ffb100; }
+    body { margin:0; height:100vh; display:flex; flex-direction:column; background: #0b0e14; color: #eee; overflow: hidden; }
+    header { padding:8px 12px; background: var(--svet-green); color:#012; font-weight:600; display: flex; justify-content: space-between; align-items: center; height: 40px; }
+    #main { flex:1; display:flex; gap:8px; padding:8px; box-sizing:border-box; overflow: hidden; }
+    
+    /* Sidebar Styling */
+    #left, #right { width:320px; min-width:300px; overflow-y:auto; border:1px solid #333; padding:12px; background:#161b22; border-radius: 4px; }
+    .dial-group { margin-bottom: 15px; padding: 8px; border: 1px solid #222; background: #0d1117; border-radius: 4px; }
+    .dial-group-title { font-size: 9px; color: var(--svet-green); text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #222; padding-bottom: 2px; }
+    
+    #center { flex:1; display:flex; flex-direction:column; gap:8px; overflow: hidden; }
+    .monitor-grid { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .monitor-panel { border: 1px solid #333; background: #000; position: relative; border-radius: 4px; flex: 1; }
+    
+    .controls-row { display:flex; gap:6px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
+    label { display:block; font-size:10px; color:#888; margin-bottom:2px; text-transform: uppercase; letter-spacing: 1px; }
+    input[type="number"], button, select { background: #0d1117; color: #eee; border: 1px solid #30363d; padding:4px; font-size:11px; border-radius: 3px; width: 100%; box-sizing: border-box; }
+    button { background: #21262d; cursor: pointer; font-weight: bold; transition: 0.2s; }
+    button:hover { background: #30363d; border-color: var(--svet-green); }
+    #runBtn { background: var(--svet-green); color: #000; border: none; font-size: 13px; padding: 8px; margin-bottom: 10px; }
+    
+    .telemetry-box { background: #000; border: 1px solid #333; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+    .health-stat { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+    .health-val { font-family: monospace; color: var(--svet-green); }
+
+    .mini { font-size:10px; color:#666; }
+    hr { border: 0; border-top: 1px solid #333; margin: 10px 0; }
+    .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:3000; background: rgba(0,0,0,0.85); }
+    .modal .panel { width:90%; max-width:1100px; height:85%; background:#161b22; border:1px solid #30363d; display:flex; flex-direction:column; }
+    pre { margin:0; overflow:auto; background:#000; padding:12px; color: var(--svet-green); font-family: 'Consolas', monospace; flex: 1; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <span>UNIFY_v0.12 // CaBS_FORENSIC_MONITOR</span>
+    <div class="mini" style="color:#012; font-weight: bold;">MATH_CHAIN: M → Φ → η → B → U → α</div>
+  </header>
+
+  <div id="main">
+    <aside id="left">
+      <button id="runBtn">INITIATE_STRESS_AUDIT</button>
+      
+      <!-- Source -->
+      <div class="dial-group">
+        <div class="dial-group-title">Source Parameters</div>
+        <label>Mass (Solar Units)</label>
+        <input id="dial_mass" type="number" value="1.9885e30" />
+      </div>
+
+      <!-- Substrate Core -->
+      <div class="dial-group">
+        <div class="dial-group-title">Substrate Core</div>
+        <div class="controls-row">
+          <div style="flex:1"><label>η_max</label><input id="dial_eta_max" type="number" value="1.0" /></div>
+          <div style="flex:1"><label>Φ₀ (Scale)</label><input id="dial_phi0" type="number" value="1.0" /></div>
+        </div>
+        <div class="controls-row">
+          <div style="flex:1"><label>L_c (m)</label><input id="dial_L_c" type="number" value="1e-6" /></div>
+          <div style="flex:1"><label>τ₀ (s)</label><input id="dial_tau0" type="number" value="1e-6" /></div>
+        </div>
+      </div>
+
+      <!-- Dynamics -->
+      <div class="dial-group">
+        <div class="dial-group-title">Dynamics & Mapping</div>
+        <div class="controls-row">
+          <div style="flex:1"><label>Beta (β)</label><input id="dial_beta" type="number" value="2.0" /></div>
+          <div style="flex:1"><label>Gamma (γ)</label><input id="dial_gamma" type="number" value="1.0" /></div>
+        </div>
+        <div class="controls-row">
+          <div style="flex:1"><label>Stiffness Scale</label><input id="dial_stiffness_scale" type="number" value="1.0" /></div>
+        </div>
+        <label style="margin-top:8px;">Stiffness Mode</label>
+        <select id="dial_stiffness_mode">
+          <option value="linear">Linear [f(η) = η]</option>
+          <option value="power">Power-Law [f(η) = η^β]</option>
+          <option value="log">Logarithmic [f(η) = ln(1+η)]</option>
+        </select>
+        <label style="margin-top:8px;">Cadence Law</label>
+        <select id="dial_cadence_law">
+          <option value="inverse">Inverse [α = 1/B^γ]</option>
+          <option value="exp">Exponential [α = e^(γ·U)]</option>
+          <option value="linear">Linear [α = 1 + γ·U]</option>
+        </select>
+      </div>
+
+      <!-- Thresholds -->
+      <div class="dial-group">
+        <div class="dial-group-title">Audit Thresholds</div>
+        <div class="controls-row">
+          <div style="flex:1"><label>Elastic (U)</label><input id="dial_thresh_elastic" type="number" value="0.1" step="0.01"></div>
+          <div style="flex:1"><label>Critical (U)</label><input id="dial_thresh_crit" type="number" value="0.9" step="0.01"></div>
+        </div>
+      </div>
+
+      <!-- Legacy/QG -->
+      <div class="dial-group">
+        <div class="dial-group-title">Legacy QG / Plateau</div>
+        <div class="controls-row">
+          <div style="flex:1"><label>α_q</label><input id="dial_alpha_q" type="number" value="100" /></div>
+          <div style="flex:1"><label>γ_qg</label><input id="dial_gamma_qg" type="number" value="2.0" /></div>
+        </div>
+        <label>Ψ₀ (Plateau)</label>
+        <input id="dial_psi0" type="number" value="-1.0" />
+      </div>
+
+      <!-- JSON Control Input Interface -->
+      <div class="dial-group">
+        <div class="dial-group-title">JSON Control Interface</div>
+        <button id="genTemplateBtn" style="margin-bottom: 8px;">GENERATE_JSON_TEMPLATE</button>
+        <textarea id="jsonInputBox" placeholder="Paste config JSON here..." style="height: 48px; font-size: 10px; font-family: monospace; resize: none; width: 100%; box-sizing: border-box; background: #0d1117; color: #eee; border: 1px solid #30363d; border-radius: 3px; overflow-y: auto;"></textarea>
+      </div>
+    </aside>
+
+    <section id="center">
+      <div class="monitor-grid">
+        <div class="monitor-panel" id="plot_util"></div>
+        <div class="monitor-panel" id="plot_alpha"></div>
+      </div>
+      
+      <div class="controls-row" style="background:#161b22; padding:8px; border-radius:4px; border:1px solid #333;">
+        <div style="display:flex; flex:1; align-items:center;">
+          <label style="margin:0; width:90px;">Monitor View:</label>
+          <select id="decadeToggle" style="max-width:180px;">
+            <option value="full">Full Sweep (12 Decades)</option>
+            <option value="A">Quantum Zoom (-6 to 0)</option>
+            <option value="B">Macro Zoom (0 to +6)</option>
+          </select>
+        </div>
+        <div class="mini" style="color: #888; font-style: italic; line-height: 1.2; text-align: right; flex:1;">
+          * Click legend elements to toggle/isolate baselines. Hover over curves to inspect exact values.
+        </div>
+      </div>
+    </section>
+
+    <aside id="right">
+      <label>Substrate Health</label>
+      <div class="telemetry-box" id="telemetry">
+        <div class="health-stat"><span>STATE:</span><span class="health-val" id="val_state">IDLE</span></div>
+        <div class="health-stat"><span>MIN_HEADROOM:</span><span class="health-val" id="val_headroom">---</span></div>
+        <div class="health-stat"><span>R_CRIT:</span><span class="health-val" id="val_rcrit">---</span></div>
+      </div>
+      
+      <button id="openDiagnostics">VIEW_FORENSIC_JSON</button>
+      <button id="downloadJsonBtn" style="margin-top:8px;">DOWNLOAD_JSON_REPORT</button>
+      
+      <hr/>
+      
+      <!-- Labeled Multi-Export Group -->
+      <label style="margin-bottom: 6px;">Data Artifact Exports</label>
+      <button id="exportFullBtn" style="margin-bottom:8px;">EXPORT_FULL_CSV</button>
+      <button id="exportCoarseBtn" style="margin-bottom:8px;">EXPORT_COARSE_CSV</button>
+      <button id="exportSlicedBtn">EXPORT_SLICED_DOMAINS_CSV</button>
+      
+      <div class="mini" style="margin-top:20px;">
+        <strong>Legend:</strong><br/>
+        <span style="color:var(--svet-yellow)">● Utilization (Stress)</span><br/>
+        <span style="color:var(--svet-blue)">● Dilation (Slowdown)</span>
+      </div>
+    </aside>
+  </div>
+
+  <div id="diagModal" class="modal">
+    <div class="panel">
+      <div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between; background: #21262d;">
+        <span>FORENSIC_AUDIT_REPORT</span>
+        <button id="closeDiagBtn" style="width:auto; padding: 2px 10px;">CLOSE</button>
+      </div>
+      <pre id="diagRaw"></pre>
+    </div>
+  </div>
+
+  <script>
+  /**
+   * CaBS Theme Color Palette (Mapped from CSS)
+   */
+  const SVET_GREEN = '#0b5';
+  const SVET_BLUE = '#1f77b4';
+  const SVET_YELLOW = '#ffb100';
+
+  /**
+   * CaBS PHYSICS WORKER (v0.12)
+   * Causal Chain: Mass -> Phi -> eta -> B -> U -> alpha (derived dt)
+   * Parallel reference overlays: Classical GR & Pure QG (Option B)
+   */
+  const workerCode = `
+    self.onmessage = function(e) {
+      const cfg = e.data;
+      const G = 6.67430e-11;
+      const c = 299792458;
+      
+      const totalPoints = 12 * 200;
+      
+      // Allocating parallel trace arrays
+      const r_k = new Float64Array(totalPoints);
+      const U_k = new Float64Array(totalPoints); 
+      const alpha_k = new Float64Array(totalPoints);
+      const B_k = new Float64Array(totalPoints);
+      const dt_k = new Float64Array(totalPoints);
+      
+      const U_gr_k = new Float64Array(totalPoints);
+      const alpha_gr_k = new Float64Array(totalPoints);
+      const alpha_qg_k = new Float64Array(totalPoints);
+
+      const R_hor = (2 * G * cfg.mass) / (c * c);
+      
+      // Anchoring the transition length to the horizon radius as approved (L_trans = R_hor * 100)
+      const L_trans = R_hor * 100.0;
+      
+      for (let i=0; i<totalPoints; i++) {
+        const logPos = (i / 200) - 6; 
+        const r = Math.pow(10, logPos) * R_hor;
+        r_k[i] = r;
+
+        // --- TRACK 1: UNIFIED SVET (PRISTINE PIPELINE, UNCLAMPED) ---
+        // 1. Potential (Phi)
+        const phi = (G * cfg.mass) / (r * c * c);
+
+        // 2. Strain (eta) - Tanh Saturation
+        const eta = cfg.eta_max * Math.tanh(phi / cfg.phi0);
+        
+        // 3. Stiffness f(eta)
+        let f_eta = eta;
+        if (cfg.stiffness_mode === 'power') f_eta = Math.pow(eta, Math.max(1, cfg.beta));
+        if (cfg.stiffness_mode === 'log') f_eta = Math.log(1 + eta);
+
+        // Apply Option A: Post-Evaluation Stiffness Scaling
+        const f_eta_scaled = cfg.stiffness_scale * f_eta;
+
+        // 4. Budget B(r)
+        const B = 1 / (1 + f_eta_scaled);
+        B_k[i] = B;
+        const U = 1 - B;
+        U_k[i] = U;
+
+        // 5. Derived Dilation alpha (Option B: strictly dimensionless)
+        let alpha = 1.0;
+        if (cfg.cadence_law === 'inverse') alpha = 1 / Math.pow(B, cfg.gamma);
+        if (cfg.cadence_law === 'exp') alpha = Math.exp(cfg.gamma * U);
+        if (cfg.cadence_law === 'linear') alpha = 1 + (cfg.gamma * U);
+        alpha_k[i] = alpha;
+
+        // 6. Coordinate Timescale (seconds)
+        dt_k[i] = cfg.tau0 * alpha;
+
+        // --- TRACK 2: PURE CLASSICAL GR (ISOLATED/CLAMPED OVERLAYS) ---
+        U_gr_k[i] = R_hor / r; // Classical Newtonian potential divergence
+        
+        if (r > R_hor) {
+          alpha_gr_k[i] = 1.0 / Math.sqrt(1.0 - (R_hor / r));
+        } else {
+          alpha_gr_k[i] = NaN; // Plotly interprets NaN as a clean line break at the horizon
+        }
+
+        // --- TRACK 3: PURE QG SCALING CORE (ISOLATED/CLAMPED OVERLAYS - APPROACH B) ---
+        const r_eff = Math.max(r, 1e-35); // Numerical safety guard to prevent divide-by-zero at r -> 0
+        const raw_qg_dev = cfg.alpha_q * Math.pow(R_hor / r_eff, cfg.gamma_qg);
+        
+        // Approach B: Deviation-Only Decay to flat space 1.0 using the transition length
+        alpha_qg_k[i] = 1.0 + (raw_qg_dev * Math.exp(-r / L_trans));
+      }
+
+      // Find R_crit (where U >= thresh_crit)
+      let R_crit = null;
+      for (let i=0; i<totalPoints; i++) {
+        if (U_k[i] >= cfg.thresh_crit) { R_crit = r_k[i]; break; }
+      }
+
+      // Find min headroom manually using loop to avoid call stack limits
+      let minB = Infinity;
+      for (let i=0; i<B_k.length; i++) {
+        if (B_k[i] < minB) minB = B_k[i];
+      }
+
+      self.postMessage({
+        r_k: r_k.buffer, U_k: U_k.buffer, alpha_k: alpha_k.buffer, dt_k: dt_k.buffer,
+        U_gr_k: U_gr_k.buffer, alpha_gr_k: alpha_gr_k.buffer, alpha_qg_k: alpha_qg_k.buffer,
+        R_crit, R_hor,
+        min_headroom: minB * 100
+      }, [r_k.buffer, U_k.buffer, alpha_k.buffer, dt_k.buffer, U_gr_k.buffer, alpha_gr_k.buffer, alpha_qg_k.buffer]);
+    };
+  `;
+
+  const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+  const workerURL = URL.createObjectURL(workerBlob);
+
+  const state = { lastRunId: null, runs: {} };
+
+  async function runCompute() {
+    // 1. Process potential input from the JSON Control Interface
+    const jsonStr = document.getElementById('jsonInputBox').value.trim();
+    if (jsonStr) {
+      try {
+        const config = JSON.parse(jsonStr);
+        for (const [id, val] of Object.entries(config)) {
+          // Skip dynamic options arrays starting with underscore
+          if (id.startsWith('_')) continue;
+          const el = document.getElementById(id);
+          if (el) {
+            el.value = val;
+          }
+        }
+      } catch (err) {
+        alert("JSON Parsing Error: Run aborted. Please verify configuration syntax.\n" + err.message);
+        return;
+      }
+    }
+
+    // 2. Read values from finalized DOM inputs
+    const cfg = {
+      mass: Number(document.getElementById('dial_mass').value),
+      eta_max: Number(document.getElementById('dial_eta_max').value),
+      phi0: Number(document.getElementById('dial_phi0').value),
+      beta: Number(document.getElementById('dial_beta').value),
+      L_c: Number(document.getElementById('dial_L_c').value),
+      tau0: Number(document.getElementById('dial_tau0').value),
+      gamma: Number(document.getElementById('dial_gamma').value),
+      stiffness_scale: Number(document.getElementById('dial_stiffness_scale').value),
+      stiffness_mode: document.getElementById('dial_stiffness_mode').value,
+      cadence_law: document.getElementById('dial_cadence_law').value,
+      thresh_elastic: Number(document.getElementById('dial_thresh_elastic').value),
+      thresh_crit: Number(document.getElementById('dial_thresh_crit').value),
+      alpha_q: Number(document.getElementById('dial_alpha_q').value),
+      gamma_qg: Number(document.getElementById('dial_gamma_qg').value),
+      psi0: Number(document.getElementById('dial_psi0').value)
+    };
+
+    const worker = new Worker(workerURL);
+    worker.postMessage(cfg);
+    
+    worker.onmessage = (ev) => {
+      const data = ev.data;
+      state.lastRunId = 'CaBS_' + Date.now();
+      state.runs[state.lastRunId] = { ...data, cfg, timestamp: new Date().toISOString() };
+      
+      updateTelemetry(data);
+      renderMonitor();
+      worker.terminate();
+    };
+  }
+
+  function updateTelemetry(data) {
+    const stateEl = document.getElementById('val_state');
+    if (data.min_headroom < 1) stateEl.textContent = "CRITICAL";
+    else if (data.min_headroom < 50) stateEl.textContent = "STRESSED";
+    else stateEl.textContent = "STABLE";
+    
+    document.getElementById('val_headroom').textContent = data.min_headroom.toFixed(4) + "%";
+    document.getElementById('val_rcrit').textContent = data.R_crit ? data.R_crit.toExponential(2) + "m" : "NONE";
+  }
+
+  function renderMonitor() {
+    const run = state.runs[state.lastRunId];
+    if (!run) return;
+    const view = document.getElementById('decadeToggle').value;
+    
+    let start = 0, end = 2400;
+    if (view === 'A') end = 1200;
+    if (view === 'B') start = 1200;
+
+    const r = new Float64Array(run.r_k).slice(start, end);
+    const U = new Float64Array(run.U_k).slice(start, end);
+    const alpha = new Float64Array(run.alpha_k).slice(start, end);
+    const U_gr = new Float64Array(run.U_gr_k).slice(start, end);
+    const alpha_gr = new Float64Array(run.alpha_gr_k).slice(start, end);
+    const alpha_qg = new Float64Array(run.alpha_qg_k).slice(start, end);
+
+    const commonLayout = {
+      paper_bgcolor: '#000', plot_bgcolor: '#000',
+      margin: { l:60, r:20, t:30, b:40 },
+      xaxis: { gridcolor: '#222', type: 'log', title: { text: 'Radius (m)', font: { size: 10, color: '#666' } }, tickfont: {color: '#666'} },
+      yaxis: { gridcolor: '#222', tickfont: {color: '#666'} },
+      legend: { x: 1, y: 1, xanchor: 'right', yanchor: 'top', bgcolor: 'rgba(0,0,0,0.5)', font: { color: '#eee', size: 9 } }
+    };
+
+    // Utilization Plot (Solid Layering for SVET, Dashed for GR classical reference)
+    const utilLayout = { ...commonLayout, 
+      title: { text: 'SUBSTRATE UTILIZATION (1 - B)', font: { size: 12, color: SVET_GREEN } },
+      yaxis: { ...commonLayout.yaxis, range: [0, 1.1] },
+      shapes: [
+        { type: 'rect', x0: 0, x1: 1, xref: 'paper', y0: 0, y1: run.cfg.thresh_elastic, fillcolor: 'rgba(0, 255, 0, 0.05)', line: {width: 0} },
+        { type: 'rect', x0: 0, x1: 1, xref: 'paper', y0: run.cfg.thresh_elastic, y1: run.cfg.thresh_crit, fillcolor: 'rgba(255, 177, 0, 0.05)', line: {width: 0} },
+        { type: 'rect', x0: 0, x1: 1, xref: 'paper', y0: run.cfg.thresh_crit, y1: 1.1, fillcolor: 'rgba(255, 0, 0, 0.05)', line: {width: 0} }
+      ]
+    };
+    
+    const utilTraces = [
+      { x: r, y: U, mode: 'lines', name: 'Unified SVET', line: { color: SVET_YELLOW, width: 3.5 } },
+      { x: r, y: U_gr, mode: 'lines', name: 'Pure GR (Classical)', line: { color: '#d62728', width: 1.5, dash: 'dash' } }
+    ];
+    Plotly.react('plot_util', utilTraces, utilLayout);
+
+    // Dilation Plot (Solution 1: Solid thick line for SVET, thin dashed/dotted for GR and QG)
+    const alphaLayout = { ...commonLayout, 
+      title: { text: 'OBSERVABLE DILATION (α)', font: { size: 12, color: SVET_BLUE } }
+    };
+    
+    const alphaTraces = [
+      { x: r, y: alpha, mode: 'lines', name: 'Unified SVET', line: { color: SVET_BLUE, width: 3.5 } },
+      { x: r, y: alpha_gr, mode: 'lines', name: 'Pure GR (Schwarzschild)', line: { color: '#d62728', width: 1.5, dash: 'dash' } },
+      { x: r, y: alpha_qg, mode: 'lines', name: 'Pure QG (Domain Window)', line: { color: '#9467bd', width: 1.5, dash: 'dot' } }
+    ];
+    Plotly.react('plot_alpha', alphaTraces, alphaLayout);
+  }
+
+  // JSON Download Handler
+  document.getElementById('downloadJsonBtn').onclick = () => {
+    const run = state.runs[state.lastRunId];
+    if (!run) return alert("No run data available.");
+    const blob = new Blob([JSON.stringify(run, (k,v) => v instanceof ArrayBuffer ? 'Buffer' : v, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Forensic_Audit_${state.lastRunId}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Generate Controls Template Button
+  document.getElementById('genTemplateBtn').onclick = () => {
+    const template = {
+      dial_mass: Number(document.getElementById('dial_mass').value),
+      dial_eta_max: Number(document.getElementById('dial_eta_max').value),
+      dial_phi0: Number(document.getElementById('dial_phi0').value),
+      dial_L_c: Number(document.getElementById('dial_L_c').value),
+      dial_tau0: Number(document.getElementById('dial_tau0').value),
+      dial_beta: Number(document.getElementById('dial_beta').value),
+      dial_gamma: Number(document.getElementById('dial_gamma').value),
+      dial_stiffness_scale: Number(document.getElementById('dial_stiffness_scale').value),
+      dial_stiffness_mode: document.getElementById('dial_stiffness_mode').value,
+      dial_cadence_law: document.getElementById('dial_cadence_law').value,
+      dial_thresh_elastic: Number(document.getElementById('dial_thresh_elastic').value),
+      dial_thresh_crit: Number(document.getElementById('dial_thresh_crit').value),
+      dial_alpha_q: Number(document.getElementById('dial_alpha_q').value),
+      dial_gamma_qg: Number(document.getElementById('dial_gamma_qg').value),
+      dial_psi0: Number(document.getElementById('dial_psi0').value),
+      _options_stiffness_mode: ["linear", "power", "log"],
+      _options_cadence_law: ["inverse", "exp", "linear"]
+    };
+    document.getElementById('jsonInputBox').value = JSON.stringify(template, null, 2);
+  };
+
+  /**
+   * EXPORT BUTTON 1: Full-Resolution Raw Data (Strictly SVET Unified data only)
+   */
+  document.getElementById('exportFullBtn').onclick = () => {
+    const run = state.runs[state.lastRunId];
+    if (!run) return alert("No run data available. Please initiate a stress audit first.");
+    
+    const r = new Float64Array(run.r_k);
+    const U = new Float64Array(run.U_k);
+    const alpha = new Float64Array(run.alpha_k);
+    const dt = new Float64Array(run.dt_k);
+    
+    const rows = ["Radius (m),Utilization (U),Dilation (alpha),dt (seconds)"];
+    for (let i = 0; i < r.length; i++) {
+      rows.push(`${r[i]},${U[i]},${alpha[i]},${dt[i]}`);
+    }
+    
+    const csvBlob = new Blob([rows.join("\n")], { type: 'text/csv' });
+    const url = URL.createObjectURL(csvBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Full_Audit_${state.lastRunId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  /**
+   * EXPORT BUTTON 2: Coarse Uniformly Downsampled Data (Strictly SVET Unified data only)
+   */
+  document.getElementById('exportCoarseBtn').onclick = () => {
+    const run = state.runs[state.lastRunId];
+    if (!run) return alert("No run data available. Please initiate a stress audit first.");
+    
+    const r = new Float64Array(run.r_k);
+    const U = new Float64Array(run.U_k);
+    const alpha = new Float64Array(run.alpha_k);
+    const dt = new Float64Array(run.dt_k);
+    
+    const rows = ["Radius (m),Utilization (U),Dilation (alpha),dt (seconds)"];
+    // Downsample uniformly by taking every 10th point (240 points total)
+    for (let i = 0; i < r.length; i += 10) {
+      rows.push(`${r[i]},${U[i]},${alpha[i]},${dt[i]}`);
+    }
+    
+    const csvBlob = new Blob([rows.join("\n")], { type: 'text/csv' });
+    const url = URL.createObjectURL(csvBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Coarse_Audit_${state.lastRunId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  /**
+   * EXPORT BUTTON 3: Hybrid Adaptive Sliced Domains File (Strictly SVET Unified data only)
+   */
+  document.getElementById('exportSlicedBtn').onclick = () => {
+    const run = state.runs[state.lastRunId];
+    if (!run) return alert("No run data available. Please initiate a stress audit first.");
+    
+    const r = new Float64Array(run.r_k);
+    const U = new Float64Array(run.U_k);
+    const alpha = new Float64Array(run.alpha_k);
+    const dt = new Float64Array(run.dt_k);
+    
+    const th_elastic = run.cfg.thresh_elastic;
+    const th_crit = run.cfg.thresh_crit;
+    
+    const grRows = [];
+    const transRows = [];
+    const qgRows = [];
+    
+    // Sort and selectively downsample based on region
+    for (let i = 0; i < r.length; i++) {
+      const ui = U[i];
+      const rowStr = `${r[i]},${ui},${alpha[i]},${dt[i]}`;
+      
+      if (ui < th_elastic) {
+        // GR Region: Coarse (10x Downsample)
+        if (i % 10 === 0) grRows.push(rowStr);
+      } else if (ui >= th_elastic && ui < th_crit) {
+        // Transition Region: Full Resolution (1x)
+        transRows.push(rowStr);
+      } else {
+        // QG Region: Coarse (10x Downsample)
+        if (i % 10 === 0) qgRows.push(rowStr);
+      }
+    }
+    
+    const lines = [
+      "# ===================================================",
+      "# CaBS FORENSIC ANALYSIS - REGIME DOMAIN SLICES",
+      `# Run ID: ${state.lastRunId}`,
+      `# Timestamp: ${run.timestamp || new Date().toISOString()}`,
+      `# Source Mass Parameter: ${run.cfg.mass} (Solar Units)`,
+      `# Elastic Threshold: ${th_elastic}`,
+      `# Critical Threshold: ${th_crit}`,
+      `# Stiffness Scale: ${run.cfg.stiffness_scale}`,
+      `# Timescale (tau0): ${run.cfg.tau0}`,
+      "# ===================================================",
+      ""
+    ];
+    
+    const headers = "Radius (m),Utilization (U),Dilation (alpha),dt (seconds)";
+
+    // Part 1: GR Regime
+    lines.push(`# --- GR REGIME (U < ${th_elastic}) | Downsampled (10x) ---`);
+    if (grRows.length > 0) {
+      lines.push(headers);
+      lines.push(grRows.join("\n"));
+    } else {
+      lines.push("# [Note: Empty. No data points fell within this regime threshold]");
+    }
+    lines.push("");
+    
+    // Part 2: Transition Regime
+    lines.push(`# --- TRANSITION REGIME (${th_elastic} <= U < ${th_crit}) | Full Resolution ---`);
+    if (transRows.length > 0) {
+      lines.push(headers);
+      lines.push(transRows.join("\n"));
+    } else {
+      lines.push("# [Note: Empty. No data points fell within this regime threshold]");
+    }
+    lines.push("");
+    
+    // Part 3: QG Regime
+    lines.push(`# --- QG REGIME (U >= ${th_crit}) | Downsampled (10x) ---`);
+    if (qgRows.length > 0) {
+      lines.push(headers);
+      lines.push(qgRows.join("\n"));
+    } else {
+      lines.push("# [Note: Empty. Critical threshold was not reached for these parameters]");
+    }
+    
+    const csvBlob = new Blob([lines.join("\n")], { type: 'text/csv' });
+    const url = URL.createObjectURL(csvBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Sliced_Domains_Audit_${state.lastRunId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  document.getElementById('runBtn').onclick = runCompute;
+  document.getElementById('decadeToggle').onchange = renderMonitor;
+  document.getElementById('openDiagnostics').onclick = () => {
+    document.getElementById('diagRaw').textContent = JSON.stringify(state.runs[state.lastRunId], (k,v) => v instanceof ArrayBuffer ? 'Buffer' : v, 2);
+    document.getElementById('diagModal').style.display = 'flex';
+  };
+  document.getElementById('closeDiagBtn').onclick = () => document.getElementById('diagModal').style.display = 'none';
+  </script>
+</body>
+</html>

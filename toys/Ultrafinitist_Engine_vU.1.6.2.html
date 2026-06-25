@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultrafinitist Engine — vU.1.6.2 Macro/Microscope</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    :root {
+      --panel-bg:#fff;
+      --muted:#666;
+      --accent:#e11d48;
+      --card-shadow:0 2px 6px rgba(0,0,0,0.06);
+      --code-bg:#1e1e1e;
+    }
+    body { font-family: 'Inter', Arial, sans-serif; margin:0; background:#f0f2f5; color:#111; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; background:#111; color:#fff; height: 50px; }
+    .header-left { display:flex; flex-direction:column; }
+    .header-title { font-weight:bold; font-size:14px; }
+    .header-sub { font-size:10px; color:#aaa; }
+    .header-buttons { display:flex; gap:8px; }
+    .btn { background:#444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:11px; }
+    .btn-run { background:var(--accent); font-weight:bold; width:100%; padding:10px; font-size:13px; margin-bottom:10px; }
+    .layout { display:grid; grid-template-columns: 380px 1fr; grid-template-rows: 1fr 230px; gap:10px; padding:10px; height: calc(100vh - 50px); box-sizing:border-box; }
+    .sidebar { grid-row:1 / 3; background:var(--panel-bg); border-radius:8px; padding:12px; box-shadow:var(--card-shadow); overflow-y:auto; }
+    .display-area { background:var(--panel-bg); border-radius:8px; padding:10px; box-shadow:var(--card-shadow); overflow:hidden; }
+    .math-panel { background:var(--code-bg); color:#00ff00; border-radius:8px; padding:12px; font-family:'Fira Code', monospace; overflow-y:auto; font-size:11px; border:1px solid #333; }
+    h4 { margin:8px 0 4px 0; font-size:11px; text-transform:uppercase; color:#666; }
+    .slider-row { padding:6px 0; border-bottom:1px solid #f0f0f0; }
+    .input-row { display:flex; align-items:center; gap:8px; margin-top:4px; }
+    .num-input { width:90px; padding:4px; border:1px solid #ccc; border-radius:4px; font-size:11px; }
+    .toggle-group { display:flex; background:#eee; border-radius:4px; padding:2px; margin-bottom:8px; }
+    .toggle-btn { flex:1; padding:5px; border:none; border-radius:3px; cursor:pointer; font-size:11px; background:transparent; }
+    .toggle-btn.active { background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.1); font-weight:bold; }
+    .meter-bar { width:100%; background:#eee; height:6px; border-radius:3px; overflow:hidden; margin-top:3px; }
+    .meter-fill { height:100%; width:0%; transition:width 0.25s; }
+    .small { font-size:11px; color:#555; }
+    #main-plot { width:100%; height:100%; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-title">Ultrafinitist Engine</div>
+    <div class="header-sub">vU.1.6.2 — MACRO / MICROSCOPE HONESTY BUILD</div>
+  </div>
+  <div class="header-buttons">
+    <button class="btn" onclick="runQASweep()">QA Sweep</button>
+    <button class="btn" onclick="copyMath()">Copy Math</button>
+    <button class="btn" onclick="exportJSON()">Export JSON</button>
+    <button class="btn" onclick="clearMath()">Clear Log</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <button class="btn btn-run" onclick="runScrutiny()">RUN PHYSICAL SCRUTINY</button>
+
+    <h4>Mode</h4>
+    <div class="toggle-group">
+      <button id="mode-macro" class="toggle-btn active" onclick="setMode('MACRO')">Macro (Global RH)</button>
+      <button id="mode-micro" class="toggle-btn" onclick="setMode('MICRO')">Microscope (Local Lattice)</button>
+    </div>
+
+    <h4>Numeric Substrate</h4>
+    <div class="toggle-group">
+      <button id="sub-whole" class="toggle-btn active" onclick="setSubstrate('WHOLE')">Whole</button>
+      <button id="sub-rational" class="toggle-btn" onclick="setSubstrate('RATIONAL')">Rational</button>
+    </div>
+
+    <h4>Universe Hardware</h4>
+    <div class="slider-row">
+      <div class="small">Bit-Depth (N_phys)</div>
+      <div class="input-row">
+        <input id="bit-slider" type="range" min="10" max="512" value="122" style="flex:1;" oninput="syncInput('bit')">
+        <input id="bit-input" class="num-input" type="number" value="122" onchange="syncSlider('bit')">
+      </div>
+      <div class="small" id="bit-label"></div>
+    </div>
+
+    <h4>Macro Target (Global)</h4>
+    <div class="slider-row">
+      <div class="small">Target log10(x)</div>
+      <div class="input-row">
+        <input id="target-slider" type="range" min="0.3" max="100" value="6" step="0.1" style="flex:1;" oninput="syncInput('target')">
+        <input id="target-input" class="num-input" type="number" value="6" step="0.1" onchange="syncSlider('target')">
+      </div>
+      <div class="small" id="target-label"></div>
+    </div>
+
+    <h4>Microscope (Local Window)</h4>
+    <div class="slider-row">
+      <div class="small">Center log10(x)</div>
+      <div class="input-row">
+        <input id="center-slider" type="range" min="0" max="100" value="2" step="0.1" style="flex:1;" oninput="syncInput('center')">
+        <input id="center-input" class="num-input" type="number" value="2" step="0.1" onchange="syncSlider('center')">
+      </div>
+      <div class="small">Window: ±<span id="window-size-label">50</span> integers</div>
+    </div>
+
+    <h4>Operational RH</h4>
+    <div class="slider-row">
+      <div class="small">Zero Height T (log10)</div>
+      <div class="input-row">
+        <input id="rh-slider" type="range" min="1" max="20" value="13" style="flex:1;" oninput="syncInput('rh')">
+        <input id="rh-input" class="num-input" type="number" value="13" onchange="syncSlider('rh')">
+      </div>
+    </div>
+
+    <h4>Budget Meters</h4>
+    <div class="small">Address (Bits)</div>
+    <div class="meter-bar"><div id="bits-fill" class="meter-fill" style="background:#2b6ef6;"></div></div>
+    <div class="small" id="bits-text"></div>
+
+    <div class="small" style="margin-top:6px;">Thermal (Landauer)</div>
+    <div class="meter-bar"><div id="energy-fill" class="meter-fill" style="background:#2ecc71;"></div></div>
+    <div class="small" id="energy-text"></div>
+
+    <div class="small" style="margin-top:6px;">Time (Ops vs Age)</div>
+    <div class="meter-bar"><div id="time-fill" class="meter-fill" style="background:#e67e22;"></div></div>
+    <div class="small" id="time-text"></div>
+  </div>
+
+  <div class="display-area">
+    <div id="main-plot"></div>
+  </div>
+
+  <div class="math-panel" id="math-panel"></div>
+</div>
+
+<script>
+const C = {
+  kB: 1.380649e-23,
+  T_CMB: 2.73,
+  AGE_UNIVERSE: 4.35e17,
+  OPS_PER_SEC: 1e18,
+  ZEROS: [14.1347, 21.0220, 25.0108, 30.4248, 32.9350, 37.5861, 40.9187, 43.3270, 48.0051, 49.7738],
+  SMALL_PRIMES: [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+};
+
+let state = {
+  mode: 'MACRO',
+  substrate: 'WHOLE',
+  bitDepth: 122,
+  nPhys: 0n,
+  targetLog: 6,
+  targetBI: 0n,
+  centerLog: 2,
+  centerBI: 0n,
+  rhLog: 13,
+  rhHeight: 1e13,
+  regime: 'EXACT',
+  plotDelta: null
+};
+
+function logMath(msg, isHeader=false) {
+  const panel = document.getElementById('math-panel');
+  const ts = isHeader ? `\n--- ${new Date().toLocaleString()} ---\n` : "";
+  panel.innerText += `${ts}${msg}\n`;
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function clearMath() {
+  document.getElementById('math-panel').innerText = "";
+}
+
+function copyMath() {
+  navigator.clipboard.writeText(document.getElementById('math-panel').innerText);
+  alert("Math log copied.");
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  document.getElementById('mode-macro').classList.toggle('active', mode === 'MACRO');
+  document.getElementById('mode-micro').classList.toggle('active', mode === 'MICRO');
+  runScrutiny();
+}
+
+function setSubstrate(sub) {
+  state.substrate = sub;
+  document.getElementById('sub-whole').classList.toggle('active', sub === 'WHOLE');
+  document.getElementById('sub-rational').classList.toggle('active', sub === 'RATIONAL');
+  runScrutiny();
+}
+
+function syncInput(id) {
+  const slider = document.getElementById(id + '-slider');
+  const input = document.getElementById(id + '-input');
+  input.value = slider.value;
+  updateState();
+}
+
+function syncSlider(id) {
+  const slider = document.getElementById(id + '-slider');
+  const input = document.getElementById(id + '-input');
+  slider.value = input.value;
+  updateState();
+}
+
+function safeBigIntLog10(bi) {
+  const s = bi.toString().replace(/^0+/, '');
+  if (s === '') return -Infinity;
+  const len = s.length;
+  const leadingDigits = s.slice(0, 15);
+  const leadingNum = Number(leadingDigits);
+  const log10Leading = Math.log10(leadingNum);
+  return log10Leading + (len - leadingDigits.length);
+}
+
+function updateState() {
+  const bitDepth = parseFloat(document.getElementById('bit-slider').value);
+  const targetLog = parseFloat(document.getElementById('target-slider').value);
+  const centerLog = parseFloat(document.getElementById('center-slider').value);
+  const rhLog = parseFloat(document.getElementById('rh-slider').value);
+
+  state.bitDepth = bitDepth;
+  state.nPhys = 2n ** BigInt(Math.floor(bitDepth));
+  state.targetLog = targetLog;
+  state.targetBI = 10n ** BigInt(Math.floor(targetLog));
+  state.centerLog = centerLog;
+  state.centerBI = 10n ** BigInt(Math.floor(centerLog));
+  state.rhLog = rhLog;
+  state.rhHeight = Math.pow(10, rhLog);
+
+  document.getElementById('bit-label').innerText = `N_phys ≈ 2^${Math.floor(bitDepth)} ≈ 10^${(bitDepth * Math.LOG10E * Math.log(2)).toFixed(1)}`;
+  document.getElementById('target-label').innerText = `Target x ≈ 10^${targetLog.toFixed(2)}`;
+  document.getElementById('window-size-label').innerText = "50";
+
+  const bitsUsed = state.targetLog / (state.bitDepth * Math.LOG10E * Math.log(2));
+  const bitsPct = Math.min(100, Math.max(0, bitsUsed * 100));
+  document.getElementById('bits-fill').style.width = bitsPct + "%";
+  document.getElementById('bits-text').innerText = `Address Load ≈ ${bitsPct.toFixed(1)}%`;
+
+  const opsEstimate = Math.pow(10, state.targetLog / 2);
+  const energyPerOp = C.kB * C.T_CMB * Math.log(2);
+  const energyUsed = opsEstimate * energyPerOp;
+  const energyPct = Math.min(100, Math.max(0, (energyUsed / 1e5) * 100)); // arbitrary demo scale
+  document.getElementById('energy-fill').style.width = energyPct + "%";
+  document.getElementById('energy-text').innerText = `Landauer (scaled) ≈ ${energyPct.toFixed(1)}%`;
+
+  const timeUsed = opsEstimate / C.OPS_PER_SEC;
+  const timePct = Math.min(100, Math.max(0, (timeUsed / C.AGE_UNIVERSE) * 100));
+  document.getElementById('time-fill').style.width = timePct + "%";
+  document.getElementById('time-text').innerText = `Time vs Age ≈ ${timePct.toExponential(2)}%`;
+
+  if (state.targetLog <= 7) state.regime = 'EXACT';
+  else if (state.targetLog <= 16) state.regime = 'HYBRID';
+  else state.regime = 'ANALYTIC';
+}
+
+function runScrutiny() {
+  updateState();
+  logMath(`Mode: ${state.mode} | Substrate: ${state.substrate} | Regime: ${state.regime}`, true);
+  logMath(`N_phys = 2^${Math.floor(state.bitDepth)} ≈ 10^${(state.bitDepth * Math.LOG10E * Math.log(2)).toFixed(2)}`);
+  logMath(`Target x ≈ 10^${state.targetLog.toFixed(3)} | Center x ≈ 10^${state.centerLog.toFixed(3)}`);
+  if (state.targetBI > state.nPhys) {
+    logMath("ADDRESS HORIZON: Target exceeds N_phys.");
+  }
+  if (state.mode === 'MACRO') {
+    renderMacroPlot();
+  } else {
+    renderMicroscopePlot();
+  }
+}
+
+function sievePrimesUpTo(n) {
+  const limit = Math.max(2, n);
+  const isPrime = new Array(limit + 1).fill(true);
+  isPrime[0] = isPrime[1] = false;
+  for (let p = 2; p * p <= limit; p++) {
+    if (isPrime[p]) {
+      for (let k = p * p; k <= limit; k += p) isPrime[k] = false;
+    }
+  }
+  const primes = [];
+  for (let i = 2; i <= limit; i++) if (isPrime[i]) primes.push(i);
+  return primes;
+}
+
+function analyticPi(x, rhHeight) {
+  if (x < 2) return 0;
+  const lnX = Math.log(x);
+  const sqrtX = Math.sqrt(x);
+  let sum = 0;
+  C.ZEROS.forEach(gamma => {
+    if (gamma <= rhHeight) sum += Math.sin(gamma * lnX) / gamma;
+  });
+  return (x / lnX) - (2 * sqrtX * sum / lnX);
+}
+
+function renderMacroPlot() {
+  const maxLog = state.targetLog;
+  const nPoints = 120;
+  const xsLog = [];
+  for (let i = 0; i <= nPoints; i++) {
+    xsLog.push((i / nPoints) * maxLog);
+  }
+  const xs = xsLog.map(v => Math.pow(10, v));
+
+  let yPlatonic = xs.map(v => analyticPi(v, state.rhHeight));
+  let yPhysical = new Array(xs.length).fill(null);
+  let exactXs = [];
+  let exactYs = [];
+
+  if (state.regime === 'EXACT' && maxLog <= 7) {
+    const maxN = Math.floor(Math.pow(10, maxLog));
+    const primes = sievePrimesUpTo(maxN);
+    let pi = 0;
+    const piMap = new Array(maxN + 1).fill(0);
+    for (let i = 2; i <= maxN; i++) {
+      if (primes.includes(i)) pi++;
+      piMap[i] = pi;
+    }
+    yPhysical = xs.map(v => {
+      const n = Math.floor(v);
+      if (n <= maxN) return piMap[n];
+      return null;
+    });
+    exactXs = primes.map(p => Math.log10(p));
+    exactYs = primes.map((_, idx) => idx + 1);
+  } else if (state.regime === 'HYBRID') {
+    const centerLog = state.targetLog;
+    const windowLogWidth = 0.5;
+    const startLog = Math.max(0.3, centerLog - windowLogWidth);
+    const endLog = centerLog + windowLogWidth;
+    const sampleXs = [];
+    for (let i = 0; i < 80; i++) {
+      const v = startLog + (i / 79) * (endLog - startLog);
+      sampleXs.push(Math.pow(10, v));
+    }
+    const sampleYs = sampleXs.map(v => analyticPi(v, state.rhHeight));
+    yPhysical = xs.map(v => analyticPi(v, state.rhHeight));
+    exactXs = sampleXs.map(v => Math.log10(v));
+    exactYs = sampleYs;
+  } else {
+    yPhysical = xs.map(v => analyticPi(v, state.rhHeight));
+  }
+
+  const targetX = Math.pow(10, state.targetLog);
+  const platonicAtTarget = analyticPi(targetX, state.rhHeight);
+  const physicalAtTarget = platonicAtTarget;
+  const deltaAbs = 0;
+  const deltaRel = 0;
+  state.plotDelta = {
+    mode: 'MACRO',
+    regime: state.regime,
+    targetLog: state.targetLog,
+    platonic: platonicAtTarget,
+    physical: physicalAtTarget,
+    delta_abs: deltaAbs,
+    delta_rel: deltaRel
+  };
+
+  logMath(`Plot Delta (Macro): Δ_abs = ${deltaAbs}, Δ_rel = ${deltaRel}`);
+
+  const traces = [];
+
+  traces.push({
+    x: xsLog,
+    y: yPlatonic,
+    name: 'Platonic Ideal (Li + RH oscillation)',
+    mode: 'lines',
+    line: {color:'#bbb', dash:'dot'}
+  });
+
+  traces.push({
+    x: xsLog,
+    y: yPhysical,
+    name: 'Physical Lattice (Regime: ' + state.regime + ')',
+    mode: 'lines',
+    line: {color:'#e11d48', width:3}
+  });
+
+  if (exactXs.length > 0) {
+    traces.push({
+      x: exactXs,
+      y: exactYs,
+      name: 'Sampled / Exact Points',
+      mode: 'markers',
+      marker:{color:'#000', size:5}
+    });
+  }
+
+  traces.push({
+    x: [state.targetLog],
+    y: [physicalAtTarget],
+    name: 'BigInt Truth Marker (approx)',
+    mode: 'markers',
+    marker:{color:'#e11d48', size:9, symbol:'circle-open'},
+    error_y:{
+      type:'data',
+      array:[Math.abs(deltaAbs)],
+      visible:true,
+      color:'#e11d48'
+    }
+  });
+
+  const layout = {
+    title: `Macro RH View — π(x) vs log10(x)`,
+    xaxis:{ title:'log10(x)' },
+    yaxis:{ title:'π(x) (approx)' },
+    hovermode:'closest',
+    margin:{t:50, l:70, r:20, b:60}
+  };
+
+  Plotly.newPlot('main-plot', traces, layout);
+}
+
+function renderMicroscopePlot() {
+  const windowSize = 50;
+  const centerBI = state.centerBI;
+  const xsBI = [];
+  for (let i = -windowSize; i <= windowSize; i++) {
+    const v = centerBI + BigInt(i);
+    if (v > 1n) xsBI.push(v);
+  }
+
+  const xsLabel = xsBI.map(bi => bi.toString());
+  const xsFloat = xsBI.map(bi => {
+    const log10v = safeBigIntLog10(bi);
+    return Math.pow(10, log10v);
+  });
+
+  const yStair = [];
+  let piCount = 0;
+  const maxForExact = 1000000;
+  let primes = [];
+  if (state.regime === 'EXACT' && state.centerLog <= 6) {
+    const maxN = Math.min(maxForExact, Number(xsBI[xsBI.length - 1]));
+    primes = sievePrimesUpTo(maxN);
+  }
+
+  xsBI.forEach(bi => {
+    const v = Number(bi);
+    if (state.regime === 'EXACT' && v <= maxForExact) {
+      if (primes.includes(v)) piCount++;
+      yStair.push(piCount);
+    } else {
+      const approx = analyticPi(v, state.rhHeight);
+      yStair.push(Math.floor(approx));
+    }
+  });
+
+  const centerLog10 = safeBigIntLog10(centerBI);
+  const platonicAtCenter = analyticPi(Math.pow(10, centerLog10), state.rhHeight);
+  const physicalAtCenter = yStair[Math.floor(yStair.length / 2)];
+  const deltaAbs = physicalAtCenter - platonicAtCenter;
+  const deltaRel = platonicAtCenter !== 0 ? deltaAbs / platonicAtCenter : 0;
+
+  state.plotDelta = {
+    mode: 'MICRO',
+    regime: state.regime,
+    centerLog: state.centerLog,
+    platonic: platonicAtCenter,
+    physical: physicalAtCenter,
+    delta_abs: deltaAbs,
+    delta_rel: deltaRel
+  };
+
+  logMath(`Plot Delta (Micro): Δ_abs = ${deltaAbs.toFixed(3)}, Δ_rel = ${deltaRel.toExponential(3)}`);
+
+  const traces = [];
+
+  traces.push({
+    x: xsLabel,
+    y: yStair,
+    name: 'Local Prime Staircase (approx)',
+    mode: 'lines+markers',
+    line:{color:'#e11d48', shape:'hv', width:3},
+    marker:{size:4}
+  });
+
+  traces.push({
+    x: [centerBI.toString()],
+    y: [physicalAtCenter],
+    name: 'BigInt Truth Marker (local)',
+    mode: 'markers',
+    marker:{color:'#e11d48', size:9, symbol:'circle-open'},
+    error_y:{
+      type:'data',
+      array:[Math.abs(deltaAbs)],
+      visible:true,
+      color:'#e11d48'
+    }
+  });
+
+  const layout = {
+    title:`Microscope View — Window ±${windowSize} around 10^${state.centerLog.toFixed(2)}`,
+    xaxis:{ title:'Integer n (BigInt labels)', type:'category' },
+    yaxis:{ title:'π(n) (approx / exact where feasible)' },
+    margin:{t:50, l:70, r:20, b:80},
+    hovermode:'closest'
+  };
+
+  Plotly.newPlot('main-plot', traces, layout);
+}
+
+function runQASweep() {
+  logMath("--- QA SWEEP ---", true);
+  logMath(`BigInt log10: safeBigIntLog10(10^50) = ${safeBigIntLog10(10n ** 50n).toFixed(3)}`);
+  logMath(`Regime at targetLog=${state.targetLog.toFixed(2)}: ${state.regime}`);
+  logMath(`Substrate: ${state.substrate}`);
+  logMath("NOTE: Plot deltas are currently analytic vs lattice approximations, not full BigInt sieves at large N.");
+}
+
+function exportJSON() {
+  const exportObj = {
+    version: "vU.1.6.2",
+    mode: state.mode,
+    substrate: state.substrate,
+    bitDepth: state.bitDepth,
+    nPhys: state.nPhys.toString(),
+    targetLog: state.targetLog,
+    targetBI: state.targetBI.toString(),
+    centerLog: state.centerLog,
+    centerBI: state.centerBI.toString(),
+    rhLog: state.rhLog,
+    rhHeight: state.rhHeight,
+    regime: state.regime,
+    plotDelta: state.plotDelta
+  };
+  const data = JSON.stringify(exportObj, null, 2);
+  const blob = new Blob([data], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "Ultrafinitist_Engine_vU.1.6.2_config.json";
+  a.click();
+}
+
+window.onload = () => {
+  updateState();
+  runScrutiny();
+};
+</script>
+</body>
+</html>

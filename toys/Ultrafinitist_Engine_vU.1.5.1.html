@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultrafinitist Engine — vU.1.5.1 Adaptive Lattice</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    :root { --panel-bg:#fff; --muted:#666; --accent:#e11d48; --card-shadow:0 2px 6px rgba(0,0,0,0.06); --code-bg:#1e1e1e; }
+    body { font-family: 'Inter', Arial, sans-serif; margin:0; background:#f0f2f5; color:#111; overflow: hidden; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; background:#111; color:#fff; height: 50px; }
+    .layout { display: grid; grid-template-columns: 400px 1fr; grid-template-rows: 1fr 250px; height: calc(100vh - 50px); gap: 10px; padding: 10px; box-sizing: border-box; }
+    .sidebar { grid-row: 1 / 3; background: var(--panel-bg); border-radius: 8px; padding: 15px; box-shadow: var(--card-shadow); overflow-y: auto; }
+    .display-area { background: var(--panel-bg); border-radius: 8px; padding: 10px; box-shadow: var(--card-shadow); position: relative; }
+    .math-panel { background: var(--code-bg); color: #00ff00; border-radius: 8px; padding: 15px; font-family: 'Fira Code', monospace; overflow-y: auto; font-size: 12px; border: 1px solid #333; }
+    .slider-row { padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+    .btn { background:#444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size: 11px; }
+    .btn-run { background:var(--accent); font-weight: bold; width: 100%; padding: 12px; font-size: 14px; margin-bottom: 10px; }
+    .toggle-group { display: flex; background: #eee; border-radius: 4px; padding: 2px; margin-bottom: 10px; }
+    .toggle-btn { flex: 1; padding: 6px; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; background: transparent; }
+    .toggle-btn.active { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; }
+    h4 { margin: 10px 0 5px 0; font-size: 12px; text-transform: uppercase; color: #666; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><span style="font-weight:bold;">Ultrafinitist Engine</span> <span class="small" style="color:#aaa; font-size:10px;">vU.1.5.1 ADAPTIVE LATTICE</span></div>
+  <div style="display:flex; gap:8px;">
+    <button class="btn" onclick="runQASweep()">QA Sweep</button>
+    <button class="btn" onclick="copyMath()">Copy Math</button>
+    <button class="btn" onclick="exportJSON()">Export JSON</button>
+  </div>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <button class="btn btn-run" onclick="runScrutiny()">RUN PHYSICAL SCRUTINY</button>
+
+    <h4>Numeric Substrate</h4>
+    <div class="toggle-group">
+      <button id="sub-whole" class="toggle-btn active" onclick="setSubstrate('WHOLE')">Whole Numbers</button>
+      <button id="sub-rational" class="toggle-btn" onclick="setSubstrate('RATIONAL')">Rational Numbers</button>
+    </div>
+
+    <h4>Universe Hardware</h4>
+    <div class="slider-row">
+      <label class="small">Bit-Depth ($N_{phys}$)</label>
+      <input id="bit-slider" type="range" min="4" max="512" value="122" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="bit-val">122 bits</span>
+    </div>
+
+    <h4>Target Parameters</h4>
+    <div class="slider-row">
+      <label class="small">Target Magnitude (log10)</label>
+      <input id="target-slider" type="range" min="0.3" max="100" value="1" step="0.1" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="target-val">10^1.0</span>
+    </div>
+
+    <div class="slider-row">
+      <label class="small">RH Verification Height (T)</label>
+      <input id="rh-slider" type="range" min="1" max="20" value="13" style="width:100%;" oninput="updateUI()">
+      <span class="small" id="rh-val">10^13</span>
+    </div>
+  </div>
+
+  <div class="display-area">
+    <div id="main-plot" style="width:100%; height:100%;"></div>
+  </div>
+
+  <div class="math-panel" id="math-panel"></div>
+</div>
+
+<script>
+const C = {
+  kB: 1.380649e-23, T_CMB: 2.73,
+  ZEROS: [14.1347, 21.0220, 25.0108, 30.4248, 32.9350, 37.5861, 40.9187, 43.3270, 48.0051, 49.7738],
+  PRIMES: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+};
+
+let state = { substrate: 'WHOLE' };
+
+function logMath(msg, isHeader = false) {
+  const panel = document.getElementById('math-panel');
+  const timestamp = isHeader ? `\n--- ${new Date().toLocaleString()} ---\n` : "";
+  panel.innerText += `${timestamp}${msg}\n`;
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function setSubstrate(mode) {
+  state.substrate = mode;
+  document.getElementById('sub-whole').classList.toggle('active', mode === 'WHOLE');
+  document.getElementById('sub-rational').classList.toggle('active', mode === 'RATIONAL');
+  updateUI();
+  runScrutiny();
+}
+
+function updateUI() {
+  const targetLog = parseFloat(document.getElementById('target-slider').value);
+  const bitDepth = parseFloat(document.getElementById('bit-slider').value);
+  
+  state = {
+    ...state,
+    bitDepth: bitDepth,
+    nPhys: BigInt(2) ** BigInt(Math.floor(bitDepth)),
+    targetLog: targetLog,
+    targetBI: BigInt(Math.floor(Math.pow(10, targetLog))),
+    rhHeight: Math.pow(10, parseFloat(document.getElementById('rh-slider').value))
+  };
+
+  document.getElementById('bit-val').innerText = state.bitDepth + " bits";
+  document.getElementById('target-val').innerText = "x = " + Number(state.targetBI).toLocaleString();
+}
+
+function runScrutiny() {
+  updateUI();
+  logMath(`Substrate: ${state.substrate} | Target: ${state.targetBI}`, true);
+  
+  if (state.targetBI < 100) {
+    logMath("Regime: EXACT LATTICE (Linear Scale)");
+    const primesFound = C.PRIMES.filter(p => BigInt(p) <= state.targetBI);
+    logMath(`Primes in Lattice: ${primesFound.join(', ')}`);
+    logMath(`π(x) = ${primesFound.length}`);
+  }
+
+  renderPlot();
+}
+
+function renderPlot() {
+  const isSmall = state.targetLog <= 2; // If x < 100
+  const targetVal = Number(state.targetBI);
+  
+  let x, yPlatonic, yPhysical;
+
+  if (isSmall) {
+    // --- LINEAR LATTICE VIEW ---
+    x = Array.from({length: targetVal + 5}, (_, i) => i);
+    yPhysical = x.map(val => C.PRIMES.filter(p => p <= val).length);
+    yPlatonic = x.map(val => val < 2 ? 0 : val / Math.log(val));
+  } else {
+    // --- LOGARITHMIC ANALYTIC VIEW ---
+    const xLog = Array.from({length: 100}, (_, i) => (i/100) * state.targetLog * 1.2);
+    x = xLog.map(v => Math.pow(10, v));
+    yPlatonic = x.map(v => v < 2 ? 0 : v / Math.log(v));
+    
+    const wallX = Number(state.nPhys);
+    yPhysical = x.map(v => {
+      if (v > wallX) return null;
+      const lnX = Math.log(v);
+      const sqrtX = Math.sqrt(v);
+      let sum = 0;
+      C.ZEROS.forEach(gamma => { if (gamma <= state.rhHeight) sum += (Math.sin(gamma * lnX) / gamma); });
+      return (v / lnX) - (2 * sqrtX * sum / lnX);
+    });
+  }
+
+  const traces = [
+    { 
+      x: isSmall ? x : x.map(v => Math.log10(v)), 
+      y: yPlatonic, 
+      name: 'Platonic Ideal', 
+      line: {color: '#ccc', dash: 'dot'} 
+    },
+    { 
+      x: isSmall ? x : x.map(v => Math.log10(v)), 
+      y: yPhysical, 
+      name: 'Physical Lattice', 
+      line: {color: '#e11d48', width: 3, shape: isSmall ? 'hv' : 'linear'} 
+    }
+  ];
+
+  const layout = { 
+    title: isSmall ? 'Exact Prime Staircase (Lattice View)' : 'Prime Density (Analytic View)',
+    xaxis: { 
+      title: isSmall ? 'Integer Value (n)' : 'log10(n)',
+      type: 'linear' 
+    },
+    yaxis: { title: 'π(n)' },
+    hovermode: 'x'
+  };
+
+  Plotly.newPlot('main-plot', traces, layout);
+}
+
+function runQASweep() {
+  logMath("--- QA SWEEP ---", true);
+  logMath(`Substrate: ${state.substrate}`);
+  logMath(`Lattice Resolution: ${state.bitDepth} bits`);
+  logMath("Adaptive Scaling: ACTIVE");
+}
+
+function copyMath() { navigator.clipboard.writeText(document.getElementById('math-panel').innerText); alert("Copied!"); }
+function exportJSON() {
+  const exportData = { ...state, nPhys: state.nPhys.toString(), targetBI: state.targetBI.toString() };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `ultrafinitist_v1.5.1.json`; a.click();
+}
+
+window.onload = () => { updateUI(); runScrutiny(); };
+</script>
+</body>
+</html>

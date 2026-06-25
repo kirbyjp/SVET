@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Ultrafinitist Engine vU.1.6.3 — Phase 1.2 (Polished Chassis)</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    html,body { height:100%; margin:0; padding:0; overflow:hidden; background:#0f0f10; color:#eee; font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    #root { display:flex; flex-direction:column; height:100%; }
+    #header { background:#151515; border-bottom:1px solid #2b2b2b; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; }
+    #header .title { font-weight:700; }
+    #header .ver { color:#9aa0a6; font-size:13px; }
+    #main { display:grid; grid-template-columns:300px 1fr; grid-template-rows: auto 280px; grid-template-areas: "controls plots" "math math"; gap:6px; height:calc(100% - 48px); }
+    #controls { grid-area:controls; background:#171717; padding:12px; box-sizing:border-box; border-right:1px solid #222; display:flex; flex-direction:column; gap:10px; }
+    .section-title { color:#9aa0a6; font-size:12px; font-weight:600; text-transform:uppercase; margin-bottom:6px; }
+    .control-row { display:flex; gap:8px; align-items:center; }
+    .control-row label { flex:1 1 auto; font-size:13px; }
+    .control-row select, .control-row input { flex:1 1 auto; background:#1b1b1b; color:#eee; border:1px solid #2b2b2b; padding:6px 8px; font-size:13px; }
+    #btn-run { background:#2e7d32; color:#fff; border:none; padding:8px 10px; cursor:pointer; font-weight:700; border-radius:4px; }
+    #btn-run.disabled { background:#666; cursor:not-allowed; }
+    #plots { grid-area:plots; padding:6px; display:grid; grid-template-rows:1fr 1fr 1fr; gap:6px; box-sizing:border-box; }
+    .plot-container { background:#000; border:1px solid #222; }
+    #math { grid-area:math; display:flex; flex-direction:column; border-top:1px solid #222; background:#121212; }
+    #math-controls { padding:8px; border-bottom:1px solid #222; display:flex; gap:8px; align-items:center; background:#161616; }
+    #math-controls button { background:#2b2b2b; color:#eee; border:1px solid #333; padding:6px 8px; cursor:pointer; }
+    #math-body { padding:8px; overflow:auto; font-family: "SF Mono", Menlo, Consolas, monospace; font-size:12px; line-height:1.4; color:#ddd; }
+    .error-line { color:#ff6b6b; font-weight:700; }
+    .warn-line { color:#ffb86b; }
+    .info-line { color:#9aa0a6; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="header">
+      <div class="title">Ultrafinitist Engine</div>
+      <div class="ver">vU.1.6.3 — Phase 1.2 (Polished Chassis)</div>
+    </div>
+
+    <div id="main">
+      <div id="controls">
+        <button id="btn-run">RUN PHYSICAL SCRUTINY</button>
+
+        <div class="section-title">Mode</div>
+        <div class="control-row">
+          <label for="mode">Mode</label>
+          <select id="mode"><option value="MACRO">Macro</option><option value="MICRO">Micro</option></select>
+        </div>
+
+        <div class="section-title">Substrate</div>
+        <div class="control-row">
+          <label for="substrate">Substrate</label>
+          <select id="substrate"><option value="WHOLE">Whole</option><option value="RATIONAL">Rational</option></select>
+        </div>
+
+        <div class="section-title">Compute Profile</div>
+        <div class="control-row">
+          <label for="profile">Profile</label>
+          <select id="profile"><option value="NORMAL">Normal</option><option value="QUANTUM">Quantum</option><option value="CUSTOM">Custom</option></select>
+        </div>
+
+        <div class="section-title">Universe</div>
+        <div class="control-row">
+          <label for="nphys">log10(N_phys)</label>
+          <input id="nphys" type="number" value="122" />
+        </div>
+
+        <div class="section-title">Target</div>
+        <div class="control-row">
+          <label for="target">log10(n_target)</label>
+          <input id="target" type="number" value="6" />
+        </div>
+
+        <div class="section-title">Phase 1.2 QA</div>
+        <div class="info-line">- Log-space sync; no tiny-scale multiplication.</div>
+        <div class="info-line">- Export triggers real download.</div>
+        <div class="info-line">- Micro centers on target (log-space fallback for extremes).</div>
+      </div>
+
+      <div id="plots">
+        <div id="plot-whole" class="plot-container"></div>
+        <div id="plot-rational" class="plot-container"></div>
+        <div id="plot-ratio" class="plot-container"></div>
+      </div>
+
+      <div id="math">
+        <div id="math-controls">
+          <button id="btn-copy">Copy</button>
+          <button id="btn-clear">Clear</button>
+          <button id="btn-qa">Run QA Sweep</button>
+          <button id="btn-export">Export JSON</button>
+          <div style="flex:1"></div>
+          <div class="info-line">Phase 1.2 — Polished Chassis</div>
+        </div>
+        <div id="math-body"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* -------------------------
+   Math panel logging utils
+   ------------------------- */
+const mathBody = document.getElementById('math-body');
+function appendLine(text, cls) {
+  const ts = new Date().toISOString();
+  const span = document.createElement('div');
+  span.className = cls || '';
+  span.innerText = `[${ts}] ${text}`;
+  mathBody.appendChild(span);
+  mathBody.scrollTop = mathBody.scrollHeight;
+  console.log(text);
+}
+function appendInfo(text){ appendLine(text,'info-line'); }
+function appendWarn(text){ appendLine(text,'warn-line'); }
+function appendError(text){ appendLine(text,'error-line'); }
+function clearMath(){ mathBody.innerHTML=''; }
+
+/* Global error catcher (Black Box Recorder) */
+window.onerror = function(message, source, lineno, colno, error) {
+  const details = `${message} at ${source}:${lineno}:${colno}`;
+  appendError('UNCAUGHT ERROR: ' + details);
+  return false;
+};
+
+/* -------------------------
+   Controls & state
+   ------------------------- */
+const btnRun = document.getElementById('btn-run');
+const modeEl = document.getElementById('mode');
+const substrateEl = document.getElementById('substrate');
+const profileEl = document.getElementById('profile');
+const nphysEl = document.getElementById('nphys');
+const targetEl = document.getElementById('target');
+const btnCopy = document.getElementById('btn-copy');
+const btnClear = document.getElementById('btn-clear');
+const btnQA = document.getElementById('btn-qa');
+const btnExport = document.getElementById('btn-export');
+
+const plotWhole = document.getElementById('plot-whole');
+const plotRational = document.getElementById('plot-rational');
+const plotRatio = document.getElementById('plot-ratio');
+
+const state = {
+  mode: modeEl.value,
+  substrate: substrateEl.value,
+  profile: profileEl.value,
+  log10Nphys: Number(nphysEl.value),
+  log10Target: Number(targetEl.value),
+  xRangeWhole: null,   // [x0,x1] in whole-space (numeric)
+  xRangeLogAlpha: null // [log10(alpha0), log10(alpha1)]
+};
+
+/* -------------------------
+   Boot diagnostics
+   ------------------------- */
+function initDiagnostics(){
+  appendInfo('=== System Diagnostic (Boot) ===');
+  appendInfo('UserAgent: ' + navigator.userAgent);
+  appendInfo('BigInt support: ' + (typeof BigInt !== 'undefined' ? 'YES' : 'NO'));
+  appendInfo('Plotly loaded: ' + (typeof Plotly !== 'undefined' ? 'YES' : 'NO'));
+  appendInfo('Initial Mode: ' + state.mode);
+  appendInfo('Initial Substrate: ' + state.substrate);
+  appendInfo('Initial Profile: ' + state.profile);
+  appendInfo('Initial log10(N_phys): ' + state.log10Nphys);
+  appendInfo('Initial log10(n_target): ' + state.log10Target);
+  appendInfo('=== End Diagnostic ===');
+}
+
+/* -------------------------
+   Utility: BigInt-safe log10 from string
+   returns {log10: number, mantissa: number, exponent: integer}
+   log10(n) = exponent + log10(mantissa) where mantissa in [1,10)
+   ------------------------- */
+function log10FromBigIntString(s, leadingDigits=15){
+  // s is decimal digits string, e.g., "12345678901234567890"
+  // length-1 gives exponent; leading digits give mantissa
+  const len = s.length;
+  const exponent = len - 1;
+  const leading = Number(s.slice(0, Math.min(leadingDigits, s.length)));
+  const leadingLen = Math.min(leadingDigits, s.length);
+  const mantissa = leading / Math.pow(10, leadingLen - 1);
+  const log10Mantissa = Math.log10(mantissa);
+  return { log10: exponent + log10Mantissa, mantissa, exponent };
+}
+
+/* -------------------------
+   Demo data (Phase 1.2)
+   small prime-count demo to exercise plots
+   ------------------------- */
+function isPrime(n){
+  if(n<2) return false;
+  if(n===2) return true;
+  if(n%2===0) return false;
+  const r = Math.floor(Math.sqrt(n));
+  for(let i=3;i<=r;i+=2) if(n%i===0) return false;
+  return true;
+}
+function demoWholeData(maxN=2000){
+  const x=[], y=[];
+  let c=0;
+  for(let n=2;n<=maxN;n++){
+    if(isPrime(n)) c++;
+    x.push(n); y.push(c);
+  }
+  return {x,y};
+}
+function demoRationalData(maxN=2000){
+  // produce log10(alpha) values robustly: log10(alpha) = log10(n) - log10(Nphys)
+  const x=[], y=[];
+  let c=0;
+  const log10N = state.log10Nphys;
+  for(let n=2;n<=maxN;n++){
+    if(isPrime(n)) c++;
+    const log10n = Math.log10(n);
+    const log10alpha = log10n - log10N;
+    x.push(log10alpha); y.push(c);
+  }
+  return {x,y};
+}
+
+/* -------------------------
+   Plot initialization & render (RUN)
+   ------------------------- */
+function renderChassis(){
+  appendInfo('RUN PHYSICAL SCRUTINY: rendering Phase 1.2 chassis (demo data).');
+
+  // generate demo data
+  const whole = demoWholeData(2000);
+  const rational = demoRationalData(2000);
+
+  // Plot 1: Whole (linear n)
+  const traceWhole = { x: whole.x, y: whole.y, type:'scatter', mode:'lines', line:{shape:'hv', color:'#4caf50'}, name:'π(n)' };
+  const layoutWhole = {
+    margin:{l:50,r:10,t:20,b:30}, paper_bgcolor:'#000', plot_bgcolor:'#000',
+    xaxis:{title:'n (Whole substrate)', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}},
+    yaxis:{title:'π(n)', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}}
+  };
+
+  // Plot 2: Rational (we plot log10(alpha) on x)
+  const traceRational = { x: rational.x, y: rational.y, type:'scatter', mode:'lines', line:{color:'#2196f3'}, name:'π(α N_phys)' };
+  const layoutRational = {
+    margin:{l:50,r:10,t:20,b:30}, paper_bgcolor:'#000', plot_bgcolor:'#000',
+    xaxis:{title:'log10(α) = log10(n) - log10(N_phys)', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}},
+    yaxis:{title:'π(α N_phys)', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}}
+  };
+
+  // Plot 3: Ratio placeholder (chameleon axis label will be applied)
+  const traceRatio = { x:[-10,0,10], y:[1,1,1], type:'scatter', mode:'lines', line:{color:'#ff9800', dash:'dot'}, name:'R (placeholder)' };
+  const layoutRatio = {
+    margin:{l:50,r:10,t:20,b:30}, paper_bgcolor:'#000', plot_bgcolor:'#000',
+    xaxis:{title:'Substrate-dependent axis (n or log10(α))', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}},
+    yaxis:{title:'R (stub)', tickfont:{color:'#ccc'}, titlefont:{color:'#ccc'}}
+  };
+
+  const cfg = { scrollZoom:true, displaylogo:false };
+
+  Plotly.newPlot(plotWhole, [traceWhole], layoutWhole, cfg);
+  Plotly.newPlot(plotRational, [traceRational], layoutRational, cfg);
+  Plotly.newPlot(plotRatio, [traceRatio], layoutRatio, cfg);
+
+  // attach sync handlers
+  attachSync(plotWhole, 'WHOLE');
+  attachSync(plotRational, 'RATIONAL');
+  attachSync(plotRatio, 'RATIO');
+
+  applySubstrate(); // label axes correctly
+  // If mode is MICRO, center on target
+  if(state.mode === 'MICRO') centerOnTarget();
+  appendInfo('Render complete. Plots are interactive. Use mouse wheel to zoom; zooms synchronize.');
+}
+
+/* -------------------------
+   Sync logic (LOG-SPACE)
+   We represent rational axis as log10(alpha).
+   Mapping:
+     log10(alpha) = log10(n) - log10(N_phys)
+   For whole->rational: compute log10(n0), log10(n1) then subtract log10Nphys.
+   For rational->whole: compute n0 = 10^(log10(alpha)+log10Nphys) but only if safe; otherwise log message.
+   ------------------------- */
+function attachSync(div, kind){
+  div.on('plotly_relayout', (ev) => {
+    // look for xaxis.range changes
+    const x0 = ev['xaxis.range[0]'], x1 = ev['xaxis.range[1]'];
+    if(x0 !== undefined && x1 !== undefined){
+      if(kind === 'WHOLE'){
+        state.xRangeWhole = [Number(x0), Number(x1)];
+        syncFromWhole();
+      } else if(kind === 'RATIONAL'){
+        // here x is log10(alpha)
+        state.xRangeLogAlpha = [Number(x0), Number(x1)];
+        syncFromLogAlpha();
+      } else if(kind === 'RATIO'){
+        // chameleon: follow substrate
+        if(state.substrate === 'WHOLE'){
+          state.xRangeWhole = [Number(x0), Number(x1)];
+          syncFromWhole();
+        } else {
+          state.xRangeLogAlpha = [Number(x0), Number(x1)];
+          syncFromLogAlpha();
+        }
+      }
+    }
+  });
+}
+
+function syncFromWhole(){
+  const r = state.xRangeWhole;
+  if(!r) return;
+  // compute log10(n0), log10(n1) robustly
+  const n0 = r[0], n1 = r[1];
+  if(n0 <= 0 || n1 <= 0){ appendWarn('syncFromWhole: non-positive n-range encountered'); return; }
+  const log10n0 = Math.log10(n0);
+  const log10n1 = Math.log10(n1);
+  const log10N = state.log10Nphys;
+  const la0 = log10n0 - log10N;
+  const la1 = log10n1 - log10N;
+  state.xRangeLogAlpha = [la0, la1];
+
+  // update plots: whole uses numeric range, rational uses log10(alpha) range
+  Plotly.relayout(plotWhole, {'xaxis.range': [n0, n1]});
+  Plotly.relayout(plotRational, {'xaxis.range': [la0, la1]});
+  // ratio x-axis follows substrate
+  if(state.substrate === 'WHOLE'){
+    Plotly.relayout(plotRatio, {'xaxis.range': [n0, n1]});
+  } else {
+    Plotly.relayout(plotRatio, {'xaxis.range': [la0, la1]});
+  }
+
+  appendInfo(`SyncFromWhole: n-range=[${n0},${n1}] → log10(α)-range=[${la0.toExponential(3)}, ${la1.toExponential(3)}]`);
+}
+
+function syncFromLogAlpha(){
+  const r = state.xRangeLogAlpha;
+  if(!r) return;
+  const la0 = r[0], la1 = r[1];
+  const log10N = state.log10Nphys;
+  // compute n-range as 10^(la + log10N) if safe
+  const n0_log = la0 + log10N;
+  const n1_log = la1 + log10N;
+  // if logs are within safe numeric exponent range, convert; else log a message and set whole range to null
+  const MAX_SAFE_LOG = 308; // beyond this Math.pow(10, x) will overflow to Infinity
+  if(n0_log < MAX_SAFE_LOG && n1_log < MAX_SAFE_LOG){
+    const n0 = Math.pow(10, n0_log);
+    const n1 = Math.pow(10, n1_log);
+    state.xRangeWhole = [n0, n1];
+    Plotly.relayout(plotWhole, {'xaxis.range': [n0, n1]});
+    appendInfo(`SyncFromLogAlpha: log10(α)-range=[${la0},${la1}] → n-range=[${n0},${n1}]`);
+  } else {
+    // fallback: do not set numeric whole range (would overflow). Keep whole plot as-is and log.
+    state.xRangeWhole = null;
+    appendWarn('SyncFromLogAlpha: computed n-range exceeds numeric limits; preserving log-space view only.');
+  }
+  // update rational plot range (log10 alpha)
+  Plotly.relayout(plotRational, {'xaxis.range': [la0, la1]});
+  if(state.substrate === 'WHOLE'){
+    // ratio follows whole but whole may be null
+    if(state.xRangeWhole) Plotly.relayout(plotRatio, {'xaxis.range': state.xRangeWhole});
+  } else {
+    Plotly.relayout(plotRatio, {'xaxis.range': [la0, la1]});
+  }
+}
+
+/* -------------------------
+   Substrate behavior & axis labels
+   ------------------------- */
+function applySubstrate(){
+  if(!plotWhole.data) return;
+  if(state.substrate === 'WHOLE'){
+    Plotly.relayout(plotWhole, {'xaxis.title.text': 'n (Whole substrate)'});
+    Plotly.relayout(plotRational, {'xaxis.title.text': 'log10(α) = log10(n) - log10(N_phys)'});
+    Plotly.relayout(plotRatio, {'xaxis.title.text': 'n (Ratio, Whole substrate)'});
+  } else {
+    Plotly.relayout(plotWhole, {'xaxis.title.text': 'n (Whole view)'});
+    Plotly.relayout(plotRational, {'xaxis.title.text': 'log10(α) = log10(n) - log10(N_phys) (Rational substrate)'});
+    Plotly.relayout(plotRatio, {'xaxis.title.text': 'log10(α) (Ratio, Rational substrate)'});
+  }
+  appendInfo(`Substrate set to ${state.substrate}. Ratio axis follows substrate.`);
+  // preserve zoom: if we have ranges, re-sync
+  if(state.substrate === 'WHOLE' && state.xRangeWhole) syncFromWhole();
+  else if(state.substrate === 'RATIONAL' && state.xRangeLogAlpha) syncFromLogAlpha();
+}
+
+/* -------------------------
+   Micro centering
+   - For reasonable log10Target (< 300) we compute numeric center and set whole axis.
+   - For extreme log10Target, we center in log-space and log the fallback.
+   ------------------------- */
+function centerOnTarget(){
+  const t = state.log10Target;
+  appendInfo(`Centering microscope on log10(n_target) = ${t}`);
+  const halfWindowLog = 1.0; // ±1 decade by default in micro mode
+  const log10N = state.log10Nphys;
+
+  // Rational plot: center log10(alpha) around (log10Target - log10N)
+  const centerLogAlpha = t - log10N;
+  const la0 = centerLogAlpha - halfWindowLog;
+  const la1 = centerLogAlpha + halfWindowLog;
+  state.xRangeLogAlpha = [la0, la1];
+  Plotly.relayout(plotRational, {'xaxis.range': [la0, la1]});
+  Plotly.relayout(plotRatio, {'xaxis.range': state.substrate === 'RATIONAL' ? [la0, la1] : undefined});
+
+  // Whole plot: attempt numeric center if safe
+  const centerWholeLog = t;
+  const MAX_SAFE_LOG = 308;
+  if(centerWholeLog + halfWindowLog < MAX_SAFE_LOG){
+    const n0 = Math.pow(10, centerWholeLog - halfWindowLog);
+    const n1 = Math.pow(10, centerWholeLog + halfWindowLog);
+    state.xRangeWhole = [n0, n1];
+    Plotly.relayout(plotWhole, {'xaxis.range': [n0, n1]});
+    if(state.substrate === 'WHOLE') Plotly.relayout(plotRatio, {'xaxis.range': [n0, n1]});
+    appendInfo(`Micro centered numeric whole-range ≈ [${n0.toExponential(3)}, ${n1.toExponential(3)}]`);
+  } else {
+    // fallback: cannot represent numeric whole-range; keep log-space rational centered and log
+    state.xRangeWhole = null;
+    appendWarn('Micro centering: numeric whole-range exceeds safe numeric exponent; using log-space centering for rational view only.');
+  }
+}
+
+/* -------------------------
+   Export JSON (real download)
+   ------------------------- */
+function exportJSON(){
+  const payload = {
+    version: 'vU.1.6.3-phase1.2',
+    mode: state.mode,
+    substrate: state.substrate,
+    profile: state.profile,
+    log10Nphys: state.log10Nphys,
+    log10Target: state.log10Target,
+    note: 'Phase 1.2 chassis; no Li(n), no ratio math, no circuit breakers.'
+  };
+  const json = JSON.stringify(payload, null, 2);
+  // log to math panel
+  appendInfo('Export JSON prepared (download will start).');
+  appendInfo(json);
+
+  // create blob and trigger download
+  try {
+    const blob = new Blob([json], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vu_1_6_3_phase1_2_export.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    appendInfo('Export download triggered.');
+  } catch (e) {
+    appendError('Export failed: ' + String(e));
+  }
+}
+
+/* -------------------------
+   Event wiring
+   ------------------------- */
+modeEl.addEventListener('change', () => {
+  state.mode = modeEl.value;
+  appendInfo('Mode set to ' + state.mode);
+  if(state.mode === 'MICRO') centerOnTarget();
+});
+substrateEl.addEventListener('change', () => {
+  state.substrate = substrateEl.value;
+  appendInfo('Substrate set to ' + state.substrate);
+  applySubstrate();
+});
+profileEl.addEventListener('change', () => { state.profile = profileEl.value; appendInfo('Profile set to ' + state.profile); });
+nphysEl.addEventListener('change', () => { state.log10Nphys = Number(nphysEl.value); appendInfo('log10(N_phys) set to ' + state.log10Nphys); });
+targetEl.addEventListener('change', () => { state.log10Target = Number(targetEl.value); appendInfo('log10(n_target) set to ' + state.log10Target); });
+
+btnRun.addEventListener('click', () => {
+  // disable run button briefly to avoid accidental double-run
+  btnRun.disabled = true; btnRun.classList.add('disabled');
+  setTimeout(()=>{ btnRun.disabled=false; btnRun.classList.remove('disabled'); }, 600);
+  renderChassis();
+});
+
+btnClear.addEventListener('click', () => { clearMath(); appendInfo('Math panel cleared.'); });
+btnCopy.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(mathBody.innerText || '');
+    appendInfo('Math panel copied to clipboard.');
+  } catch(e){ appendError('Copy failed: ' + String(e)); }
+});
+btnQA.addEventListener('click', () => {
+  appendInfo('QA Sweep (Phase 1.2):');
+  appendInfo(`- Mode: ${state.mode}`);
+  appendInfo(`- Substrate: ${state.substrate}`);
+  appendInfo(`- Profile: ${state.profile}`);
+  appendInfo(`- log10(N_phys): ${state.log10Nphys}`);
+  appendInfo(`- log10(n_target): ${state.log10Target}`);
+  appendInfo('- Verify: log-space sync active; no tiny-scale multiplication.');
+  appendInfo('- Verify: Export triggers download; math panel logs export.');
+  appendInfo('- Verify: Micro centers on target (log-space fallback for extremes).');
+});
+btnExport.addEventListener('click', exportJSON);
+
+/* -------------------------
+   Boot
+   ------------------------- */
+window.addEventListener('load', () => {
+  appendInfo('Ultrafinitist Engine vU.1.6.3 Phase 1.2 booting...');
+  initDiagnostics();
+  // auto QA sweep
+  btnQA.click();
+  appendInfo('Ready. Adjust controls; press RUN PHYSICAL SCRUTINY to render.');
+});
+</script>
+</body>
+</html>
