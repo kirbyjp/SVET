@@ -489,18 +489,17 @@ $$U = \frac{S}{B}$$
 **Definition:** Coherence Length; hops a pattern can propagate before decohering into $H$.  
 **Forensic Role:** Measures the "Life Expectancy" of a coherent signal.
 
-### $\Gamma_p$ — "Gamma‑p" (Constraint‑Set Stability Margin)
-**Type:** Derived Diagnostic  
-**Definition:** A post‑facto scalar summary of how close the local strain $S(x)$ is to the invariant substrate yield threshold $\kappa_{\text{yield}}$. $\Gamma_p$ carries no physical agency and does not modify substrate behavior.  
+### $\Gamma_p$ — "Gamma-p" (Constraint-Set Stability Margin)
+**Type:** Derived Diagnostic (Ratios & Metrics)  
+**Definition:** A post-facto scalar summary of how close the local strain $S(x)$ is to the invariant node-set-level yield threshold $\kappa_{\text{yield}}$ [1]. $\Gamma_p$ carries no physical agency and does not modify node-set behavior [1].  
 **Mathematical Form:**  
 $$\Gamma_p(x) \equiv 1 - \frac{S(x)}{\kappa_{\text{yield}}}$$  
-where $S(x)$ is the local strain and $\kappa_{\text{yield}}$ is the fixed node‑set‑level capacity limit.  
+where $S(x)$ is the local strain and $\kappa_{\text{yield}}$ is the fixed node-set-level capacity limit [1].  
 **Interpretation:**  
-* $\Gamma_p = 1$ → zero strain.  
-* $\Gamma_p = 0$ → at the yield threshold.  
-* $\Gamma_p$ is strictly clamped to $[0,1]$; any attempted strain beyond the limit is diverted into $\Delta H$ while $\Gamma_p$ remains pinned at $0$.  
-**Forensic Role:**  
-A convenience metric summarizing the remaining stability margin of a coherence‑constraint set. It does not raise thresholds, throttle dissipation, or influence the update rule. All dissipation is the instantaneous arithmetic remainder of an overloaded exaction event.
+*   $\Gamma_p = 1 \to$ zero local strain.  
+*   $\Gamma_p = 0 \to$ at the yield threshold ($S(x) = \kappa_{\text{yield}}$).  
+*   $\Gamma_p$ is strictly clamped to the interval $[0,1]$; any attempted strain exceeding the limit ($S(x) > \kappa_{\text{yield}}$) is immediately diverted into $\Delta H$ while $\Gamma_p$ remains pinned at $0$ [1].  
+**Forensic Role:** A convenience metric summarizing the remaining stability margin of a coherence-constraint set [1]. It does not raise thresholds, throttle dissipation, or influence the update rule [1]. All dissipation is the instantaneous arithmetic remainder of an overloaded exaction event [1].
 
 ### $C(x,v)$ — "Coherence Cost Density"
 **Type:** Derived Metric  
