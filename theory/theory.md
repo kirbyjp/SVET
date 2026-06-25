@@ -1260,22 +1260,22 @@ In SVET, material deformation is not governed by continuous physical forces or f
 In the elastic regime, the local strain $S(x)$ increases while the coherence-constraint set of the pattern remains entirely intact. The local available budget is sufficient to satisfy the local and adjacency exaction demands without requiring any modifications to the pattern's configuration. When the external exaction load is removed, the pattern reconstructs its original configuration because no permanent coherence-constraint reconfiguration has occurred.
 
 #### 11.6.2 The Arithmetic Collapse Threshold (The Yield Point)
-As local strain $S(x)$ approaches the node-set-level yield threshold $\kappa_{\text{yield}}$, the node set can no longer satisfy the requested adjacency-coherent continuation within the available tick-budget. Any attempted exaction exceeding this limit is immediately clamped, with the unresolvable excess diverted into the incoherent channel as a coherence-shedding increment $\Delta H$ to maintain local ledger closure. This local arithmetic subtraction marks the yield point.
+As local strain $S(x)$ approaches the node-set-level yield threshold $\kappa_{\text{yield}}$, the node set can no longer satisfy the requested adjacency-coherent continuation within the available tick-budget $B$. Any attempted exaction exceeding this limit is immediately clamped, with the unresolvable excess diverted into the incoherent channel as a coherence-shedding increment $\Delta H$ to maintain local ledger closure. This local arithmetic subtraction marks the yield point.
 
 #### 11.6.3 Plastic Regime (Constraint-Set Reconfiguration)
-Plastic deformation is the permanent, step-by-step reconfiguration of a material’s coherence-constraint set following a local coherence-shedding event. Once local strain $S(x)$ reaches the yield threshold $\kappa_{\text{yield}}$, the local update rules resolve the exaction conflict by permanently altering the local adjacency-coherent structure. The resulting $\Delta H$ output dissipates, but the updated constraint topology persists as the new target for all subsequent node-tick reconstructions. This mechanism is the SVET analogue of dislocation motion, slip, and permanent set in classical materials science, occurring without any background metric or field-theory dynamics.
+Plastic deformation is the permanent, step-by-step reconfiguration of a material's coherence-constraint set following a local coherence-shedding event. Once local strain $S(x)$ reaches the yield threshold $\kappa_{\text{yield}}$, the local update rules resolve the exaction conflict by permanently altering the local adjacency-coherent structure. The resulting $\Delta H$ output dissipates, but the updated constraint topology persists and becomes the new target for all subsequent node-tick reconstructions. This mechanism is the SVET analogue of dislocation motion, slip, and permanent set in classical materials science, occurring without any background metric or field-theory dynamics.
 
 #### 11.6.4 Residual Strain, Material Memory, and Work Hardening
 Because the coherence-constraint set is permanently altered, the material retains a physical memory of the high-strain event. This memory is encoded directly in the updated constraint topology, not in the incoherent $H$-channel. 
 
 Crucially, this reconfigured topology expands its effective adjacency footprint, distributing future exaction loads across a larger local neighborhood. This reduces local strain density during subsequent deformation attempts, naturally increasing the effective stability margin and producing the macroscopic signature of work hardening.
 
-#### 11.6.5 The Stability Margin ($\Gamma_p$) as a Derived Diagnostic
-Although not an ontological primitive of the node set, the stability margin $\Gamma_p$ serves as a practical, derived diagnostic for materials-science applications. It summarizes the local stability of a coherence-constraint set under local strain:
-$$\Gamma_p(x) = 1 - \frac{S(x)}{\kappa_{\text{yield}}}$$
-$\Gamma_p(x)$ is a spatially dependent local parameter that is bounded as:
-$$\mathcal{U} \to 1 \quad \Rightarrow \quad \Gamma_p \to 0$$
-This ensures that the pattern's stability vanishes near high-strain boundaries, driving the pattern to undergo complete coherence-catastrophe and divert its remaining update demand into the incoherent channel.
+#### 11.6.5 Stability Margin ($\Gamma_p$) as a Derived Diagnostic
+Although not an ontological primitive of the node set, the stability margin $\Gamma_p$ serves as a practical, derived diagnostic for materials-science applications. It provides a post-facto scalar summary of how close the local strain $S(x)$ is to the invariant, node-set-level yield threshold $\kappa_{\text{yield}}$:
+$$\Gamma_p(x) \equiv 1 - \frac{S(x)}{\kappa_{\text{yield}}}$$
+$\Gamma_p(x)$ is strictly clamped to the interval $[0,1]$, where $\Gamma_p = 0$ marks the yield threshold. At extreme strain levels, we observe:
+$$U(x) \to 1 \quad \Rightarrow \quad \Gamma_p(x) \to 0$$
+This parameter carries no physical agency and does not modify local update resolution; it is a convenience metric summarizing the remaining stability margin of a coherence-constraint set under strain [1]. All dissipation remains the instantaneous, arithmetic remainder of an overloaded exaction event, with variations in $\Gamma_p(x)$ serving as a diagnostics tool to track the cumulative evolution of constraint-set configurations [1].
 
 ---
 
