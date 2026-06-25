@@ -489,17 +489,18 @@ $$U = \frac{S}{B}$$
 **Definition:** Coherence Length; hops a pattern can propagate before decohering into $H$.  
 **Forensic Role:** Measures the "Life Expectancy" of a coherent signal.
 
-### $\Gamma_p$ — "Gamma-p" (Constraint-Set Stability Margin)
-**Type:** Derived Diagnostic (Ratios & Metrics)  
-**Definition:** A local scalar summary of the stability margin of a pattern’s coherence-constraint set under local strain [1]. $\Gamma_p(x)$ quantifies how close the local strain $S(x)$ is to the node-set-level yield threshold $\kappa_{\text{yield}}$, beyond which the local ledger must shed excess exaction into the incoherent channel ($\Delta H$) [1].  
+### $\Gamma_p$ — "Gamma‑p" (Constraint‑Set Stability Margin)
+**Type:** Derived Diagnostic  
+**Definition:** A post‑facto scalar summary of how close the local strain $S(x)$ is to the invariant substrate yield threshold $\kappa_{\text{yield}}$. $\Gamma_p$ carries no physical agency and does not modify substrate behavior.  
 **Mathematical Form:**  
 $$\Gamma_p(x) \equiv 1 - \frac{S(x)}{\kappa_{\text{yield}}}$$  
-where $S(x)$ is the local strain and $\kappa_{\text{yield}}$ is the node-set-level structural constant defining the maximum coherent load an adjacency neighborhood can process before clamping [1].  
+where $S(x)$ is the local strain and $\kappa_{\text{yield}}$ is the fixed node‑set‑level capacity limit.  
 **Interpretation:**  
-*   $\Gamma_p = 1$ $\to$ zero local strain.  
-*   $\Gamma_p = 0$ $\to$ at the yield threshold ($S(x) = \kappa_{\text{yield}}$).  
-*   $\Gamma_p$ is strictly clamped to the interval $[0,1]$; any attempted strain exceeding the limit ($S(x) > \kappa_{\text{yield}}$) is immediately diverted into $\Delta H$ while $\Gamma_p$ remains pinned at $0$ [1].  
-**Forensic Role:** Provides a materials-science-friendly stability indicator that bridges classical descriptors (yield strength, ductility, work hardening) with SVET’s discrete update rules [1]. $\Gamma_p(x)$ is not an ontological primitive; it is a convenience metric summarizing the local stability margin of a coherence-constraint set.
+* $\Gamma_p = 1$ → zero strain.  
+* $\Gamma_p = 0$ → at the yield threshold.  
+* $\Gamma_p$ is strictly clamped to $[0,1]$; any attempted strain beyond the limit is diverted into $\Delta H$ while $\Gamma_p$ remains pinned at $0$.  
+**Forensic Role:**  
+A convenience metric summarizing the remaining stability margin of a coherence‑constraint set. It does not raise thresholds, throttle dissipation, or influence the update rule. All dissipation is the instantaneous arithmetic remainder of an overloaded exaction event.
 
 ### $C(x,v)$ — "Coherence Cost Density"
 **Type:** Derived Metric  
