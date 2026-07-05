@@ -836,14 +836,17 @@ The gradient extends outward from the Planck core. The **Coherence Horizon** is 
 **3. Horizon-Level Evaporation**  
 Evaporation occurs at the horizon boundary, not at the core. The boundary is where the extended gradient's local strain interacts with the Local Floor Budget $B_0(x)$ of the surrounding vacuum [1]. This produces outward redistribution of $\Delta H$ without requiring cross-horizon transport from the core.
 
+**3. Horizon-Level Evaporation**  
+Evaporation occurs at the horizon boundary, not at the core. The boundary is where the extended gradient's local strain interacts with the Local Floor Budget $B_0(x)$ of the surrounding vacuum [1]. This produces outward redistribution of $\Delta H$ without requiring cross-horizon transport from the core [1].
+
 #### Unified Interpretation
 
-*   The Planck core is the only region where $U = 1$ and Coherence-Catastrophe occurs.  
+*   The Planck core is the only region where $U = 1$ and Coherence-Catastrophe occurs [1].  
 *   The horizon is a one-way causal gate created by the cadence suppression gradient.  
 *   The gradient itself replaces geometric curvature and ensures:
     *   no region ever halts its processing loop,  
     *   no infinite stacking occurs,  
-    *   and horizon-level evaporation emerges naturally from adjacency-indexed timing pressure.
+    *   and horizon-level evaporation emerges naturally from adjacency-indexed cadence-suppression gradients [1].  
 
 Singularities are therefore **finite coherence-catastrophe zones**, not geometric infinities.
 
