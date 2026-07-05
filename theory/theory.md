@@ -1181,8 +1181,37 @@ $$R \le R_s = \frac{2GM}{c^2}$$
 #### Universality Across Scales
 The identical physical mechanism governs stellar-mass black holes, supermassive black holes, and micro-black holes formed by Planck-scale probes. All share the same fundamental features: a finite, saturated interior governed by asymptotic cadence collapse, and a coherence horizon defined by the limit of the local update budget.
 
-### 8.5 Hill vs Hole Duality
-*TODO: Present the Hill vs Hole duality: GR's negative potential well vs SVET's positive excitation hill. Show how weak‑field observables coincide while mechanisms differ.*
+### 8.5 Hill vs. Hole Duality
+
+To establish the general relativistic correspondence layer, we must clarify the fundamental physical contrast between the continuous geometric potential well of General Relativity and the discrete, exaction-spending update ledger of SVET. 
+
+#### 1. The Conceptual Contrast
+*   **General Relativity (The Potential Hole):** Classical physics models gravity as a negative potential well, a geometric "hole" warped into a continuous spacetime manifold. Spacetime itself acts as an active, deformable background that is bent by the presence of mass, pulling trajectories inward [1].
+*   **SVET (The Exaction Hill):** In contrast, SVET models gravity as a positive exaction-strain hill resting on a completely flat, static, and non-deforming node set. The node set does not warp, bend, or pull; it simply exists as static adjacency and available budget. A high-exaction-density exactor pattern does not "dig a hole" in space; rather, its highly complex exactions compel the local node set to spend its update budget, causing local utilization ($U = S/B$) to inflate [1]. 
+
+This localized budget expenditure manifests as a positive "utilization hill." Time dilation is not a descent into a geometric well, but an ascent onto a highly utilized exaction-strain hill, where the pattern's effective cadence slows because the local nodes are heavily burdened by background spending.
+
+#### 2. The Weak-Field Shadow (Local Equivalence)
+Despite operating on opposite physical mechanisms, one geometric and negative, the other dynamical and positive, the two theories cast the identical mathematical shadow in the weak-field limit [1].
+
+In General Relativity, the coordinate time interval $dt$ required to resolve a local proper time step $d\tau$ at radius $r$ in a weak gravitational potential $\Phi = -\frac{GM}{r}$ is expressed via the inverse square root:
+$$dt = \frac{d\tau}{\sqrt{1 - \frac{2GM}{r c^2}}} \approx d\tau \left(1 + \frac{GM}{r c^2}\right)$$
+
+In SVET, the local coordinate update interval $dt(r)$ required to complete a pattern-level exaction-resolution step scales with the local update latency (the cadence slowdown) driven by local utilization $U(r)$ [1]:
+$$dt(r) = \tau_0 \alpha(r) = \tau_0 \left(\frac{1}{1 - U(r)}\right)$$
+Evaluating this coordinate update interval relative to a distant, un-strained reference tick ($dt_0 = \tau_0$) in the weak-field limit yields the positive series expansion:
+$$dt(r) = dt_0 \left(\frac{1}{1 - U(r)}\right) \approx dt_0 \big(1 + U(r)\big)$$
+
+Under the weak-field correspondence mapping:
+$$U(r) \;\leftrightarrow\; \frac{GM}{r c^2}$$
+these two coordinate time interval equations collapse onto the identical positive-sign coordinate dilation shadow [1]. The local cadence-suppression gradient ($\nabla \tau_{\text{eff}}$) of the static node set perfectly reproduces the gravitational redshift and lensing behaviors predicted by General Relativity's metric tensor.
+
+#### 3. Strong-Field Divergence (Singularity Avoidance)
+While the two theories match far out in the weak-field regime, they diverge cleanly in the strong-field limit near $U(r) \to 1$ [1]. 
+
+In General Relativity, because the math has no self-limiting structural ceiling, the negative well continues down to an infinite coordinate singularity at the center ($R \to 0$), resulting in infinite curvature and a breakdown of physical laws.
+
+In SVET, the local exaction-utilization hill is bounded asymptotically by the Planck Saturation Ceiling ($U \le 1$). Through the mechanism of Asymptotic Cadence Collapse, each step toward saturation ($U \to 1$) requires exponentially higher local exaction densities, producing exponentially larger slowdowns in the effective cadence ($\tau_{\text{eff}} \to \infty$) without ever reaching a literal halt in parameter evolution [1]. The interior never reaches a true cessation of parameter updates; rather, it approaches this non-singular, stable state asymptotically, completely eliminating the mathematical singularities of General Relativity [1].
 
 ### 8.6 Relativistic Stability Limits and Tidal Fracture
 While gravity is geometrically described by spatial gradients of the cadence field ($\nabla \tau_{\text{eff}}$), the physical entities propagating through these fields are finite, extended coherence-patterns. Under extreme conditions, these patterns experience structural degradation:
