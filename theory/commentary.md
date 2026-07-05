@@ -227,6 +227,37 @@ Coherence-strain is not an active physical field. It is a non-field, ledger-leve
 
 **Detailed Analysis:**  
 The fundamental ontology of SVET consists strictly of the static node set, its local update rules, and propagating exaction patterns. Coherence-strain is the local, tick-indexed bookkeeping of how a pattern's exaction demands modify the local available budget and the resulting local latency at neighboring nodes. No new, independent physical fields are introduced; strain is an emergent property of the local update rules' mechanical response to pattern exactions, not a standalone spatial entity.
+
+### 6.8.2 Refutation of the "Medium" Misconception
+
+**Misconception:** "Coherence-strain ($S$) represents a physical medium, fluid, or continuous material filling space." [1]
+
+**SVET Ontological Correction:**  
+There is no physical medium. The node set is not composed of fluid, matter, or "stuff"; it is a non-geometric, abstract ensemble of static nodes connected purely by adjacency relations and governed by local update rules [1].
+
+**Detailed Analysis:**  
+The node set never flows, expands, contracts, or moves; it possesses no bulk velocity, no mechanical rest frame, and no spatial coordinates. Coherence-strain is not a physical substance within the node set—it is the local utilization of the update budget under pattern exactions. The only things active in the universe are propagating patterns (exactions) and the localized update-budget expenditures they require of the node set.
+
+### 6.8.3 Refutation of the "Physical Force" Misconception
+
+**Misconception:** "Coherence-strain ($S$) acts as an active physical force (such as gravity or electromagnetism) that pulls or pushes patterns." [1]
+
+**SVET Ontological Correction:**  
+Coherence-strain is not a physical force. Rather, it represents the non-uniform local available budget that defines the local coherence cost $C(x,v)$ of pattern propagation [1].
+
+**Detailed Analysis:**  
+Active forces are completely absent from the SVET ontology. What classical physics interprets as a force is the local adaptation of a propagating pattern as it follows its coherence-minimal path across regions of non-uniform latency. Strain is the physical shape of the local update-cost landscape, not a push or pull. Geodesic acceleration is simply the pattern taking the least-cost routing path through an exaction-strained update landscape.
+
+### 6.8.4 Refutation of the "Geometric Curvature" Misconception
+
+**Misconception:** "Coherence-strain ($S$) represents the physical warping or curvature of a continuous spacetime manifold." [1]
+
+**SVET Ontological Correction:**  
+Strain is not the curvature of a manifold. It is the discrete, non-coordinate bias pattern in local node update behaviors whose macroscopic, coarse-grained limit can be represented mathematically as curvature [1].
+
+**Detailed Analysis:**  
+SVET does not postulate a continuous spacetime manifold; the universe is built from static nodes, adjacency relations, and local update rules. Spacetime curvature is a derived, pattern-level description, not a primary physical entity. Strain biases local update budgets and coherence costs across the node set. When these local update rules are mathematically coarse-grained over macroscopic scales, their timing differentials are modeled as an emergent effective metric (pattern-level), giving rise to the illusion of curved geometry.
+
 ---
 
 ## Appendix A: Instantiation Trajectory vs. Instantiation Routing Debate Archive
