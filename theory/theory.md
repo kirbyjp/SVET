@@ -1163,14 +1163,24 @@ Under this interpretation, gravity is not a force and not a geometric property o
 
 ### 8.22 Scale-Dependent Cadence Gradient Response
 
-The apparent weakness of gravity at the quantum scale is a topological consequence of the ratio between the adjacency-indexed region size ($L$) of a pattern and the local exaction-bias gradient ($\nabla \Psi$). Because a pattern resolves its internal instruction set through the differential in resolution latency ($\Delta \tau_{eff}$) across its constituent node-set update intervals, its sensitivity to curvature is strictly scale-dependent.
+The apparent weakness of gravity at the quantum scale is a result of the "Busy Dancer on a Tilted Floor." Quantum patterns (quarks and electrons) are dominated by violent, high-frequency internal exaction dynamics. While the background exaction bias ($\Psi$) creates a "tilted floor" (gravity), the pattern size ($L$) is so small that the difference in resolution latency ($\Delta \tau_{eff}$) across the pattern is effectively zero. 
 
-For a quantum-scale pattern where $L$ is small, the background exaction bias ($\Psi$) is effectively uniform across the pattern's adjacency-indexed region. In this regime, the differential $\Delta \tau_{eff} \approx 0$, and the pattern executes as if the local exaction floor were flat. This defines the **Local Uniformity Threshold**: the scale at which the cadence-suppression gradient magnitude is below the resolution threshold of the pattern's internal update dynamics. In this state, the pattern’s internal dynamics are dominated by its own high-frequency exaction profile, rendering the gentle tilt of the background bias dynamically negligible.
+If the gradient $\nabla \Psi$ across the pattern's width $L$ is too shallow to trigger a change in the local node's update rules, the node set ignores the tilt entirely. The dancer doesn't care about the tilted floor because, at their scale, the floor is mathematically flat. Gravity isn't "weak" here; it is **ledger-invisible**. The "Local Uniformity Threshold" is the hard clipping point where the ledger purges the background gradient because the pattern is too small to resolve it.
+
+Speaking academically, for a quantum-scale pattern where $L$ is small, the background exaction bias ($\Psi$) is effectively uniform across the pattern's adjacency-indexed region. In this regime, the differential $\Delta \tau_{eff} \approx 0$, and the pattern executes as if the local exaction floor were flat. This defines the **Local Uniformity Threshold**: the scale at which the cadence-suppression gradient magnitude is below the resolution threshold of the pattern's internal update dynamics. In this state, the pattern’s internal dynamics are dominated by its own high-frequency exaction profile, rendering the gentle tilt of the background bias dynamically negligible.
 
 Conversely, for macroscopic patterns where $L$ spans a significant gradient of $\Psi$, the differential $\Delta \tau_{eff}$ across the adjacency-indexed region becomes dominant. The influence of curvature is characterized by the ratio $R_{SVET} \approx (|\nabla \Psi| \cdot L) / \Psi_{int}$, where $\Psi_{int}$ represents the pattern's internal exaction intensity. As $L$ increases, $R_{SVET}$ rises, leading to the observable deflection of the instantiation trajectory. The transition from the quantum regime to the macroscopic regime is therefore a continuous scaling of the ratio between pattern size and the local exaction-bias gradient, rather than a shift in underlying physical laws.
 
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
+
+### 8.31 The Uniformity Threshold Radius ($R_t$)
+
+The Uniformity Threshold Radius $R_t(L, \epsilon)$ defines the adjacency-indexed region required to resolve the non-uniformity of the background exaction bias ($\Psi$) over a pattern of size $L$ within a specified tolerance $\epsilon$. This radius represents the "Effective Gravitational Neighborhood"—the finite set of nodes whose exaction demands contribute a measurable gradient to the local resolution latency.
+
+As the distance from a region of interest increases, the exaction contributions from distant nodes become increasingly uniform across the pattern's adjacency-indexed region. Through the process of **Uniformity Thresholding**, any contribution that does not produce a gradient $\nabla \Psi$ greater than the tolerance $\epsilon$ over the length $L$ is absorbed into the baseline **Vacuum Exaction Floor ($\Psi_{vac}$)**. 
+
+Mathematically, $R_t$ is the smallest adjacency-indexed boundary beyond which the variation in $\Psi$ across $L$ is indistinguishable from a constant offset. Beyond this threshold, the substrate is effectively flat relative to the pattern's resolution threshold. This mechanism allows SVET to recover local GR behavior without requiring a global summation of all universal exactions, as distant matter contributes only to the invariant floor rather than the local cadence-suppression gradient. This scaling ensures that while the total exaction load of the universe is vast, only the local non-uniformity is dynamically relevant for pattern-level routing.
 
 ### 8.4 Finite‑Core Black Holes and Horizon Formation
 
