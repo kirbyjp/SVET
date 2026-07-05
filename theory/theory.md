@@ -1161,6 +1161,14 @@ Changes in exaction distribution modify the local cadence field. These modificat
 
 Under this interpretation, gravity is not a force and not a geometric property of a manifold. It is the macroscopic expression of how coherence‑constraint sets are resolved under finite update budgets in a discrete, capacity‑limited system. Horizons correspond to limits of pattern coherence, not literal infinities in spacetime geometry.
 
+### 8.22 Scale-Dependent Cadence Gradient Response
+
+The apparent weakness of gravity at the quantum scale is a topological consequence of the ratio between the adjacency-indexed region size ($L$) of a pattern and the local exaction-bias gradient ($\nabla \Psi$). Because a pattern resolves its internal instruction set through the differential in resolution latency ($\Delta \tau_{eff}$) across its constituent node-set update intervals, its sensitivity to curvature is strictly scale-dependent.
+
+For a quantum-scale pattern where $L$ is small, the background exaction bias ($\Psi$) is effectively uniform across the pattern's adjacency-indexed region. In this regime, the differential $\Delta \tau_{eff} \approx 0$, and the pattern executes as if the local exaction floor were flat. This defines the **Local Uniformity Threshold**: the scale at which the cadence-suppression gradient magnitude is below the resolution threshold of the pattern's internal update dynamics. In this state, the pattern’s internal dynamics are dominated by its own high-frequency exaction profile, rendering the gentle tilt of the background bias dynamically negligible.
+
+Conversely, for macroscopic patterns where $L$ spans a significant gradient of $\Psi$, the differential $\Delta \tau_{eff}$ across the adjacency-indexed region becomes dominant. The influence of curvature is characterized by the ratio $R_{SVET} \approx (|\nabla \Psi| \cdot L) / \Psi_{int}$, where $\Psi_{int}$ represents the pattern's internal exaction intensity. As $L$ increases, $R_{SVET}$ rises, leading to the observable deflection of the instantiation trajectory. The transition from the quantum regime to the macroscopic regime is therefore a continuous scaling of the ratio between pattern size and the local exaction-bias gradient, rather than a shift in underlying physical laws.
+
 ### 8.3 Horizons as Capacity Boundaries
 *TODO: Define horizons as surfaces where \(\tau_{\text{eff}} \to \infty\) or where coherent propagation is effectively halted.*
 
