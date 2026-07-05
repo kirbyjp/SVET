@@ -1337,6 +1337,44 @@ $\Gamma_p(x)$ is strictly clamped to the interval $[0,1]$, where $\Gamma_p = 0$ 
 $$U(x) \to 1 \quad \Rightarrow \quad \Gamma_p(x) \to 0$$
 This parameter carries no physical agency and does not modify local update resolution; it is a convenience metric summarizing the remaining stability margin of a coherence-constraint set under strain [1]. All dissipation remains the instantaneous, arithmetic remainder of an overloaded exaction event, with variations in $\Gamma_p(x)$ serving as a diagnostics tool to track the cumulative evolution of constraint-set configurations [1].
 
+### 11.7 Casimir Effects and Vacuum Exaction Constraints
+
+SVET reinterprets the Casimir effect not as the result of geometric boundary conditions on a continuous field, but as the suppression of vacuum exaction-patterns by the quantization limits of the node set [1].
+
+#### 11.7.1 The SVET Casimir Correction Ansatz
+The classical Casimir force between two ideal, perfectly conducting plates in vacuum separated by distance $a$ is defined as:
+$$F_0 = -\frac{\pi^2 \hbar c}{240 a^4}$$
+
+SVET predicts a discrete correction term $\delta$ that emerges as the plate separation approaches the functional granularity of the node set. The corrected force is expressed as:
+$$F_{\text{SVET}} = F_0 \big[1 + \delta(a; \ell_{\text{node}}, \Delta t, R_{\text{mat}})\big]$$
+
+These corrections arise because SVET enforces quantization limits on vacuum modes through node-spacing granularity, tick-duration temporal resolution, and update-budget capacity ceilings [1, 2]. Vacuum modes that cannot be instantiated within these limits are suppressed outright, producing discrete deviations from the continuum Casimir force [1, 2]. As $a/\ell_{\text{node}} \to \infty$ (the continuum limit), the correction $\delta \to 0$, recovering the standard macroscopic result.
+
+#### 11.7.2 Material Density and Depth of Constraint
+Unlike standard Lifshitz theory, which relies on macroscopic dielectric functions $\epsilon(\omega)$, SVET provides additional degrees of freedom based on the local node-set architecture of the plates:
+
+*   **Exaction-Density Suppression:** Denser or more rigid coherence-constraint sets in the plate nodes impose a stronger suppression on vacuum patterns, increasing the magnitude of the Casimir effect.
+*   **Internal Coherence-Constraint Modes:** If the plate nodes possess specific internal coherence-constraint modes, they can interact constructively or destructively with specific vacuum exaction-profiles in ways not captured by a smooth dielectric function [1].
+*   **Thickness as Constraint Depth:** SVET predicts that the total thickness of a plate influences the vacuum exaction budget even beyond the classical EM skin depth. A thinner, highly rigid configuration may exert a different constraint than a thicker, loosely constrained configuration, even if their macroscopic refractive indices are identical.
+
+#### 11.7.3 Thermal Coherence Load and Casimir Scaling
+In SVET, the temperature of the plates and the surrounding environment is defined as the average Thermal Coherence Load (pattern-internal exaction density) [1]. 
+
+*   **Cryogenic Regime:** Plate and vacuum nodes are at minimal thermal exaction load ($\eta \to \eta_{\text{vac}}$), allowing the node set to resolve vacuum exactions with maximum precision.
+*   **Thermal Regime:** Nodes are burdened by non-directional patterns. This Thermal Coherence Load populates additional update modes, reproducing the standard thermal Casimir scaling in the continuum limit [1].
+
+The SVET-native version of the thermal exaction-density differential is:
+$$\Delta \rho(a; T) = \int [g_{\text{plates}}(\omega, a; T) - g_{\text{free}}(\omega; T)] \, \epsilon(\omega, T) \, d\omega$$
+where $g$ represents the allowed pattern density and $\epsilon(\omega, T)$ is the exaction demand per mode, including the thermal component of the exaction budget [1].
+
+#### 11.7.4 Extreme Regime Deviations and Falsifiability
+SVET predicts systematic deviations from standard Lifshitz-Casimir predictions at extreme temperature limits:
+
+1. **Low-Temperature Freeze-Out:** At cryogenic limits, the internal exactions of the plate nodes may rigidify in a way that alters how they suppress specific vacuum modes, producing a non-linear deviation from standard low-T predictions [1].
+2. **High-Temperature Saturation:** At extreme temperatures, as plate nodes approach the Planck Saturation Ceiling ($U \to 1$), their available local update budget for resolving vacuum exactions is exhausted. This predicts a saturation or "cutoff" of the Casimir force that standard EM does not model [1].
+
+These effects are expressed through a temperature-dependent correction $\delta_T$, which is not derivable from the macroscopic dielectric function $\epsilon(\omega, T)$ alone, providing a clear pathway for experimental falsification [1].
+
 ---
 
 ## 12. Computational Implementation Layer
