@@ -36,3 +36,27 @@ The v0.07.3 baseline-preservation protocol, pull request (PR) workflow, protecte
 *   Validate the emergent least-cost paths against active grid runs and implement logging for the following active diagnostics:
     *   `nodes_biased_count`: The count of nodes per update step where utilization exceeds the background floor ($U(r) > U_{\text{floor}}$).
     *   `nodes_skipped_count`: The count of nodes bypassed per iteration when local update latency ($\tau_{\text{eff}}$) exceeds maximum processing limits.
+ 
+---
+
+###Tool specific scoring metrics
+
+### Forensic Diagnostic Invariants
+
+The following metrics are tool-specific diagnostic scores used by the CaBS Forensic Monitor to evaluate the stability and universality of candidate exaction models [1].
+
+#### $I_C$ — "Cosmic Correspondence Score"
+**Type:** Diagnostic Metric  
+**Definition:** Quantifies how accurately the SVET exaction-potential ($\Psi$) matches the observed Hubble expansion at a given radius [1]. A value of $1.0$ indicates a perfect cosmological match.
+
+#### $I_S$ — "Saturation Safety Score"
+**Type:** Diagnostic Metric  
+**Definition:** Measures the available budget headroom of the node set to ensure the interior remains protected from premature cadence-freezing [1]. A value of $1.0$ indicates optimal structural stability.
+
+#### $I_L$ — "Local Ledger Load Score"
+**Type:** Diagnostic Metric  
+**Definition:** Tracks the cumulative "update debt" (accumulated exaction-strain) as the evaluation frame moves toward a high-density core [1].
+
+#### $N$ — "Local Capacity Ratio"
+**Type:** Diagnostic Metric  
+**Definition:** The ratio of hardware-level node update cycles available per pattern-level software update [1]. Higher values indicate greater resolution safety for complex patterns.
