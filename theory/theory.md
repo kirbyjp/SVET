@@ -304,7 +304,7 @@ $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 Thus, energy conservation is not an arbitrary physical law imposed on the universe, but the exact mathematical consequence of preserving pattern identity across discrete temporal ticks.
 
 #### 3.5.1 The Vacuum Catastrophe and Horizon Capacity Constraint
-In continuous quantum field theory, the absolute sum of all zero-point modes yields an unphysical vacuum energy density that exceeds the observed cosmological constant by roughly 120 orders of magnitude (the $10^{122}$ "vacuum catastrophe"). SVET predicts that this pathology is a category error: QFT has mistakenly interpreted the node set's maximum update capacity as an active, gravitating exaction load.
+With the Netzero principle, the static vacuum, and the ledger identity established, we can now formalize the global capacity constraint of the node set that resolves the long‑standing vacuum discrepancy. In continuous quantum field theory, the absolute sum of all zero-point modes yields an unphysical vacuum energy density that exceeds the observed cosmological constant by roughly 120 orders of magnitude (the $10^{122}$ "vacuum catastrophe"). SVET predicts that this pathology is a category error: QFT has mistakenly interpreted the node set's maximum update capacity as an active, gravitating exaction load.
 
 To formalize this constraint, let:
 *   $\epsilon_{\text{cap}}$ be the maximum possible update capacity per node (per tick, per node).
