@@ -179,9 +179,9 @@ Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern
 #### Coherence-Minimal Continuation Path
 **Type:** Emergent Path  
 **Definition:** The specific adjacency path that minimizes coherence-constraint reconfiguration for a propagating pattern [1].  
-**Forensic Role:** Serves as the SVET analogue of inertial continuation, derived directly from the local single-tick strain asymmetry and local timing-pressure [1].
+**Forensic Role:** Serves as the SVET analogue of inertial continuation, derived directly from the local single-tick strain asymmetry and local cadence-suppression gradients [1].
 
-#### Timing-Pressure Landscape
+#### Cadence Suppression Landscape
 **Type:** Derived Quantity  
 **Definition:** The non-uniform profile of effective cadence ($\tau_{\text{eff}}(x)$) across the node set induced by differential local exaction loads [1].  
 **Forensic Role:** Serves as the SVET-native timing mechanism that replaces general relativity's curved spacetime manifold [1].
