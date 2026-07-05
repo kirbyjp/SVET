@@ -637,6 +637,24 @@ A speculative microphysical mechanism in which nuclear-scale node-set configurat
 **Observational Projection:** Differences in instantiation-trajectory cycling rates correspond to differences in observed electromagnetic frequency [1]. Low-cycle trajectories correspond to long-period coherence patterns (e.g., visible light), while high-cycle trajectories correspond to rapid, dense constraint-cycling patterns (e.g., X-rays) [1]. Material transparency and opacity arise from whether a multi-pattern configuration can satisfy the specific instantiation-trajectory demands of an incoming pattern [1].
 **Layer:** Layer 2 — Pattern-Level Constraint Expression
 
+**Tidal Strain (SVET Sense)**  
+*Placeholder:* The spatial second-derivative equivalent calculated over adjacent nodes in a cadence suppression landscape, serving as the node-set-level equivalent of classical gravitational tidal strain.
+
+**Geodesic Deviation (SVET Sense)**  
+*Placeholder:* The rate at which adjacent, non-divergent coherence-minimal propagation paths diverge from one another when traversing non-uniform cadence suppression gradients.
+
+**Vacuum Polarization (or Self-Energy) (SVET Sense)**  
+*Placeholder:* The local, self-consistent process by which a propagating pattern's exaction demands locally renormalize the node set's available update capacities and coherence costs.
+
+**Renormalization Flow (SVET Sense)**  
+*Placeholder:* The scale-dependent change in local update costs and exaction requirements that emerges when mathematically coarse-graining nodes into larger analytical clusters.
+
+**Local Distortions (SVET Sense)**  
+*Placeholder:* The local, non-uniform variations in the exaction-strain profile of a multi-pattern coherence-constraint configuration.
+
+**Plaquette Strain (SVET Sense)**  
+*Placeholder:* The discrete, adjacency-loop-indexed bias of update phases and amplitudes calculated around closed loops of nodes.
+
 ---
 
 © 2026 John Kirby. Licensed under the MIT License.
