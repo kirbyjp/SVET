@@ -303,6 +303,20 @@ Because the node set does not possess or store energy independently, the conserv
 $$I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H = 100\%$$
 Thus, energy conservation is not an arbitrary physical law imposed on the universe, but the exact mathematical consequence of preserving pattern identity across discrete temporal ticks.
 
+#### 3.5.1 The Vacuum Catastrophe and Horizon Capacity Constraint
+In continuous quantum field theory, the absolute sum of all zero-point modes yields an unphysical vacuum energy density that exceeds the observed cosmological constant by roughly 120 orders of magnitude (the $10^{122}$ "vacuum catastrophe"). SVET predicts that this pathology is a category error: QFT has mistakenly interpreted the node set's maximum update capacity as an active, gravitating exaction load.
+
+To formalize this constraint, let:
+*   $\epsilon_{\text{cap}}$ be the maximum possible update capacity per node (per tick, per node).
+*   $\epsilon_0(x)$ be the baseline structural exaction cost a node expends to exist as an element of adjacency.
+*   $C = \frac{\epsilon_{\text{cap}}}{\epsilon_0(x)}$ be the capacity-to-load ratio of an individual node.
+*   $N_H$ be the total number of discrete nodes contained within a single cosmic horizon volume.
+
+The vacuum catastrophe is resolved as a finite, non-singular capacity constraint of the node set:
+$$C\,N_H \approx 10^{122} \qquad \text{or} \qquad \frac{\epsilon_{\text{cap}}}{\epsilon_0(x)}\,N_H \approx 10^{122}$$
+
+This constraint states that the total available, unused update capacity of all nodes inside a cosmic horizon volume exceeds the local structural exaction cost actually in use by approximately $10^{122}$. In words: a historically severe discrepancy between theoretical prediction and observation is recognized as a structural, scale-bridging constant of the node set, indicating that the baseline vacuum of empty space operates in a highly under-utilized state [1].
+
 ### 3.6 CaBS Primitive Rules (Cadence–Budget–Strain)
 
 The Cadence-Budget-Strain (CaBS) framework defines the node network's localized update engine. It formalizes how local strain, available processing budget, and temporal dilation interact to govern pattern propagation.
