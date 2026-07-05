@@ -1176,11 +1176,17 @@ Conversely, for macroscopic patterns where $L$ spans a significant gradient of $
 
 ### 8.31 The Uniformity Threshold Radius ($R_t$)
 
-The Uniformity Threshold Radius $R_t(L, \epsilon)$ defines the adjacency-indexed region required to resolve the non-uniformity of the background exaction bias ($\Psi$) over a pattern of size $L$ within a specified tolerance $\epsilon$. This radius represents the "Effective Gravitational Neighborhood"—the finite set of nodes whose exaction demands contribute a measurable gradient to the local resolution latency.
+The universe does not have a single, objective functional exaction-reach; its reach depends entirely on the scale of the pattern asking the question. The **Uniformity Threshold Radius** $R_t(L,\epsilon)$ defines the adjacency-indexed region over which a pattern of size $L$ can resolve non-uniformity in the background exaction bias ($\Psi$). It is the "Truncated Cosmic Horizon": the finite neighborhood of nodes whose exaction contributions produce a measurable cadence gradient across the pattern's footprint.
 
-As the distance from a region of interest increases, the exaction contributions from distant nodes become increasingly uniform across the pattern's adjacency-indexed region. Through the process of **Uniformity Thresholding**, any contribution that does not produce a gradient $\nabla \Psi$ greater than the tolerance $\epsilon$ over the length $L$ is absorbed into the baseline **Vacuum Exaction Floor ($\Psi_{vac}$)**. 
+For quantum-scale patterns ($L \to 0$), the background exaction bias is effectively uniform across the pattern's adjacency-indexed region. Any distant contribution that produces a cadence variation below the resolution threshold $\epsilon$ is absorbed into the **Vacuum Exaction Floor** $\Psi_{\text{vac}}$ through **Uniformity Thresholding**. The node set performs a **Hard Purge**, rounding the distant influence to a constant offset. The distant galaxy becomes **ledger-invisible**, and the pattern's functional universe collapses to its immediate neighborhood. In this regime, $\Delta \tau_{\text{eff}} \approx 0$, and the node set is effectively flat relative to the pattern's internal update dynamics.
 
-Mathematically, $R_t$ is the smallest adjacency-indexed boundary beyond which the variation in $\Psi$ across $L$ is indistinguishable from a constant offset. Beyond this threshold, the substrate is effectively flat relative to the pattern's resolution threshold. This mechanism allows SVET to recover local GR behavior without requiring a global summation of all universal exactions, as distant matter contributes only to the invariant floor rather than the local cadence-suppression gradient. This scaling ensures that while the total exaction load of the universe is vast, only the local non-uniformity is dynamically relevant for pattern-level routing.
+For macroscopic patterns ($L \gg 0$), shallow long-range gradients accumulate across many update intervals. Contributions that were uniform at quantum scales become resolvable, producing a non-zero $\Delta \tau_{\text{eff}}$ across the pattern's footprint. The pattern's functional horizon expands, and distant matter contributes to the local cadence-suppression gradient. This scale-dependent sensitivity is captured by:
+
+$$R_{\text{SVET}} \approx \frac{|\nabla \Psi| \cdot L}{\Psi_{\text{int}}}$$
+
+where $\Psi_{\text{int}}$ is the pattern's internal exaction intensity. As $L$ increases, $R_{\text{SVET}}$ rises, and the pattern responds to exaction-bias gradients sourced by increasingly distant nodes.
+
+Mathematically, $R_t$ is the smallest adjacency-indexed boundary beyond which the variation in $\Psi$ across $L$ is indistinguishable from a constant offset. Beyond this threshold, the node set is locally flat, and distant matter contributes only to $\Psi_{\text{vac}}$ rather than the local cadence-suppression gradient. This mechanism allows SVET to recover local GR behavior without requiring global summation of universal exactions: only resolvable non-uniformity is dynamically relevant for pattern-level routing.
 
 ### 8.4 Finite‑Core Black Holes and Horizon Formation
 
