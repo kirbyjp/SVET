@@ -218,6 +218,15 @@ A single, non-geometric node-set model is easier to teach, easier to prototype i
 
 > **Motivation:** Although quantum field theory and general relativity deliver unmatched predictive success, they rest on distinct ontologies and leave deep conceptual and technical gaps. SVET proposes a single, local vacuum node set governed by discrete local update rules whose continuum limit reproduces QFT and GR. This reframing preserves empirical content while converting measurement, renormalization, and singularity problems into concrete, testable statements about coherence and update cost. The result is a more truthful, mechanistic account that unifies disparate phenomena, suggests new experiments, and creates computational pathways for discovery.
 
+### 6.8.1 Refutation of the "Physical Field" Misconception
+
+**Misconception:** "Coherence-strain ($S$) represents a new, independent physical field in the vacuum." [1]
+
+**SVET Ontological Correction:**  
+Coherence-strain is not an active physical field. It is a non-field, ledger-level accounting of how existing exaction patterns locally utilize the available update capacity of the node set [1].
+
+**Detailed Analysis:**  
+The fundamental ontology of SVET consists strictly of the static node set, its local update rules, and propagating exaction patterns. Coherence-strain is the local, tick-indexed bookkeeping of how a pattern's exaction demands modify the local available budget and the resulting local latency at neighboring nodes. No new, independent physical fields are introduced; strain is an emergent property of the local update rules' mechanical response to pattern exactions, not a standalone spatial entity.
 ---
 
 ## Appendix A: Instantiation Trajectory vs. Instantiation Routing Debate Archive
