@@ -302,6 +302,16 @@ This category defines the routing-cost primitives that govern how nodes resolve 
 **Definition:** The evaluation system used to score candidate universal horizon variables based on curve collapse, monotonicity, smoothness, predictive power, and compatibility with both quantum and cosmic limits [1].  
 **Forensic Role:** Determines which candidate axis best unifies horizon behavior across scales, enabling empirical discovery of the universal horizon variable [1].
 
+#### GR Correspondence Radius
+**Type:** Interpretive Label  
+**Definition:** The coordinate-label $r$ used to map discrete node-set transactions to the continuous radial geometry of General Relativity [1].  
+**Forensic Role:** Prevents the conflation of interpretive coordinate space with the static, non-coordinate node set [1].
+
+#### Local Coherence Scale
+**Type:** Transition Boundary  
+**Definition:** The scale at which the local exaction-strain of a massive pattern (exactor) diminishes sufficiently to allow the global background exaction of cosmic expansion to become measurable [1].  
+**Forensic Role:** Identifies the limit of a pattern's local gravitational influence.
+
 ---
 
 ## Deprecated Terminology (Redirects Only)
@@ -395,6 +405,11 @@ Deprecated legacy term. Replaced by the single-tick *Directional Asymmetry* to p
 **Definition:** Threshold constant defining when scaled demand exceeds pattern stability.  
 **Forensic Role:** The "Redline" where a coherent pattern must fracture into the $H$-channel.
 
+### $\beta$ — "Cadence Exponent"
+**Type:** Structural Constant  
+**Definition:** The dimensionless exponent governing the non-linear scaling of pattern-level resolution latency under exaction load [1].  
+**Forensic Role:** Controls the "sharpness" of cadence suppression as local utilization approaches the saturation ceiling ($U \to 1$).
+
 ---
 
 ## 3. Derived Quantities (The "Observables")
@@ -466,6 +481,21 @@ $$\Psi(x) = \ln\left(\frac{U(x)}{U_{\text{ref}}}\right)$$
 **Definition:** The total number of discrete nodes contained within a single cosmic horizon volume.  
 **Forensic Role:** Couples with the local capacity-to-load ratio $C = \epsilon_{\text{cap}} / \epsilon_0$ to mathematically bound the maximum exaction ceiling of the observable universe: $C N_H \approx 10^{122}$.  
 **Cross-References:** See Section 3.5.1 (Vacuum Catastrophe & Horizon Capacity Constraint) and Section 15.1 (Unified Redshift Theory) [1].
+
+### $r$ — "GR Correspondence Radius"
+**Type:** Coordinate Label  
+**Definition:** A non-geometric coordinate-label used exclusively within the general relativity correspondence layer to map SVET exaction-utilization profiles to classical radial distances [1].  
+**Forensic Role:** Serves as a mathematical proxy for comparison with the Schwarzschild metric; it does not represent physical adjacency hops or a background spatial manifold [1].
+
+### $r_{\text{sat}}$ — "Saturation Radius"
+**Type:** Derived Metric  
+**Definition:** The adjacency-indexed region where the local exaction-utilization profile first reaches the Planck Saturation Ceiling ($U \to 1$), marking the onset of Asymptotic Cadence Collapse [1].  
+**Forensic Role:** Defines the physical boundary of a finite-core black hole, serving as the SVET-native replacement for the general relativity singularity [1].
+
+### $L_c$ — "Local Coherence Scale"
+**Type:** Derived Parameter  
+**Definition:** The radius at which local exaction-strain becomes small enough that cosmic expansion reasserts itself in the local cadence profile [1].  
+**Forensic Role:** Defines the transition boundary between locally gravity-dominated and cosmologically expansion-dominated regimes [1].
 
 ---
 
