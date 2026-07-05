@@ -822,7 +822,7 @@ Because cadence never fully halts, $\Delta H$ is not trapped. It diffuses outwar
 
 #### The Cadence Suppression Gradient
 
-The **Cadence Suppression Gradient** is the adjacency-indexed variation in effective reconstruction cadence $\tau_{\text{eff}}(x)$ that naturally forms around a high-density core. It is not geometric curvature; it is a local timing-pressure landscape induced by differential exaction load.
+The **Cadence Suppression Gradient** is the adjacency-indexed variation in effective reconstruction cadence $\tau_{\text{eff}}(x)$ that naturally forms around a high-density core. It is not geometric curvature; it is a local update-latency landscape induced by differential exaction load [1].
 
 It has three structural consequences:
 
