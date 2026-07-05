@@ -454,6 +454,19 @@ Deprecated legacy term. Replaced by the single-tick *Directional Asymmetry* to p
 **Definition:** The portion of coherent update demand that a node cannot instantiate and therefore rejects and diverts out of the coherent ledger when local exaction exceeds the available processing budget.  
 **Forensic Role:** Represents the local increment of incoherent output recorded when adjacency‑coherent reconstruction fails. See H‑channel.
 
+### $\Psi(x)$ — "Exaction Potential" (or Strain Potential)
+**Type:** Derived Parameter  
+**Definition:** The logarithmic ratio of local node utilization:  
+$$\Psi(x) = \ln\left(\frac{U(x)}{U_{\text{ref}}}\right)$$  
+**Forensic Role:** Generates the unified redshift relation $1+z = e^{\Delta\Psi}$ across all physical scales.  
+**Cross-References:** See Section 3.5.1 (Vacuum Catastrophe & Horizon Capacity Constraint) and Section 15.1 (Unified Redshift Theory) [1].
+
+### $N_H$ — "Horizon Node Count"
+**Type:** Metric  
+**Definition:** The total number of discrete nodes contained within a single cosmic horizon volume.  
+**Forensic Role:** Couples with the local capacity-to-load ratio $C = \epsilon_{\text{cap}} / \epsilon_0$ to mathematically bound the maximum exaction ceiling of the observable universe: $C N_H \approx 10^{122}$.  
+**Cross-References:** See Section 3.5.1 (Vacuum Catastrophe & Horizon Capacity Constraint) and Section 15.1 (Unified Redshift Theory) [1].
+
 ---
 
 ## 4. Ratios & Metrics (The "Diagnostics")
