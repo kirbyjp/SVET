@@ -1,3 +1,87 @@
+# SVET Commentary & Research Notes (Companion Archive)
+
+*Version:* Draft v0.2  
+*Status:* Non-canonical, exploratory, and subject to revision  
+
+---
+
+## 1. Purpose and Scope of This Document
+[Paste your existing Section 1 paragraphs here]
+
+---
+
+## 2. Deprecated or Sidelined Mathematical Variables
+[Paste the "Calligraphic U" and "U (Universal Horizon Variable)" definitions here]
+
+---
+
+## 3. Evolutionary Archives (Pre-STIP to Post-STIP)
+### 3.1 Archival Note: Evolution of the Singularity Model
+[Paste your existing "Evolution of the Singularity Model" paragraphs here]
+
+### 3.2 Sidelined Section: The Legacy "Double-Walled Universe" (Section 9.4 Draft)
+[Paste your original "9.4 The Double-Walled Universe" text, including the 3.1 Motivation and 3.2 Reasons for Removal subsections here]
+
+### 3.3 Archival Note: The Sub-Resolution Timing-Pulse Protocol (v2.0 Engine)
+[Paste the "Sub-Resolution Timing-Pulse Protocol" paragraphs here]
+
+---
+
+## 4. Analytical & Numerical Observations (Lattice Sandbox)
+### 4.1 Curve-Collapse Experiments Using U
+[Paste the "Curve-Collapse Experiments" text here]
+
+### 4.2 Floating-Point vs. Discrete Ledger Arithmetic
+[Paste the "Floating-Point vs. Discrete Ledger" paragraphs here]
+
+### 4.3 Prime Resonance Filter & Waveform Coherence
+[Paste the "Prime Resonance Filter" paragraphs here]
+
+### 4.4 Physical Irrelevance of Infinite Pi Precision
+[Paste the "Physical Irrelevance of Infinite Pi" paragraphs here]
+
+### 4.5 CPU Pipeline and Cache Optimization Metrics
+[Paste the "CPU Pipeline and Cache" paragraphs here]
+
+---
+
+## 5. Exploratory Physics & Kinematic Conjectures
+### 5.1 Alternating Current (AC) in SVET
+AC is a periodic inversion of directional asymmetry in the electron’s pattern-continuation rule.
+Nothing moves geometrically.
+The adjacency-coherent pattern simply flips its continuation bias each half-cycle.
+
+This serves as the SVET-native precursor to understanding oscillatory photon emission.
+
+### 5.2 Electron Spin in SVET
+Spin is a stable coherence-pattern that imposes a local adjacency asymmetry.
+This asymmetry is what allows:
+*   magnetic interactions,
+*   spin-aligned emission,
+*   spin-dependent absorption,
+*   and spin-polarized photon release.
+
+This serves as the SVET-native precursor to understanding polarization and momentum direction in photons.
+
+### 5.3 Zeno Quantization and Finite Tick Depth
+[Paste your existing "Zeno Quantization" paragraphs here]
+
+### 5.4 Ontological Clarifications (Atemporal Nodes vs. Temporal Ticks)
+[Paste your existing "Ontological Clarifications" paragraphs here]
+
+### 5.5 Items Requiring Caution Before Inclusion
+[Paste the "Items Requiring Caution" bullet points here]
+
+### 5.6 Meta-TODO: Integration Decisions
+[Paste the "Meta-TODO" list here]
+
+---
+
+## Appendix A: Instantiation Trajectory vs. Instantiation Routing Debate Archive
+[Paste your complete, 7-part Appendix A (A.1 through A.7) here]
+
+---
+
 # Commentary & Research Notes (SVET Companion Document)
 *Version:* Draft v0.1  
 *Status:* Non‑canonical, exploratory, and subject to revision  
