@@ -618,7 +618,7 @@ Every pattern expresses a single coherence-constraint set whose directional asym
 
 A cadence gradient is an adjacency-indexed variation in resolution latency $\Delta\tau(x)$ and effective cadence $\tau_{\text{eff}}(x)$, driven by local utilization $U(x)$. A pattern with strong directional asymmetry resists changes to its continuation path, which manifests as inertia. When cadence gradients become sufficiently steep, the strain-minimal continuation path deflects, and the pattern follows that deflection automatically. No force is transmitted; no field mediates the interaction. The deflection is the pattern's own coherence-preservation requirement.
 
-Gravitational acceleration arises when a pattern encounters a region where $\Delta\tau(x)$ increases (cadence suppression). The coherence-minimal continuation path deflects toward regions of higher timing pressure. The pattern accelerates not because it is pulled, but because maintaining its previous continuation path would violate its coherence-constraint set.
+Gravitational acceleration arises when a pattern encounters a region where $\Delta\tau(x)$ increases (cadence suppression) [1]. The coherence-minimal continuation path deflects toward regions of higher cadence-suppression gradient [1]. The pattern accelerates not because it is pulled, but because maintaining its previous continuation path would violate its coherence-constraint set [1].
 
 Electromagnetic acceleration follows the same principle. Phase-coherence asymmetries between patterns create localized cadence suppression. Patterns adjust their continuation paths to minimize coherence strain relative to these phase relationships. No field or mediator is required.
 
