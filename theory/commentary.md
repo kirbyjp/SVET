@@ -176,7 +176,23 @@ Future steps include:
 *   Removing speculative or redundant material  
 *   Formalizing safe, critic-proof language for each accepted item
 
----
+### 5.7 The Invariants of Vacant Space
+
+In SVET, space is not a physical container, nor is it filled with a continuous medium or vacuum energy field. Instead, vacant space is simply the static node set connected by adjacency relations.
+
+#### 1. Microphysical Invariants
+What is structurally universal and unchanging across the node set includes:
+*   **The Node Set:** The static ensemble of nodes and their fixed adjacency relations.
+*   **The Local Tick:** The discrete, uniform local update interval of each node in the absence of strain.
+*   **The Local Update Rules:** The microscopic, deterministic laws governing parameter evolution.
+
+#### 2. Pattern-Level Variables
+What dynamically varies across the node set includes:
+*   **Pattern Presence:** Which coherence-constraint sets are actively requesting instantiation at a given local node.
+*   **Localized Strain:** How much local and adjacency update capacity is consumed to resolve those active exactions.
+*   **Adjacency Propagation:** How that exaction-strain is resolved and redistributed across adjacent nodes tick-by-tick.
+
+Therefore, space is not filled with a material substance; it is instantiated by the non-geometric, set-theoretic connections of the nodes and their evolving parameters. What "fills" the vacuum are active patterns and their induced exaction-strain, evolving tick-by-tick.
 
 ---
 
