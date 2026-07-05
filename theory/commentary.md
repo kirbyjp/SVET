@@ -194,6 +194,16 @@ What dynamically varies across the node set includes:
 
 Therefore, space is not filled with a material substance; it is instantiated by the non-geometric, set-theoretic connections of the nodes and their evolving parameters. What "fills" the vacuum are active patterns and their induced exaction-strain, evolving tick-by-tick.
 
+### 5.8 The Lawfulness of Node-Set Evolution
+
+**Question:** "How does the vacuum node set know what the local update rules are?" [1]
+
+**SVET Ontological Correction:**  
+The node set does not "know" or "calculate" its rules [1]. The local update rules are simply the lawful way the node parameters evolve from tick to tick; the behavior *is* the rule [1].
+
+**Detailed Analysis:**  
+Just as an inclined plane does not "know" classical mechanics, a pendulum does not "know" simple harmonic motion, and a geodesic does not "know" the Riemannian metric, the node set does not consult or evaluate an external ruleset. The update behavior is the rule itself. Nodes do not know the rules; they *are* the rules. The local update rules are not a decision-making process—they are the fundamental, mathematical definition of what the node set is.
+
 ---
 
 ## 6. Philosophical & Methodological Motivations
