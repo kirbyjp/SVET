@@ -1136,6 +1136,8 @@ Tunneling arises naturally as **low-probability coherent leakage** across region
 
 This discrete, capacity-limited update picture forms the foundation for the GR correspondence layer. Spatial gradients in the effective cadence field $\tau_{\text{eff}}(x)$ produce the macroscopic phenomena interpreted as curvature, geodesic motion, and horizon formation.
 
+*For gravitational redshift and time dilation, see Section 15.1 (Unified Redshift Theory), which provides the full exaction-potential derivation [1].*
+
 ### 8.1 Curvature as Cadence Gradient
 Spacetime curvature is not an active physical manifold; rather, it is the macroscopic manifestation of spatial gradients of the cadence field ($\nabla \tau_{\text{eff}}$) across the node network. Where localized excitations ($\chi$) are present, the effective update cadence slows down. 
 
