@@ -36,14 +36,11 @@ The v0.07.3 baseline-preservation protocol, pull request (PR) workflow, protecte
 *   Validate the emergent least-cost paths against active grid runs and implement logging for the following active diagnostics:
     *   `nodes_biased_count`: The count of nodes per update step where utilization exceeds the background floor ($U(r) > U_{\text{floor}}$).
     *   `nodes_skipped_count`: The count of nodes bypassed per iteration when local update latency ($\tau_{\text{eff}}$) exceeds maximum processing limits.
- 
----
 
-###Tool specific scoring metrics
+### Tool Specific Scoring Metrics
 
-### Forensic Diagnostic Invariants
-
-The following metrics are tool-specific diagnostic scores used by the CaBS Forensic Monitor to evaluate the stability and universality of candidate exaction models [1].
+#### Forensic Diagnostic Invariants
+The following metrics are tool-specific diagnostic scores used by the CaBS Forensic Monitor to evaluate the stability and universality of candidate exaction models.
 
 #### $I_C$ — "Cosmic Correspondence Score"
 **Type:** Diagnostic Metric  
