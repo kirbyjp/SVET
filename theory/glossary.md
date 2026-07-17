@@ -143,9 +143,9 @@ Thus, while the coherence-constraint set is a non-coordinate, non-field, pattern
 **Forensic Role:** The source of exaction load that produces local strain; patterns request coherence, and the node set determines when (via dilation $\Delta\tau$) and what can be instantiated under its available budget [1].
 
 #### Exactor
-**Type:** Pattern Property  
-**Definition:** A pattern whose exaction density is sufficiently high to induce persistent cadence lag in its adjacency neighborhood [1].  
-**Forensic Role:** Generates localized timing bias and sustained strain, producing the macroscopic effects associated with gravitating systems [1].
+**Type:** Ledger Operation  
+**Definition:** A discrete update demand issued by a pattern and resolved by a node. Each exactor consumes tick‑budget, contributes to local utilization, and adds to the background exaction bias Ψ. Exactors are not physical entities; they are ledger‑level operations whose cumulative resolution determines τ_eff and its gradients. 
+**Forensic Role:** Identifies the local sources of exaction demand contributing to utilization (U) and background exaction bias (Ψ). The spatial distribution of exactors reveals where resolution latency (τ_eff) is being consumed, allowing reconstruction of cadence‑suppression gradients and the pattern‑level routing biases they produce.
 
 #### Adjacency Exaction
 **Type:** Continuity Demand  
