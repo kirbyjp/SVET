@@ -1436,6 +1436,27 @@ SVET predicts systematic deviations from standard Lifshitz-Casimir predictions a
 
 These effects are expressed through a temperature-dependent correction $\delta_T$, which is not derivable from the macroscopic dielectric function $\epsilon(\omega, T)$ alone, providing a clear pathway for experimental falsification [1].
 
+## 11.14 The Double-Slit Pathology and the Thermodynamic Fallacy of Wave Broadcast
+
+### 11.14.1 The Photon as a Transient Exaction-Pulse
+SVET rejects the ontological framework of Quantum Electrodynamics (QED) stipulating that radiative atomic transitions produce expanding, non-localized spherical probability waves. A broadcast wave configuration that collapses instantaneously upon measurement introduces non-local energy reallocations that fundamentally violate thermodynamic locality and the conservation laws of discrete space-time. 
+
+A photon is not a wave, nor is it a classical billiard-ball particle. It is strictly defined as a **Transient Exaction-Pulse**—a self-contained, linear sequence of high-frequency node updates carrying a fixed, quantized energy-budget ($E = h\nu$). This pulse possesses a definitive trajectory vector determined explicitly by the localized spatial coordinates and internal phase orientation of the source electron pattern at the precise tick of its state transition.
+
+### 11.14.2 Diffraction as Lattice-Guided Structural Navigation
+The presentation of apparent interference fringes in dual-aperture configurations is resolved as a macroscopic readout of discrete, boundary-layer node adjustments rather than non-local wave interference. 
+
+In SVET, diffraction is the structural deflection of a transient exaction-pulse as it traverses the periodic Coherence-Strain landscape of a physical lattice. The edges of an aperture wall are composed of stationary atomic patterns that impose a periodic grid of static Coherence-Strain ($S$) across the local node-adjacency lattice. As a transient exaction-pulse passes through the aperture, it does not navigate an empty continuum; it interacts directly with this periodic strain landscape. The Cadence-Based Strain (CaBS) Action Principle ($\delta A = 0$) dictates that the pulse's trajectory is systematically deflected into quantized geometric pathways corresponding to the resonance increments of the underlying node-link capacity. The resulting spatial distribution on a downstream target is a direct mapping of these discrete boundary constraints, not the self-interference of a split wave.
+
+### 11.14.3 Passive Static Strain vs. Dynamic Ledger Instability
+The phenomenon classically termed "wave function collapse" is resolved as a transition from a stable, static boundary interaction to an active, disruptive ledger reconciliation:
+
+1. **The Passive Wall (Static Strain-Gradient):** An unrestricted aperture edge presents a predictable, passive atomic structure. It modifies the path routing of the transient exaction-pulse via a stable, geometric strain-gradient, preserving the orderly, quantized diffraction bands.
+2. **The Detector (Dynamic Ledger-Instability):** An active detector pattern is not merely a passive collection of atoms; it is an **Active State-Reporter** that enforces a rigorous ledger-reconciliation at every sequential tick. The introduction of this active state-reporting overlays a chaotic, high-frequency update demand onto the local node set. 
+
+When the transient exaction-pulse enters this active measurement zone, the collision triggers an immediate Arithmetic Conflict, causing a violent spike in node-local reconciliation latency ($\Delta H$) or ledger tension. To maintain the local ledger identity ($I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$), the system applies severe, immediate spatial routing constraints. This dynamic ledger instability completely disrupts the orderly path options afforded by the passive aperture walls, scattering the pulse erratically and erasing the geometric signature of the diffraction fringes without requiring non-local information transfer or temporal retrocausality.
+
+
 ---
 
 ## 12. Computational Implementation Layer
