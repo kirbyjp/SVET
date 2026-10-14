@@ -718,6 +718,24 @@ the total rest-mass complexity may be converted into high-frequency instantiatio
 
 In this view, mass is not fundamental. It is the emergent measure of how difficult it is to reconfigure a coherence-constraint set while preserving identity within each tick. Mass is coherence rigidity.
 
+### 4.13 Directional Phase Constraints (Emergent Magnetism)
+
+#### 4.13.1 Magnetism Without Exchange Primitives
+SVET rejects the QED ontology of static forces mediated by the continuous exchange of virtual bosons. Electromagnetic phenomena are derived entirely from the local, real-valued ledger reconciliation of directional coherent update demands across the node set.
+
+#### 4.13.2 The Chiral Flux Operator
+Let a pattern's stationary exaction package contain an intrinsic directional asymmetry, modeled as a local vorticity in the coherent flux vector field:
+$$\mathbf{\Omega}(x) = \nabla \times \vec{F}_{\text{coh}}(x)$$
+This vorticity defines the pattern's spin-class alignment. When a pattern translates with velocity $v$, or exhibits intrinsic spin asymmetry $\mathbf{\Omega}$, it induces a directional phase bias across adjacent node links. 
+
+#### 4.13.3 Velocity-Dependent Coherence Cost
+The directional coherence cost density $C(x,v)$ defined in Section 3.8 is expanded to include a phase-coupling term mapping the interaction between a translating charge and the local network vorticity:
+$$C(x,v) = \sqrt{g_{\mu\nu}v^\mu v^\nu} + \kappa_{\text{mag}} \big(\vec{F}_{\text{coh}}(x) \cdot (\mathbf{\Omega} \times v)\big)$$
+Under the CaBS Action Principle ($\delta A = 0$), a moving pattern's trajectory is deflected perpendicularly to both its velocity vector and the local chiral flux orientation. This discrete, node-level routing preference reproduces the classical Lorentz force law:
+$$\mathbf{F} = q(\mathbf{E} + v \times \mathbf{B})$$
+without invoking field-carrying mediator particles or continuous field overlays. Momentum conservation is maintained through the exact node-ledger identity ($I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$).
+
+
 ### 4.14 Instantiation Trajectory and Instantiation Routing
 
 SVET distinguishes between the pattern's identity-encoded one-hop adjacency instruction and the node set's realized adjacency resolution. These two constructs describe different projections of the same single-tick update operation and must not be conflated [1].
@@ -733,6 +751,7 @@ This request is:
 - and not guaranteed to be realized.
 
 It is not motion; it is the structurally implied next adjacency encoded in the pattern's coherence-constraint set [1].
+
 
 #### 4.14.2 Instantiation Routing (Node-Set Resolution)
 
