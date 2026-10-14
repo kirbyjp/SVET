@@ -730,10 +730,14 @@ This vorticity defines the pattern's spin-class alignment. When a pattern transl
 
 #### 4.13.3 Velocity-Dependent Coherence Cost
 The directional coherence cost density $C(x,v)$ defined in Section 3.8 is expanded to include a phase-coupling term mapping the interaction between a translating charge and the local network vorticity:
+
 $$C(x,v) = \sqrt{g_{\mu\nu}v^\mu v^\nu} + \kappa_{\text{mag}} \big(\vec{F}_{\text{coh}}(x) \cdot (\mathbf{\Omega} \times v)\big)$$
-Under the CaBS Action Principle ($\delta A = 0$), a moving pattern's trajectory is deflected perpendicularly to both its velocity vector and the local chiral flux orientation. This discrete, node-level routing preference reproduces the classical Lorentz force law:
+
+Under the CaBS Action Principle $\delta A = 0$, a moving pattern's trajectory is deflected perpendicularly to both its velocity vector and the local chiral flux orientation. This discrete, node-level routing preference reproduces the classical Lorentz force law:
+
 $$\mathbf{F} = q(\mathbf{E} + v \times \mathbf{B})$$
-without invoking field-carrying mediator particles or continuous field overlays. Momentum conservation is maintained through the exact node-ledger identity ($I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$).
+
+without invoking field-carrying mediator particles or continuous field overlays. Momentum conservation is maintained through the exact node-ledger identity $I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$.
 
 
 ### 4.14 Instantiation Trajectory and Instantiation Routing
