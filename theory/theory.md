@@ -718,27 +718,40 @@ the total rest-mass complexity may be converted into high-frequency instantiatio
 
 In this view, mass is not fundamental. It is the emergent measure of how difficult it is to reconfigure a coherence-constraint set while preserving identity within each tick. Mass is coherence rigidity.
 
-### 4.13 Directional Phase Constraints (Emergent Magnetism)
+## 4.13 Directional Phase Constraints (Emergent Magnetism)
 
-#### 4.13.1 Magnetism Without Exchange Primitives
-SVET rejects the QED ontology of static forces mediated by the continuous exchange of virtual bosons. Electromagnetic phenomena are derived entirely from the local, real-valued ledger reconciliation of directional coherent update demands across the node set.
+### 4.13.1 Magnetism Without Exchange Primitives
+SVET diverges from QED by rejecting the ontological necessity of virtual mediator bosons to propagate electromagnetic interactions across space. Electromagnetic phenomena are derived entirely from the local, real-valued ledger reconciliation of directional, coherent update demands across the discrete node set. Magnetism is not an independent physical overlay, but an emergent constraint governing how patterns navigate capacity-strained node-adjacency links.
 
-#### 4.13.2 The Chiral Flux Operator
-Let a pattern's stationary exaction package contain an intrinsic directional asymmetry, modeled as a local vorticity in the coherent flux vector field:
-$$\mathbf{\Omega}(x) = \nabla \times \vec{F}_{\text{coh}}(x)$$
-This vorticity defines the pattern's spin-class alignment. When a pattern translates with velocity $v$, or exhibits intrinsic spin asymmetry $\mathbf{\Omega}$, it induces a directional phase bias across adjacent node links. 
+### 4.13.2 The Chiral Flux Operator
+Intrinsic magnetic spin does not emerge from a continuous rotational vortex. It is defined as an asymmetric node-update sequence within a pattern's cyclic instantiation loop (e.g., $n_1 \to n_2 \to n_3 \to n_1$). This systematic asymmetry induces a persistent property within the local node-state history, quantified as a local vorticity in the coherent flux vector field:
 
-#### 4.13.3 Velocity-Dependent Coherence Cost
-The directional coherence cost density $C(x,v)$ defined in Section 3.8 is expanded to include a phase-coupling term mapping the interaction between a translating charge and the local network vorticity:
+$$
+\mathbf{\Omega}(x) = \nabla \times \vec{F}_{\text{coh}}(x)
+$$
 
-$$C(x,v) = \sqrt{g_{\mu\nu}v^\mu v^\nu} + \kappa_{\text{mag}} \big(\vec{F}_{\text{coh}}(x) \cdot (\mathbf{\Omega} \times v)\big)$$
+where $\vec{F}_{\text{coh}}$ is the Coherent Flux Vector (as established in Section 3). The operator $\mathbf{\Omega}(x)$ maps the historical phase-ordering of local node updates and does not exist independently of the nodes themselves.
 
-Under the CaBS Action Principle $\delta A = 0$, a moving pattern's trajectory is deflected perpendicularly to both its velocity vector and the local chiral flux orientation. This discrete, node-level routing preference reproduces the classical Lorentz force law:
+### 4.13.3 Velocity-Dependent Coherence Cost
+The directional coherence cost density $C(x,v)$ defined in Section 3.8 is expanded to include a phase-coupling term mapping the interaction between a translating charge pattern and the local node-update sequence history:
 
-$$\mathbf{F} = q(\mathbf{E} + v \times \mathbf{B})$$
+$$
+C(x,v) = \sqrt{g_{\mu\nu}v^\mu v^\nu} + \kappa_{\text{mag}} \big(\vec{F}_{\text{coh}}(x) \cdot (\mathbf{\Omega} \times v)\big)
+$$
 
-without invoking field-carrying mediator particles or continuous field overlays. Momentum conservation is maintained through the exact node-ledger identity $I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H$.
+Under the CaBS Action Principle ($\delta A = 0$), the local Coherence-Strain ($S$) acts as the physical pressure driving path selection. Macroscopic magnetic attraction occurs when complementary update sequences minimize local strain, while magnetic repulsion triggers an Arithmetic Conflict. This conflict creates an immediate spike in node-local reconciliation latency ($\Delta H$) or ledger tension. To maintain the ledger identity, the system adjusts its spatial routing, deflecting a moving pattern's trajectory perpendicularly to its velocity vector and the local chiral update bias.
 
+This structural constraint mechanism natively reproduces the classical Lorentz force relation:
+
+$$
+\mathbf{F} = q(\mathbf{E} + v \times \mathbf{B})
+$$
+
+Momentum conservation is maintained strictly at the node boundary via the local node-ledger identity:
+
+$$
+I_{\text{in}} = I_{\text{refl}} + I_{\text{trans}} + \Delta H
+$$
 
 ### 4.14 Instantiation Trajectory and Instantiation Routing
 
